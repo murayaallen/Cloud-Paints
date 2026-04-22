@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Products — Cloud Paints</title>
+<meta name="description" content="The full Cloud Paints catalogue — 18 certified decorative paints, coatings and solvents manufactured in Nairobi, Kenya.">
+<link rel="canonical" href="https://cloudpaints.co.ke/products.html">
+<meta property="og:site_name" content="Cloud Paints">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://cloudpaints.co.ke/products.html">
+<meta property="og:title" content="Products — Cloud Paints">
+<meta property="og:description" content="18 certified decorative paints, coatings and solvents manufactured in Nairobi, Kenya.">
+<meta property="og:image" content="https://cloudpaints.co.ke/images/logo.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Products — Cloud Paints">
+<meta name="twitter:description" content="18 certified decorative paints, coatings and solvents manufactured in Nairobi, Kenya.">
+<meta name="twitter:image" content="https://cloudpaints.co.ke/images/logo.png">
+<meta name="theme-color" content="#d92843">
+<link rel="icon" type="image/png" href="images/logo-icon.png">
+<link rel="apple-touch-icon" href="images/logo-icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" onerror="this.remove()">
+<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/motion.css">
+<link rel="stylesheet" href="css/products.css">
+</head>
+<body data-page="products" class="cp-loading">
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<section class="pp-hero">
+  <div class="container pp-hero-inner reveal-parent">
+    <div>
+      <span class="eyebrow" data-anim="up">Full catalogue</span>
+      <h1 data-anim="up" style="--i:1">Every surface. <em>Every finish.</em></h1>
+      <p class="lede" data-anim="up" style="--i:2">
+        The complete Cloud Paints range — 18 certified products covering interiors, exteriors, wood, metal, floors, roofs and specialty coatings. Add what you need to your quote basket and we'll come back with pricing within one working day.
+      </p>
+    </div>
+    <div class="pp-hero-stats" data-anim="up" style="--i:3">
+      <div class="st"><div class="n">18</div><div class="l">Products</div></div>
+      <div class="st"><div class="n">Lab</div><div class="l">Tested</div></div>
+      <div class="st"><div class="n">48h</div><div class="l">Ship ready</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FILTER BAR (sticky)
+     ============================================================ -->
+<div class="pp-filter-wrap">
+  <div class="container">
+    <div class="pp-filter-bar" role="toolbar" aria-label="Filter products by category">
+      <div class="pp-count" id="ppCount">18 products</div>
+      <div class="pp-pills" id="ppPills"><!-- populated by products-page.js --></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     GRID
+     ============================================================ -->
+<section class="pp-grid-wrap" id="ppGridSection">
+  <div class="container">
+    <div class="pp-grid" id="ppGrid"><!-- cards injected by products-page.js --></div>
+
+    <!-- Bottom CTA -->
+    <div class="pp-cta">
+      <span class="pp-cta-eyebrow">Need help choosing?</span>
+      <h2>Not sure what's <em>right for you?</em></h2>
+      <p>Share your square metres, surfaces and timeline — we'll recommend the right product mix and deliver a full quote within one working day.</p>
+      <div class="pp-cta-btns">
+        <a href="contact.html" class="btn-gold">
+          Book a consultation
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </a>
+        <a href="https://wa.me/254741405481" class="btn-line" target="_blank" rel="noopener">
+          <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.4-2.4-1.4-.9-.8-1.5-1.8-1.6-2.1-.2-.3 0-.4.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4-.1-.5-.1-.1-.7-1.6-.9-2.2-.2-.6-.4-.5-.6-.5h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2 0 1.3.9 2.5 1.1 2.7.1.2 1.8 2.7 4.4 3.8.6.3 1.1.4 1.5.5.6.2 1.2.2 1.6.1.5-.1 1.6-.6 1.8-1.3.2-.7.2-1.3.2-1.4-.1-.2-.3-.2-.6-.4z"/></svg>
+          WhatsApp us
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SCRIPTS
+     ============================================================ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js" defer></script>
+
+<script src="js/products-data.js"></script>
+<script src="js/icon.js"></script>
+<script src="js/partials.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+<script src="js/motion.js" defer></script>
+<script src="js/products-page.js" defer></script>
+<script src="js/loader.js"></script>
+
+</body>
+</html>

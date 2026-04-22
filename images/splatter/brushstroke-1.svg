@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 80" fill="none" stroke="currentColor" stroke-width="22" stroke-linecap="round" aria-hidden="true">
+  <path d="M14 42 Q50 30 90 40 Q140 55 200 38 Q260 22 320 42 Q360 54 386 42" />
+  <!-- Torn ends -->
+  <circle cx="10" cy="44" r="3" fill="currentColor" stroke="none"/>
+  <circle cx="392" cy="40" r="3" fill="currentColor" stroke="none"/>
+</svg>

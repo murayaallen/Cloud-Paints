@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 180" fill="currentColor" aria-hidden="true">
+  <!-- Long horizontal splash -->
+  <path d="M20 90 Q40 70 70 80 Q95 90 125 78 Q160 60 190 80 Q220 98 245 85"
+        fill="none" stroke="currentColor" stroke-width="14" stroke-linecap="round"/>
+  <circle cx="15" cy="80" r="7"/>
+  <circle cx="248" cy="98" r="6"/>
+  <circle cx="92" cy="50" r="5"/>
+  <circle cx="175" cy="115" r="4"/>
+  <circle cx="50" cy="120" r="3"/>
+  <circle cx="220" cy="60" r="3"/>
+  <circle cx="130" cy="130" r="4"/>
+</svg>

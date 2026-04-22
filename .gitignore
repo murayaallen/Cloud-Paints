@@ -1,0 +1,15 @@
+# Development experiments — not for production
+trials/
+
+# Draft pages
+index2.html
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+*.swp
+*.swo
