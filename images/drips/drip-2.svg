@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 140" fill="currentColor" aria-hidden="true">
+  <!-- Peeling drip edge along a top bar -->
+  <path d="M0 0 H220 V28 H0 Z"/>
+  <path d="M14 28 Q16 52 14 66 Q12 84 18 92 Q24 84 22 66 Q20 52 18 28 Z"/>
+  <path d="M50 28 Q52 58 50 76 Q48 98 56 108 Q64 98 60 76 Q58 58 56 28 Z"/>
+  <path d="M92 28 Q94 46 92 58 Q90 72 96 80 Q102 72 100 58 Q98 46 96 28 Z"/>
+  <path d="M132 28 Q134 60 132 80 Q130 104 140 118 Q150 104 146 80 Q144 60 142 28 Z"/>
+  <path d="M172 28 Q174 52 172 68 Q170 84 176 92 Q184 84 180 68 Q178 52 176 28 Z"/>
+  <path d="M204 28 Q206 42 204 52 Q202 64 208 70 Q214 64 212 52 Q210 42 208 28 Z"/>
+</svg>

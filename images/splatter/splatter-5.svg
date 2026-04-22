@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 140" fill="currentColor" aria-hidden="true">
+  <!-- Wide low-key speckle field -->
+  <circle cx="22" cy="40" r="5"/>
+  <circle cx="56" cy="88" r="4"/>
+  <circle cx="88" cy="30" r="6"/>
+  <circle cx="112" cy="72" r="3"/>
+  <circle cx="146" cy="44" r="5"/>
+  <circle cx="178" cy="92" r="6"/>
+  <circle cx="200" cy="34" r="3"/>
+  <circle cx="38" cy="112" r="3"/>
+  <circle cx="100" cy="108" r="4"/>
+  <circle cx="160" cy="112" r="3"/>
+  <circle cx="72" cy="52" r="2"/>
+  <circle cx="130" cy="20" r="2"/>
+  <circle cx="190" cy="116" r="2"/>
+</svg>

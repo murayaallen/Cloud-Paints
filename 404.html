@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page not found — Cloud Paints</title>
+<meta name="description" content="This page has dripped off the wall. Head back to Cloud Paints — Kenya's certified premium paints, coatings and solvents.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#d92843">
+<link rel="icon" type="image/png" href="images/logo-icon.png">
+<link rel="apple-touch-icon" href="images/logo-icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" onerror="this.remove()">
+<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/motion.css">
+<style>
+  .nf-root {
+    min-height: calc(100vh - 88px);
+    display: grid;
+    place-items: center;
+    padding: 80px 20px;
+    background:
+      radial-gradient(ellipse at 30% 20%, rgba(217,40,67,.10), transparent 55%),
+      radial-gradient(ellipse at 80% 80%, rgba(184,147,74,.08), transparent 50%),
+      var(--bg-1);
+    position: relative;
+    overflow: hidden;
+  }
+  .nf-root::before {
+    content: "";
+    position: absolute; inset: 0;
+    background-image: var(--grain, none);
+    opacity: .05; pointer-events: none;
+  }
+  .nf-inner {
+    max-width: 640px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+  .nf-drip {
+    display: block;
+    margin: 0 auto 32px;
+    width: 120px; height: 180px;
+    filter: drop-shadow(0 20px 40px rgba(217,40,67,.25));
+  }
+  .nf-num {
+    font-family: var(--serif);
+    font-size: clamp(5rem, 14vw, 9rem);
+    font-weight: 600;
+    font-style: italic;
+    line-height: .9;
+    color: var(--red-2, #d92843);
+    margin: 0 0 12px;
+    letter-spacing: -0.02em;
+  }
+  .nf-eyebrow {
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-2);
+    margin-bottom: 16px;
+  }
+  .nf-h1 {
+    font-family: var(--serif);
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 500;
+    margin: 0 0 16px;
+    color: var(--text-1);
+  }
+  .nf-h1 em { font-style: italic; color: var(--red-2, #d92843); }
+  .nf-lede {
+    color: var(--text-2);
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin: 0 auto 36px;
+    max-width: 480px;
+  }
+  .nf-ctas {
+    display: inline-flex; gap: 14px; flex-wrap: wrap; justify-content: center;
+  }
+  .nf-ctas a {
+    padding: 14px 24px;
+    border-radius: 100px;
+    font-family: var(--sans);
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform .2s, box-shadow .2s;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .nf-ctas .primary { background: var(--red-2, #d92843); color: #fff; }
+  .nf-ctas .primary:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(217,40,67,.28); }
+  .nf-ctas .ghost { color: var(--text-1); border: 1px solid var(--line-1, #e5e7eb); background: transparent; }
+  .nf-ctas .ghost:hover { background: var(--bg-2, #f7f5f0); }
+</style>
+</head>
+<body data-page="404">
+
+<main class="nf-root">
+  <div class="nf-inner">
+    <svg class="nf-drip" viewBox="0 0 120 180" aria-hidden="true">
+      <defs>
+        <linearGradient id="nfg" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#f04a65"/>
+          <stop offset="1" stop-color="#b8243a"/>
+        </linearGradient>
+      </defs>
+      <path d="M60 10 C 38 50, 40 80, 45 110 C 48 130, 52 150, 60 170 C 68 150, 72 130, 75 110 C 80 80, 82 50, 60 10 Z" fill="url(#nfg)"/>
+      <circle cx="60" cy="172" r="5" fill="#b8243a"/>
+      <ellipse cx="60" cy="40" rx="6" ry="3" fill="#ffffff" opacity=".35"/>
+    </svg>
+    <div class="nf-num">404</div>
+    <div class="nf-eyebrow">Page not found</div>
+    <h1 class="nf-h1">This page has <em>dripped off the wall.</em></h1>
+    <p class="nf-lede">The link you followed is missing, moved, or never existed. Let's get you back to the colour.</p>
+    <div class="nf-ctas">
+      <a href="/" class="primary">
+        Take me home
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+      </a>
+      <a href="products.html" class="ghost">Browse products</a>
+      <a href="contact.html" class="ghost">Contact us</a>
+    </div>
+  </div>
+</main>
+
+<script src="js/products-data.js"></script>
+<script src="js/icon.js"></script>
+<script src="js/partials.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+
+</body>
+</html>

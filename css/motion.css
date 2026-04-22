@@ -1,0 +1,130 @@
+/* ==========================================================
+   CLOUD PAINTS — Motion System
+   Directional reveal, parallax, and scroll-linked utilities.
+   Works with js/motion.js (GSAP + ScrollTrigger) or degrades
+   to a plain CSS transition if JS is absent.
+   ========================================================== */
+
+:root {
+  --anim-dur-short: 0.45s;
+  --anim-dur-mid: 0.75s;
+  --anim-dur-long: 1.1s;
+  --anim-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --anim-ease-pour: cubic-bezier(0.6, 0.05, 0.3, 1);
+  --anim-stagger: 80ms;
+  --anim-dist: 48px;
+}
+
+/* -- Base reveal state ------------------------------------ */
+[data-anim] {
+  opacity: 0;
+  will-change: opacity, transform;
+  transition:
+    opacity var(--anim-dur-mid) var(--anim-ease),
+    transform var(--anim-dur-mid) var(--anim-ease);
+}
+
+[data-anim="up"]     { transform: translate3d(0, var(--anim-dist), 0); }
+[data-anim="down"]   { transform: translate3d(0, calc(var(--anim-dist) * -1), 0); }
+[data-anim="left"]   { transform: translate3d(calc(var(--anim-dist) * -1), 0, 0); }
+[data-anim="right"]  { transform: translate3d(var(--anim-dist), 0, 0); }
+[data-anim="scale"]  { transform: scale(0.92); }
+[data-anim="fade"]   { transform: none; }
+
+/* Visible state — applied by motion.js when element enters the viewport */
+[data-anim].is-in {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+}
+
+/* -- Draw-on (SVG stroke-dashoffset) ---------------------- */
+.anim-draw path,
+.anim-draw line,
+.anim-draw polyline,
+.anim-draw circle,
+.anim-draw rect {
+  stroke-dasharray: var(--draw-len, 1200);
+  stroke-dashoffset: var(--draw-len, 1200);
+  transition: stroke-dashoffset 1.4s var(--anim-ease-pour);
+}
+.anim-draw.is-in path,
+.anim-draw.is-in line,
+.anim-draw.is-in polyline,
+.anim-draw.is-in circle,
+.anim-draw.is-in rect {
+  stroke-dashoffset: 0;
+}
+
+/* -- Parent stagger --------------------------------------- */
+.reveal-parent [data-anim] {
+  transition-delay: calc(var(--anim-stagger) * var(--i, 0));
+}
+
+/* -- Parallax layer utility ------------------------------- */
+.parallax {
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+}
+
+/* -- Texture utilities ------------------------------------ */
+.texture-grain {
+  position: relative;
+  isolation: isolate;
+}
+.texture-grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("../images/textures/grain.svg");
+  background-size: 240px 240px;
+  background-repeat: repeat;
+  opacity: 0.07;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.texture-splatter {
+  position: relative;
+  isolation: isolate;
+}
+.texture-splatter > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* -- Container variants ----------------------------------- */
+.container-tight {
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+@media (min-width: 768px) {
+  .container-tight { padding: 0 32px; }
+}
+
+/* -- Show/hide per breakpoint ----------------------------- */
+.hide-sm { display: none !important; }
+@media (min-width: 768px) {
+  .hide-sm { display: initial !important; }
+  .hide-lg { display: none !important; }
+}
+
+/* -- Reduced motion override ------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  [data-anim],
+  [data-anim].is-in {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .anim-draw path,
+  .anim-draw line,
+  .anim-draw polyline,
+  .anim-draw circle,
+  .anim-draw rect {
+    stroke-dashoffset: 0 !important;
+    transition: none !important;
+  }
+}

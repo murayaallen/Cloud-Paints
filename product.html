@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Product — Cloud Paints</title>
+<meta name="description" content="Cloud Paints product details.">
+<meta property="og:site_name" content="Cloud Paints">
+<meta property="og:type" content="product">
+<meta property="og:image" content="https://cloudpaints.co.ke/images/logo.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#d92843">
+<link rel="icon" type="image/png" href="images/logo-icon.png">
+<link rel="apple-touch-icon" href="images/logo-icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" onerror="this.remove()">
+<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/motion.css">
+<link rel="stylesheet" href="css/product.css">
+</head>
+<body data-page="product" class="cp-loading">
+<main class="pd-root">
+
+<!-- Breadcrumb -->
+<section class="pd-crumb">
+  <div class="container">
+    <nav aria-label="Breadcrumb">
+      <a href="index.html">Home</a>
+      <span class="sep">›</span>
+      <a href="products.html">Products</a>
+      <span class="sep">›</span>
+      <span class="now" id="pdCrumb">—</span>
+    </nav>
+  </div>
+</section>
+
+<!-- Hero / Bucket stage -->
+<section class="pd-hero">
+  <div class="container pd-hero-grid reveal-parent">
+    <div class="pd-stage" id="pdStage" data-anim="left">
+      <div class="pd-kebs" id="pdKebs">Quality <span class="n">Certified</span></div>
+      <img id="pdStageImg" src="" alt="" width="800" height="900" fetchpriority="high">
+      <div class="pd-float">Made in Kenya</div>
+    </div>
+
+    <div class="pd-info" data-anim="right">
+      <span class="eyebrow" id="pdEyebrow">Product</span>
+      <h1 id="pdName">—</h1>
+      <p class="tagline" id="pdTagline">—</p>
+
+      <div class="pd-buy">
+        <div class="pd-buy-row">
+          <span class="pd-buy-label">Size</span>
+          <div class="pd-sizes" id="pdSizes"></div>
+        </div>
+        <div class="pd-buy-row">
+          <span class="pd-buy-label">Qty</span>
+          <div class="pd-qty">
+            <button id="pdQtyMinus" type="button" aria-label="Decrease quantity">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" d="M5 12h14"/></svg>
+            </button>
+            <input id="pdQty" type="number" value="1" min="1" inputmode="numeric" aria-label="Quantity">
+            <button id="pdQtyPlus" type="button" aria-label="Increase quantity">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" d="M12 5v14M5 12h14"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="pd-ctas">
+          <button type="button" class="btn-add" id="pdAdd">
+            Add to quote
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+          </button>
+          <a id="pdSheet" class="btn-sheet" href="#" target="_blank" rel="noopener">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v12m0 0l-4-4m4 4l4-4M4 20h16"/></svg>
+            Datasheet
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- At-a-glance specs -->
+<section class="pd-ataglance">
+  <div class="container">
+    <div class="pd-ataglance-grid reveal-parent" id="pdGlance" data-anim-children>
+      <!-- populated by product-page.js -->
+    </div>
+  </div>
+</section>
+
+<!-- Description + verbatim label claims -->
+<section class="pd-section">
+  <div class="container">
+    <div class="pd-section-head reveal-parent">
+      <span class="eyebrow" data-anim="up">About this paint</span>
+      <h2 data-anim="up" style="--i:1">Formulated for <em>performance.</em></h2>
+    </div>
+    <div class="pd-desc-grid reveal-parent">
+      <div class="pd-desc" id="pdDesc" data-anim="up"><p>—</p></div>
+      <div class="pd-claims" data-anim="up" data-delay="1">
+        <div class="pd-claims-label">From the label</div>
+        <ul id="pdClaims"></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Coverage calculator -->
+<section class="pd-calc">
+  <div class="container pd-calc-grid reveal-parent">
+    <div data-anim="left">
+      <span class="eyebrow">Paint calculator</span>
+      <h2>How much will you <em>need?</em></h2>
+      <p class="pd-calc-lede">Enter your wall area and we'll size your packs — including a 10% allowance for porous surfaces and wastage, the same margin our trade customers plan with.</p>
+    </div>
+
+    <div class="pd-calc-box" id="pdCalc" data-anim="right">
+      <div class="pd-calc-inputs">
+        <div class="pd-calc-field">
+          <label for="calcArea">Wall area (m²)</label>
+          <input id="calcArea" type="text" inputmode="decimal" placeholder="e.g. 120">
+        </div>
+        <div class="pd-calc-field">
+          <label for="calcCoats">Coats</label>
+          <select id="calcCoats">
+            <option value="1">1 coat</option>
+            <option value="2" selected>2 coats (recommended)</option>
+            <option value="3">3 coats</option>
+          </select>
+        </div>
+      </div>
+      <div class="pd-calc-field">
+        <label for="calcSize">Pack size</label>
+        <select id="calcSize"></select>
+      </div>
+
+      <div class="pd-calc-result">
+        <div>
+          <div class="label">You'll need</div>
+          <div class="val" id="calcResLit">—</div>
+          <div class="sub" id="calcResPacks"></div>
+        </div>
+        <button type="button" class="btn-add-res" id="calcAdd">
+          Add to quote
+        </button>
+      </div>
+
+      <p class="pd-calc-note">Estimates based on midpoint coverage at 2 coats. Porous surfaces may need more; factor an extra 10–15% for first-time painted plaster.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Finish visual -->
+<section class="pd-finish">
+  <div class="container pd-finish-grid reveal-parent">
+    <div class="pd-finish-swatch" data-anim="left">
+      <div class="pd-finish-label" id="pdFinishName">Finish</div>
+    </div>
+    <div class="pd-finish-info" data-anim="right">
+      <span class="eyebrow">Finish & sheen</span>
+      <h3 style="margin-top:12px;">How it <em>looks on the wall.</em></h3>
+      <p>Sheen level describes how much light the dried film reflects. Lower numbers (matt/super-matt) hide imperfections and feel modern; higher numbers (silk/gloss) are wipeable and reflect more light — ideal for trims, kitchens and bathrooms.</p>
+      <div class="pd-sheen-bar" id="pdSheenBar"></div>
+      <div class="pd-sheen-scale">
+        <span>Matt</span>
+        <span id="pdFinishSheen">Sheen</span>
+        <span>Gloss</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Application guidance -->
+<section class="pd-apply">
+  <div class="container">
+    <div class="pd-section-head reveal-parent" style="text-align:left;">
+      <span class="eyebrow" data-anim="up">Application</span>
+      <h2 data-anim="up" style="--i:1">How to <em>apply it properly.</em></h2>
+    </div>
+    <div class="pd-apply-grid reveal-parent" id="pdApply">
+      <!-- populated by product-page.js -->
+    </div>
+  </div>
+</section>
+
+<!-- Safety & certification -->
+<section class="pd-safety">
+  <div class="container pd-safety-grid reveal-parent">
+    <div class="pd-cert-card" data-anim="left">
+      <div class="ring">
+        <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 22s8-4 8-12V5l-8-3-8 3v5c0 8 8 12 8 12z"/><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4"/></svg>
+      </div>
+      <div class="k">Quality standard</div>
+      <div class="v" id="pdKebsNum">Meets Kenya Bureau of Standards</div>
+      <div class="std">Every Cloud Paints product is independently tested against quality benchmarks before leaving the factory.</div>
+    </div>
+
+    <div data-anim="right">
+      <div class="pd-section-head" style="margin-bottom:28px;">
+        <span class="eyebrow">Safety & handling</span>
+        <h2 style="font-size:clamp(1.5rem,2.6vw,2rem);margin-top:12px;">Made <em>responsibly.</em></h2>
+      </div>
+      <div class="pd-safety-list" id="pdSafety"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Cross-sell -->
+<section class="pd-xsell">
+  <div class="container">
+    <div class="pd-section-head reveal-parent">
+      <span class="eyebrow" data-anim="up">Pairs well with</span>
+      <h2 data-anim="up" style="--i:1">Complete the <em>job.</em></h2>
+    </div>
+    <div class="pd-xsell-grid reveal-parent" id="pdXsell"></div>
+  </div>
+</section>
+
+</main>
+
+<!-- Sticky mobile buy-bar -->
+<div class="pd-sticky-bar" role="region" aria-label="Quick add to quote">
+  <div class="pd-sticky-name">
+    <div class="nm" id="pdStickyName">—</div>
+    <div class="sz">Size · <span id="pdStickySize">4L</span></div>
+  </div>
+  <button type="button" class="btn-add" id="pdStickyAdd">
+    Add to quote
+    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+  </button>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js" defer></script>
+
+<script src="js/products-data.js"></script>
+<script src="js/icon.js"></script>
+<script src="js/partials.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+<script src="js/motion.js" defer></script>
+<script src="js/product-page.js" defer></script>
+<script src="js/loader.js"></script>
+
+</body>
+</html>

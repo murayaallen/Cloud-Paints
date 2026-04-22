@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="currentColor" aria-hidden="true">
+  <!-- Impact burst: big centre + radiating droplets -->
+  <path d="M100 70c-18 0-30 16-22 32 8 16 32 18 42 4 10-14 2-36-20-36z"/>
+  <path d="M100 50l4-22 4 22zM140 85l20-10-20 16zM140 115l22 4-22 4zM110 140l4 22-8-22zM60 115l-22 4 22 4zM60 85l-20-10 20 16z"/>
+  <circle cx="160" cy="40" r="4"/>
+  <circle cx="40" cy="160" r="4"/>
+  <circle cx="180" cy="170" r="3"/>
+  <circle cx="20" cy="30" r="3"/>
+</svg>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Projects — Cloud Paints</title>
+<meta name="description" content="A case-study gallery of Cloud Paints projects across Kenya — apartments, estates, commercial blocks and institutional buildings we've supplied and finished.">
+<link rel="canonical" href="https://cloudpaints.co.ke/projects.html">
+<meta property="og:site_name" content="Cloud Paints">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://cloudpaints.co.ke/projects.html">
+<meta property="og:title" content="Projects — Cloud Paints">
+<meta property="og:description" content="A case-study gallery of Cloud Paints projects across Kenya.">
+<meta property="og:image" content="https://cloudpaints.co.ke/images/logo.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Projects — Cloud Paints">
+<meta name="twitter:description" content="A case-study gallery of Cloud Paints projects across Kenya.">
+<meta name="twitter:image" content="https://cloudpaints.co.ke/images/logo.png">
+<meta name="theme-color" content="#d92843">
+<link rel="icon" type="image/png" href="images/logo-icon.png">
+<link rel="apple-touch-icon" href="images/logo-icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" onerror="this.remove()">
+<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/motion.css">
+<link rel="stylesheet" href="css/projects.css">
+</head>
+<body data-page="projects" class="cp-loading">
+
+<!-- Hero -->
+<section class="pj-hero">
+  <div class="container pj-hero-inner reveal-parent">
+    <div data-anim="up">
+      <span class="eyebrow">Our work</span>
+      <h1>From Kitengela <em>to Kilifi.</em></h1>
+      <p class="lede">A selection of residential, commercial and institutional jobs we've been proud to colour across Kenya. Every entry was supplied — and where marked, finished — by our own trade team.</p>
+    </div>
+    <div class="pj-hero-stats" data-anim="up" data-delay="1">
+      <div class="st"><div class="n" data-count-to="11">0</div><div class="l">Projects shown</div></div>
+      <div class="st"><div class="n" data-count-to="47">0</div><div class="l">Counties served</div></div>
+      <div class="st"><div class="n" data-count-to="15">0</div><div class="l">Years of service</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Auto-panning ribbon -->
+<section class="pj-ribbon" aria-label="Recent projects ribbon">
+  <div class="pj-ribbon-track" id="pjRibbonTrack"></div>
+</section>
+
+<!-- Sticky filter bar -->
+<div class="pj-filter-wrap">
+  <div class="container">
+    <div class="pj-filter-bar">
+      <span class="pj-count" id="pjCount">—</span>
+      <div class="pj-pills" id="pjPills"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Featured case study -->
+<section class="pj-featured-wrap">
+  <div class="container reveal-parent">
+    <div class="pj-featured" id="pjFeatured" data-anim="up"></div>
+  </div>
+</section>
+
+<!-- Grid -->
+<section class="pj-grid-wrap" id="pjGridSection">
+  <div class="container">
+    <div class="pj-grid" id="pjGrid"></div>
+  </div>
+</section>
+
+<!-- Location strip -->
+<section class="pj-locations">
+  <div class="container reveal-parent">
+    <span class="eyebrow" data-anim="up">Where we work</span>
+    <h2 data-anim="up" style="--i:1">Colouring Kenya, <em>county by county.</em></h2>
+    <div class="pj-loc-strip" id="pjLocs" data-anim-children></div>
+  </div>
+</section>
+
+<!-- Clients -->
+<section class="pj-clients-wrap">
+  <div class="container">
+    <div class="section-head reveal-parent">
+      <span class="eyebrow" data-anim="up">Trusted by</span>
+      <h2 data-anim="up" style="--i:1">A few of our <em>clients.</em></h2>
+      <p data-anim="up" style="--i:2">From government agencies to private developers — Cloud Paints colours some of Kenya's most visible buildings.</p>
+    </div>
+    <div class="pj-clients reveal-parent" data-anim-children>
+      <div class="pj-client">Superior Homes</div>
+      <div class="pj-client">ABSA Bank</div>
+      <div class="pj-client">Moi Forces Academy</div>
+      <div class="pj-client">KMTC<small>Medical Training Colleges</small></div>
+      <div class="pj-client">Kitengela International School</div>
+      <div class="pj-client">Red Heron<small>Mall &amp; Kids Arena</small></div>
+      <div class="pj-client">Acacia Crest Schools</div>
+      <div class="pj-client">Lukenya Schools</div>
+      <div class="pj-client">Shady Acres<small>Westpointe Apts</small></div>
+      <div class="pj-client">ACK Holy Trinity<small>Milimani Kitengela</small></div>
+      <div class="pj-client">Chuna Preparatory</div>
+      <div class="pj-client">Archem Ltd</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="pj-cta-wrap">
+  <div class="container reveal-parent">
+    <div class="pj-cta" data-anim="up">
+      <div>
+        <span class="eyebrow">Your project next?</span>
+        <h2>Let's paint your <em>next building.</em></h2>
+        <p>From a single flat to a 200-unit development — send us the drawings and we'll come back with a detailed quote within 48 hours.</p>
+        <a href="contact.html" class="btn-gold">
+          Request a quote
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </a>
+      </div>
+      <div class="pj-cta-quote">"Buy it.<br>Paint it.<br>Love it."</div>
+    </div>
+  </div>
+</section>
+
+<!-- Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js" defer></script>
+
+<script src="js/products-data.js"></script>
+<script src="js/projects-data.js"></script>
+<script src="js/icon.js"></script>
+<script src="js/partials.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+<script src="js/motion.js" defer></script>
+<script src="js/projects-page.js" defer></script>
+<script src="js/loader.js"></script>
+
+</body>
+</html>
