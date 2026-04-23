@@ -29,7 +29,7 @@ body[data-page="products"] { background: var(--bg); }
   gap: clamp(30px, 5vw, 60px);
   align-items: end;
 }
-.pp-hero .eyebrow { color: var(--red-2); }
+.pp-hero .eyebrow { color: var(--blue-2); border-color: rgba(37,71,184,0.25); background: rgba(37,71,184,0.08); }
 .pp-hero h1 {
   font-family: var(--serif);
   font-size: clamp(2.4rem, 6vw, 4.6rem);
@@ -38,7 +38,7 @@ body[data-page="products"] { background: var(--bg); }
   font-weight: 400;
   margin: 18px 0 20px;
 }
-.pp-hero h1 em { color: var(--red-2); font-style: italic; }
+.pp-hero h1 em { color: var(--blue-2); font-style: italic; }
 .pp-hero .lede {
   color: var(--text-2);
   font-size: 1.05rem;
