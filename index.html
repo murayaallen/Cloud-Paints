@@ -94,9 +94,10 @@
       <div class="lp-splat s3"><svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="18"/><circle cx="100" cy="30" r="6"/><circle cx="18" cy="96" r="5"/><circle cx="92" cy="88" r="4"/></svg></div>
       <div class="lp-splat s4"><svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="14"/><circle cx="98" cy="40" r="5"/><circle cx="28" cy="94" r="4"/></svg></div>
 
-      <!-- Floating bucket -->
+      <!-- Floating bucket — two imgs for crossfade -->
       <div class="lp-hero-bucket">
-        <img src="images/hero-bucket.png" alt="Cloud Paints paint bucket" width="420" height="525" fetchpriority="high">
+        <img class="hs-active" src="images/buckets/hero/weatherguard.png" alt="Cloud Paints paint bucket" width="420" height="525" fetchpriority="high">
+        <img src="images/buckets/hero/silk-vinyl.png" alt="Cloud Paints paint bucket" width="420" height="525" aria-hidden="true">
       </div>
     </div>
   </div>
@@ -390,6 +391,7 @@
 <script src="js/main.js"></script>
 <script src="js/motion.js" defer></script>
 <script src="js/loader.js"></script>
+<script src="js/hero-slides.js" defer></script>
 
 <!-- Featured products grid -->
 <script>

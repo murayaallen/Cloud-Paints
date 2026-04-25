@@ -4,6 +4,13 @@
    Scoped to body[data-page="home"] so it never bleeds.
    ============================================================ */
 
+/* Register --hero-color so it can be CSS-transitioned */
+@property --hero-color {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #d92843;
+}
+
 body[data-page="home"] { background: #0b0a10; }
 body[data-page="home"][data-theme="light"] { background: var(--bg); }
 
@@ -199,19 +206,28 @@ body.cp-loading .lp-hero-stats { animation-play-state: paused; }
 }
 
 /* vertical pour column gradient */
+.lp-pour {
+  --hero-color: #d92843;
+  transition: --hero-color 0.85s ease;
+}
 .lp-pour-col {
   position: absolute;
   top: -10%; left: 50%;
   transform: translateX(-50%);
   width: clamp(48px, 6vw, 78px);
   height: 110%;
-  background: linear-gradient(180deg, var(--red-glow) 0%, var(--red-2) 50%, var(--red) 100%);
+  background: linear-gradient(180deg,
+    color-mix(in srgb, var(--hero-color), white 18%) 0%,
+    var(--hero-color) 50%,
+    color-mix(in srgb, var(--hero-color), black 18%) 100%
+  );
   border-radius: 50% 50% 20% 20% / 20px 20px 36px 36px;
-  filter: drop-shadow(0 20px 40px rgba(217,40,67,0.35));
+  filter: drop-shadow(0 20px 40px color-mix(in srgb, var(--hero-color), transparent 60%));
   opacity: 0;
   transform-origin: top center;
   animation: lpPourIn 1.8s var(--t-ease-pour) 0.25s forwards;
   z-index: 1;
+  transition: background 0.85s ease, filter 0.85s ease;
 }
 body.cp-loading .lp-pour-col { animation-play-state: paused; }
 @keyframes lpPourIn {
@@ -222,9 +238,9 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
 .lp-pour-col::after {
   content:""; position:absolute; left:50%; bottom:-14px; transform: translateX(-50%);
   width: 28px; height: 28px; border-radius: 50%;
-  background: var(--red-glow);
-  box-shadow: 0 0 30px rgba(217,40,67,0.7);
+  background: var(--hero-color);
   animation: lpDripDrop 3.6s ease-in-out 2s infinite;
+  transition: background 0.85s ease;
 }
 @keyframes lpDripDrop {
   0%, 100% { transform: translate(-50%, 0) scale(1); opacity: 1; }
@@ -237,8 +253,9 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
 .lp-drip {
   position: absolute;
   pointer-events: none;
-  color: var(--red-glow);
+  color: var(--hero-color);
   z-index: 2;
+  transition: color 0.85s ease;
 }
 .lp-drip.d1 { top: 10%; left: 42%; width: 14px; height: 60px; animation: lpDripDraw 1.4s var(--t-ease-pour) 0.7s both; }
 .lp-drip.d2 { top: 20%; left: 58%; width: 12px; height: 46px; animation: lpDripDraw 1.4s var(--t-ease-pour) 0.9s both; }
@@ -261,15 +278,16 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
   position: absolute;
   pointer-events: none;
   z-index: 3;
-  color: var(--red-glow);
+  color: var(--hero-color);
   opacity: 0;
   transform: scale(0.2) rotate(0);
   animation: lpSplatPop 1.2s var(--t-ease-pour) forwards;
+  transition: color 0.85s ease;
 }
 .lp-splat.s1 { top: 8%;  left: 18%; width: 110px; height: 110px; animation-delay: 1.4s; }
-.lp-splat.s2 { top: 62%; left: 70%; width: 140px; height: 140px; animation-delay: 1.6s; color: var(--gold-2); }
+.lp-splat.s2 { top: 62%; left: 70%; width: 140px; height: 140px; animation-delay: 1.6s; color: var(--hero-color); opacity: 0.7; }
 .lp-splat.s3 { bottom: 10%; left: 25%; width: 90px; height: 90px; animation-delay: 1.55s; }
-.lp-splat.s4 { top: 42%; right: 4%;  width: 70px;  height: 70px; animation-delay: 1.7s; color: var(--gold); }
+.lp-splat.s4 { top: 42%; right: 4%;  width: 70px;  height: 70px; animation-delay: 1.7s; opacity: 0.6; }
 .lp-splat svg { width:100%; height:100%; fill: currentColor; }
 @keyframes lpSplatPop {
   0%   { opacity: 0; transform: scale(0.2) rotate(-40deg); }
@@ -297,8 +315,16 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
   }
 }
 .lp-hero-bucket img {
-  width: 100%; height: 100%; object-fit: contain;
-  filter: drop-shadow(0 28px 56px rgba(0,0,0,0.55)) drop-shadow(0 8px 20px rgba(217,40,67,0.25));
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 28px 56px rgba(0,0,0,0.55)) drop-shadow(0 8px 20px color-mix(in srgb, var(--hero-color), transparent 55%));
+  opacity: 0;
+  transition: opacity 0.7s cubic-bezier(.4,0,.2,1), filter 0.85s ease;
+}
+.lp-hero-bucket img.hs-active {
+  opacity: 1;
 }
 @keyframes lpBucketIn {
   from { opacity: 0; transform: translate(-50%, calc(-50% + 40px)); }
@@ -373,10 +399,10 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
 [data-theme="light"] .lp-hero-stats .st .n sup { color: var(--red-2); }
 [data-theme="light"] .lp-hero-stats .st .l { color: rgba(10,14,39,0.44); }
 [data-theme="light"] .lp-pour-col {
-  filter: drop-shadow(0 20px 40px rgba(217,40,67,0.25));
+  filter: drop-shadow(0 20px 40px color-mix(in srgb, var(--hero-color), transparent 72%));
 }
 [data-theme="light"] .lp-hero-bucket img {
-  filter: drop-shadow(0 24px 48px rgba(0,0,0,0.28)) drop-shadow(0 6px 16px rgba(217,40,67,0.18));
+  filter: drop-shadow(0 24px 48px rgba(0,0,0,0.28)) drop-shadow(0 6px 16px color-mix(in srgb, var(--hero-color), transparent 78%));
 }
 [data-theme="light"] .lp-scroll-cue { color: rgba(10,14,39,0.4); }
 [data-theme="light"] .lp-scroll-cue span.line {
