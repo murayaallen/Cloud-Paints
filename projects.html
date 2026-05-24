@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{document.documentElement.setAttribute("data-theme",localStorage.getItem("cloud-theme")||"light");}catch(e){}</script>
 <title>Projects — Cloud Paints</title>
 <meta name="description" content="A case-study gallery of Cloud Paints projects across Kenya — apartments, estates, commercial blocks and institutional buildings we've supplied and finished.">
 <link rel="canonical" href="https://cloudpaints.co.ke/projects.html">
@@ -19,7 +20,7 @@
 <meta name="theme-color" content="#d92843">
 <link rel="icon" type="image/png" href="images/logo-icon.png">
 <link rel="apple-touch-icon" href="images/logo-icon.png">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" onerror="this.remove()">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700;800&family=Montserrat:ital,wght@0,700;0,800;0,900;1,700;1,800;1,900&display=swap" rel="stylesheet" onerror="this.remove()">
 <link rel="stylesheet" href="css/main.css">
 <link rel="stylesheet" href="css/motion.css">
 <link rel="stylesheet" href="css/projects.css">
@@ -31,13 +32,8 @@
   <div class="container pj-hero-inner reveal-parent">
     <div data-anim="up">
       <span class="eyebrow">Our work</span>
-      <h1>From Kitengela <em>to Kilifi.</em></h1>
-      <p class="lede">A selection of residential, commercial and institutional jobs we've been proud to colour across Kenya. Every entry was supplied — and where marked, finished — by our own trade team.</p>
-    </div>
-    <div class="pj-hero-stats" data-anim="up" data-delay="1">
-      <div class="st"><div class="n" data-count-to="11">0</div><div class="l">Projects shown</div></div>
-      <div class="st"><div class="n" data-count-to="47">0</div><div class="l">Counties served</div></div>
-      <div class="st"><div class="n" data-count-to="15">0</div><div class="l">Years of service</div></div>
+      <h1>From the factory <em>to the world.</em></h1>
+      <p class="lede">A selection of residential, commercial and institutional jobs we've been proud to colour — supplied, and where marked, finished by our own trade team. The work below is just where we've been so far.</p>
     </div>
   </div>
 </section>
@@ -71,6 +67,18 @@
   </div>
 </section>
 
+<!-- Wall of work — purely-visual showcase (no attribution) -->
+<section class="pj-showcase-wrap" id="pjShowcaseSection">
+  <div class="container reveal-parent">
+    <div class="pj-showcase-head">
+      <span class="eyebrow" data-anim="up">Wall of work</span>
+      <h2 data-anim="up" style="--i:1">Painted walls, <em>everywhere.</em></h2>
+      <p data-anim="up" style="--i:2">A roll of additional spaces Cloud Paints has touched — no captions needed.</p>
+    </div>
+    <div class="pj-showcase-grid" id="pjShowcaseGrid"></div>
+  </div>
+</section>
+
 <!-- Location strip -->
 <section class="pj-locations">
   <div class="container reveal-parent">
@@ -81,7 +89,8 @@
 </section>
 
 <!-- Clients -->
-<section class="pj-clients-wrap">
+<section class="pj-clients-wrap cp-amb-parent">
+  <div class="cp-amb cp-amb--soft" aria-hidden="true"><i class="b1"></i><i class="b2"></i></div>
   <div class="container">
     <div class="section-head reveal-parent">
       <span class="eyebrow" data-anim="up">Trusted by</span>

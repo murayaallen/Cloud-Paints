@@ -102,11 +102,11 @@
     if (prefersReduce || isMobile || !window.Lenis) return;
     try {
       var lenis = new window.Lenis({
-        duration: 1.3,
-        easing: function (t) { return 1 - Math.pow(1 - t, 4); },
+        duration: 0.9,
+        easing: function (t) { return 1 - Math.pow(1 - t, 3); },
         smoothWheel: true,
-        wheelMultiplier: 0.9,
-        touchMultiplier: 1.5,
+        wheelMultiplier: 1.0,
+        touchMultiplier: 1.7,
         infinite: false
       });
       window.CP.motion.lenis = lenis;

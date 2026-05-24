@@ -8,6 +8,7 @@
 window.CLOUD_PROJECTS = [
   {
     slug: 'pazuri-vipingo',
+    inspiration: 'images/inspiration/inspiration-coastal-villa-lamu.jpg',
     name: 'Pazuri Vipingo',
     location: 'Kilifi',
     county: 'Kilifi',
@@ -24,13 +25,14 @@ window.CLOUD_PROJECTS = [
   },
   {
     slug: 'pazuri-villa',
+    inspiration: 'images/inspiration/inspiration-coastal-veranda.jpg',
     name: 'Pazuri Villa',
     location: 'Kilifi',
     county: 'Kilifi',
     year: '2025',
     type: 'residential',
     type_label: 'Villa',
-    client: 'Private',
+    client: 'Superior Homes',
     scope: 'Supply only',
     brief: 'A single family villa within the Pazuri development painted in a crisp white Weatherguard finish to bounce heat and keep the interiors cool.',
     products_used: ['weatherguard'],
@@ -38,7 +40,40 @@ window.CLOUD_PROJECTS = [
     accent: '#efe6d2',
   },
   {
+    slug: 'lukenya-plains',
+    inspiration: 'images/inspiration/inspiration-buruburu-maisonette.jpg',
+    name: 'Lukenya Plains',
+    location: 'Athi River',
+    county: 'Machakos',
+    year: '2024',
+    type: 'residential',
+    type_label: 'Homes',
+    client: 'Superior Homes',
+    scope: 'Supply only',
+    brief: 'A Superior Homes residential development on the Lukenya plains. Exteriors finished in a warm, dust-tolerant Weatherguard palette chosen to sit comfortably against the open savanna light.',
+    products_used: ['weatherguard', 'vinyl-matt'],
+    image: 'images/projects/new-project-1.jpg',
+    accent: '#c4870a',
+  },
+  {
+    slug: 'superior-greenpark',
+    inspiration: 'images/inspiration/inspiration-apartment-urban-tower.jpg',
+    name: 'Superior Homes Head Office · Green Park',
+    location: 'Athi River',
+    county: 'Machakos',
+    year: '2024',
+    type: 'commercial',
+    type_label: 'Head Office',
+    client: 'Superior Homes',
+    scope: 'Supply only',
+    brief: 'The Superior Homes head office at the Green Park development. A crisp corporate finish — Weatherguard on the exterior elevations with Silk Vinyl through the interior office volumes.',
+    products_used: ['weatherguard', 'silk-vinyl', 'supermatt'],
+    image: 'images/projects/new-project-2.jpg',
+    accent: '#166534',
+  },
+  {
     slug: 'emana-apartments',
+    inspiration: 'images/inspiration/inspiration-apartments-sage.jpg',
     name: 'Emana Apartments',
     location: 'Nairobi',
     county: 'Nairobi',
@@ -54,6 +89,7 @@ window.CLOUD_PROJECTS = [
   },
   {
     slug: 'westpointe-madaraka',
+    inspiration: 'images/inspiration/inspiration-apartments-sage.jpg',
     name: 'Westpointe · Madaraka',
     location: 'Madaraka, Nairobi',
     county: 'Nairobi',
@@ -70,6 +106,7 @@ window.CLOUD_PROJECTS = [
   },
   {
     slug: 'westpointe-corridors',
+    inspiration: 'images/inspiration/inspiration-rust-hallway.jpg',
     name: 'Westpointe Flats',
     location: 'Madaraka, Nairobi',
     county: 'Nairobi',
@@ -85,6 +122,7 @@ window.CLOUD_PROJECTS = [
   },
   {
     slug: 'complex-plaza',
+    inspiration: 'images/inspiration/inspiration-apartment-urban-tower.jpg',
     name: 'Complex Plaza 2',
     location: 'Nairobi',
     county: 'Nairobi',
@@ -100,6 +138,7 @@ window.CLOUD_PROJECTS = [
   },
   {
     slug: 'vanice-estate',
+    inspiration: 'images/inspiration/inspiration-savanna-living.jpg',
     name: 'Vanice Estate · Acacia',
     location: 'Kitengela',
     county: 'Kajiado',
@@ -115,6 +154,7 @@ window.CLOUD_PROJECTS = [
   },
   {
     slug: 'amana-apartments',
+    inspiration: 'images/inspiration/inspiration-apartments-sage.jpg',
     name: 'Amana Apartments',
     location: 'Kitengela',
     county: 'Kajiado',
@@ -131,6 +171,7 @@ window.CLOUD_PROJECTS = [
   },
   {
     slug: 'mlolongo-commercial',
+    inspiration: 'images/inspiration/inspiration-villa-cream-charcoal.jpg',
     name: 'Mlolongo Flat',
     location: 'Mlolongo',
     county: 'Machakos',
@@ -146,6 +187,7 @@ window.CLOUD_PROJECTS = [
   },
   {
     slug: 'residential-syokimau',
+    inspiration: 'images/inspiration/inspiration-villa-cream-charcoal.jpg',
     name: 'Residential · Syokimau',
     location: 'Syokimau',
     county: 'Machakos',
@@ -161,6 +203,7 @@ window.CLOUD_PROJECTS = [
   },
   {
     slug: 'moi-forces',
+    inspiration: 'images/inspiration/inspiration-warm-white-kitchen.jpg',
     name: 'Moi Forces Academy',
     location: 'Nairobi',
     county: 'Nairobi',
@@ -179,3 +222,15 @@ window.CLOUD_PROJECTS = [
 window.getProject = function (slug) {
   return window.CLOUD_PROJECTS.find(function (p) { return p.slug === slug; });
 };
+
+// ============================================================
+// SHOWCASE — purely visual imagery (no name, no click target).
+// Powers the auto-panning hero ribbon and the "Wall of work"
+// gallery. Use for extra project shots and AI-generated visuals
+// where attribution doesn't apply.
+// ============================================================
+window.CLOUD_SHOWCASE = [
+  { image: 'images/projects/new-project-3.jpg', accent: '#c4870a' },
+  { image: 'images/projects/new-project-4.jpg', accent: '#1f4088' },
+  { image: 'images/projects/new-project-5.jpg', accent: '#166534' },
+];

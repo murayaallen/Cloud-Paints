@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{document.documentElement.setAttribute("data-theme",localStorage.getItem("cloud-theme")||"light");}catch(e){}</script>
 <title>Products — Cloud Paints</title>
 <meta name="description" content="The full Cloud Paints catalogue — 18 certified decorative paints, coatings and solvents manufactured in Nairobi, Kenya.">
 <link rel="canonical" href="https://cloudpaints.co.ke/products.html">
@@ -19,7 +20,7 @@
 <meta name="theme-color" content="#d92843">
 <link rel="icon" type="image/png" href="images/logo-icon.png">
 <link rel="apple-touch-icon" href="images/logo-icon.png">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" onerror="this.remove()">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700;800&family=Montserrat:ital,wght@0,700;0,800;0,900;1,700;1,800;1,900&display=swap" rel="stylesheet" onerror="this.remove()">
 <link rel="stylesheet" href="css/main.css">
 <link rel="stylesheet" href="css/motion.css">
 <link rel="stylesheet" href="css/products.css">
@@ -29,7 +30,7 @@
 <!-- ============================================================
      HERO
      ============================================================ -->
-<section class="pp-hero">
+<section class="pp-hero pp-strip-hero">
   <div class="pp-deco pp-deco-hero" aria-hidden="true">
     <svg class="pd pd-h-tl" viewBox="0 0 340 320" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M70 155 C25 120 0 65 35 30 C62 2 112 18 132 56 C146 80 140 110 158 124 C178 142 210 128 228 148 C252 174 238 215 210 230 C180 247 144 237 120 218 C90 195 114 190 92 178 C80 170 82 164 70 155Z" fill="#d92843" opacity="0.2"/>
@@ -58,19 +59,54 @@
       <path d="M190 184 C206 168 232 175 236 194 C240 212 226 230 208 228 C190 226 176 206 190 184Z" fill="#84cc16" opacity="0.14"/>
     </svg>
   </div>
-  <div class="container pp-hero-inner reveal-parent">
-    <div>
-      <span class="eyebrow" data-anim="up">Full catalogue</span>
-      <h1 data-anim="up" style="--i:1">Every surface. <em>Every finish.</em></h1>
-      <p class="lede" data-anim="up" style="--i:2">
-        The complete Cloud Paints range — 18 certified products covering interiors, exteriors, wood, metal, floors, roofs and specialty coatings. Add what you need to your quote basket and we'll come back with pricing within one working day.
-      </p>
+  <div class="container pp-strip-inner reveal-parent">
+    <div class="pp-strip-head">
+      <span class="eyebrow" data-anim="up">Products · made for every surface</span>
+      <h1 class="pp-strip-h1" data-anim="up" style="--i:1">
+        <span class="row">Every surface.</span>
+        <span class="row"><em>every wall.</em></span>
+      </h1>
     </div>
-    <div class="pp-hero-stats" data-anim="up" style="--i:3">
-      <div class="st"><div class="n">18</div><div class="l">Products</div></div>
-      <div class="st"><div class="n">Lab</div><div class="l">Tested</div></div>
-      <div class="st"><div class="n">48h</div><div class="l">Ship ready</div></div>
+
+    <div class="pp-strip" role="list" aria-label="Browse products by surface">
+      <a class="pp-tile pp-tile--cement" href="products.html?surface=cement" data-surface="cement" data-anim="up" style="--i:2" role="listitem">
+        <span class="pp-tile-num">01</span>
+        <span class="pp-tile-drip" aria-hidden="true"></span>
+        <span class="pp-tile-name">Cement</span>
+        <p class="pp-tile-copy">Built for every project — big or small, every wall, <em>every surface.</em></p>
+        <span class="pp-tile-arrow" aria-hidden="true">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </span>
+      </a>
+      <a class="pp-tile pp-tile--metal" href="products.html?surface=metal" data-surface="metal" data-anim="up" style="--i:3" role="listitem">
+        <span class="pp-tile-num">02</span>
+        <span class="pp-tile-drip" aria-hidden="true"></span>
+        <span class="pp-tile-name">Metal</span>
+        <p class="pp-tile-copy">An ideal concoction of <em>innovation and beauty</em> — the right paint to complete your look.</p>
+        <span class="pp-tile-arrow" aria-hidden="true">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </span>
+      </a>
+      <a class="pp-tile pp-tile--wood" href="products.html?surface=wood" data-surface="wood" data-anim="up" style="--i:4" role="listitem">
+        <span class="pp-tile-num">03</span>
+        <span class="pp-tile-drip" aria-hidden="true"></span>
+        <span class="pp-tile-name">Wood</span>
+        <p class="pp-tile-copy">Emulsions, enamels, and undercoats — <em>from cement to metal to wood.</em></p>
+        <span class="pp-tile-arrow" aria-hidden="true">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </span>
+      </a>
+      <a class="pp-tile pp-tile--exterior" href="products.html?surface=exterior" data-surface="exterior" data-anim="up" style="--i:5" role="listitem">
+        <span class="pp-tile-num">04</span>
+        <span class="pp-tile-drip" aria-hidden="true"></span>
+        <span class="pp-tile-name">Exterior</span>
+        <p class="pp-tile-copy">Protect and preserve the freshness of your home, <em>leaving an impression that lasts a lifetime.</em></p>
+        <span class="pp-tile-arrow" aria-hidden="true">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </span>
+      </a>
     </div>
+
   </div>
 </section>
 
@@ -80,7 +116,6 @@
 <div class="pp-filter-wrap">
   <div class="container">
     <div class="pp-filter-bar" role="toolbar" aria-label="Filter products by category">
-      <div class="pp-count" id="ppCount">18 products</div>
       <div class="pp-pills" id="ppPills"><!-- populated by products-page.js --></div>
     </div>
   </div>

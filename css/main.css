@@ -246,38 +246,82 @@ p { color: var(--text-2); }
 
 .cp-nav-inner {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto auto 1fr auto;
   align-items: center;
-  gap: 28px;
+  gap: 18px;
   min-height: 64px;
+}
+/* Slim vertical divider separating the wordmark from the nav links */
+.cp-nav-inner::before {
+  content: none;
+}
+.cp-nav-divider {
+  width: 1px;
+  height: 28px;
+  background: linear-gradient(180deg, transparent, var(--border), transparent);
+  margin: 0 6px;
+  display: none;
+}
+@media (min-width: 1024px) {
+  .cp-nav-divider { display: block; }
 }
 @media (min-width: 1024px) {
   .cp-nav-inner { min-height: 72px; }
 }
 
-/* Logo */
+/* Logo — SVG cloud mark + text wordmark in brand colours */
 .cp-logo {
-  display: flex; align-items: center; gap: 12px;
-  font-family: var(--serif); font-weight: 700;
-  color: var(--text);
+  --cp-logo-blue: #18267a;
+  --cp-logo-red: #e11f29;
+  display: flex; flex-direction: row; align-items: center;
+  gap: 11px; line-height: 1;
+  text-decoration: none;
   transition: transform var(--t-mid);
 }
-.site-header.scrolled .cp-logo { transform: scale(0.94); }
-.cp-logo img { height: 48px; width: 48px; object-fit: contain; }
-.cp-logo-text { display: flex; flex-direction: column; line-height: 1; gap: 4px; }
-.cp-logo-text .name { font-size: 18px; font-weight: 800; letter-spacing: -0.02em; }
-.cp-logo-text .tag { font-size: 9px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--red-2); }
-[data-theme="dark"] .cp-logo-text .tag { color: var(--gold-2); }
-@media (min-width: 480px) {
-  .cp-logo img { height: 52px; width: 52px; }
-  .cp-logo-text .name { font-size: 21px; }
-  .cp-logo-text .tag { font-size: 10px; letter-spacing: 0.25em; }
+.site-header.scrolled .cp-logo { transform: scale(0.95); }
+.cp-logo-mark {
+  height: 50px; width: auto;
+  flex-shrink: 0;
+  display: block;
+  filter: drop-shadow(0 3px 7px rgba(225,31,41,0.30));
+}
+.cp-logo-text { display: flex; flex-direction: column; gap: 4px; }
+.cp-logo-name {
+  display: flex; align-items: baseline; gap: 0.16em;
+  font-family: 'Montserrat', 'Inter', system-ui, sans-serif;
+  font-weight: 900;
+  font-size: 30px;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+.cp-logo-name .c-blue { color: var(--cp-logo-blue); }
+.cp-logo-name .c-red  { color: var(--cp-logo-red); font-style: italic; }
+.cp-logo-tag {
+  display: flex; align-items: center; gap: 0.32em;
+  font-family: 'Montserrat', 'Inter', system-ui, sans-serif;
+  font-size: 10.5px; font-weight: 800; font-style: italic;
+  letter-spacing: 0.06em;
+}
+.cp-logo-tag .c-blue { color: var(--cp-logo-blue); }
+.cp-logo-tag .c-red  { color: var(--cp-logo-red); }
+.cp-logo-tag .dot { color: var(--cp-logo-red); font-weight: 800; }
+[data-theme="dark"] .cp-logo { --cp-logo-blue: #8ba6f7; }
+@media (min-width: 768px) {
+  .cp-logo-mark { height: 56px; width: auto; }
+  .cp-logo-name { font-size: 34px; }
+  .cp-logo-tag { font-size: 11.5px; letter-spacing: 0.08em; }
+}
+@media (max-width: 420px) {
+  .cp-logo { gap: 8px; }
+  .cp-logo-mark { height: 42px; width: auto; }
+  .cp-logo-name { font-size: 25px; }
+  .cp-logo-tag { font-size: 8.5px; letter-spacing: 0.05em; gap: 0.26em; }
 }
 
 /* Primary nav (desktop) */
 .cp-primary {
   display: none;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   gap: 2px;
 }
@@ -1672,13 +1716,34 @@ footer::after {
    curtain wipes down behind it. Emits `loader:done` when done.
    ============================================================ */
 
+/* Pre-cover — paints the loader backdrop from the very first frame so the
+   page content never flashes before loader.js injects #cpLoader.
+   Removed the instant the real loader mounts (.cp-loader-mounted). */
+body.cp-loading:not(.cp-loader-mounted)::before {
+  content: "";
+  position: fixed; inset: 0;
+  z-index: 9998;
+  background: #0e0a14;
+  animation: cpPreFailsafe 0s linear 9s forwards;
+}
+@keyframes cpPreFailsafe { to { opacity: 0; visibility: hidden; } }
+
 #cpLoader {
   position: fixed; inset: 0; z-index: 9999;
   display: flex; align-items: center; justify-content: center;
-  background: #0a0a0d;
+  background:
+    linear-gradient(160deg, rgba(8,8,16,0.78) 0%, rgba(8,8,16,0.62) 50%, rgba(8,8,16,0.88) 100%),
+    url(../images/showroom/showroom-hero-new.jpg) center/cover no-repeat;
   overflow: hidden;
   transition: transform 0.7s cubic-bezier(.76,0,.24,1);
 }
+/* Hybrid — softened paint cluster over the photo backdrop */
+#cpLoader .cp-blob       { opacity: 0.42; filter: blur(58px); }
+#cpLoader .cp-blob.b5    { opacity: 0.34; }
+#cpLoader .cp-splat      { opacity: 0.07; }
+[data-theme="light"] #cpLoader .cp-blob    { opacity: 0.18; }
+[data-theme="light"] #cpLoader .cp-blob.b5 { opacity: 0.14; }
+[data-theme="light"] #cpLoader .cp-splat   { opacity: 0.05; }
 #cpLoader.cp-lift { transform: translateY(-100vh); }
 #cpLoader.cp-hide { opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 0.3s ease, visibility 0.3s ease; }
 
@@ -1686,9 +1751,10 @@ footer::after {
 #cpLoader::before {
   content: "";
   position: absolute; inset: 0;
+  /* Option 1 — adds a soft warm glow over the darkened showroom photo */
   background:
-    radial-gradient(ellipse 58% 52% at 38% 42%, rgba(217,40,67,0.14) 0%, transparent 60%),
-    radial-gradient(ellipse 42% 36% at 72% 70%, rgba(232,163,23,0.10) 0%, transparent 60%);
+    radial-gradient(ellipse 60% 50% at 50% 46%, rgba(217,40,67,0.22) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 40% at 80% 80%, rgba(232,163,23,0.16) 0%, transparent 65%);
   pointer-events: none;
 }
 /* Grain overlay */
@@ -1701,20 +1767,95 @@ footer::after {
   pointer-events: none;
 }
 
+/* ---------- Animated paint field (artsy backdrop) ---------- */
+.cp-paint {
+  position: absolute; inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+/* slowly morphing, drifting paint blobs in the brand palette */
+.cp-blob {
+  position: absolute;
+  left: 50%; top: 50%;
+  border-radius: 46% 54% 61% 39% / 48% 42% 58% 52%;
+  filter: blur(46px);
+  opacity: 0.7;
+  mix-blend-mode: screen;
+  will-change: transform, border-radius;
+}
+.cp-blob.b1 { width: 38vmin; height: 38vmin; background:#e11f29; animation: cpBlob1 15s ease-in-out infinite; }
+.cp-blob.b2 { width: 32vmin; height: 32vmin; background:#2d5ad2; animation: cpBlob2 18s ease-in-out infinite; }
+.cp-blob.b3 { width: 36vmin; height: 36vmin; background:#e8a317; animation: cpBlob3 17s ease-in-out infinite; }
+.cp-blob.b4 { width: 30vmin; height: 30vmin; background:#2f9e44; animation: cpBlob4 21s ease-in-out infinite; }
+.cp-blob.b5 { width: 26vmin; height: 26vmin; background:#e11f29; opacity:0.55; animation: cpBlob5 14s ease-in-out infinite; }
+/* all blobs orbit the centre (behind the logo) within a small range */
+@keyframes cpBlob1 {
+  0%,100% { transform: translate(-50%,-50%) translate(-5vmin,-4vmin) rotate(0deg) scale(1); border-radius:46% 54% 61% 39% / 48% 42% 58% 52%; }
+  34% { transform: translate(-50%,-50%) translate(3vmin,4vmin) rotate(70deg) scale(1.16); border-radius:62% 38% 43% 57% / 57% 61% 39% 43%; }
+  67% { transform: translate(-50%,-50%) translate(-2vmin,-7vmin) rotate(160deg) scale(0.92); border-radius:37% 63% 57% 43% / 43% 49% 51% 57%; }
+}
+@keyframes cpBlob2 {
+  0%,100% { transform: translate(-50%,-50%) translate(6vmin,-4vmin) rotate(0deg) scale(1); border-radius:55% 45% 38% 62% / 50% 56% 44% 50%; }
+  40% { transform: translate(-50%,-50%) translate(-2vmin,3vmin) rotate(-60deg) scale(1.18); border-radius:40% 60% 62% 38% / 60% 40% 60% 40%; }
+  72% { transform: translate(-50%,-50%) translate(8vmin,-8vmin) rotate(-140deg) scale(0.92); border-radius:60% 40% 45% 55% / 42% 58% 42% 58%; }
+}
+@keyframes cpBlob3 {
+  0%,100% { transform: translate(-50%,-50%) translate(5vmin,5vmin) rotate(0deg) scale(1); border-radius:50% 50% 55% 45% / 55% 45% 55% 45%; }
+  45% { transform: translate(-50%,-50%) translate(-4vmin,-3vmin) rotate(80deg) scale(1.2); border-radius:38% 62% 40% 60% / 62% 38% 62% 38%; }
+}
+@keyframes cpBlob4 {
+  0%,100% { transform: translate(-50%,-50%) translate(-6vmin,5vmin) rotate(0deg) scale(1); border-radius:60% 40% 50% 50% / 45% 55% 45% 55%; }
+  38% { transform: translate(-50%,-50%) translate(3vmin,-4vmin) rotate(-70deg) scale(1.18); border-radius:44% 56% 60% 40% / 56% 44% 56% 44%; }
+  74% { transform: translate(-50%,-50%) translate(7vmin,8vmin) rotate(-150deg) scale(0.9); border-radius:58% 42% 38% 62% / 40% 62% 38% 60%; }
+}
+@keyframes cpBlob5 {
+  0%,100% { transform: translate(-50%,-50%) rotate(0deg) scale(1); border-radius:48% 52% 50% 50% / 52% 48% 52% 48%; }
+  50% { transform: translate(-50%,-50%) translate(2vmin,-3vmin) rotate(120deg) scale(1.3); border-radius:60% 40% 42% 58% / 44% 60% 40% 56%; }
+}
+/* faint paint-splatter slowly turning behind the logo */
+.cp-splat {
+  position: absolute;
+  left: 50%; top: 48%;
+  width: 52vmin; height: 52vmin;
+  transform: translate(-50%,-50%);
+  fill: #e11f29;
+  opacity: 0.12;
+  will-change: transform, opacity;
+  animation: cpSplatSpin 46s linear infinite, cpSplatPulse 9s ease-in-out infinite;
+}
+@keyframes cpSplatSpin { to { transform: translate(-50%,-50%) rotate(360deg); } }
+@keyframes cpSplatPulse {
+  0%,100% { opacity: 0.09; }
+  50%     { opacity: 0.17; }
+}
+
 .cp-stage {
   position: relative; z-index: 2;
   display: flex; flex-direction: column; align-items: center;
-  gap: 26px;
+  gap: 10px;
+}
+/* soft halo so the logo + wordmark stay legible over the moving paint */
+.cp-stage::before {
+  content: "";
+  position: absolute;
+  left: 50%; top: 48%;
+  transform: translate(-50%, -50%);
+  width: 150%; height: 175%;
+  background: radial-gradient(ellipse, rgba(8,8,14,0.74) 0%, rgba(8,8,14,0.34) 42%, transparent 72%);
+  z-index: -1;
+  pointer-events: none;
+}
+[data-theme="light"] .cp-stage::before {
+  background: radial-gradient(ellipse, rgba(253,250,243,0.92) 0%, rgba(253,250,243,0.55) 42%, transparent 74%);
 }
 
 /* ---------- Logo mark ---------- */
 .cp-mark {
-  width: 110px; height: 110px;
+  height: 124px; width: auto;
   object-fit: contain;
   opacity: 0; transform: scale(0.9);
-  filter: drop-shadow(0 12px 40px rgba(217,40,67,0.45));
+  filter: drop-shadow(0 14px 44px rgba(225,31,41,0.5));
   animation: cpMarkIn 0.65s cubic-bezier(.22,1,.36,1) 0.1s forwards;
-  border-radius: 14px;
 }
 @keyframes cpMarkIn {
   to { opacity: 1; transform: scale(1); }
@@ -1722,15 +1863,18 @@ footer::after {
 
 /* ---------- Wordmark ---------- */
 .cp-wordmark {
-  font-family: var(--serif);
-  font-weight: 500;
-  font-size: 22px;
-  letter-spacing: 0.4em;
+  font-family: 'Montserrat', 'Inter', system-ui, sans-serif;
+  font-weight: 900;
+  font-size: 30px;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
-  color: #fff;
-  padding-left: 0.4em;
+  color: #8ba6f7; /* brand navy, lightened for the dark splash */
   display: flex;
   gap: 0;
+}
+.cp-wordmark .cp-wm-red {
+  color: #e11f29;
+  font-style: italic;
 }
 .cp-wordmark span {
   display: inline-block;
@@ -1749,23 +1893,55 @@ footer::after {
   background: rgba(255,255,255,0.08);
   border-radius: 2px;
   overflow: hidden;
-  margin-top: 6px;
+  margin-top: 24px;
 }
 .cp-progress i {
   display: block;
   width: 0; height: 100%;
   background: linear-gradient(90deg, var(--gold, #e8a317) 0%, var(--gold-2, #ffc93d) 100%);
   box-shadow: 0 0 12px rgba(232,163,23,0.5);
-  animation: cpProgressDraw 1.6s 0.85s cubic-bezier(.4,0,.2,1) forwards;
+  animation: cpProgressDraw 3.6s 0.85s cubic-bezier(.4,0,.2,1) forwards;
 }
 @keyframes cpProgressDraw { to { width: 100%; } }
 
 /* ---------- Mobile ---------- */
 @media (max-width: 480px) {
-  .cp-mark { width: 80px; height: 80px; }
-  .cp-wordmark { font-size: 17px; letter-spacing: 0.3em; padding-left: 0.3em; }
+  .cp-mark { height: 92px; width: auto; }
+  .cp-wordmark { font-size: 21px; letter-spacing: 0.02em; }
   .cp-progress { width: 130px; }
   .cp-stage { gap: 18px; }
+}
+
+/* ---------- Light-mode loader (bright variant) ----------
+   Dark charcoal version above stays for dark mode; light theme
+   gets a warm near-white splash. */
+[data-theme="light"] body.cp-loading:not(.cp-loader-mounted)::before {
+  background: #faf4ec;
+}
+[data-theme="light"] #cpLoader {
+  background:
+    linear-gradient(165deg, rgba(250,244,236,0.72) 0%, rgba(250,244,236,0.55) 50%, rgba(250,244,236,0.85) 100%),
+    url(../images/showroom/showroom-hero-new.jpg) center/cover no-repeat;
+}
+[data-theme="light"] #cpLoader::before {
+  background:
+    radial-gradient(ellipse 58% 52% at 6% 8%,   rgba(217,40,67,0.13) 0%, transparent 62%),
+    radial-gradient(ellipse 54% 50% at 95% 12%, rgba(45,90,210,0.11) 0%, transparent 62%),
+    radial-gradient(ellipse 56% 52% at 92% 94%, rgba(232,163,23,0.16) 0%, transparent 62%),
+    radial-gradient(ellipse 52% 48% at 8% 95%,  rgba(47,158,68,0.10) 0%, transparent 64%);
+}
+[data-theme="light"] #cpLoader::after { opacity: 0.06; mix-blend-mode: multiply; }
+[data-theme="light"] .cp-wordmark { color: #18267a; }            /* navy reads on white */
+[data-theme="light"] .cp-mark { filter: drop-shadow(0 14px 40px rgba(225,31,41,0.30)); }
+[data-theme="light"] .cp-progress { background: rgba(10,14,39,0.10); }
+/* paint blobs: multiply-tint on the bright background instead of screen-glow */
+[data-theme="light"] .cp-blob { mix-blend-mode: multiply; opacity: 0.22; filter: blur(60px); }
+[data-theme="light"] .cp-blob.b5 { opacity: 0.18; }
+[data-theme="light"] .cp-splat { opacity: 0.07; }
+
+/* Paint field — reduced motion: hold still, no drifting */
+@media (prefers-reduced-motion: reduce) {
+  .cp-blob, .cp-splat { animation: none !important; }
 }
 
 /* ---------- Reduced motion ---------- */
@@ -2071,6 +2247,43 @@ html[data-theme="dark"] body::before {
   filter: drop-shadow(0 22px 44px rgba(0,0,0,0.85));
 }
 
+/* No-mockup products — clean branded colour panel (no fake bucket) */
+.product-thumb:has(.bucket-noimg) { background: #0d0b12; padding: 0; }
+.product-thumb:has(.bucket-noimg)::before { display: none; }
+.bucket-noimg {
+  width: 100%; height: 100%;
+  aspect-ratio: 1/1;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 10px;
+  text-align: center;
+  padding: 26px;
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 72% 60% at 50% 26%, color-mix(in srgb, var(--bkt-accent), #ffffff 16%), transparent 72%),
+    linear-gradient(165deg, var(--bkt-accent) 0%, var(--bkt-primary) 100%);
+}
+.bucket-noimg::after {
+  content: ""; position: absolute; inset: 0;
+  background-image: var(--grain);
+  opacity: 0.08; mix-blend-mode: overlay;
+  pointer-events: none;
+}
+.bucket-noimg-label {
+  position: relative; z-index: 1;
+  font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+  font-weight: 700; color: rgba(255,255,255,0.72);
+}
+.bucket-noimg-name {
+  position: relative; z-index: 1;
+  font-family: var(--serif); font-style: italic;
+  font-size: clamp(1.05rem, 1.5vw, 1.35rem); line-height: 1.2;
+  color: #fff;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.35);
+}
+.product-card:hover .bucket-noimg-name { transform: none; }
+
 /* ============================================================
    20. FONT & HERO TYPOGRAPHY REFINEMENTS
    ============================================================ */
@@ -2118,3 +2331,278 @@ html[data-theme="dark"] body::before {
   opacity: 0.6;
 }
 @keyframes headerLine { to { background-position: -200% 0; } }
+
+/* ============================================================
+   AMBIENT FLOATING PAINT BLOBS
+   ============================================================
+   Drop a <div class="cp-amb"></div> into any section that feels
+   too white/empty. Adds 5 softly-drifting brand-colour blobs at
+   low opacity. No content reflow — pure decoration.
+   The blobs slowly drift on long-period transform animations
+   (cheap on GPU, no blur recomputation each frame).
+   ============================================================ */
+
+.cp-amb {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+/* If you parent it to a non-positioned element, force a stacking context: */
+.cp-amb-parent { position: relative; isolation: isolate; }
+.cp-amb-parent > .cp-amb { z-index: 0; }
+.cp-amb-parent > :not(.cp-amb) { position: relative; z-index: 1; }
+
+.cp-amb::before,
+.cp-amb::after,
+.cp-amb i {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.16;
+  will-change: transform;
+}
+/* Blob 1 — red, upper-left */
+.cp-amb::before {
+  width: 360px; height: 360px;
+  top: -120px; left: -120px;
+  background: #d92843;
+  animation: cpAmbDriftA 24s ease-in-out infinite alternate;
+}
+/* Blob 2 — gold, bottom-right */
+.cp-amb::after {
+  width: 420px; height: 420px;
+  bottom: -150px; right: -140px;
+  background: #b8934a;
+  animation: cpAmbDriftB 28s ease-in-out infinite alternate;
+}
+/* Three smaller inline-blob elements for spread + variety */
+.cp-amb i {
+  display: block;
+}
+.cp-amb i.b1 {
+  width: 260px; height: 260px;
+  top: 30%; right: 18%;
+  background: #1e3a8a;
+  opacity: 0.12;
+  animation: cpAmbDriftC 22s ease-in-out infinite alternate;
+}
+.cp-amb i.b2 {
+  width: 220px; height: 220px;
+  bottom: 24%; left: 12%;
+  background: #166534;
+  opacity: 0.10;
+  animation: cpAmbDriftD 26s ease-in-out infinite alternate;
+}
+.cp-amb i.b3 {
+  width: 180px; height: 180px;
+  top: 12%; right: 30%;
+  background: #6b1f6e;
+  opacity: 0.09;
+  animation: cpAmbDriftE 30s ease-in-out infinite alternate;
+}
+
+@keyframes cpAmbDriftA {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(60px, 40px) scale(1.12); }
+}
+@keyframes cpAmbDriftB {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(-80px, -50px) scale(1.08); }
+}
+@keyframes cpAmbDriftC {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(-40px, 30px) scale(1.10); }
+}
+@keyframes cpAmbDriftD {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(50px, -30px) scale(1.06); }
+}
+@keyframes cpAmbDriftE {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(-30px, 20px) scale(1.14); }
+}
+
+/* Soft variant for dense sections where colour would be too loud */
+.cp-amb.cp-amb--soft::before { opacity: 0.10; }
+.cp-amb.cp-amb--soft::after  { opacity: 0.10; }
+.cp-amb.cp-amb--soft i       { opacity: 0.06; }
+
+/* Dark-bg variant — boost opacity slightly so blobs read */
+[data-theme="dark"] .cp-amb::before,
+[data-theme="dark"] .cp-amb::after { opacity: 0.20; }
+[data-theme="dark"] .cp-amb i      { opacity: 0.16; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cp-amb::before,
+  .cp-amb::after,
+  .cp-amb i { animation: none !important; }
+}
+@media (max-width: 720px) {
+  /* Mobile: keep 2 of the 5 to avoid mobile-GPU strain */
+  .cp-amb i.b2,
+  .cp-amb i.b3 { display: none; }
+  .cp-amb::before { width: 280px; height: 280px; }
+  .cp-amb::after  { width: 320px; height: 320px; }
+}
+
+/* ============================================================
+   MOBILE RESPONSIVENESS POLISH PASS
+   Catches small clashes / overflows / cramped layouts that
+   could otherwise show up only on certain device widths.
+   ============================================================ */
+
+/* Hero on mobile — keep brand stage centred + bucket visible */
+@media (max-width: 1023px) {
+  body[data-page="home"] .lp-pour {
+    min-height: 360px;
+    padding-top: 24px;
+  }
+  body[data-page="home"] .lp-hero-brand {
+    position: relative;
+    left: auto; top: auto;
+    transform: none;
+    margin: 0 auto;
+    width: clamp(240px, 78vw, 380px);
+  }
+  body[data-page="home"] .lp-hero-grid {
+    gap: clamp(20px, 4vw, 40px);
+  }
+  body[data-page="home"] .lp-hero-h1 {
+    font-size: clamp(2.4rem, 9vw, 4rem);
+  }
+  /* Side-gradient hero scrim — switch to vertical on mobile so
+     headline + bucket both sit on darkened ground. */
+  .lp-hero-bg::after {
+    background:
+      linear-gradient(180deg,
+        rgba(11,10,16,0.30) 0%,
+        rgba(11,10,16,0.55) 45%,
+        rgba(11,10,16,0.86) 100%) !important;
+  }
+  [data-theme="light"] .lp-hero-bg::after {
+    background:
+      linear-gradient(180deg,
+        rgba(250,244,236,0.35) 0%,
+        rgba(250,244,236,0.65) 45%,
+        rgba(250,244,236,0.92) 100%) !important;
+  }
+}
+
+/* Nav: brand wordmark + first nav link tighter on mid widths */
+@media (min-width: 1024px) and (max-width: 1180px) {
+  .cp-nav-inner { gap: 14px; }
+  .cp-link { padding: 10px 10px; font-size: 13.5px; }
+}
+
+/* Featured product grid: ensure no overflow on small tablets */
+@media (max-width: 900px) {
+  .lp-featured-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+}
+@media (max-width: 520px) {
+  .lp-featured-grid { grid-template-columns: 1fr; }
+}
+
+/* About hero on mobile — image stacks under copy cleanly */
+@media (max-width: 900px) {
+  .ab-hero-inner { grid-template-columns: 1fr; gap: 28px; }
+  .ab-hero-media { max-width: 520px; margin: 0 auto; aspect-ratio: 4/3; }
+}
+@media (max-width: 560px) {
+  .ab-hero-media { aspect-ratio: 5/4; }
+  .ab-hero-badge { bottom: 14px; left: 14px; right: 14px; }
+  .ab-hero-badge .cap { font-size: 0.95rem; }
+}
+
+/* About story on mobile — two cols become one, lead drop-cap stays */
+@media (max-width: 800px) {
+  .ab-story { grid-template-columns: 1fr; gap: 30px; }
+  .ab-story-col .pullquote { font-size: 1.2rem; }
+}
+
+/* About timeline becomes vertical on mobile */
+@media (max-width: 900px) {
+  .ab-timeline { grid-template-columns: 1fr; gap: 20px; }
+  .ab-timeline::before { display: none; }
+  .ab-tl-item { padding: 18px; background: var(--surface); border: 1px solid var(--border-2); border-radius: 14px; }
+  .ab-tl-item .dot { margin-bottom: 12px; }
+}
+
+/* About process: 3 cards become 1-col on mobile */
+@media (max-width: 720px) {
+  .ab-process { grid-template-columns: 1fr; }
+}
+
+/* About markets: clean wrap at intermediate width */
+@media (min-width: 720px) and (max-width: 900px) {
+  .ab-markets { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* About beyond-paint mosaic — keep tidy on mobile */
+@media (max-width: 600px) {
+  .ab-beyond-mosaic { aspect-ratio: 4 / 3; }
+  .ab-beyond-mosaic img.m1,
+  .ab-beyond-mosaic img.m2,
+  .ab-beyond-mosaic img.m3,
+  .ab-beyond-mosaic img.m4 { transform: none; }
+}
+
+/* Why Cloud Paints — better wrap on narrow tablets */
+@media (min-width: 720px) and (max-width: 1023px) {
+  .lp-why-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* Projects modal — no clashing scroll on mobile */
+@media (max-width: 700px) {
+  .pj-modal-panel { max-height: 92vh; overflow-y: auto; }
+  .pj-modal-body { padding: 22px; }
+}
+
+/* Inspiration filter bar wraps cleanly */
+@media (max-width: 900px) {
+  .in-filter-bar { flex-wrap: wrap; gap: 14px; }
+  .in-filter-group { width: 100%; }
+}
+
+/* Visualiser preview frame doesn't crush on narrow screens */
+@media (max-width: 640px) {
+  .vs-preview-frame { aspect-ratio: 4 / 3; }
+  .vs-hex-row { flex-wrap: wrap; }
+  .vs-hex-row input { min-width: 0; }
+}
+
+/* Services skill grid: 1 col on narrow phones */
+@media (max-width: 520px) {
+  .sv-painters-grid { grid-template-columns: 1fr; max-width: none; }
+}
+
+/* Surface tile drips — hide on extra-small screens (visual noise) */
+@media (max-width: 480px) {
+  .pp-tile-drip { display: none; }
+}
+
+/* Lightbox close button — keep above other UI */
+@media (max-width: 600px) {
+  .in-lb-close { top: 12px; right: 12px; }
+}
+
+/* Footer columns wrap properly */
+@media (max-width: 720px) {
+  .footer-grid { gap: 28px; }
+}
+
+/* Hero CTAs don't crowd on small screens */
+@media (max-width: 420px) {
+  .lp-hero-ctas { gap: 10px; }
+  .lp-hero-ctas .btn-pour,
+  .lp-hero-ctas .btn-ghost-d {
+    width: 100%; justify-content: center; padding: 14px 20px;
+    font-size: 14px;
+  }
+}
+
+/* Universal: prevent horizontal scroll from rounding-error overflow */
+html, body { overflow-x: hidden; }
+img, svg { max-width: 100%; }

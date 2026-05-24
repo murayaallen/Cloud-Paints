@@ -421,3 +421,307 @@ body[data-theme="dark"] .pp-filter-wrap {
     transition: none !important;
   }
 }
+
+/* ============================================================
+   SURFACE STRIP MANIFESTO — products page hero (replaces the
+   eyebrow + lede + stats arrangement). Manifesto headline,
+   four painted surface tiles, scroll-paced reveal.
+   ============================================================ */
+.pp-strip-hero {
+  padding: clamp(120px, 16vh, 180px) 0 clamp(40px, 6vh, 70px);
+}
+.pp-strip-inner { display: block; }
+.pp-strip-head {
+  text-align: center;
+  max-width: 880px;
+  margin: 0 auto clamp(36px, 5vw, 60px);
+}
+.pp-strip-head .eyebrow {
+  color: var(--blue-2);
+  border-color: rgba(37,71,184,0.25);
+  background: rgba(37,71,184,0.08);
+}
+.pp-strip-h1 {
+  font-family: var(--serif);
+  font-size: clamp(2.8rem, 7vw, 5.4rem);
+  line-height: 0.95;
+  letter-spacing: -0.025em;
+  font-weight: 400;
+  margin: 18px 0 0;
+}
+.pp-strip-h1 .row { display: block; }
+.pp-strip-h1 em {
+  font-style: italic;
+  color: var(--red-2);
+  font-weight: 500;
+}
+
+/* ---- The four surface tiles ---- */
+.pp-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(14px, 1.8vw, 24px);
+  margin-bottom: clamp(48px, 7vw, 80px);
+}
+.pp-tile {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  aspect-ratio: 4 / 5;
+  padding: clamp(22px, 2.4vw, 32px);
+  border-radius: 22px;
+  overflow: hidden;
+  text-decoration: none;
+  color: #fff;
+  box-shadow: 0 24px 60px -22px rgba(10,14,39,0.34);
+  transition:
+    transform 0.6s var(--t-ease-pour),
+    box-shadow 0.6s var(--t-ease-pour);
+}
+.pp-tile:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 38px 84px -22px rgba(10,14,39,0.46);
+}
+.pp-tile-num {
+  position: relative; z-index: 3;
+  display: inline-block;
+  font-family: var(--mono, ui-monospace, "SFMono-Regular", Menlo, monospace);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  color: rgba(255,255,255,0.82);
+  font-weight: 700;
+}
+.pp-tile-name {
+  position: relative; z-index: 3;
+  font-family: 'Montserrat', 'Inter', system-ui, sans-serif;
+  font-weight: 900;
+  font-size: clamp(1.5rem, 2.4vw, 2.2rem);
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  margin-top: 6px;
+  color: #fff;
+  line-height: 1;
+}
+.pp-tile-copy {
+  position: relative; z-index: 3;
+  font-family: var(--serif);
+  font-size: clamp(0.96rem, 1.05vw, 1.06rem);
+  line-height: 1.55;
+  color: rgba(255,255,255,0.94);
+  margin: 0;
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 0.85s cubic-bezier(.4,0,.2,1) 0.35s;
+}
+.pp-tile.is-in .pp-tile-copy { clip-path: inset(0 0 0 0); }
+.pp-tile-copy em {
+  font-style: italic;
+  color: #fff;
+  background-image: linear-gradient(180deg, transparent 70%, rgba(255,255,255,0.22) 70%);
+  background-repeat: no-repeat;
+  padding: 0 2px;
+}
+.pp-tile-arrow {
+  position: absolute;
+  right: 18px; bottom: 18px;
+  z-index: 3;
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.18);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: grid; place-items: center;
+  color: #fff;
+  transition: transform var(--t-fast), background var(--t-fast);
+}
+.pp-tile:hover .pp-tile-arrow {
+  background: rgba(255,255,255,0.32);
+  transform: translateX(4px);
+}
+
+/* ---- Animated paint drip from the top edge of each tile ---- */
+.pp-tile-drip {
+  position: absolute;
+  top: 0;
+  width: 7px;
+  height: 0;
+  background: var(--drip-col, #e11f29);
+  border-bottom-left-radius: 50% 22px;
+  border-bottom-right-radius: 50% 22px;
+  filter: drop-shadow(0 6px 8px rgba(0,0,0,0.28));
+  z-index: 2;
+  animation: ppTileDrip 6s ease-in-out infinite;
+}
+.pp-tile-drip::after {
+  content: ""; position: absolute;
+  left: 50%; bottom: -10px;
+  width: 14px; height: 14px;
+  background: var(--drip-col, #e11f29);
+  border-radius: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 6px 8px rgba(0,0,0,0.28);
+}
+.pp-tile--cement   .pp-tile-drip { left: 62%; --drip-col: #e11f29; }
+.pp-tile--metal    .pp-tile-drip { left: 32%; --drip-col: #e8a317; animation-delay: 1.4s; }
+.pp-tile--wood     .pp-tile-drip { left: 74%; --drip-col: #2547b8; animation-delay: 2.8s; }
+.pp-tile--exterior .pp-tile-drip { left: 44%; --drip-col: #2f9e44; animation-delay: 4.2s; }
+@keyframes ppTileDrip {
+  0%   { height: 0; opacity: 1; }
+  35%  { height: clamp(60px, 14vmin, 110px); opacity: 1; }
+  60%  { height: clamp(60px, 14vmin, 110px); opacity: 1; }
+  85%  { height: clamp(80px, 18vmin, 140px); opacity: 0; }
+  100% { height: 0; opacity: 0; }
+}
+
+/* ---- Surface textures (pure CSS, no images) ---- */
+.pp-tile--cement {
+  background:
+    radial-gradient(ellipse 80% 60% at 32% 22%, rgba(255,255,255,0.18), transparent 62%),
+    linear-gradient(162deg, #b3a89c 0%, #6a5e51 100%);
+}
+.pp-tile--cement::before {
+  content: ""; position: absolute; inset: 0; z-index: 1;
+  background-image:
+    repeating-linear-gradient(90deg, rgba(0,0,0,0.04) 0 1px, transparent 1px 6px),
+    repeating-linear-gradient(0deg,  rgba(0,0,0,0.04) 0 1px, transparent 1px 8px),
+    var(--grain);
+  background-size: auto, auto, 280px;
+  opacity: 0.75;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+.pp-tile--metal {
+  background:
+    radial-gradient(ellipse 80% 60% at 38% 22%, rgba(255,255,255,0.26), transparent 65%),
+    linear-gradient(155deg, #7d8694 0%, #2f3540 100%);
+}
+.pp-tile--metal::before {
+  content: ""; position: absolute; inset: 0; z-index: 1;
+  background:
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.05) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(0deg, rgba(0,0,0,0.07) 0 1px, transparent 1px 4px);
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+.pp-tile--wood {
+  background:
+    radial-gradient(ellipse 80% 60% at 32% 22%, rgba(255,255,255,0.18), transparent 60%),
+    linear-gradient(160deg, #b08868 0%, #663f24 100%);
+}
+.pp-tile--wood::before {
+  content: ""; position: absolute; inset: 0; z-index: 1;
+  background:
+    repeating-linear-gradient(8deg,
+      transparent 0 9px,
+      rgba(0,0,0,0.10) 9px 10px,
+      transparent 10px 22px,
+      rgba(0,0,0,0.06) 22px 23px),
+    var(--grain);
+  background-size: auto, 320px;
+  opacity: 0.85;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+.pp-tile--exterior {
+  background:
+    radial-gradient(ellipse 70% 70% at 25% 28%, rgba(255,255,255,0.34), transparent 60%),
+    radial-gradient(ellipse 60% 50% at 78% 78%, rgba(255,255,255,0.18), transparent 60%),
+    linear-gradient(160deg, #9bb6c8 0%, #3f5d75 100%);
+}
+.pp-tile--exterior::before {
+  content: ""; position: absolute; inset: 0; z-index: 1;
+  background-image:
+    radial-gradient(ellipse 42% 32% at 20% 78%, rgba(255,255,255,0.18), transparent 60%),
+    radial-gradient(ellipse 36% 26% at 80% 22%, rgba(255,255,255,0.14), transparent 60%),
+    var(--grain);
+  background-size: auto, auto, 320px;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* ---- Stats strip below the tiles ---- */
+.pp-strip-stats {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: clamp(28px, 5vw, 64px);
+  padding-top: clamp(28px, 4vw, 40px);
+  border-top: 1px solid var(--border-2);
+  text-align: center;
+}
+.pp-strip-stats .st .n {
+  font-family: var(--serif);
+  font-size: clamp(1.6rem, 2.4vw, 2.1rem);
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1;
+}
+.pp-strip-stats .st .l {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  font-weight: 700;
+  margin-top: 6px;
+}
+
+/* ---- Mobile: horizontal scroll-snap strip ---- */
+@media (max-width: 1023px) {
+  .pp-strip {
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 14px;
+    padding: 4px var(--gutter, 22px) 8px;
+    margin: 0 calc(var(--gutter, 22px) * -1) clamp(40px, 6vw, 60px);
+  }
+  .pp-strip::-webkit-scrollbar { display: none; }
+  .pp-tile {
+    flex: 0 0 auto;
+    width: 78vw;
+    max-width: 360px;
+    aspect-ratio: 4 / 5;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+}
+@media (max-width: 640px) {
+  .pp-strip-hero { padding-top: clamp(90px, 13vh, 130px); }
+  .pp-strip-stats { gap: 24px; flex-wrap: wrap; }
+}
+
+/* ---- Active surface chip in the filter bar ---- */
+.pp-surface-active {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: #fff;
+  background: var(--ink);
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+.pp-surface-active button {
+  appearance: none; background: transparent; border: 0;
+  color: rgba(255,255,255,0.85);
+  cursor: pointer;
+  padding: 0 0 0 4px;
+  font-size: 14px;
+  line-height: 1;
+}
+.pp-surface-active button:hover { color: #fff; }
+
+/* ---- Reduced motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  .pp-tile-copy { clip-path: none !important; transition: none !important; }
+  .pp-tile-drip { animation: none !important; height: 0 !important; opacity: 0 !important; }
+}

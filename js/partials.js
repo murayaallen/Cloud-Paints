@@ -52,13 +52,23 @@
     );
   }
 
+  // Clean branded panel for products that don't have a mockup photo yet.
+  function bucketNoImageHtml(p) {
+    return (
+      '<div class="bucket-noimg" style="--bkt-primary:' + p.primary + ';--bkt-accent:' + p.accent + '">' +
+        '<span class="bucket-noimg-label">' + (p.cat_label || 'Cloud Paints') + '</span>' +
+        '<span class="bucket-noimg-name">' + p.name + '</span>' +
+      '</div>'
+    );
+  }
+
   // Stash the fallback markup on the element on error — swap in-place.
   window.__cpBucketFallback = function (imgEl, slug) {
     var p = window.getProduct ? window.getProduct(slug) : null;
     if (!p) return;
     var wrap = imgEl.closest('.bucket-photo-wrap');
     if (!wrap) return;
-    wrap.outerHTML = bucket3dHtml(p);
+    wrap.outerHTML = bucketNoImageHtml(p);
   };
 
   window.bucketCardHtml = function (p) {
@@ -76,7 +86,8 @@
       );
     }
 
-    return bucket3dHtml(p) + certBadge;
+    // No mockup photo yet — clean branded panel instead of a fake bucket
+    return bucketNoImageHtml(p) + certBadge;
   };
 
   // ----------------------------------------------------------
@@ -132,13 +143,21 @@
     '<a href="#main-content" class="skip-to-content">Skip to content</a>' +
     '<header class="site-header" data-nav>' +
       '<div class="container cp-nav-inner">' +
-        '<a href="index.html" class="cp-logo">' +
-          '<img src="images/logo.png" alt="Cloud Paints" width="44" height="44">' +
+        '<a href="index.html" class="cp-logo" aria-label="Cloud Paints — home">' +
+          '<img class="cp-logo-mark" src="images/logo-mark.png" alt="Cloud Paints" width="1140" height="968">' +
           '<span class="cp-logo-text">' +
-            '<span class="name">Cloud Paints</span>' +
-            '<span class="tag">Buy it · Paint it · Love it</span>' +
+            '<span class="cp-logo-name">' +
+              '<span class="c-blue">Cloud</span><span class="c-red">Paints</span>' +
+            '</span>' +
+            '<span class="cp-logo-tag">' +
+              '<span class="c-blue">Buy it</span><span class="dot">·</span>' +
+              '<span class="c-red">Paint it</span><span class="dot">·</span>' +
+              '<span class="c-blue">Love it</span>' +
+            '</span>' +
           '</span>' +
         '</a>' +
+
+        '<span class="cp-nav-divider" aria-hidden="true"></span>' +
 
         '<nav class="cp-primary" aria-label="Primary">' +
           '<a href="index.html" class="cp-link ' + isActive('home') + '"><span>Home</span></a>' +
@@ -148,7 +167,10 @@
             '</a>' +
             buildMega() +
           '</div>' +
+          '<a href="inspiration.html" class="cp-link ' + isActive('inspiration') + '"><span>Inspiration</span></a>' +
+          '<a href="visualiser.html" class="cp-link ' + isActive('visualiser') + '"><span>Visualiser</span></a>' +
           '<a href="projects.html" class="cp-link ' + isActive('projects') + '"><span>Projects</span></a>' +
+          '<a href="services.html" class="cp-link ' + isActive('services') + '"><span>Services</span></a>' +
           '<a href="about.html" class="cp-link ' + isActive('about') + '"><span>About</span></a>' +
           '<a href="contact.html" class="cp-link ' + isActive('contact') + '"><span>Contact</span></a>' +
         '</nav>' +
@@ -195,7 +217,10 @@
             '<a href="products.html#undercoat">Primers / Undercoats</a>' +
           '</div>' +
         '</details>' +
+        '<a href="inspiration.html" class="md-link ' + isActive('inspiration') + '"><em>Inspiration</em>' + useIcon('arrow-up-right', 'md-arr', 18) + '</a>' +
+        '<a href="visualiser.html" class="md-link ' + isActive('visualiser') + '"><em>Visualiser</em>' + useIcon('arrow-up-right', 'md-arr', 18) + '</a>' +
         '<a href="projects.html" class="md-link ' + isActive('projects') + '"><em>Projects</em>' + useIcon('arrow-up-right', 'md-arr', 18) + '</a>' +
+        '<a href="services.html" class="md-link ' + isActive('services') + '"><em>Services</em>' + useIcon('arrow-up-right', 'md-arr', 18) + '</a>' +
         '<a href="about.html" class="md-link ' + isActive('about') + '"><em>About</em>' + useIcon('arrow-up-right', 'md-arr', 18) + '</a>' +
         '<a href="contact.html" class="md-link ' + isActive('contact') + '"><em>Contact</em>' + useIcon('arrow-up-right', 'md-arr', 18) + '</a>' +
       '</nav>' +
@@ -262,10 +287,18 @@
     '        </ul>' +
     '      </div>' +
     '      <div class="footer-col">' +
+    '        <h5>Explore</h5>' +
+    '        <ul>' +
+    '          <li><a href="inspiration.html">Inspiration</a></li>' +
+    '          <li><a href="visualiser.html">Colour Visualiser</a></li>' +
+    '          <li><a href="projects.html">Projects</a></li>' +
+    '          <li><a href="services.html">Painting services</a></li>' +
+    '        </ul>' +
+    '      </div>' +
+    '      <div class="footer-col">' +
     '        <h5>Company</h5>' +
     '        <ul>' +
     '          <li><a href="about.html">Our story</a></li>' +
-    '          <li><a href="projects.html">Projects</a></li>' +
     '          <li><a href="about.html#certifications">Quality &amp; standards</a></li>' +
     '          <li><a href="contact.html">Get in touch</a></li>' +
     '        </ul>' +

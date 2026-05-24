@@ -27,22 +27,54 @@
   var SESSION_KEY = 'cp-seen-splash';
 
   var prefersReduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  // Full sequence on every new tab/window load; compressed only on in-session page navigations
+
+  // Detect how this page was reached — a reload always replays the full splash.
+  var navType = 'navigate';
+  try {
+    var navEntries = performance.getEntriesByType('navigation');
+    if (navEntries && navEntries.length) {
+      navType = navEntries[0].type;
+    } else if (performance.navigation) {
+      navType = performance.navigation.type === 1 ? 'reload' : 'navigate';
+    }
+  } catch (e) { /* ignore */ }
+
+  // Full sequence on a new tab/window OR a reload; compressed only on
+  // in-session link navigations between pages.
   var seenInSession = sessionStorage.getItem(SESSION_KEY) === '1';
-  var compressed = seenInSession;
+  var compressed = seenInSession && navType !== 'reload';
 
   // ---------- Markup -----------------------------------------
   function wordmarkHtml(text) {
     return text.split('').map(function (ch, i) {
       var c = ch === ' ' ? '\u00A0' : ch;
-      return '<span style="--i:' + i + '">' + c + '</span>';
+      // chars 7+ spell "PAINTS" \u2014 colour them red to match the logo
+      var cls = i >= 7 ? ' class="cp-wm-red"' : '';
+      return '<span' + cls + ' style="--i:' + i + '">' + c + '</span>';
     }).join('');
   }
 
   var loaderHtml =
     '<div id="cpLoader" aria-hidden="true" role="status">' +
+      '<div class="cp-paint" aria-hidden="true">' +
+        '<span class="cp-blob b1"></span>' +
+        '<span class="cp-blob b2"></span>' +
+        '<span class="cp-blob b3"></span>' +
+        '<span class="cp-blob b4"></span>' +
+        '<span class="cp-blob b5"></span>' +
+        '<svg class="cp-splat" viewBox="0 0 200 200" aria-hidden="true">' +
+          '<circle cx="100" cy="100" r="54"/>' +
+          '<circle cx="34" cy="48" r="13"/>' +
+          '<circle cx="168" cy="40" r="10"/>' +
+          '<circle cx="176" cy="150" r="16"/>' +
+          '<circle cx="40" cy="160" r="12"/>' +
+          '<circle cx="14" cy="104" r="7"/>' +
+          '<circle cx="190" cy="96" r="6"/>' +
+          '<circle cx="104" cy="18" r="8"/>' +
+        '</svg>' +
+      '</div>' +
       '<div class="cp-stage">' +
-        '<img class="cp-mark" src="images/logo.png" alt="Cloud Paints" width="96" height="96">' +
+        '<img class="cp-mark" src="images/logo-mark.png" alt="Cloud Paints" width="1140" height="968">' +
         '<div class="cp-wordmark" aria-label="Cloud Paints">' + wordmarkHtml(WORDMARK) + '</div>' +
         '<div class="cp-progress"><i></i></div>' +
       '</div>' +
@@ -51,6 +83,8 @@
   function inject() {
     document.body.insertAdjacentHTML('afterbegin', loaderHtml);
     document.body.classList.add('cp-loading');
+    // real loader is now on screen — drop the CSS pre-cover
+    document.body.classList.add('cp-loader-mounted');
   }
   if (document.body) {
     inject();
@@ -66,8 +100,8 @@
   // JS just schedules the lift/curtain & cleanup at the end.
   // Compressed/reduced: shorter flash, skip the drip/splash.
 
-  var FULL_MS = 3400;
-  var FULL_LIFT_AT = 2900;
+  var FULL_MS = 5300;
+  var FULL_LIFT_AT = 4800;
   var COMPRESSED_MS = 800;
   var COMPRESSED_LIFT_AT = 350;
   var REDUCED_MS = 350;

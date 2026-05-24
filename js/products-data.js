@@ -29,6 +29,7 @@ window.CLOUD_PRODUCTS = [
   ------------------------------------------------------------ */
   {
     slug: 'silk-vinyl',
+    surface_tags: ['cement'],
     name: 'Silk Vinyl',
     tagline: 'Luxurious silky shades',
     cat: 'emulsion',
@@ -90,6 +91,7 @@ window.CLOUD_PRODUCTS = [
   ------------------------------------------------------------ */
   {
     slug: 'vinyl-matt',
+    surface_tags: ['cement'],
     name: 'Vinyl Matt',
     tagline: 'High-quality matt finish for interior & exterior',
     cat: 'emulsion',
@@ -151,6 +153,7 @@ window.CLOUD_PRODUCTS = [
   ------------------------------------------------------------ */
   {
     slug: 'iris-economy',
+    surface_tags: ['cement'],
     name: 'Iris Plastic Emulsion',
     tagline: 'Excellent opacity · Odourless · Eco-friendly',
     cat: 'emulsion',
@@ -212,6 +215,7 @@ window.CLOUD_PRODUCTS = [
   ------------------------------------------------------------ */
   {
     slug: 'supermatt',
+    surface_tags: ['cement', 'exterior'],
     name: 'SuperMatt Emulsion',
     tagline: 'Excellent coverage & hiding power',
     cat: 'undercoat',
@@ -273,6 +277,7 @@ window.CLOUD_PRODUCTS = [
   ------------------------------------------------------------ */
   {
     slug: 'weatherguard',
+    surface_tags: ['exterior'],
     name: 'Weatherguard',
     tagline: 'Tough · Durable · Ultimate weather resistance',
     cat: 'exterior',
@@ -339,6 +344,7 @@ window.CLOUD_PRODUCTS = [
   ------------------------------------------------------------ */
   {
     slug: 'rocketex',
+    surface_tags: ['exterior'],
     name: 'Rocketex Wallmaster',
     tagline: 'Polymer textured paint · Extra tough',
     cat: 'exterior',
@@ -408,6 +414,7 @@ window.CLOUD_PRODUCTS = [
   ------------------------------------------------------------ */
   {
     slug: 'gloss-enamel',
+    surface_tags: ['wood', 'metal'],
     name: 'Gloss Enamel',
     tagline: 'Tough high-sheen finish for wood & metal',
     cat: 'enamel',
@@ -476,6 +483,7 @@ window.CLOUD_PRODUCTS = [
   ------------------------------------------------------------ */
   {
     slug: 'super-gloss',
+    surface_tags: ['wood', 'metal'],
     name: 'Super Gloss',
     tagline: 'Quick-dry high gloss for wood & metal',
     cat: 'enamel',
@@ -544,6 +552,7 @@ window.CLOUD_PRODUCTS = [
   ------------------------------------------------------------ */
   {
     slug: 'roof-paint',
+    surface_tags: ['exterior', 'metal'],
     name: 'Roof Paint',
     tagline: 'Quality durable flexible roof coating',
     cat: 'specialty',
@@ -607,6 +616,7 @@ window.CLOUD_PRODUCTS = [
   ------------------------------------------------------------ */
   {
     slug: 'road-marking',
+    surface_tags: ['exterior'],
     name: 'Road Marking Paint',
     tagline: 'High-opacity fast-drying road marking',
     cat: 'specialty',
@@ -673,6 +683,7 @@ window.CLOUD_PRODUCTS = [
   ------------------------------------------------------------ */
   {
     slug: 'metal-primer',
+    surface_tags: ['metal'],
     name: 'Metal Primer',
     tagline: 'Anti-corrosive primer for ferrous metal',
     cat: 'undercoat',
@@ -682,7 +693,7 @@ window.CLOUD_PRODUCTS = [
     brandClass: 'brand-undercoat',
     primary: '#4a5568',
     accent: '#718096',
-    image: 'images/buckets/METAL PRIMER 4L.jpg',
+    image: 'images/buckets/metal-primer.jpg',
     sizes: ['1L', '4L', '20L'],
     short: 'Alkyd-based anti-corrosive primer for ferrous metal surfaces. Creates a tight, durable bond with the substrate and acts as the perfect foundation for Cloud Paints gloss enamel top coats.',
     full: 'Cloud Paints Metal Primer is an alkyd-based anti-corrosive primer formulated specifically for ferrous metal surfaces. Creates a tight, durable bond with the substrate and acts as the perfect undercoat foundation for any of our gloss enamel or industrial top coats. Inhibits rust and extends the service life of exposed steelwork.',
@@ -737,6 +748,7 @@ window.CLOUD_PRODUCTS = [
   ------------------------------------------------------------ */
   {
     slug: 'universal-undercoat',
+    surface_tags: ['wood', 'metal', 'cement'],
     name: 'Universal Undercoat',
     tagline: 'Smooth foundation for any top coat',
     cat: 'undercoat',
@@ -746,7 +758,7 @@ window.CLOUD_PRODUCTS = [
     brandClass: 'brand-undercoat',
     primary: '#718096',
     accent: '#a0aec0',
-    image: 'images/buckets/UNIVERSAL UNDERCOAT 4L.jpg',
+    image: 'images/buckets/universal-undercoat.jpg',
     sizes: ['1L', '4L', '20L'],
     short: 'All-purpose solvent-based undercoat for interior and exterior wood, metal and primed masonry. The standard base coat for Cloud Gloss Enamel and Super Gloss.',
     full: 'Cloud Universal Undercoat is the companion product to Cloud Gloss Enamel and Super Gloss — a solvent-based alkyd undercoat providing excellent adhesion, fill and a uniform base for any oil-based top coat. Saves time, promotes even sheen in the topcoat and ensures truer final colour. Suitable for wood, primed metal and primed masonry.',
@@ -800,6 +812,7 @@ window.CLOUD_PRODUCTS = [
   ------------------------------------------------------------ */
   {
     slug: 'clear-varnish',
+    surface_tags: ['wood'],
     name: 'Clear Varnish',
     tagline: 'Superior scratch-resistant clear gloss',
     cat: 'wood',
@@ -864,6 +877,7 @@ window.CLOUD_PRODUCTS = [
   ------------------------------------------------------------ */
   {
     slug: 'varnish-stain',
+    surface_tags: ['wood'],
     name: 'Varnish Stain',
     tagline: 'Tinted varnish for rich wood tones',
     cat: 'wood',
@@ -873,7 +887,6 @@ window.CLOUD_PRODUCTS = [
     brandClass: 'brand-varnish',
     primary: '#7c2d12',
     accent: '#c2410c',
-    image: 'images/buckets/VARNISH STAIN 4L.jpg',
     sizes: ['1L', '4L', '20L'],
     short: 'Tinted polyurethane alkyd varnish that stains and protects in a single coat. Deepens the natural look of wood with rich classic tones.',
     full: 'Cloud Paints Varnish Stain combines colour and protection in a single coat — adding rich, classic wood tones while sealing and protecting the surface. Built on the same polyurethane alkyd platform as Cloud Clear Varnish for hard-wearing, abrasion-resistant performance. Perfect for furniture, doors and trim where you want to deepen the natural look of wood without painting over the grain.',
@@ -928,6 +941,7 @@ window.CLOUD_PRODUCTS = [
   ------------------------------------------------------------ */
   {
     slug: 'floor-paint',
+    surface_tags: ['cement'],
     name: 'Floor Paint',
     tagline: 'Heavy-duty coating for industrial & residential floors',
     cat: 'specialty',
@@ -937,7 +951,6 @@ window.CLOUD_PRODUCTS = [
     brandClass: 'brand-floor',
     primary: '#2d3748',
     accent: '#4a5568',
-    image: 'images/buckets/FLOOR PAINT 4L.jpg',
     sizes: ['4L', '20L'],
     short: 'Hard-wearing alkyd-based floor coating for concrete and wooden floors. Resists abrasion, chemicals, oil spills and heavy foot traffic. Built for warehouses, garages and residential floors.',
     full: 'Cloud Paints Floor Paint is a heavy-duty alkyd-based coating designed for concrete, wooden and industrial floors. Resists abrasion, chemicals, oil spills and heavy foot traffic. Ideal for warehouses, garages, workshops, factory floors and residential utility areas. Delivers a tough semi-gloss finish that is easy to clean and stands up to years of wear.',
@@ -992,6 +1005,7 @@ window.CLOUD_PRODUCTS = [
   ------------------------------------------------------------ */
   {
     slug: 'white-spirit',
+    surface_tags: [],
     name: 'White Spirit',
     tagline: 'High-purity thinner & equipment cleaner',
     cat: 'solvent',
@@ -1001,7 +1015,6 @@ window.CLOUD_PRODUCTS = [
     brandClass: 'brand-thinner',
     primary: '#a0aec0',
     accent: '#cbd5e0',
-    image: 'images/buckets/WHITE SPIRIT 4L.jpg',
     sizes: ['1L', '5L', '20L'],
     short: 'High-purity petroleum distillate for thinning oil-based paints, varnishes and enamels, and for cleaning brushes, rollers and spray equipment. Pairs with the Cloud Gloss and Varnish range.',
     full: 'Cloud Paints White Spirit is a high-purity petroleum distillate solvent for thinning oil-based paints, varnishes, enamels and stains. Also ideal for cleaning brushes, rollers and spray equipment, and for removing fresh paint splashes from hard surfaces. The standard cleanup solvent for the Cloud Gloss Enamel, Super Gloss, Roof Paint and Clear Varnish range.',
@@ -1054,6 +1067,7 @@ window.CLOUD_PRODUCTS = [
   ------------------------------------------------------------ */
   {
     slug: 'turpentine',
+    surface_tags: [],
     name: 'Turpentine',
     tagline: 'Pine-derived professional thinner',
     cat: 'solvent',
@@ -1119,6 +1133,7 @@ window.CLOUD_PRODUCTS = [
   ------------------------------------------------------------ */
   {
     slug: 'standard-thinner',
+    surface_tags: [],
     name: 'Standard Thinner',
     tagline: 'Universal hydrocarbon thinner for the trade',
     cat: 'solvent',
@@ -1128,7 +1143,6 @@ window.CLOUD_PRODUCTS = [
     brandClass: 'brand-thinner',
     primary: '#cbd5e0',
     accent: '#e2e8f0',
-    image: 'images/buckets/STANDARD THINNER 4L.jpg',
     sizes: ['1L', '4L', '20L'],
     short: 'All-round hydrocarbon-blend thinner for Cloud Paints enamels and undercoats. The contractor\'s choice for high-volume thinning and equipment cleaning across the Cloud solvent-based range.',
     full: 'Cloud Paints Standard Thinner is the universal, all-purpose thinner formulated for use with Cloud Paints enamel paints and undercoats. Compatible with the full Cloud Paints oil-based product range and ideal for cleanup of brushes, rollers and spray equipment. The cost-effective contractor-grade choice for high-volume work.',

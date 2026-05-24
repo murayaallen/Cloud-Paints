@@ -59,11 +59,48 @@
   function renderRibbon() {
     var track = document.getElementById('pjRibbonTrack');
     if (!track) return;
-    // duplicate sequence so the loop is seamless
-    var pool = window.CLOUD_PROJECTS.concat(window.CLOUD_PROJECTS);
+    // Pool = attributed projects + showcase imagery, mixed for visual variety,
+    // then duplicated so the autoscroll loop is seamless.
+    var showcase = (window.CLOUD_SHOWCASE || []).map(function (s) {
+      return { image: s.image, name: '' };
+    });
+    var base = window.CLOUD_PROJECTS.concat(showcase);
+    var pool = base.concat(base);
     track.innerHTML = pool.map(function (p) {
-      return '<div class="pj-ribbon-img"><img src="' + p.image + '" alt="' + p.name + '" loading="lazy"></div>';
+      return '<div class="pj-ribbon-img"><img src="' + p.image + '" alt="' + (p.name || '') + '" loading="lazy"></div>';
     }).join('');
+  }
+
+  // ------------------------------------------------------------
+  // Showcase — "Wall of work" purely-visual gallery.
+  // ------------------------------------------------------------
+  function renderShowcase() {
+    var slot = document.getElementById('pjShowcaseGrid');
+    if (!slot) return;
+    var items = window.CLOUD_SHOWCASE || [];
+    if (!items.length) {
+      var wrap = document.getElementById('pjShowcaseSection');
+      if (wrap) wrap.style.display = 'none';
+      return;
+    }
+    slot.innerHTML = items.map(function (it, i) {
+      return (
+        '<figure class="pj-showcase-tile" style="--accent:' + (it.accent || '#333') + ';transition-delay:' + (i * 60) + 'ms;">' +
+          '<img src="' + it.image + '" alt="" loading="lazy">' +
+        '</figure>'
+      );
+    }).join('');
+    // Reveal on enter
+    if (window.IntersectionObserver) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.15 });
+      slot.querySelectorAll('.pj-showcase-tile').forEach(function (el) { io.observe(el); });
+    } else {
+      slot.querySelectorAll('.pj-showcase-tile').forEach(function (el) { el.classList.add('is-in'); });
+    }
   }
 
   // ------------------------------------------------------------
@@ -187,13 +224,8 @@
         '<div class="pj-meta-row">' +
           '<span class="mk">' + iconSvg('map-pin') + feat.location + '</span>' +
           '<span class="mk">' + iconSvg('check') + feat.scope + '</span>' +
-          '<span class="mk">' + iconSvg('bucket') + feat.products_used.length + ' products</span>' +
         '</div>' +
         '<p>' + feat.brief + '</p>' +
-        '<div class="pj-products">' +
-          '<div class="pj-products-label">Products used</div>' +
-          '<div class="pj-product-chips">' + productChipsHtml(feat.products_used) + '</div>' +
-        '</div>' +
       '</div>';
 
     slot.style.cursor = 'pointer';
@@ -220,7 +252,16 @@
         '<button class="pj-modal-close" type="button" data-close aria-label="Close">' +
           (window.icon ? window.icon('close', 18) : '×') +
         '</button>' +
-        '<div class="pj-modal-media"><img id="pjModalImg" src="" alt=""></div>' +
+        '<div class="pj-modal-media-row">' +
+          '<figure class="pj-modal-media">' +
+            '<img id="pjModalImg" src="" alt="">' +
+            '<figcaption>On site</figcaption>' +
+          '</figure>' +
+          '<figure class="pj-modal-media pj-modal-media--insp">' +
+            '<img id="pjModalImgInsp" src="" alt="">' +
+            '<figcaption>The finish styled</figcaption>' +
+          '</figure>' +
+        '</div>' +
         '<div class="pj-modal-body" id="pjModalBody"></div>' +
       '</div>';
     document.body.appendChild(modal);
@@ -241,9 +282,19 @@
     buildModal();
     var modal = document.getElementById('pjModal');
     var img = document.getElementById('pjModalImg');
+    var imgInsp = document.getElementById('pjModalImgInsp');
     var body = document.getElementById('pjModalBody');
     img.src = p.image;
     img.alt = p.name;
+    if (imgInsp) {
+      if (p.inspiration) {
+        imgInsp.src = p.inspiration;
+        imgInsp.alt = p.name + ' — styled finish reference';
+        imgInsp.parentElement.style.display = '';
+      } else {
+        imgInsp.parentElement.style.display = 'none';
+      }
+    }
     body.innerHTML =
       '<span class="eyebrow">' + p.type_label + ' · ' + p.year + '</span>' +
       '<h2>' + p.name.split('·')[0].trim() + '</h2>' +
@@ -252,11 +303,7 @@
         '<span class="mk">' + iconSvg('check') + p.scope + '</span>' +
         '<span class="mk">' + iconSvg('shield') + (p.client || '—') + '</span>' +
       '</div>' +
-      '<p>' + p.brief + '</p>' +
-      '<div class="pj-products">' +
-        '<div class="pj-products-label">Products used</div>' +
-        '<div class="pj-product-chips">' + productChipsHtml(p.products_used) + '</div>' +
-      '</div>';
+      '<p>' + p.brief + '</p>';
 
     modal.classList.add('is-open');
     modal.setAttribute('aria-hidden', 'false');
@@ -287,15 +334,10 @@
     var slot = document.getElementById('pjLocs');
     if (!slot) return;
     slot.innerHTML = CITIES.map(function (c) {
-      var n = window.CLOUD_PROJECTS.filter(function (p) {
-        var hay = (p.location + ' ' + p.county).toLowerCase();
-        return c.matchers.some(function (m) { return hay.indexOf(m) !== -1; });
-      }).length;
       return '<div class="pj-loc">' +
              '<span class="pin">' + iconSvg('map-pin') + '</span>' +
              '<div class="city">' + c.city + '</div>' +
              '<div class="county">' + c.county + ' County</div>' +
-             '<div class="count">' + n + ' ' + (n === 1 ? 'project' : 'projects') + '</div>' +
              '</div>';
     }).join('');
   }
@@ -318,6 +360,7 @@
     renderPills();
     updateCount();
     renderGrid(false);
+    renderShowcase();
     renderLocations();
 
     window.addEventListener('hashchange', function () {

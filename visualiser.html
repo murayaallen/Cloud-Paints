@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>try{document.documentElement.setAttribute("data-theme",localStorage.getItem("cloud-theme")||"light");}catch(e){}</script>
+<title>Colour Visualiser — Cloud Paints</title>
+<meta name="description" content="See Cloud Paints colours on real walls before you buy. Pick a room, pick a shade, preview the look — and add it to your quote in one click.">
+<link rel="canonical" href="https://cloudpaints.co.ke/visualiser.html">
+<meta property="og:site_name" content="Cloud Paints">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://cloudpaints.co.ke/visualiser.html">
+<meta property="og:title" content="Colour Visualiser — Cloud Paints">
+<meta property="og:description" content="See Cloud Paints colours on real walls before you buy.">
+<meta property="og:image" content="https://cloudpaints.co.ke/images/rooms/room-living-modern.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Colour Visualiser — Cloud Paints">
+<meta name="twitter:description" content="See Cloud Paints colours on real walls before you buy.">
+<meta name="twitter:image" content="https://cloudpaints.co.ke/images/rooms/room-living-modern.jpg">
+<meta name="theme-color" content="#d92843">
+<link rel="icon" type="image/png" href="images/logo-icon.png">
+<link rel="apple-touch-icon" href="images/logo-icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700;800&family=Montserrat:ital,wght@0,700;0,800;0,900;1,700;1,800;1,900&display=swap" rel="stylesheet" onerror="this.remove()">
+<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/motion.css">
+<link rel="stylesheet" href="css/visualiser.css">
+</head>
+<body data-page="visualiser" class="cp-loading">
+
+<!-- HERO STRIP -->
+<section class="vs-hero">
+  <div class="container vs-hero-inner reveal-parent">
+    <div data-anim="up">
+      <span class="eyebrow">Colour Visualiser</span>
+      <h1>Any colour. <em>Any wall.</em></h1>
+      <p class="lede">Cloud Paints' factory mixes whatever colour you bring. Pick a room, pick a shade — slide a hue, type a hex, tap a popular pick — and preview it on a real wall.</p>
+    </div>
+    <div class="vs-hero-note" data-anim="up" data-delay="1">
+      <strong>Preview, not pigment.</strong>
+      <span>Real paint behaves with your light. For a guaranteed match, ask us for a sample pot via WhatsApp.</span>
+    </div>
+  </div>
+</section>
+
+<!-- VISUALISER STAGE -->
+<section class="vs-stage-wrap cp-amb-parent">
+  <div class="cp-amb cp-amb--soft" aria-hidden="true"><i class="b1"></i><i class="b2"></i></div>
+  <div class="container">
+    <div class="vs-stage" id="vsStage">
+
+      <!-- Left: room picker + recolour preview -->
+      <div class="vs-preview">
+        <div class="vs-preview-frame">
+          <img id="vsPreviewImg" src="images/rooms/room-living-modern.jpg" alt="Room preview" loading="eager" fetchpriority="high">
+          <div class="vs-paint-overlay" id="vsPaintOverlay" aria-hidden="true"></div>
+        </div>
+        <div class="vs-room-strip" role="tablist" aria-label="Choose a room" id="vsRoomStrip"></div>
+      </div>
+
+      <!-- Right: HSV picker + popular-shades rail -->
+      <div class="vs-palette">
+        <div class="vs-active-card" id="vsActiveCard"></div>
+
+        <div class="vs-picker">
+          <div class="vs-sv-wrap">
+            <div class="vs-sv-canvas" id="vsSVCanvas" role="slider" aria-label="Saturation and brightness picker" tabindex="0">
+              <div class="vs-sv-cursor" id="vsSVCursor"></div>
+            </div>
+          </div>
+          <div class="vs-hue-wrap">
+            <div class="vs-hue-slider" id="vsHueSlider" role="slider" aria-label="Hue picker" tabindex="0">
+              <div class="vs-hue-cursor" id="vsHueCursor"></div>
+            </div>
+          </div>
+          <div class="vs-hex-row">
+            <label for="vsHexInput" class="vs-hex-label">Hex</label>
+            <input id="vsHexInput" type="text" maxlength="7" value="#1F4088" aria-label="Hex colour value">
+            <button type="button" class="vs-hex-copy" id="vsHexCopy" aria-label="Copy hex">Copy</button>
+          </div>
+        </div>
+
+        <div class="vs-quick">
+          <div class="vs-quick-label">Popular shades — inspiration only</div>
+          <div class="vs-quick-grid" id="vsQuickGrid" role="listbox"></div>
+        </div>
+
+        <p class="vs-factory-note">
+          We're a factory — bring us any colour you can think of and we'll mix it for you. WhatsApp us the hex or a reference photo.
+        </p>
+      </div>
+
+    </div>
+
+    <div class="vs-footer-note">
+      Wall recolour shown with a soft blending overlay — a true preview of how the shade sits on a wall under daylight. Real paint will breathe with your own light, but the hex you pick is the hex we mix.
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="vs-cta-wrap">
+  <div class="container reveal-parent">
+    <div class="vs-cta" data-anim="up">
+      <span class="eyebrow">Found the shade?</span>
+      <h2>Order a sample <em>pot.</em></h2>
+      <p>250 ml tester pots are available in any shade — perfect for a 1 m² test patch on your wall before committing to the full job.</p>
+      <div class="vs-cta-btns">
+        <a class="btn-pour" href="https://wa.me/254741405481?text=Hi%20Cloud%20Paints%2C%20I%27d%20like%20a%20sample%20pot." target="_blank" rel="noopener">
+          WhatsApp for a sample
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </a>
+        <a class="btn-ghost-d" href="inspiration.html">More inspiration</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js" defer></script>
+
+<script src="js/products-data.js"></script>
+<script src="js/visualiser-data.js"></script>
+<script src="js/icon.js"></script>
+<script src="js/partials.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+<script src="js/motion.js" defer></script>
+<script src="js/visualiser.js" defer></script>
+<script src="js/loader.js"></script>
+
+</body>
+</html>

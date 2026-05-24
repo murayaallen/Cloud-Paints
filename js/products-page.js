@@ -19,19 +19,48 @@
     { key: 'solvent',   label: 'Solvents' },
   ];
 
-  function catCount(key) {
-    if (!window.CLOUD_PRODUCTS) return 0;
-    if (key === 'all') return window.CLOUD_PRODUCTS.length;
-    return window.CLOUD_PRODUCTS.filter(function (p) { return p.cat === key; }).length;
+  var SURFACE_LABEL = {
+    cement:   'Cement',
+    metal:    'Metal',
+    wood:     'Wood',
+    exterior: 'Exterior'
+  };
+
+  function readSurface() {
+    var p = new URLSearchParams(location.search || '');
+    var s = (p.get('surface') || '').toLowerCase();
+    return SURFACE_LABEL[s] ? s : '';
   }
 
-  function pillHtml(c, activeKey) {
+  // Surface-aware category count — counts within the current surface filter.
+  function catCount(key, surface) {
+    if (!window.CLOUD_PRODUCTS) return 0;
+    var list = window.CLOUD_PRODUCTS;
+    if (surface) {
+      list = list.filter(function (p) {
+        return Array.isArray(p.surface_tags) && p.surface_tags.indexOf(surface) !== -1;
+      });
+    }
+    if (key === 'all') return list.length;
+    return list.filter(function (p) { return p.cat === key; }).length;
+  }
+
+  function pillHtml(c, activeKey, surface) {
     var active = c.key === activeKey ? ' active' : '';
     return (
       '<button type="button" class="pp-pill' + active + '" data-filter="' + c.key + '" aria-pressed="' + (c.key === activeKey) + '">' +
         '<span>' + c.label + '</span>' +
-        '<span class="num">' + catCount(c.key) + '</span>' +
       '</button>'
+    );
+  }
+
+  function surfaceChipHtml(surface) {
+    if (!surface) return '';
+    return (
+      '<div class="pp-surface-active" data-surface-chip>' +
+        '<span>Surface · ' + SURFACE_LABEL[surface] + '</span>' +
+        '<button type="button" aria-label="Clear surface filter" data-clear-surface>&times;</button>' +
+      '</div>'
     );
   }
 
@@ -68,15 +97,32 @@
     if (!bar || !grid || !window.CLOUD_PRODUCTS) return;
 
     var current = 'all';
+    var surface = readSurface();
 
-    // Build pills
-    bar.innerHTML = CAT_ORDER.map(function (c) { return pillHtml(c, current); }).join('');
+    // Build pills (with optional surface chip prepended)
+    rebuildPills();
 
     // Render grid (initial)
     renderGrid(current, false);
 
-    // Click handlers
+    // If a surface filter is active on first load, jump past the hero to the
+    // grid — the user clicked a tile expecting to see the filtered catalogue.
+    if (surface) {
+      requestAnimationFrame(function () {
+        var target = document.getElementById('ppGridSection');
+        if (target) {
+          var y = target.getBoundingClientRect().top + window.scrollY - 140;
+          window.scrollTo({ top: y, behavior: 'auto' });
+        }
+      });
+    }
+
+    // Click handlers — category pills + clear-surface button
     bar.addEventListener('click', function (e) {
+      if (e.target.closest('[data-clear-surface]')) {
+        clearSurface();
+        return;
+      }
       var pill = e.target.closest('.pp-pill');
       if (!pill) return;
       var key = pill.getAttribute('data-filter');
@@ -95,15 +141,32 @@
       if (h && CAT_ORDER.some(function (c) { return c.key === h; })) setActive(h);
     });
 
+    function rebuildPills() {
+      bar.innerHTML =
+        surfaceChipHtml(surface) +
+        CAT_ORDER.map(function (c) { return pillHtml(c, current, surface); }).join('');
+    }
+
+    function clearSurface() {
+      surface = '';
+      try {
+        var url = new URL(location.href);
+        url.searchParams.delete('surface');
+        history.replaceState(null, '', url.pathname + (url.hash || ''));
+      } catch (e) {}
+      rebuildPills();
+      renderGrid(current, true);
+    }
+
     function setActive(key, skipScroll) {
       current = key;
-      bar.querySelectorAll('.pp-pill').forEach(function (b) {
-        var on = b.getAttribute('data-filter') === key;
-        b.classList.toggle('active', on);
-        b.setAttribute('aria-pressed', on);
-      });
-      // Sync URL without scroll jump
-      try { history.replaceState(null, '', key === 'all' ? location.pathname : '#' + key); } catch (e) {}
+      rebuildPills();
+      // Sync URL without scroll jump (preserve ?surface= if active)
+      try {
+        var url = new URL(location.href);
+        url.hash = (key === 'all') ? '' : key;
+        history.replaceState(null, '', url.pathname + url.search + url.hash);
+      } catch (e) {}
       renderGrid(key, true);
 
       if (!skipScroll) {
@@ -117,9 +180,15 @@
 
     function renderGrid(filter, animate) {
       var list = window.CLOUD_PRODUCTS.filter(function (p) {
-        return filter === 'all' || p.cat === filter;
+        // Only show products that have a real mockup photo —
+        // imageless entries are hidden from the catalogue.
+        if (!p.image) return false;
+        if (filter !== 'all' && p.cat !== filter) return false;
+        if (surface && !(Array.isArray(p.surface_tags) && p.surface_tags.indexOf(surface) !== -1)) return false;
+        return true;
       });
-      if (count) count.textContent = list.length + ' product' + (list.length === 1 ? '' : 's');
+      // Count display intentionally suppressed (no metrics on the site).
+      if (count) count.textContent = '';
 
       if (!list.length) {
         grid.innerHTML = '<div class="pp-empty">No products in this category yet. Check back soon.</div>';

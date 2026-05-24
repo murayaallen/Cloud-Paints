@@ -451,13 +451,21 @@ body[data-theme="dark"] .ct-form-card .btn-submit { background: var(--gold); col
   overflow: hidden;
   transition: max-height 0.35s var(--t-ease-pour);
 }
-.ct-faq-item.is-open .ct-faq-a { max-height: 340px; }
+.ct-faq-item.is-open .ct-faq-a { max-height: 720px; }
 .ct-faq-a-inner {
   padding: 0 22px 22px;
   color: var(--text-2);
   font-size: 14.5px;
   line-height: 1.7;
 }
+.ct-faq-a-inner ul {
+  margin: 10px 0 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.ct-faq-a-inner li { list-style: disc; }
 
 /* ---------- Social ribbon ---------- */
 .ct-social-wrap { padding: clamp(60px, 9vw, 100px) 0; }
