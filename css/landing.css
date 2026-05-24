@@ -1814,3 +1814,274 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
 @media (max-width: 560px) {
   .lp-why-grid { grid-template-columns: 1fr; }
 }
+
+/* ============================================================
+   MOBILE HERO REDESIGN
+   Tightens the home hero on phones — smaller visual, refined
+   single-primary-CTA pattern, scroll cue hidden, copy tightened.
+   ============================================================ */
+
+@media (max-width: 1023px) {
+  /* Section: shrink height, drop padding that wasted space */
+  body[data-page="home"] .lp-hero {
+    min-height: auto;
+    padding-top: clamp(96px, 14vh, 130px);
+    padding-bottom: clamp(36px, 6vh, 60px);
+  }
+  body[data-page="home"] .lp-hero-grid {
+    grid-template-columns: 1fr;
+    min-height: auto;
+    gap: clamp(20px, 4vw, 28px);
+    align-items: start;
+  }
+
+  /* Copy column: tighter type, less margin */
+  body[data-page="home"] .lp-hero-copy { padding-top: 0; }
+  body[data-page="home"] .lp-hero-h1 {
+    font-size: clamp(2.4rem, 9.5vw, 3.8rem);
+    line-height: 0.96;
+    margin: 14px 0 14px;
+  }
+  body[data-page="home"] .lp-hero-lede {
+    font-size: 0.98rem;
+    line-height: 1.55;
+    margin-bottom: 22px;
+    max-width: none;
+  }
+
+  /* CTAs: primary button + secondary text-link (no double-button crowd) */
+  body[data-page="home"] .lp-hero-ctas {
+    gap: 12px;
+    margin-bottom: 0;
+    align-items: center;
+  }
+  body[data-page="home"] .lp-hero-ctas .btn-pour {
+    padding: 14px 24px;
+    font-size: 14px;
+    box-shadow: 0 14px 32px -12px rgba(217,40,67,0.55);
+  }
+  /* Secondary becomes a clean text-link with arrow */
+  body[data-page="home"] .lp-hero-ctas .btn-ghost-d {
+    border: 0;
+    background: transparent;
+    padding: 12px 4px;
+    color: var(--gold-2, #ffc93d);
+    font-size: 13.5px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    position: relative;
+  }
+  body[data-page="home"] .lp-hero-ctas .btn-ghost-d::after {
+    content: "\2192";
+    margin-left: 8px;
+    transition: transform 0.25s ease;
+    display: inline-block;
+  }
+  body[data-page="home"] .lp-hero-ctas .btn-ghost-d:hover {
+    background: transparent;
+    border: 0;
+    color: #fff;
+  }
+  body[data-page="home"] .lp-hero-ctas .btn-ghost-d:hover::after {
+    transform: translateX(4px);
+  }
+
+  /* Visual side (.lp-pour): compact, focused */
+  body[data-page="home"] .lp-pour {
+    min-height: 260px;
+    padding-top: 8px;
+    order: 2;
+  }
+
+  /* Bucket: slightly smaller than current 44vw for less dominance */
+  body[data-page="home"] .lp-hero-bucket {
+    width: clamp(140px, 38vw, 220px);
+    margin: 0 auto;
+  }
+
+  /* Brand stage: cleaner, centered, smaller halo */
+  body[data-page="home"] .lp-hero-brand {
+    position: relative;
+    left: auto; top: auto;
+    transform: none;
+    margin: 0 auto;
+    width: min(82vw, 360px);
+    gap: 12px;
+  }
+  body[data-page="home"] .lp-brand-mark {
+    width: clamp(110px, 28vw, 160px);
+  }
+  body[data-page="home"] .lp-brand-wordmark {
+    font-size: clamp(1.6rem, 5vw, 2.2rem);
+  }
+  body[data-page="home"] .lp-brand-tag {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-align: center;
+  }
+  body[data-page="home"] .lp-brand-halo {
+    width: clamp(180px, 50vw, 280px);
+  }
+  /* Brand splats too dense for mobile — keep just s1 */
+  body[data-page="home"] .lp-hero-brand .lp-brand-splat.s2,
+  body[data-page="home"] .lp-hero-brand .lp-brand-splat.s3 { display: none; }
+
+  /* Hide the scroll cue on mobile — it crowds the visual zone */
+  body[data-page="home"] .lp-scroll-cue { display: none; }
+
+  /* Bg side-gradient was already mobile-vertical; reinforce: */
+  body[data-page="home"] .lp-hero-bg::after {
+    background:
+      linear-gradient(180deg,
+        rgba(11,10,16,0.18) 0%,
+        rgba(11,10,16,0.55) 50%,
+        rgba(11,10,16,0.92) 100%) !important;
+  }
+  body[data-page="home"] .lp-hero.brand-active .lp-hero-bg::after {
+    background:
+      linear-gradient(180deg,
+        rgba(11,10,16,0.20) 0%,
+        rgba(11,10,16,0.55) 55%,
+        rgba(11,10,16,0.94) 100%),
+      radial-gradient(50% 50% at 50% 50%, rgba(232,163,23,0.18), transparent 70%),
+      radial-gradient(40% 60% at 30% 80%, rgba(217,40,67,0.16), transparent 70%) !important;
+  }
+}
+
+/* Very small phones (≤ 420px) — squeeze further but stay readable */
+@media (max-width: 420px) {
+  body[data-page="home"] .lp-hero-h1 {
+    font-size: clamp(2.1rem, 9vw, 2.8rem);
+  }
+  body[data-page="home"] .lp-hero-lede {
+    font-size: 0.94rem;
+  }
+  body[data-page="home"] .lp-hero-ctas .btn-pour {
+    width: 100%;
+    justify-content: center;
+  }
+  body[data-page="home"] .lp-hero-ctas .btn-ghost-d {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+  }
+}
+
+/* ============================================================
+   HOME PAGE — visual richness pass (less "basic" feel)
+   Adds breathing room, sharper section accents, refined dividers.
+   ============================================================ */
+
+/* Marquee: slow on mobile so eye doesn't fight the motion */
+@media (max-width: 720px) {
+  .lp-marquee-wrap .marquee-track { animation-duration: 95s; }
+  .lp-marquee-wrap .marquee-track span {
+    font-size: clamp(1.4rem, 6vw, 2.6rem);
+    padding: 0 0.6em;
+  }
+  .lp-marquee-wrap .marquee-track span::after {
+    width: 6px; height: 6px;
+  }
+}
+
+/* Why-Cloud-Paints cards on mobile: stack with a delicate side stripe */
+@media (max-width: 560px) {
+  .lp-why-card {
+    padding: 22px 22px 22px 26px;
+    border-left: 3px solid var(--accent, var(--red-2));
+  }
+  .lp-why-card::before { display: none; } /* drop the blur glow on mobile */
+  .lp-why-card .ic {
+    width: 42px; height: 42px;
+    margin-bottom: 14px;
+    border-radius: 10px;
+  }
+  .lp-why-card h3 { font-size: 1.18rem; margin-bottom: 8px; }
+  .lp-why-card p  { font-size: 0.94rem; }
+}
+
+/* Featured products grid mobile: card hover→tap presentation */
+@media (max-width: 560px) {
+  .lp-featured-grid .product-card {
+    border: 1px solid var(--border-2);
+  }
+}
+
+/* Section headings on mobile — tighter rhythm */
+@media (max-width: 560px) {
+  .lp-why-head,
+  .lp-insp-head,
+  .lp-featured-head {
+    margin-bottom: clamp(26px, 5vw, 36px);
+  }
+  .lp-why-head h2,
+  .lp-insp-head h2,
+  .lp-featured-head h2 {
+    font-size: clamp(2rem, 7vw, 2.6rem);
+  }
+}
+
+/* Visualiser CTA banner: stack with refined spacing */
+@media (max-width: 1023px) {
+  .lp-vis-inner {
+    padding: clamp(28px, 5vw, 44px);
+    gap: 24px;
+  }
+  .lp-vis-copy h2 {
+    font-size: clamp(1.8rem, 6vw, 2.4rem);
+  }
+}
+
+/* Projects ribbon (homepage) — reduce gap clutter on mobile */
+@media (max-width: 600px) {
+  .lp-ribbon-grid {
+    grid-template-columns: 1fr;
+    grid-auto-rows: 180px;
+    gap: 10px;
+  }
+  .lp-ribbon-grid .cell { grid-column: span 1 !important; grid-row: span 1 !important; }
+  .lp-ribbon-grid .c1 { grid-row: span 2 !important; }
+}
+
+/* About-us section on home — tighter on mobile, ditch the dual-photo gap */
+@media (max-width: 900px) {
+  body[data-page="home"] .lp-about-inner {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  body[data-page="home"] .lp-about-media {
+    max-width: 520px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 12px;
+  }
+  body[data-page="home"] .lp-about-photo-main {
+    aspect-ratio: 4/3;
+  }
+}
+
+/* Final CTA section — tighter padding, single-column buttons */
+@media (max-width: 560px) {
+  .lp-cta {
+    padding: clamp(60px, 12vw, 90px) 0;
+  }
+  .lp-cta h2 { font-size: clamp(2rem, 7vw, 2.6rem); }
+  .lp-cta p  { font-size: 0.95rem; }
+}
+
+/* Marquee container — reduce internal padding so it doesn't dominate */
+@media (max-width: 720px) {
+  .lp-marquee-wrap {
+    padding: 6px 0;
+  }
+}
+
+/* Eyebrow text on hero brand stage — make it more readable */
+@media (max-width: 560px) {
+  body[data-page="home"] .lp-hero-copy .eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    padding: 6px 12px;
+  }
+}
