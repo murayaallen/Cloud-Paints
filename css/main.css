@@ -271,7 +271,7 @@ p { color: var(--text-2); }
 
 /* Logo — SVG cloud mark + text wordmark in brand colours */
 .cp-logo {
-  --cp-logo-blue: #1F317A;
+  --cp-logo-blue: #1D1E51;
   --cp-logo-red: #e11f29;
   display: flex; flex-direction: row; align-items: center;
   gap: 11px; line-height: 1;
@@ -1931,7 +1931,7 @@ body.cp-loading:not(.cp-loader-mounted)::before {
     radial-gradient(ellipse 52% 48% at 8% 95%,  rgba(47,158,68,0.10) 0%, transparent 64%);
 }
 [data-theme="light"] #cpLoader::after { opacity: 0.06; mix-blend-mode: multiply; }
-[data-theme="light"] .cp-wordmark { color: #1F317A; }            /* navy reads on white */
+[data-theme="light"] .cp-wordmark { color: #1D1E51; }            /* navy reads on white */
 [data-theme="light"] .cp-mark { filter: drop-shadow(0 14px 40px rgba(225,31,41,0.30)); }
 [data-theme="light"] .cp-progress { background: rgba(10,14,39,0.10); }
 /* paint blobs: multiply-tint on the bright background instead of screen-glow */
