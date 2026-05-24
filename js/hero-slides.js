@@ -109,17 +109,20 @@
       applyColor(slide.color);
 
       // Switch foreground: brand stage vs bucket image
+      var heroEl = document.querySelector('.lp-hero');
       if (slide.type === 'brand') {
+        if (heroEl) heroEl.classList.add('brand-active');
         if (brandStage) {
           // Force animation reset by toggling off then on so keyframes replay
           brandStage.classList.remove('hs-active');
-          // Force reflow
+          // Force reflow — guarantees the keyframes restart on every loop
           void brandStage.offsetWidth;
           brandStage.classList.add('hs-active');
         }
         bucketA.classList.remove('hs-active');
         bucketB.classList.remove('hs-active');
       } else {
+        if (heroEl) heroEl.classList.remove('brand-active');
         if (brandStage) brandStage.classList.remove('hs-active');
         if (activeBucket)   activeBucket.classList.remove('hs-active');
         if (inactiveBucket) inactiveBucket.classList.add('hs-active');
