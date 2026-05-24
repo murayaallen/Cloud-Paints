@@ -7,24 +7,13 @@
   'use strict';
 
   // ---------- Theme ----------
-  var THEME_KEY = 'cloud-theme';
-  function getTheme() { return localStorage.getItem(THEME_KEY) || 'light'; }
-  function setTheme(t) {
-    document.documentElement.setAttribute('data-theme', t);
-    localStorage.setItem(THEME_KEY, t);
-    var btn = document.getElementById('themeToggle');
-    if (btn) btn.querySelector('.sun').style.display = t === 'dark' ? 'block' : 'none';
-    if (btn) btn.querySelector('.moon').style.display = t === 'dark' ? 'none' : 'block';
-  }
-  setTheme(getTheme());
-  // Re-apply after partials.js injects the header button
-  document.addEventListener('DOMContentLoaded', function () { setTheme(getTheme()); });
-
-  document.addEventListener('click', function (e) {
-    if (e.target.closest('#themeToggle')) {
-      setTheme(getTheme() === 'dark' ? 'light' : 'dark');
-    }
-  });
+  // Dark mode is now permanent (light theme retired).
+  // We still force the attribute here in case any prior visit had
+  // a 'light' value stored in localStorage from the old toggle.
+  try {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    localStorage.setItem('cloud-theme', 'dark');
+  } catch (e) { /* private mode safe */ }
 
   // ---------- Header scroll ----------
   var header = document.querySelector('.site-header');

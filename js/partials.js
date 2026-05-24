@@ -177,10 +177,6 @@
 
         '<div class="cp-actions">' +
           '<button id="navSearch" class="icon-btn hide-sm" aria-label="Search products">' + useIcon('search') + '</button>' +
-          '<button id="themeToggle" class="icon-btn" aria-label="Toggle theme">' +
-            useIcon('sun', 'sun') +
-            useIcon('moon', 'moon') +
-          '</button>' +
           '<button id="cartOpen" class="icon-btn" aria-label="Open quote basket">' +
             useIcon('cart') +
             '<span class="cart-count" id="cartCount">0</span>' +
