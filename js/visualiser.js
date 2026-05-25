@@ -106,9 +106,10 @@
     ) : 999;
     state.matchedName = (d < 12 && nearest) ? nearest.name : 'Custom Mix';
 
-    // Wall overlay
-    var overlay = document.getElementById('vsPaintOverlay');
-    if (overlay) overlay.style.background = hex;
+    // Wall overlay — paint the canvas with the current colour through
+    // the active room's mask. Uses real pixel alpha so no CSS mask
+    // quirks. paintCanvas() is a no-op until the mask Image has loaded.
+    paintCanvas(hex);
 
     // SV canvas hue base
     var svCanvas = document.getElementById('vsSVCanvas');
@@ -236,18 +237,50 @@
     });
   }
 
+  // Cached mask image (one per room) — loaded lazily.
+  var maskImg = null;
+  var maskReady = false;
+
   function applyRoom(idx) {
     var r = DATA.rooms[idx];
     if (!r) return;
     var img = document.getElementById('vsPreviewImg');
     if (img) { img.src = r.image; img.alt = r.label; }
-    // Push the wall mask onto the preview frame as a CSS variable —
-    // .vs-paint-overlay (and its ::after) read it via mask-image so the
-    // colour clips strictly to the wall pixels.
-    var frame = document.querySelector('.vs-preview-frame');
-    if (frame && r.mask) {
-      frame.style.setProperty('--wall-mask', 'url(' + r.mask + ')');
+    // Reset and load mask. Once decoded, paintCanvas() will pick it up.
+    maskReady = false;
+    if (r.mask) {
+      maskImg = new Image();
+      maskImg.crossOrigin = 'anonymous';
+      maskImg.onload = function () {
+        maskReady = true;
+        paintCanvas(currentHex());
+      };
+      maskImg.onerror = function () {
+        console.warn('[Visualiser] mask failed to load:', r.mask);
+      };
+      maskImg.src = r.mask;
     }
+  }
+
+  // Composite the chosen colour through the mask onto the canvas.
+  // Strategy: draw the mask, then 'source-in' with a flat colour rect —
+  // result is colour-where-mask-is-opaque, fully transparent elsewhere.
+  function paintCanvas(hex) {
+    var canvas = document.getElementById('vsPaintCanvas');
+    if (!canvas || !maskImg || !maskReady) return;
+    var w = maskImg.naturalWidth;
+    var h = maskImg.naturalHeight;
+    if (!w || !h) return;
+    if (canvas.width !== w)  canvas.width  = w;
+    if (canvas.height !== h) canvas.height = h;
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, w, h);
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.drawImage(maskImg, 0, 0, w, h);
+    ctx.globalCompositeOperation = 'source-in';
+    ctx.fillStyle = hex;
+    ctx.fillRect(0, 0, w, h);
+    ctx.globalCompositeOperation = 'source-over';
   }
 
   function renderRooms() {

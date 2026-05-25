@@ -1868,13 +1868,19 @@ body.cp-loading:not(.cp-loader-mounted)::before {
   font-size: 30px;
   letter-spacing: 0.02em;
   text-transform: uppercase;
-  color: #8ba6f7; /* brand navy, lightened for the dark splash */
+  /* Match the hero "CLOUD" — true logo navy with a soft cream glow so
+     it reads cleanly against the dark splash. */
+  color: #1D1E51;
+  text-shadow:
+    0 0 18px rgba(255,255,255,0.60),
+    0 0 38px rgba(255,255,255,0.32);
   display: flex;
   gap: 0;
 }
 .cp-wordmark .cp-wm-red {
   color: #e11f29;
   font-style: italic;
+  text-shadow: 0 0 14px rgba(255,255,255,0.32);
 }
 .cp-wordmark span {
   display: inline-block;

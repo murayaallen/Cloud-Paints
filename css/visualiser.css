@@ -76,47 +76,19 @@ body[data-page="visualiser"] { background: var(--bg); }
   transition: opacity 0.4s ease;
 }
 .vs-preview-frame img.is-loading { opacity: 0.6; }
-/* True wall-only recolour. Each room has a hand-tuned alpha-PNG mask
-   defining exactly which pixels are wall. The mask is set on the
-   preview frame as a CSS variable (--wall-mask) when the room changes;
-   the overlay reads it via mask-image, then applies multiply blend so
-   the wall takes the colour while preserving the photo's shadows and
-   highlights. The ::after layer adds a softer "color" pass for hue
-   transfer that keeps the wall's natural light. */
-.vs-paint-overlay {
+/* True wall-only recolour. Each room has a hand-tuned grayscale mask
+   PNG that says which pixels are wall. We composite the colour through
+   the mask in a <canvas> — real alpha pixels, no mask-image quirks —
+   and let CSS mix-blend-mode multiply the result over the room photo
+   so the wall keeps its natural shadows and highlights. */
+.vs-paint-canvas {
   position: absolute; inset: 0;
-  background: #b25a44;
-  mix-blend-mode: multiply;
-  opacity: 0.72;
+  width: 100%; height: 100%;
+  display: block;
   pointer-events: none;
-  -webkit-mask-image: var(--wall-mask, none);
-          mask-image: var(--wall-mask, none);
-  -webkit-mask-size: 100% 100%;
-          mask-size: 100% 100%;
-  -webkit-mask-position: center;
-          mask-position: center;
-  -webkit-mask-repeat: no-repeat;
-          mask-repeat: no-repeat;
-  -webkit-mask-mode: luminance;
-          mask-mode: luminance;
-  transition: background 0.4s ease, opacity 0.4s ease;
-}
-.vs-paint-overlay::after {
-  content: "";
-  position: absolute; inset: 0;
-  background: inherit;
-  mix-blend-mode: color;
-  opacity: 0.55;
-  -webkit-mask-image: var(--wall-mask, none);
-          mask-image: var(--wall-mask, none);
-  -webkit-mask-size: 100% 100%;
-          mask-size: 100% 100%;
-  -webkit-mask-position: center;
-          mask-position: center;
-  -webkit-mask-repeat: no-repeat;
-          mask-repeat: no-repeat;
-  -webkit-mask-mode: luminance;
-          mask-mode: luminance;
+  mix-blend-mode: multiply;
+  opacity: 0.88;
+  transition: opacity 0.4s ease;
 }
 
 /* Room strip — horizontal scrollable thumbnails */
