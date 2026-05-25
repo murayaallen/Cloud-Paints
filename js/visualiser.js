@@ -237,50 +237,71 @@
     });
   }
 
-  // Cached mask image (one per room) — loaded lazily.
-  var maskImg = null;
-  var maskReady = false;
+  // Cached room photo + mask image (one set per room) — loaded lazily.
+  // The canvas paints the FULL composite: room photo as base, then a
+  // colour-multiplied layer clipped to the mask. No CSS blend modes,
+  // no mask-image — every pixel is computed in 2D context, so there
+  // are no browser quirks to fight.
+  var roomImg = null, roomReady = false;
+  var maskImg = null, maskReady = false;
 
   function applyRoom(idx) {
     var r = DATA.rooms[idx];
     if (!r) return;
     var img = document.getElementById('vsPreviewImg');
     if (img) { img.src = r.image; img.alt = r.label; }
-    // Reset and load mask. Once decoded, paintCanvas() will pick it up.
+
+    roomReady = false;
     maskReady = false;
+
+    roomImg = new Image();
+    roomImg.onload = function () { roomReady = true; paintCanvas(currentHex()); };
+    roomImg.onerror = function () { console.warn('[Visualiser] room photo failed:', r.image); };
+    roomImg.src = r.image;
+
     if (r.mask) {
       maskImg = new Image();
-      maskImg.crossOrigin = 'anonymous';
-      maskImg.onload = function () {
-        maskReady = true;
-        paintCanvas(currentHex());
-      };
-      maskImg.onerror = function () {
-        console.warn('[Visualiser] mask failed to load:', r.mask);
-      };
+      maskImg.onload = function () { maskReady = true; paintCanvas(currentHex()); };
+      maskImg.onerror = function () { console.warn('[Visualiser] mask failed:', r.mask); };
       maskImg.src = r.mask;
     }
   }
 
-  // Composite the chosen colour through the mask onto the canvas.
-  // Strategy: draw the mask, then 'source-in' with a flat colour rect —
-  // result is colour-where-mask-is-opaque, fully transparent elsewhere.
   function paintCanvas(hex) {
     var canvas = document.getElementById('vsPaintCanvas');
-    if (!canvas || !maskImg || !maskReady) return;
-    var w = maskImg.naturalWidth;
-    var h = maskImg.naturalHeight;
+    if (!canvas || !roomImg || !roomReady) return;
+    var w = roomImg.naturalWidth, h = roomImg.naturalHeight;
     if (!w || !h) return;
-    if (canvas.width !== w)  canvas.width  = w;
+    if (canvas.width  !== w) canvas.width  = w;
     if (canvas.height !== h) canvas.height = h;
     var ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, w, h);
+
+    // 1) Base — the room photo, full opacity, no blend mode.
     ctx.globalCompositeOperation = 'source-over';
-    ctx.drawImage(maskImg, 0, 0, w, h);
-    ctx.globalCompositeOperation = 'source-in';
-    ctx.fillStyle = hex;
-    ctx.fillRect(0, 0, w, h);
-    ctx.globalCompositeOperation = 'source-over';
+    ctx.drawImage(roomImg, 0, 0, w, h);
+
+    // 2) Wall colour — build the tint layer on an off-screen canvas:
+    //    draw mask (alpha = wall grade), then source-in fill with hex.
+    if (maskImg && maskReady) {
+      var tint = document.createElement('canvas');
+      tint.width = w; tint.height = h;
+      var tctx = tint.getContext('2d');
+      tctx.drawImage(maskImg, 0, 0, w, h);
+      tctx.globalCompositeOperation = 'source-in';
+      tctx.fillStyle = hex;
+      tctx.fillRect(0, 0, w, h);
+
+      // 3) Multiply that tint back onto the room photo, then layer a
+      //    softer 'color' pass for hue transfer that keeps shadows.
+      ctx.globalCompositeOperation = 'multiply';
+      ctx.globalAlpha = 0.88;
+      ctx.drawImage(tint, 0, 0);
+      ctx.globalCompositeOperation = 'color';
+      ctx.globalAlpha = 0.45;
+      ctx.drawImage(tint, 0, 0);
+      ctx.globalAlpha = 1;
+      ctx.globalCompositeOperation = 'source-over';
+    }
   }
 
   function renderRooms() {

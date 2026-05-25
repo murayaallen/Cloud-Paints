@@ -81,14 +81,15 @@ body[data-page="visualiser"] { background: var(--bg); }
    the mask in a <canvas> — real alpha pixels, no mask-image quirks —
    and let CSS mix-blend-mode multiply the result over the room photo
    so the wall keeps its natural shadows and highlights. */
+/* The canvas draws the FULL composite (room photo + tinted wall), so
+   no CSS blend mode is needed. It sits opaque over the <img>, which
+   only stays in the DOM so the layout has natural intrinsic size. */
 .vs-paint-canvas {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
   display: block;
   pointer-events: none;
-  mix-blend-mode: multiply;
-  opacity: 0.88;
-  transition: opacity 0.4s ease;
+  object-fit: cover;
 }
 
 /* Room strip — horizontal scrollable thumbnails */
