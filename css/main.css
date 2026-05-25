@@ -305,7 +305,17 @@ p { color: var(--text-2); }
 .cp-logo-tag .c-blue { color: var(--cp-logo-blue); }
 .cp-logo-tag .c-red  { color: var(--cp-logo-red); }
 .cp-logo-tag .dot { color: var(--cp-logo-red); font-weight: 800; }
-[data-theme="dark"] .cp-logo { --cp-logo-blue: #8ba6f7; }
+/* Keep CLOUD on the true logo navy (#1D1E51) in dark mode too —
+   matches the hero stage and loader. Add a soft cream glow so it
+   reads cleanly against the dark header. */
+[data-theme="dark"] .cp-logo-name .c-blue {
+  text-shadow:
+    0 0 12px rgba(255,255,255,0.55),
+    0 0 26px rgba(255,255,255,0.28);
+}
+[data-theme="dark"] .cp-logo-tag .c-blue {
+  text-shadow: 0 0 8px rgba(255,255,255,0.4);
+}
 @media (min-width: 768px) {
   .cp-logo-mark { height: 56px; width: auto; }
   .cp-logo-name { font-size: 34px; }
