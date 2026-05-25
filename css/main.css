@@ -2635,3 +2635,113 @@ html[data-theme="dark"] body::before {
 /* Universal: prevent horizontal scroll from rounding-error overflow */
 html, body { overflow-x: hidden; }
 img, svg { max-width: 100%; }
+
+/* ============================================================
+   SITE-WIDE MICRO-POLISH
+   Surgical refinements — no layout changes. Touches selection
+   colour, link hover affordance, scrollbar, button active state,
+   focus rings on form fields, print rules.
+   ============================================================ */
+
+/* Selection: warm cream-on-red so the brand reads in any text */
+::selection {
+  background: var(--red-2, #d92843);
+  color: #f5f1e8;
+  text-shadow: none;
+}
+
+/* Custom scrollbar — slim, brand-flavoured, only where the page is
+   not Lenis-managed (Lenis hides the native scrollbar on desktop). */
+@supports (scrollbar-color: auto) {
+  html {
+    scrollbar-color: color-mix(in srgb, var(--text) 22%, transparent) transparent;
+    scrollbar-width: thin;
+  }
+}
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--text) 18%, transparent);
+  border-radius: 8px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--text) 35%, transparent);
+  background-clip: content-box;
+}
+
+/* Text links inside prose: subtle underline-grow on hover. Skips
+   links that already have their own styling (buttons, nav, chips). */
+.lp-about p a:not(.btn):not(.btn-outline):not(.btn-pour):not(.btn-ghost-d),
+.lp-why p a:not(.btn):not(.btn-outline):not(.btn-pour):not(.btn-ghost-d),
+.cp-footer-col a {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 0.4s cubic-bezier(.4,0,.2,1), color var(--t-fast);
+}
+.lp-about p a:not(.btn):not(.btn-outline):not(.btn-pour):not(.btn-ghost-d):hover,
+.lp-why p a:not(.btn):not(.btn-outline):not(.btn-pour):not(.btn-ghost-d):hover,
+.cp-footer-col a:hover { background-size: 100% 1px; }
+
+/* Buttons: tactile active-state. Lifts cancel on press. */
+.btn:active,
+.btn-pour:active,
+.btn-outline:active,
+.btn-ghost-d:active,
+.icon-btn:active { transform: translateY(1px) scale(0.985); }
+
+.btn[disabled],
+.btn-pour[disabled],
+.btn-outline[disabled] {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* Icon button hover: a soft brand-tinted ring instead of bare colour
+   shift. Same shape as the existing icon-btn, no layout change. */
+.icon-btn {
+  position: relative;
+  transition: color var(--t-fast), background-color var(--t-fast), transform var(--t-fast);
+}
+.icon-btn:hover {
+  background-color: color-mix(in srgb, var(--red-2, #d92843) 12%, transparent);
+}
+
+/* Form inputs: visible focus glow without changing layout */
+.field input:focus, .field textarea:focus, .field select:focus,
+.cart-field input:focus, .cart-field textarea:focus {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--red-2, #d92843) 22%, transparent);
+}
+
+/* Images: a subtle background placeholder until they decode. Helps
+   prevent a flash of section colour through unloaded photos. Skips
+   transparent PNGs (logos, buckets, splatter, drips, icons). */
+img { background-color: color-mix(in srgb, var(--surface) 70%, transparent); }
+img[src*="logo"], img[src*="splatter"], img[src*="bucket"],
+img[src*="drip"], img[src*="icon"], img[src$=".png"] {
+  background-color: transparent;
+}
+
+/* Anchor jumps land below the sticky header (the header is ~86px).
+   Applied at root so every in-page link benefits. */
+html { scroll-padding-top: 96px; }
+
+/* ============================================================
+   PRINT STYLES — render readable, ink-friendly pages
+   ============================================================ */
+@media print {
+  :root { background: #fff !important; color: #111 !important; }
+  body { background: #fff !important; color: #111 !important; }
+  .site-header, .cp-footer, #cpLoader, .cart-drawer, .nav-backdrop,
+  .lp-marquee-wrap, .lp-scroll-cue, .cp-amb, .lp-feat-deco,
+  .vs-cta-wrap, .skip-to-content { display: none !important; }
+  a { color: #111 !important; text-decoration: underline; }
+  img, .lp-about-bg, .lp-hero-bg { filter: none !important; }
+  .lp-about-bg, .lp-hero-bg-img { display: none !important; }
+  h1, h2, h3 { page-break-after: avoid; }
+  p, blockquote { page-break-inside: avoid; }
+}
