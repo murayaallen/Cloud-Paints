@@ -1756,100 +1756,61 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
 }
 .lp-why-sub em { color: var(--text); font-style: normal; font-weight: 600; }
 
-/* Fan-deck layout — each card reads as a paint chip pulled from a
-   colour fan. Top half is a hand-painted swatch in the card's accent
-   colour; bottom half is the chip caption. No corporate icon tiles. */
+/* Typography-led layout — each card is editorial cover-style: a tiny
+   numeral, an oversized serif lead, and the body paragraph beneath a
+   short rule in the card's accent. No icons, no swatches, no boxes. */
 .lp-why-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: clamp(16px, 1.8vw, 26px);
+  gap: clamp(28px, 3vw, 48px);
 }
 .lp-why-card {
   position: relative;
   display: flex; flex-direction: column;
   background: transparent;
   border: none;
-  border-radius: 0;
-  overflow: hidden;
-  isolation: isolate;
-  transition: transform var(--t-mid);
+  padding: 4px 0 0;
+  border-top: 1px solid var(--border-2);
+  transition: border-color var(--t-mid);
 }
-.lp-why-card:hover { transform: translateY(-6px); }
+.lp-why-card:hover { border-top-color: var(--accent, var(--red-2)); }
 
-/* The swatch — a tall paint chip in the card's accent colour, with a
-   soft hand-mixed gradient (slightly brighter top-left, deeper bottom-
-   right) and a subtle paper-grain. Catalogue numeral top-left, chip
-   name set in caps along the bottom edge. */
-.lp-why-swatch {
-  position: relative;
-  aspect-ratio: 4 / 5;
-  background:
-    radial-gradient(120% 80% at 18% 12%, rgba(255,255,255,0.18), transparent 55%),
-    radial-gradient(140% 120% at 90% 95%, rgba(0,0,0,0.22), transparent 55%),
-    var(--accent, var(--red-2));
-  box-shadow:
-    inset 0 0 0 1px rgba(255,255,255,0.06),
-    0 18px 38px -22px rgba(0,0,0,0.55),
-    0 2px 6px -2px rgba(0,0,0,0.35);
-  display: flex; flex-direction: column;
-  justify-content: space-between;
-  padding: 18px;
-  color: rgba(255,255,255,0.92);
-  transition: transform var(--t-mid), box-shadow var(--t-mid);
-}
-/* Faint paper grain so it doesn't read as flat CSS colour */
-.lp-why-swatch::after {
-  content:""; position: absolute; inset: 0;
-  background-image:
-    repeating-linear-gradient(135deg,
-      rgba(255,255,255,0.025) 0 2px,
-      transparent 2px 5px);
-  mix-blend-mode: overlay;
-  pointer-events: none;
-}
-.lp-why-card:hover .lp-why-swatch {
-  transform: rotate(-1.2deg) scale(1.02);
-  box-shadow:
-    inset 0 0 0 1px rgba(255,255,255,0.08),
-    0 26px 52px -22px rgba(0,0,0,0.6),
-    0 4px 10px -2px rgba(0,0,0,0.4);
-}
+/* Tiny catalogue mark — sits above the lead, in the accent colour */
 .lp-why-num {
-  font-family: var(--serif);
-  font-style: italic;
-  font-weight: 300;
-  font-size: clamp(2rem, 3vw, 2.6rem);
-  line-height: 1;
-  letter-spacing: -0.02em;
-  opacity: 0.78;
-}
-.lp-why-chipname {
+  display: block;
   font-family: 'Inter', system-ui, sans-serif;
-  font-size: 10.5px;
+  font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  opacity: 0.78;
-  align-self: flex-end;
+  color: var(--accent, var(--red-2));
+  margin: 18px 0 22px;
 }
 
-/* Body sits beneath the chip — generous whitespace, editorial type */
-.lp-why-body { padding: 22px 4px 0; }
-.lp-why-card h3 {
+/* The big lead — serif, oversized, italic accent word does the colour.
+   Sets the typographic tone of the whole section. */
+.lp-why-lead {
   font-family: var(--serif);
-  font-size: clamp(1.32rem, 1.8vw, 1.55rem);
-  line-height: 1.18;
-  letter-spacing: -0.012em;
+  font-size: clamp(2.1rem, 3.4vw, 3.2rem);
+  line-height: 0.98;
+  letter-spacing: -0.025em;
   font-weight: 400;
-  margin: 0 0 12px;
   color: var(--text);
+  margin: 0 0 clamp(20px, 2.4vw, 28px);
+  max-width: 12ch;
 }
-.lp-why-card h3 em { color: var(--accent, var(--red-2)); font-style: italic; }
+.lp-why-lead em {
+  color: var(--accent, var(--red-2));
+  font-style: italic;
+  font-weight: 400;
+}
+
 .lp-why-card p {
   color: var(--text-2);
-  font-size: 0.96rem;
+  font-size: 0.98rem;
   line-height: 1.65;
   margin: 0;
+  max-width: 32ch;
 }
 
 @media (max-width: 1023px) {
@@ -2029,26 +1990,17 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
   }
 }
 
-/* Why-Cloud-Paints fan-deck on mobile: chip beside copy, not above */
+/* Why-Cloud-Paints editorial cards on mobile: tighten the lead so the
+   serif stays oversized but doesn't push the body off-screen. */
 @media (max-width: 560px) {
-  .lp-why-card {
-    flex-direction: row;
-    gap: 16px;
-    align-items: flex-start;
+  .lp-why-grid { gap: 28px; }
+  .lp-why-num { margin: 14px 0 14px; }
+  .lp-why-lead {
+    font-size: clamp(1.8rem, 8vw, 2.4rem);
+    margin-bottom: 14px;
+    max-width: none;
   }
-  .lp-why-swatch {
-    flex: 0 0 96px;
-    aspect-ratio: 3 / 4;
-    padding: 10px;
-  }
-  .lp-why-num { font-size: 1.55rem; }
-  .lp-why-chipname {
-    font-size: 8px;
-    letter-spacing: 0.14em;
-  }
-  .lp-why-body { padding: 2px 0 0; flex: 1; }
-  .lp-why-card h3 { font-size: 1.18rem; margin-bottom: 8px; }
-  .lp-why-card p  { font-size: 0.94rem; }
+  .lp-why-card p { font-size: 0.96rem; max-width: none; }
 }
 
 /* Featured products grid mobile: card hover→tap presentation */
