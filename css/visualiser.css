@@ -97,6 +97,8 @@ body[data-page="visualiser"] { background: var(--bg); }
           mask-position: center;
   -webkit-mask-repeat: no-repeat;
           mask-repeat: no-repeat;
+  -webkit-mask-mode: luminance;
+          mask-mode: luminance;
   transition: background 0.4s ease, opacity 0.4s ease;
 }
 .vs-paint-overlay::after {
@@ -113,6 +115,8 @@ body[data-page="visualiser"] { background: var(--bg); }
           mask-position: center;
   -webkit-mask-repeat: no-repeat;
           mask-repeat: no-repeat;
+  -webkit-mask-mode: luminance;
+          mask-mode: luminance;
 }
 
 /* Room strip — horizontal scrollable thumbnails */

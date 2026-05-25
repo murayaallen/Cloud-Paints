@@ -79,7 +79,11 @@ def make_mask(im, p, slug):
 
     mask_im = Image.fromarray(grade.astype(np.uint8), 'L')
     mask_im = mask_im.filter(ImageFilter.GaussianBlur(radius=2.5))
-    return mask_im
+    # Save as RGBA (white + alpha = grade) so the PNG works under both
+    # mask-mode: alpha (default match-source) and mask-mode: luminance.
+    rgba = Image.new('RGBA', mask_im.size, (255, 255, 255, 0))
+    rgba.putalpha(mask_im)
+    return rgba
 
 
 def main():
