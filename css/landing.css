@@ -520,7 +520,7 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
 }
 .lp-about-bg {
   position: absolute; inset: 0;
-  background: url(../images/showroom/showroom-wide.jpg) center/cover no-repeat;
+  background: url(../images/inspiration/inspiration-villa-cream-charcoal.jpg) center/cover no-repeat;
   filter: brightness(0.3) saturate(0.65);
   transform: scale(1.04);
   transition: transform 8s ease;
