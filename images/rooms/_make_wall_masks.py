@@ -18,16 +18,16 @@ ROOMS_DIR = os.path.dirname(os.path.abspath(__file__))
 # binary_fill_holes downstream to plug interior holes. Tighter than v3.
 ROOMS = {
     'room-living-modern':  dict(seed=(0.50, 0.20), dist=54, floor=0.75, top=0.00),
-    'room-living-warm':    dict(seed=(0.55, 0.15), dist=50, floor=0.55, top=0.00),
-    'room-bedroom-soft':   dict(seed=(0.78, 0.18), dist=44, floor=0.55, top=0.00),
-    'room-bedroom-suite':  dict(seed=(0.70, 0.18), dist=40, floor=0.62, top=0.00),
-    'room-kitchen-island': dict(seed=(0.50, 0.20), dist=44, floor=0.45, top=0.00),
-    'room-kitchen-warm':   dict(seed=(0.50, 0.20), dist=60, floor=0.55, top=0.00),
-    'room-dining':         dict(seed=(0.50, 0.30), dist=46, floor=0.72, top=0.00),
-    'room-bathroom':       dict(seed=(0.55, 0.18), dist=44, floor=0.62, top=0.00),
-    'room-hallway':        dict(seed=(0.75, 0.30), dist=50, floor=0.78, top=0.00),
-    'room-office':         dict(seed=(0.72, 0.20), dist=50, floor=0.62, top=0.00),
-    'room-child':          dict(seed=(0.45, 0.18), dist=44, floor=0.62, top=0.00),
+    'room-living-warm':    dict(seed=(0.55, 0.15), dist=58, floor=0.55, top=0.00),
+    'room-bedroom-soft':   dict(seed=(0.30, 0.18), dist=95, floor=0.55, top=0.00),
+    'room-bedroom-suite':  dict(seed=(0.70, 0.18), dist=70, floor=0.62, top=0.00),
+    'room-kitchen-island': dict(seed=(0.30, 0.20), dist=95, floor=0.50, top=0.00),
+    'room-kitchen-warm':   dict(seed=(0.55, 0.08), dist=82, floor=0.55, top=0.00),
+    'room-dining':         dict(seed=(0.50, 0.30), dist=64, floor=0.72, top=0.00),
+    'room-bathroom':       dict(seed=(0.55, 0.15), dist=72, floor=0.62, top=0.00),
+    'room-hallway':        dict(seed=(0.75, 0.22), dist=46, floor=0.70, top=0.00),
+    'room-office':         dict(seed=(0.72, 0.25), dist=38, floor=0.58, top=0.00),
+    'room-child':          dict(seed=(0.35, 0.22), dist=64, floor=0.62, top=0.00),
     'room-exterior':       dict(seed=(0.50, 0.45), dist=68, floor=0.80, top=0.05),
 }
 
@@ -72,10 +72,25 @@ def make_mask(im, p, slug):
         seed_label = int(np.argmax(sizes)) + 1
     keep = (labeled == seed_label)
 
-    # Fill any internal holes inside the wall blob — picture frames,
-    # mirrors, lights and other in-wall objects were leaving black
-    # gaps in the mask. This plugs them so the recolour is solid.
-    keep = ndi.binary_fill_holes(keep)
+    # Fill SMALL internal holes inside the wall blob — picture frames,
+    # mirrors, lights, lamp halos. Skip large holes so windows and
+    # doorways stay as openings (otherwise the recolour bleeds onto
+    # whatever's visible through them).
+    inv_lab, n_inv = ndi.label(~keep)
+    # Any background component touching the image border is the real
+    # outside, not a hole.
+    border = set()
+    border.update(np.unique(inv_lab[0, :]).tolist())
+    border.update(np.unique(inv_lab[-1, :]).tolist())
+    border.update(np.unique(inv_lab[:, 0]).tolist())
+    border.update(np.unique(inv_lab[:, -1]).tolist())
+    border.discard(0)
+    max_hole_px = 0.04 * h * w   # 4% of the image — windows are much bigger
+    sizes = ndi.sum(np.ones_like(inv_lab), inv_lab, range(1, n_inv + 1))
+    for lab in range(1, n_inv + 1):
+        if lab in border:        continue
+        if sizes[lab - 1] > max_hole_px: continue
+        keep[inv_lab == lab] = True
 
     # Slightly dilate the final mask so soft edges blend cleanly past
     # the wall boundary instead of stopping a pixel short.
