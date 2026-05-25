@@ -177,6 +177,10 @@
         '</nav>' +
 
         '<div class="cp-actions">' +
+          '<button id="themeToggle" class="icon-btn cp-theme-toggle" aria-label="Toggle light / dark theme" title="Toggle light / dark">' +
+            '<span class="cp-theme-icon cp-theme-icon--sun">' + useIcon('sun') + '</span>' +
+            '<span class="cp-theme-icon cp-theme-icon--moon">' + useIcon('moon') + '</span>' +
+          '</button>' +
           '<button id="navSearch" class="icon-btn hide-sm" aria-label="Search products">' + useIcon('search') + '</button>' +
           '<button id="cartOpen" class="icon-btn" aria-label="Open quote basket">' +
             useIcon('cart') +

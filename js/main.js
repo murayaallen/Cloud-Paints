@@ -34,6 +34,17 @@
     }
   });
 
+  // ---------- Light / dark theme toggle ----------
+  // Inline script in <head> seeds data-theme from localStorage (defaults to
+  // dark) before any styles paint, so there's no flash on load.
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest('#themeToggle')) return;
+    var current = document.documentElement.getAttribute('data-theme') || 'dark';
+    var next = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('cp-theme', next); } catch (_) {}
+  });
+
   // ---------- Legacy reveal (kept for pages not yet migrated) ----------
   // New `[data-anim]` reveals are handled by js/motion.js. This block still
   // runs for legacy `.reveal`/`.stagger` classes on pages we haven't rebuilt

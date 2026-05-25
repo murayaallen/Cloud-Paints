@@ -1756,58 +1756,113 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
 }
 .lp-why-sub em { color: var(--text); font-style: normal; font-weight: 600; }
 
-/* Typography-led layout — each card is editorial cover-style: a tiny
-   numeral, an oversized serif lead, and the body paragraph beneath a
-   short rule in the card's accent. No icons, no swatches, no boxes. */
+/* Editorial layout — big serif lead does the work, plus a softly
+   accent-tinted panel, a paint-drip flourish and an italic word that
+   reveals an underline on hover. Reads as four magazine plates, each
+   in its own colour mood. */
 .lp-why-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: clamp(28px, 3vw, 48px);
+  gap: clamp(20px, 2.4vw, 32px);
 }
 .lp-why-card {
   position: relative;
   display: flex; flex-direction: column;
-  background: transparent;
-  border: none;
-  padding: 4px 0 0;
-  border-top: 1px solid var(--border-2);
-  transition: border-color var(--t-mid);
+  padding: 28px 26px 30px;
+  border-radius: 18px;
+  isolation: isolate;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg,
+      color-mix(in srgb, var(--accent, var(--red-2)) 14%, transparent) 0%,
+      color-mix(in srgb, var(--accent, var(--red-2)) 3%, transparent) 100%),
+    var(--surface);
+  border: 1px solid color-mix(in srgb, var(--accent, var(--red-2)) 22%, var(--border-2));
+  transition: transform var(--t-mid), border-color var(--t-mid),
+              box-shadow var(--t-mid);
 }
-.lp-why-card:hover { border-top-color: var(--accent, var(--red-2)); }
+/* Paint-drip flourish — a soft accent glow blob in the top-right.
+   Adds depth without going corporate-card-shadow. */
+.lp-why-card::before {
+  content:""; position: absolute;
+  top: -60px; right: -50px;
+  width: 180px; height: 180px;
+  background: radial-gradient(circle at center,
+    color-mix(in srgb, var(--accent, var(--red-2)) 55%, transparent) 0%,
+    transparent 70%);
+  filter: blur(28px);
+  opacity: 0.7;
+  pointer-events: none;
+  z-index: -1;
+  transition: transform var(--t-mid), opacity var(--t-mid);
+}
+/* A second flourish — a small accent dot down-left, like a stray drip */
+.lp-why-card::after {
+  content:""; position: absolute;
+  bottom: 18px; left: 14px;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--accent, var(--red-2));
+  opacity: 0.55;
+  box-shadow: 0 0 12px color-mix(in srgb, var(--accent, var(--red-2)) 65%, transparent);
+  transition: transform var(--t-mid), opacity var(--t-mid);
+}
+.lp-why-card:hover {
+  transform: translateY(-6px);
+  border-color: color-mix(in srgb, var(--accent, var(--red-2)) 45%, transparent);
+  box-shadow:
+    0 22px 44px -22px color-mix(in srgb, var(--accent, var(--red-2)) 40%, transparent),
+    0 2px 6px -2px rgba(0,0,0,0.18);
+}
+.lp-why-card:hover::before { transform: scale(1.15); opacity: 0.9; }
+.lp-why-card:hover::after  { transform: scale(1.4); opacity: 0.85; }
 
-/* Tiny catalogue mark — sits above the lead, in the accent colour */
+/* Catalogue mark — a numbered chip in the accent colour */
 .lp-why-num {
-  display: block;
+  display: inline-flex; align-items: center; gap: 8px;
   font-family: 'Inter', system-ui, sans-serif;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--accent, var(--red-2));
-  margin: 18px 0 22px;
+  margin: 0 0 24px;
+}
+.lp-why-num::before {
+  content:""; display: inline-block;
+  width: 22px; height: 2px;
+  background: currentColor;
+  border-radius: 2px;
 }
 
-/* The big lead — serif, oversized, italic accent word does the colour.
-   Sets the typographic tone of the whole section. */
+/* The big lead — serif, oversized; italic accent word picks up a
+   hand-drawn underline on hover. */
 .lp-why-lead {
   font-family: var(--serif);
-  font-size: clamp(2.1rem, 3.4vw, 3.2rem);
-  line-height: 0.98;
-  letter-spacing: -0.025em;
+  font-size: clamp(1.85rem, 2.8vw, 2.55rem);
+  line-height: 1.02;
+  letter-spacing: -0.022em;
   font-weight: 400;
   color: var(--text);
-  margin: 0 0 clamp(20px, 2.4vw, 28px);
+  margin: 0 0 clamp(18px, 2vw, 24px);
   max-width: 12ch;
 }
 .lp-why-lead em {
   color: var(--accent, var(--red-2));
   font-style: italic;
   font-weight: 400;
+  position: relative;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 2px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 0.55s cubic-bezier(.4,0,.2,1);
 }
+.lp-why-card:hover .lp-why-lead em { background-size: 100% 2px; }
 
 .lp-why-card p {
   color: var(--text-2);
-  font-size: 0.98rem;
+  font-size: 0.97rem;
   line-height: 1.65;
   margin: 0;
   max-width: 32ch;
@@ -1993,10 +2048,11 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
 /* Why-Cloud-Paints editorial cards on mobile: tighten the lead so the
    serif stays oversized but doesn't push the body off-screen. */
 @media (max-width: 560px) {
-  .lp-why-grid { gap: 28px; }
-  .lp-why-num { margin: 14px 0 14px; }
+  .lp-why-grid { gap: 18px; }
+  .lp-why-card { padding: 24px 22px; }
+  .lp-why-num { margin: 0 0 16px; }
   .lp-why-lead {
-    font-size: clamp(1.8rem, 8vw, 2.4rem);
+    font-size: clamp(1.7rem, 7.5vw, 2.2rem);
     margin-bottom: 14px;
     max-width: none;
   }
