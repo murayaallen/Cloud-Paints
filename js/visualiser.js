@@ -236,6 +236,20 @@
     });
   }
 
+  function applyRoom(idx) {
+    var r = DATA.rooms[idx];
+    if (!r) return;
+    var img = document.getElementById('vsPreviewImg');
+    if (img) { img.src = r.image; img.alt = r.label; }
+    // Push the wall mask onto the preview frame as a CSS variable —
+    // .vs-paint-overlay (and its ::after) read it via mask-image so the
+    // colour clips strictly to the wall pixels.
+    var frame = document.querySelector('.vs-preview-frame');
+    if (frame && r.mask) {
+      frame.style.setProperty('--wall-mask', 'url(' + r.mask + ')');
+    }
+  }
+
   function renderRooms() {
     var strip = document.getElementById('vsRoomStrip');
     if (!strip) return;
@@ -254,14 +268,15 @@
       var i = parseInt(btn.getAttribute('data-room'), 10);
       if (i === state.roomIdx) return;
       state.roomIdx = i;
-      var img = document.getElementById('vsPreviewImg');
-      if (img) { img.src = DATA.rooms[i].image; img.alt = DATA.rooms[i].label; }
+      applyRoom(i);
       strip.querySelectorAll('.vs-room-chip').forEach(function (b) {
         var on = b === btn;
         b.classList.toggle('is-active', on);
         b.setAttribute('aria-selected', on);
       });
     });
+    // Seed the initial room's mask too
+    applyRoom(state.roomIdx);
   }
 
   // ----------------------------------------------------------

@@ -76,39 +76,43 @@ body[data-page="visualiser"] { background: var(--bg); }
   transition: opacity 0.4s ease;
 }
 .vs-preview-frame img.is-loading { opacity: 0.6; }
-/* Wall-focused recolour: a vertical mask concentrates the paint blend on
-   the upper two-thirds of the frame (where walls live) and fades out
-   across the floor so wood/tile/concrete don't get over-tinted.
-   Two overlays stacked — multiply deepens the colour into shadows,
-   color transfers the hue while preserving the photo's lighting —
-   the combination reads as paint sitting on a real wall.            */
+/* True wall-only recolour. Each room has a hand-tuned alpha-PNG mask
+   defining exactly which pixels are wall. The mask is set on the
+   preview frame as a CSS variable (--wall-mask) when the room changes;
+   the overlay reads it via mask-image, then applies multiply blend so
+   the wall takes the colour while preserving the photo's shadows and
+   highlights. The ::after layer adds a softer "color" pass for hue
+   transfer that keeps the wall's natural light. */
 .vs-paint-overlay {
   position: absolute; inset: 0;
   background: #b25a44;
   mix-blend-mode: multiply;
-  opacity: 0.55;
+  opacity: 0.72;
   pointer-events: none;
-  -webkit-mask-image: linear-gradient(180deg,
-    rgba(0,0,0,1) 0%,
-    rgba(0,0,0,1) 55%,
-    rgba(0,0,0,0.35) 75%,
-    rgba(0,0,0,0) 92%);
-  mask-image: linear-gradient(180deg,
-    rgba(0,0,0,1) 0%,
-    rgba(0,0,0,1) 55%,
-    rgba(0,0,0,0.35) 75%,
-    rgba(0,0,0,0) 92%);
+  -webkit-mask-image: var(--wall-mask, none);
+          mask-image: var(--wall-mask, none);
+  -webkit-mask-size: 100% 100%;
+          mask-size: 100% 100%;
+  -webkit-mask-position: center;
+          mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
   transition: background 0.4s ease, opacity 0.4s ease;
 }
-/* A second overlay using "color" blend transfers the hue across the
-   wall area while keeping the photo's natural light + shade —
-   the wall reads as freshly painted, not stained. */
 .vs-paint-overlay::after {
   content: "";
   position: absolute; inset: 0;
   background: inherit;
   mix-blend-mode: color;
-  opacity: 0.6;
+  opacity: 0.55;
+  -webkit-mask-image: var(--wall-mask, none);
+          mask-image: var(--wall-mask, none);
+  -webkit-mask-size: 100% 100%;
+          mask-size: 100% 100%;
+  -webkit-mask-position: center;
+          mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
 }
 
 /* Room strip — horizontal scrollable thumbnails */

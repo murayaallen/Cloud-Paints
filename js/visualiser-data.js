@@ -7,18 +7,18 @@
 
 window.CLOUD_VISUALISER = {
   rooms: [
-    { slug: 'living-modern',  label: 'Modern living',     image: 'images/rooms/room-living-modern.jpg' },
-    { slug: 'living-warm',    label: 'Warm living',       image: 'images/rooms/room-living-warm.jpg' },
-    { slug: 'bedroom-soft',   label: 'Calm bedroom',      image: 'images/rooms/room-bedroom-soft.jpg' },
-    { slug: 'bedroom-suite',  label: 'Main bedroom',      image: 'images/rooms/room-bedroom-suite.jpg' },
-    { slug: 'kitchen-island', label: 'Kitchen · island',  image: 'images/rooms/room-kitchen-island.jpg' },
-    { slug: 'kitchen-warm',   label: 'Family kitchen',    image: 'images/rooms/room-kitchen-warm.jpg' },
-    { slug: 'dining',         label: 'Dining room',       image: 'images/rooms/room-dining.jpg' },
-    { slug: 'bathroom',       label: 'Bathroom',          image: 'images/rooms/room-bathroom.jpg' },
-    { slug: 'hallway',        label: 'Hallway',           image: 'images/rooms/room-hallway.jpg' },
-    { slug: 'office',         label: 'Home office',       image: 'images/rooms/room-office.jpg' },
-    { slug: 'child',          label: "Child's bedroom",   image: 'images/rooms/room-child.jpg' },
-    { slug: 'exterior',       label: 'Exterior',          image: 'images/rooms/room-exterior.jpg' },
+    { slug: 'living-modern',  label: 'Modern living',     image: 'images/rooms/room-living-modern.jpg',  mask: 'images/rooms/room-living-modern-mask.png' },
+    { slug: 'living-warm',    label: 'Warm living',       image: 'images/rooms/room-living-warm.jpg',    mask: 'images/rooms/room-living-warm-mask.png' },
+    { slug: 'bedroom-soft',   label: 'Calm bedroom',      image: 'images/rooms/room-bedroom-soft.jpg',   mask: 'images/rooms/room-bedroom-soft-mask.png' },
+    { slug: 'bedroom-suite',  label: 'Main bedroom',      image: 'images/rooms/room-bedroom-suite.jpg',  mask: 'images/rooms/room-bedroom-suite-mask.png' },
+    { slug: 'kitchen-island', label: 'Kitchen · island',  image: 'images/rooms/room-kitchen-island.jpg', mask: 'images/rooms/room-kitchen-island-mask.png' },
+    { slug: 'kitchen-warm',   label: 'Family kitchen',    image: 'images/rooms/room-kitchen-warm.jpg',   mask: 'images/rooms/room-kitchen-warm-mask.png' },
+    { slug: 'dining',         label: 'Dining room',       image: 'images/rooms/room-dining.jpg',         mask: 'images/rooms/room-dining-mask.png' },
+    { slug: 'bathroom',       label: 'Bathroom',          image: 'images/rooms/room-bathroom.jpg',       mask: 'images/rooms/room-bathroom-mask.png' },
+    { slug: 'hallway',        label: 'Hallway',           image: 'images/rooms/room-hallway.jpg',        mask: 'images/rooms/room-hallway-mask.png' },
+    { slug: 'office',         label: 'Home office',       image: 'images/rooms/room-office.jpg',         mask: 'images/rooms/room-office-mask.png' },
+    { slug: 'child',          label: "Child's bedroom",   image: 'images/rooms/room-child.jpg',          mask: 'images/rooms/room-child-mask.png' },
+    { slug: 'exterior',       label: 'Exterior',          image: 'images/rooms/room-exterior.jpg',       mask: 'images/rooms/room-exterior-mask.png' },
   ],
 
   // Popular-shades rail — Kenya-flavoured inspiration. Just a starting
