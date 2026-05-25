@@ -519,13 +519,15 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
   position: relative; overflow: hidden;
 }
 .lp-about-bg {
-  position: absolute; inset: 0;
+  position: absolute;
+  /* Overscan vertically so the parallax drift has somewhere to slide
+     into without revealing the dark section behind it. */
+  top: -18%; bottom: -18%;
+  left: 0; right: 0;
   background: url(../images/inspiration/inspiration-villa-cream-charcoal.jpg) center/cover no-repeat;
   filter: brightness(0.3) saturate(0.65);
-  transform: scale(1.04);
-  transition: transform 8s ease;
+  will-change: transform;
 }
-.lp-about:hover .lp-about-bg { transform: scale(1.0); }
 .lp-about::before {
   content:""; position: absolute; inset:0;
   background: linear-gradient(160deg, rgba(10,8,20,0.75) 0%, rgba(10,8,20,0.45) 50%, rgba(10,8,20,0.82) 100%);
