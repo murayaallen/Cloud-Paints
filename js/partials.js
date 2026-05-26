@@ -172,8 +172,7 @@
           '<a href="projects.html" class="cp-link ' + isActive('projects') + '"><span>Projects</span></a>' +
           '<a href="services.html" class="cp-link ' + isActive('services') + '"><span>Services</span></a>' +
           '<a href="about.html" class="cp-link ' + isActive('about') + '"><span>About</span></a>' +
-          '<a href="contact.html#faq" class="cp-link"><span>FAQ</span></a>' +
-          '<a href="contact.html" class="cp-link ' + isActive('contact') + '"><span>Contact</span></a>' +
+          '<a href="contact.html" class="cp-link ' + isActive('faq') + ' ' + isActive('contact') + '"><span>FAQ &amp; Contact</span></a>' +
         '</nav>' +
 
         '<div class="cp-actions">' +
@@ -223,8 +222,7 @@
         '<a href="projects.html" class="md-link ' + isActive('projects') + '"><em>Projects</em>' + useIcon('arrow-up-right', 'md-arr', 18) + '</a>' +
         '<a href="services.html" class="md-link ' + isActive('services') + '"><em>Services</em>' + useIcon('arrow-up-right', 'md-arr', 18) + '</a>' +
         '<a href="about.html" class="md-link ' + isActive('about') + '"><em>About</em>' + useIcon('arrow-up-right', 'md-arr', 18) + '</a>' +
-        '<a href="contact.html#faq" class="md-link"><em>FAQ</em>' + useIcon('arrow-up-right', 'md-arr', 18) + '</a>' +
-        '<a href="contact.html" class="md-link ' + isActive('contact') + '"><em>Contact</em>' + useIcon('arrow-up-right', 'md-arr', 18) + '</a>' +
+        '<a href="contact.html" class="md-link ' + isActive('faq') + ' ' + isActive('contact') + '"><em>FAQ &amp; Contact</em>' + useIcon('arrow-up-right', 'md-arr', 18) + '</a>' +
       '</nav>' +
       '<div class="md-cta">' +
         '<a href="https://wa.me/254741405481" class="btn btn-wa md-wa" target="_blank" rel="noopener">' +
@@ -302,8 +300,7 @@
     '        <ul>' +
     '          <li><a href="about.html">Our story</a></li>' +
     '          <li><a href="about.html#certifications">Quality &amp; standards</a></li>' +
-    '          <li><a href="contact.html#faq">FAQ</a></li>' +
-    '          <li><a href="contact.html">Get in touch</a></li>' +
+    '          <li><a href="contact.html">FAQ &amp; contact</a></li>' +
     '        </ul>' +
     '      </div>' +
     '      <div class="footer-col">' +
