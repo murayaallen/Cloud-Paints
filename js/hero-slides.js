@@ -66,6 +66,38 @@
       color: '#a83a1c',
       name:  'Iris Plastic Emulsion',
     },
+    // 7 — Silk Vinyl pairs again ↔ navy study (deep brand-navy interior)
+    {
+      type:  'bucket',
+      src:   'images/buckets/hero/silk-vinyl.png',
+      bg:    'images/inspiration/inspiration-navy-study.jpg',
+      color: '#1d1e51',
+      name:  'Silk Vinyl',
+    },
+    // 8 — Weatherguard pairs again ↔ a real Cloud Paints project
+    {
+      type:  'bucket',
+      src:   'images/buckets/hero/weatherguard.png',
+      bg:    'images/projects/pazuri-villa.jpg',
+      color: '#c4870a',
+      name:  'Weatherguard · Pazuri Villa',
+    },
+    // 9 — Premium Emulsion pairs again ↔ warm-white kitchen
+    {
+      type:  'bucket',
+      src:   'images/buckets/hero/mockup-b.png',
+      bg:    'images/inspiration/inspiration-warm-white-kitchen.jpg',
+      color: '#7a8c70',
+      name:  'Premium Emulsion',
+    },
+    // 10 — Gloss Enamel pairs again ↔ mist bathroom (gloss trim suits)
+    {
+      type:  'bucket',
+      src:   'images/buckets/hero/gloss-enamel.png',
+      bg:    'images/inspiration/inspiration-mist-bathroom.jpg',
+      color: '#5d8aa8',
+      name:  'Gloss Enamel',
+    },
   ];
 
   // Brand slide holds longer (let the effects breathe);
