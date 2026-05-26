@@ -1734,10 +1734,11 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
 .lp-why::before {
   content:""; position: absolute; inset: 0;
   background:
-    radial-gradient(40% 50% at 15% 25%, rgba(217,40,67,0.10), transparent 60%),
-    radial-gradient(45% 55% at 88% 80%, rgba(31,64,136,0.10), transparent 60%),
-    /* Darken the photo so the value cards retain contrast */
-    linear-gradient(rgba(11,10,16,0.82), rgba(11,10,16,0.82));
+    radial-gradient(40% 50% at 15% 25%, rgba(217,40,67,0.08), transparent 60%),
+    radial-gradient(45% 55% at 88% 80%, rgba(31,64,136,0.08), transparent 60%),
+    /* A lighter scrim so the apartments photo reads as the surface
+       it is, while the value cards still hold their contrast. */
+    linear-gradient(rgba(11,10,16,0.48), rgba(11,10,16,0.48));
   z-index: 0;
   pointer-events: none;
 }
