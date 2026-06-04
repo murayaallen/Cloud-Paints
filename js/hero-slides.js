@@ -50,12 +50,13 @@
       color: '#c4870a',
       name:  'Premium Emulsion',
     },
-    // 5 — Gloss Enamel (trim) ↔ soft-blue coastal bedroom
+    // 5 — Gloss Enamel (trim · doors · woodwork) ↔ rust hallway —
+    // a hallway with painted doors / frames reads true to the product
     {
       type:  'bucket',
       src:   'images/buckets/hero/gloss-enamel.png',
-      bg:    'images/inspiration/inspiration-coastal-bedroom.jpg',
-      color: '#1a56db',
+      bg:    'images/inspiration/inspiration-rust-hallway.jpg',
+      color: '#963318',
       name:  'Gloss Enamel',
     },
     // 6 — Iris Emulsion (mockup-c, interior) ↔ rich terracotta living
