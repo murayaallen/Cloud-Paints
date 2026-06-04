@@ -59,12 +59,14 @@
       color: '#963318',
       name:  'Gloss Enamel',
     },
-    // 6 — Iris Emulsion (mockup-c, interior) ↔ rich terracotta living
+    // 6 — Iris Plastic Emulsion (interior) ↔ deep navy living room.
+    // The richly painted feature wall reads truer to a premium interior
+    // emulsion than the previous terracotta pairing.
     {
       type:  'bucket',
       src:   'images/buckets/hero/mockup-c.png',
-      bg:    'images/inspiration/inspiration-terracotta-living.jpg',
-      color: '#a83a1c',
+      bg:    'images/inspiration/inspiration-rift-cobalt-living.jpg',
+      color: '#1f4088',
       name:  'Iris Plastic Emulsion',
     },
     // 7 — Weatherguard pairs again ↔ a real Cloud Paints project
@@ -75,21 +77,50 @@
       color: '#c4870a',
       name:  'Weatherguard · Pazuri Villa',
     },
-    // 8 — Premium Emulsion pairs again ↔ warm-white kitchen
+    // 8 — Silk Vinyl second pass ↔ soft-blue coastal bedroom.
+    // The painted feature wall and silky finish make this a clean
+    // Silk Vinyl scene (was previously mis-paired with Gloss Enamel).
+    {
+      type:  'bucket',
+      src:   'images/buckets/hero/silk-vinyl.png',
+      bg:    'images/inspiration/inspiration-coastal-bedroom.jpg',
+      color: '#5d8aa8',
+      name:  'Silk Vinyl',
+    },
+    // 9 — Vinyl Matt (matte interior emulsion) ↔ bright-ceiling kitchen.
+    // The bright high ceiling shows off a flat matte finish.
     {
       type:  'bucket',
       src:   'images/buckets/hero/mockup-b.png',
       bg:    'images/inspiration/inspiration-warm-white-kitchen.jpg',
       color: '#7a8c70',
-      name:  'Premium Emulsion',
+      name:  'Vinyl Matt',
     },
-    // 9 — Gloss Enamel pairs again ↔ mist bathroom (gloss trim suits)
+    // 10 — Clear Varnish / Wood Care ↔ ochre dining room with wood
+    // table + warm panel woodwork up front.
+    {
+      type:  'bucket',
+      src:   'images/buckets/hero/clear-varnish.png',
+      bg:    'images/inspiration/inspiration-ochre-dining.jpg',
+      color: '#c4870a',
+      name:  'Clear Varnish',
+    },
+    // 11 — Gloss Enamel pairs again ↔ mist bathroom (gloss trim suits)
     {
       type:  'bucket',
       src:   'images/buckets/hero/gloss-enamel.png',
       bg:    'images/inspiration/inspiration-mist-bathroom.jpg',
       color: '#5d8aa8',
       name:  'Gloss Enamel',
+    },
+    // 12 — Road Marking Paint ↔ commercial project with hard-surface
+    // approaches / parking
+    {
+      type:  'bucket',
+      src:   'images/buckets/hero/road-marking.png',
+      bg:    'images/projects/mlolongo-commercial.jpg',
+      color: '#d92843',
+      name:  'Road Marking Paint',
     },
   ];
 

@@ -297,14 +297,25 @@ p { color: var(--text-2); }
 .cp-logo-name .c-blue { color: var(--cp-logo-blue); }
 .cp-logo-name .c-red  { color: var(--cp-logo-red); font-style: italic; }
 .cp-logo-tag {
-  display: flex; align-items: center; gap: 0.32em;
+  display: flex; align-items: center; gap: 0.36em;
   font-family: 'Montserrat', 'Inter', system-ui, sans-serif;
-  font-size: 10.5px; font-weight: 800; font-style: italic;
-  letter-spacing: 0.06em;
+  font-size: 11.5px; font-weight: 800; font-style: italic;
+  letter-spacing: 0.08em;
+  opacity: 1;
 }
 .cp-logo-tag .c-blue { color: var(--cp-logo-blue); }
 .cp-logo-tag .c-red  { color: var(--cp-logo-red); }
 .cp-logo-tag .dot { color: var(--cp-logo-red); font-weight: 800; }
+/* Dark mode: brighten the navy in the slogan so 'Buy it · Love it'
+   reads cleanly against the dark navbar. The wordmark above stays on
+   the true logo navy; only the smaller tagline lifts. */
+[data-theme="dark"] .cp-logo-tag .c-blue {
+  color: #b9c3ee;
+  text-shadow: 0 0 10px rgba(185,195,238,0.35);
+}
+[data-theme="dark"] .cp-logo-tag .c-red {
+  text-shadow: 0 0 8px rgba(225,31,41,0.3);
+}
 /* Keep CLOUD on the true logo navy (#1D1E51) in dark mode too —
    matches the hero stage and loader. Add a soft cream glow so it
    reads cleanly against the dark header. */
@@ -313,9 +324,7 @@ p { color: var(--text-2); }
     0 0 12px rgba(255,255,255,0.55),
     0 0 26px rgba(255,255,255,0.28);
 }
-[data-theme="dark"] .cp-logo-tag .c-blue {
-  text-shadow: 0 0 8px rgba(255,255,255,0.4);
-}
+/* (slogan dark-mode treatment now defined alongside .cp-logo-tag above) */
 
 /* ---------- Theme toggle button (sun / moon) ---------- */
 .cp-theme-toggle { position: relative; }
@@ -1390,7 +1399,38 @@ footer::after {
 .footer-brand { max-width: 360px; }
 .footer-brand h3 { color: #fff; font-size: 2.4rem; margin-bottom: 16px; }
 .footer-brand h3 em { color: var(--gold-2); }
-.footer-brand p { color: rgba(255,255,255,0.65); font-size: 14.5px; margin-bottom: 20px; }
+.footer-brand p { color: rgba(255,255,255,0.65); font-size: 14.5px; margin-bottom: 16px; }
+/* KEBS Standardization Mark — communicates certified quality. The S-mark
+   SVG is rendered inline; container shows the mark beside a short label. */
+.cp-kebs {
+  display: inline-flex; align-items: center; gap: 12px;
+  margin-bottom: 22px;
+  padding: 10px 14px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 10px;
+  color: #f5f1e8;
+}
+.cp-kebs-mark {
+  display: inline-grid; place-items: center;
+  color: var(--gold-2, #b8934a);
+  flex-shrink: 0;
+}
+.cp-kebs-mark svg { display: block; }
+.cp-kebs-text { display: flex; flex-direction: column; gap: 2px; line-height: 1.1; }
+.cp-kebs-text strong {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 12.5px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff;
+}
+.cp-kebs-text span {
+  font-size: 11px;
+  color: rgba(255,255,255,0.72);
+  letter-spacing: 0.02em;
+}
 .socials { display: flex; gap: 10px; }
 .socials a {
   width: 40px; height: 40px;

@@ -70,23 +70,24 @@ body[data-page="home"] .lp-seam::before {
     radial-gradient(60% 70% at 60% 50%, rgba(232,163,23,0.18), transparent 70%),
     radial-gradient(40% 50% at 20% 80%, rgba(217,40,67,0.15), transparent 70%);
 }
-/* Directional scrim — only darken behind the copy column (left), let the
-   room photo breathe on the right where the bucket floats. No vignette,
-   no grain — the photo speaks for itself. */
+/* Directional scrim — only darken behind the copy column (left), let
+   the room photo breathe on the right where the bucket floats.
+   Lightened from the previous heavy scrim so the photos read brighter
+   and more vibrant; left side keeps enough contrast for the headline. */
 .lp-hero-bg::after {
   content:""; position:absolute; inset:0;
   background:
     linear-gradient(90deg,
-      rgba(11,10,16,0.86) 0%,
-      rgba(11,10,16,0.62) 28%,
-      rgba(11,10,16,0.30) 55%,
-      rgba(11,10,16,0.06) 82%,
+      rgba(11,10,16,0.66) 0%,
+      rgba(11,10,16,0.42) 28%,
+      rgba(11,10,16,0.16) 55%,
+      rgba(11,10,16,0.02) 82%,
       rgba(11,10,16,0.00) 100%),
     linear-gradient(180deg,
-      rgba(11,10,16,0.18) 0%,
+      rgba(11,10,16,0.10) 0%,
       transparent 32%,
       transparent 68%,
-      rgba(11,10,16,0.28) 100%);
+      rgba(11,10,16,0.18) 100%);
 }
 .lp-hero::before {
   content:""; position:absolute; inset:-20%;

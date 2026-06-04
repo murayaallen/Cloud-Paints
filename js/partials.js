@@ -269,7 +269,13 @@
     '    <div class="footer-grid">' +
     '      <div class="footer-brand">' +
     '        <h3>Cloud <em>Paints.</em></h3>' +
-    '        <p>Premium decorative paints, coatings and solvents made in Kenya. Certified quality, trusted by contractors and homeowners across all 47 counties.</p>' +
+    '        <p>Premium decorative paints, coatings and solvents made in Kenya. Trusted by contractors and homeowners across all 47 counties.</p>' +
+    '        <div class="cp-kebs" title="KEBS Standardization Mark — certified quality" aria-label="KEBS Standardization Mark — certified quality">' +
+    '          <span class="cp-kebs-mark" aria-hidden="true">' +
+    '            <svg viewBox="0 0 36 36" width="34" height="34"><circle cx="18" cy="18" r="16" fill="none" stroke="currentColor" stroke-width="2"/><text x="18" y="16.5" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-weight="900" font-size="12" fill="currentColor">S</text><text x="18" y="27" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-weight="700" font-size="4.6" letter-spacing="0.5" fill="currentColor">KEBS</text></svg>' +
+    '          </span>' +
+    '          <div class="cp-kebs-text"><strong>KEBS Certified</strong><span>Standardization mark of quality</span></div>' +
+    '        </div>' +
     '        <div class="socials">' +
     '          <a href="https://www.instagram.com/cloudpaintskenya" target="_blank" rel="noopener" aria-label="Instagram">' +
     '            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>' +
