@@ -125,6 +125,7 @@
     var exteriors = byCat(['exterior', 'specialty']);
     var enamels   = byCat(['enamel']);
     var woodSolv  = byCat(['wood', 'solvent']);
+    var textures  = byCat(['texture']);
 
     return '<div class="cp-mega" role="menu" aria-label="Products">' +
       '<div class="cp-mega-grid">' +
@@ -132,8 +133,10 @@
         megaColumn('Exterior & Specialty', exteriors) +
         megaColumn('Gloss Enamels', enamels) +
         megaColumn('Wood Care & Solvents', woodSolv) +
+        megaColumn('Decorative Textures', textures) +
       '</div>' +
       '<div class="cp-mega-foot">' +
+        '<a href="textures.html" class="cp-mega-all cp-mega-feature">New &mdash; Decorative Texture Collection ' + useIcon('arrow-right', 'arr', 16) + '</a>' +
         '<a href="products.html" class="cp-mega-all">View the full catalogue ' + useIcon('arrow-right', 'arr', 16) + '</a>' +
       '</div>' +
     '</div>';
@@ -167,6 +170,7 @@
             '</a>' +
             buildMega() +
           '</div>' +
+          '<a href="textures.html" class="cp-link ' + isActive('textures') + '"><span>Textures</span></a>' +
           '<a href="inspiration.html" class="cp-link ' + isActive('inspiration') + '"><span>Inspiration</span></a>' +
           '<a href="visualiser.html" class="cp-link ' + isActive('visualiser') + '"><span>Visualiser</span></a>' +
           '<a href="projects.html" class="cp-link ' + isActive('projects') + '"><span>Projects</span></a>' +
@@ -215,8 +219,10 @@
             '<a href="products.html#wood">Wood care</a>' +
             '<a href="products.html#solvent">Solvents</a>' +
             '<a href="products.html#undercoat">Primers / Undercoats</a>' +
+            '<a href="products.html#texture">Decorative textures</a>' +
           '</div>' +
         '</details>' +
+        '<a href="textures.html" class="md-link ' + isActive('textures') + '"><em>Texture Collection</em>' + useIcon('arrow-up-right', 'md-arr', 18) + '</a>' +
         '<a href="inspiration.html" class="md-link ' + isActive('inspiration') + '"><em>Inspiration</em>' + useIcon('arrow-up-right', 'md-arr', 18) + '</a>' +
         '<a href="visualiser.html" class="md-link ' + isActive('visualiser') + '"><em>Visualiser</em>' + useIcon('arrow-up-right', 'md-arr', 18) + '</a>' +
         '<a href="projects.html" class="md-link ' + isActive('projects') + '"><em>Projects</em>' + useIcon('arrow-up-right', 'md-arr', 18) + '</a>' +
@@ -284,6 +290,7 @@
     '          <li><a href="products.html#exterior">Exterior coatings</a></li>' +
     '          <li><a href="products.html#enamel">Gloss enamels</a></li>' +
     '          <li><a href="products.html#wood">Wood care</a></li>' +
+    '          <li><a href="textures.html">Texture Collection</a></li>' +
     '        </ul>' +
     '      </div>' +
     '      <div class="footer-col">' +
