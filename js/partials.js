@@ -333,6 +333,15 @@
     '    </div>' +
     '    <div class="footer-base">' +
     '      <span>© 2026 Cloudsent Decor Ltd · Cloud Paints®</span>' +
+    '      <span class="footer-legal-links">' +
+    '        <a href="legal.html#privacy-policy">Privacy</a>' +
+    '        <span aria-hidden="true">·</span>' +
+    '        <a href="legal.html#cookie-policy">Cookies</a>' +
+    '        <span aria-hidden="true">·</span>' +
+    '        <a href="legal.html#service-delivery">Terms</a>' +
+    '        <span aria-hidden="true">·</span>' +
+    '        <a href="legal.html">All policies</a>' +
+    '      </span>' +
     '      <span class="tag">Buy it · Paint it · Love it.</span>' +
     '    </div>' +
     '  </div>' +

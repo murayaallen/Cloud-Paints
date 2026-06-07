@@ -1,0 +1,202 @@
+/* ============================================================
+   CLOUD PAINTS — Legal page
+   Sticky sidebar TOC + a long single-page document of 13 policies.
+   Prioritises reading over decoration; type, rhythm, scroll-padding.
+   ============================================================ */
+
+/* HERO --------------------------------------------------------- */
+.lg-hero {
+  padding: clamp(80px, 11vw, 140px) 0 clamp(40px, 6vw, 70px);
+  background:
+    radial-gradient(60% 70% at 14% 24%, color-mix(in srgb, var(--red-2) 7%, transparent), transparent 70%),
+    radial-gradient(45% 60% at 90% 80%, color-mix(in srgb, var(--blue-2, #1f4088) 7%, transparent), transparent 70%),
+    var(--bg);
+  border-bottom: 1px solid var(--border-2);
+}
+.lg-hero h1 {
+  font-family: var(--serif);
+  font-size: clamp(2.4rem, 5.4vw, 4.4rem);
+  line-height: 1.0;
+  letter-spacing: -0.025em;
+  font-weight: 400;
+  margin: 16px 0 22px;
+  max-width: 18ch;
+}
+.lg-hero h1 em { color: var(--red-2); font-style: italic; font-weight: 400; }
+.lg-hero .lede {
+  font-size: 1.06rem;
+  line-height: 1.65;
+  color: var(--text-2);
+  max-width: 60ch;
+  margin: 0 0 28px;
+}
+.lg-meta {
+  display: flex; flex-wrap: wrap;
+  gap: 18px;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 12.5px;
+  color: var(--text-2);
+}
+.lg-meta strong { color: var(--text); letter-spacing: 0.04em; }
+
+/* TOC + CONTENT GRID ------------------------------------------ */
+.lg-body { padding: clamp(40px, 6vw, 80px) 0 clamp(80px, 11vw, 140px); }
+.lg-grid {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: clamp(28px, 4vw, 64px);
+  align-items: start;
+}
+
+/* Sticky sidebar TOC */
+.lg-toc {
+  position: sticky;
+  top: 110px;
+  align-self: start;
+}
+.lg-toc-inner {
+  background: var(--surface);
+  border: 1px solid var(--border-2);
+  border-radius: 16px;
+  padding: 20px;
+}
+.lg-toc-eyebrow {
+  display: block;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--red-2);
+  margin-bottom: 14px;
+}
+.lg-toc ol {
+  list-style: none; padding: 0; margin: 0;
+  counter-reset: lg-toc;
+}
+.lg-toc li {
+  counter-increment: lg-toc;
+  margin: 0 0 2px;
+}
+.lg-toc a {
+  display: block;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 13.5px;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--text-2);
+  padding: 8px 10px 8px 28px;
+  border-radius: 8px;
+  position: relative;
+  transition: background-color var(--t-fast), color var(--t-fast);
+  text-decoration: none;
+}
+.lg-toc a::before {
+  content: counter(lg-toc, decimal-leading-zero);
+  position: absolute;
+  left: 8px; top: 8px;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: color-mix(in srgb, var(--text) 35%, transparent);
+}
+.lg-toc a:hover,
+.lg-toc a.is-active {
+  background: color-mix(in srgb, var(--red-2) 10%, transparent);
+  color: var(--text);
+}
+
+/* CONTENT ------------------------------------------------------ */
+.lg-content { min-width: 0; }
+.lg-policy {
+  margin: 0 0 clamp(48px, 6vw, 80px);
+  scroll-margin-top: 100px;
+}
+.lg-policy:first-child { margin-top: 0; }
+.lg-policy h2 {
+  font-family: var(--serif);
+  font-size: clamp(1.7rem, 2.8vw, 2.3rem);
+  line-height: 1.1;
+  letter-spacing: -0.018em;
+  font-weight: 500;
+  color: var(--text);
+  margin: 0 0 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border-2);
+}
+.lg-policy h3 {
+  font-family: var(--serif);
+  font-size: clamp(1.08rem, 1.4vw, 1.22rem);
+  line-height: 1.25;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  color: var(--text);
+  margin: 26px 0 8px;
+}
+.lg-policy p {
+  color: var(--text-2);
+  font-size: 0.98rem;
+  line-height: 1.7;
+  margin: 0 0 14px;
+}
+.lg-policy p strong { color: var(--text); }
+.lg-policy ul {
+  list-style: none; padding: 0;
+  margin: 0 0 18px;
+}
+.lg-policy li {
+  position: relative;
+  color: var(--text-2);
+  font-size: 0.96rem;
+  line-height: 1.6;
+  padding: 4px 0 4px 22px;
+}
+.lg-policy li::before {
+  content: ""; position: absolute;
+  left: 6px; top: 14px;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--red-2) 75%, transparent);
+}
+
+/* FOOTER CARD -------------------------------------------------- */
+.lg-foot-card {
+  margin-top: clamp(40px, 6vw, 64px);
+  padding: clamp(28px, 4vw, 40px);
+  background: var(--surface);
+  border: 1px solid var(--border-2);
+  border-radius: 18px;
+  text-align: center;
+}
+.lg-foot-card h3 {
+  font-family: var(--serif);
+  font-size: clamp(1.4rem, 2.2vw, 1.8rem);
+  line-height: 1.2;
+  font-weight: 500;
+  margin: 0 0 10px;
+  color: var(--text);
+}
+.lg-foot-card p {
+  color: var(--text-2);
+  line-height: 1.6;
+  margin: 0 0 22px;
+  max-width: 56ch;
+  margin-left: auto; margin-right: auto;
+}
+.lg-foot-btns {
+  display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;
+}
+
+/* RESPONSIVE --------------------------------------------------- */
+@media (max-width: 1023px) {
+  .lg-grid { grid-template-columns: 1fr; }
+  .lg-toc {
+    position: static;
+    margin-bottom: 24px;
+  }
+  .lg-toc ol {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 4px;
+  }
+}
