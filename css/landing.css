@@ -1736,15 +1736,54 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
 }
 .lp-why::before {
   content:""; position: absolute; inset: 0;
+  /* Only the soft accent washes remain on the ::before. The dark
+     'film' that used to cover the photo is replaced by the animated
+     block grid below (.lp-why-blocks). */
   background:
-    radial-gradient(40% 50% at 15% 25%, rgba(217,40,67,0.08), transparent 60%),
-    radial-gradient(45% 55% at 88% 80%, rgba(31,64,136,0.08), transparent 60%),
-    /* Pulled back from 0.48 to 0.30 so the apartments photo actually
-       reads as a backdrop, not a black panel. Cards still hold
-       contrast because their own panels carry colour. */
-    linear-gradient(rgba(11,10,16,0.30), rgba(11,10,16,0.30));
+    radial-gradient(40% 50% at 15% 25%, rgba(217,40,67,0.10), transparent 60%),
+    radial-gradient(45% 55% at 88% 80%, rgba(31,64,136,0.10), transparent 60%);
   z-index: 0;
   pointer-events: none;
+}
+
+/* Kinetic block grid — 8×4 dark rectangles overlay the apartments
+   photo. Each block pulses (scaleY → 0, hold, → 1) on a staggered
+   delay so a wave of rectangles continuously sweeps across the
+   section, exposing the photo beneath in slices. Reads as motion. */
+.lp-why-blocks {
+  position: absolute; inset: 0;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  z-index: 0;
+  pointer-events: none;
+  /* A baseline darken so the section never goes too bright between
+     waves — keeps the editorial cards readable. */
+  background: rgba(11,10,16,0.18);
+}
+.lp-why-blocks i {
+  background: rgba(11,10,16,0.62);
+  transform-origin: 50% 50%;
+  will-change: transform, opacity;
+  animation: whyBlockPulse 7.5s cubic-bezier(.65,0,.35,1) infinite;
+  /* Wave delay: --i runs 0..31, so the wave passes left-to-right
+     across the grid then loops. 0.06s per block × 32 blocks = ~1.9s
+     of delay spread, well within the 7.5s cycle. */
+  animation-delay: calc(var(--i, 0) * 0.06s);
+}
+@keyframes whyBlockPulse {
+  0%, 100% { transform: scaleY(1); opacity: 1; }
+  40%      { transform: scaleY(0.05); opacity: 0.05; }
+  60%      { transform: scaleY(0.05); opacity: 0.05; }
+}
+/* Respect reduced motion: hold the blocks at half-opacity instead of
+   animating, so the section still looks intentional but doesn't
+   distract. */
+@media (prefers-reduced-motion: reduce) {
+  .lp-why-blocks i {
+    animation: none;
+    opacity: 0.55;
+  }
 }
 .lp-why > .container { position: relative; z-index: 1; }
 /* Mobile Safari has issues with background-attachment: fixed —
