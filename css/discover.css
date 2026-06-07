@@ -172,11 +172,14 @@
 .dc-art-hero::after {
   content: ""; position: absolute; inset: 0;
   z-index: -1;
+  /* Lifted scrim — only the bottom 35% really needs to darken so the
+     headline reads against the photo. Above that the image breathes. */
   background:
     linear-gradient(180deg,
-      rgba(11,10,16,0.55) 0%,
-      rgba(11,10,16,0.45) 30%,
-      rgba(11,10,16,0.85) 100%);
+      rgba(11,10,16,0.30) 0%,
+      rgba(11,10,16,0.20) 25%,
+      rgba(11,10,16,0.42) 65%,
+      rgba(11,10,16,0.72) 100%);
 }
 .dc-art-hero-inner { max-width: 760px; }
 .dc-back {

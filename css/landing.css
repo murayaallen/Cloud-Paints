@@ -52,8 +52,9 @@ body[data-page="home"] .lp-seam::before {
   opacity: 0;
   transform: scale(1.0);
   /* Crisp and vibrant — sharper contrast and lifted saturation so
-     each photo pops. No motion. */
-  filter: saturate(1.32) contrast(1.16) brightness(1.04);
+     each photo pops. Brightness pushed further so the imagery
+     drives the page instead of the scrim. */
+  filter: saturate(1.32) contrast(1.14) brightness(1.10);
   transition: opacity 0.9s cubic-bezier(.4,0,.2,1);
 }
 .lp-hero-bg-img.hs-active { opacity: 1; }
@@ -72,22 +73,18 @@ body[data-page="home"] .lp-seam::before {
 }
 /* Directional scrim — only darken behind the copy column (left), let
    the room photo breathe on the right where the bucket floats.
-   Lightened from the previous heavy scrim so the photos read brighter
-   and more vibrant; left side keeps enough contrast for the headline. */
+   Lifted again so the imagery reads bright across most of the frame;
+   only the leftmost 22% holds copy contrast. Vertical band removed —
+   the bottom darkening was making the entire section feel like a cave. */
 .lp-hero-bg::after {
   content:""; position:absolute; inset:0;
   background:
     linear-gradient(90deg,
-      rgba(11,10,16,0.66) 0%,
-      rgba(11,10,16,0.42) 28%,
-      rgba(11,10,16,0.16) 55%,
-      rgba(11,10,16,0.02) 82%,
-      rgba(11,10,16,0.00) 100%),
-    linear-gradient(180deg,
-      rgba(11,10,16,0.10) 0%,
-      transparent 32%,
-      transparent 68%,
-      rgba(11,10,16,0.18) 100%);
+      rgba(11,10,16,0.50) 0%,
+      rgba(11,10,16,0.28) 22%,
+      rgba(11,10,16,0.08) 50%,
+      rgba(11,10,16,0.00) 80%,
+      rgba(11,10,16,0.00) 100%);
 }
 .lp-hero::before {
   content:""; position:absolute; inset:-20%;
@@ -526,12 +523,17 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
   top: -18%; bottom: -18%;
   left: 0; right: 0;
   background: url(../images/inspiration/inspiration-villa-cream-charcoal.jpg) center/cover no-repeat;
-  filter: brightness(0.3) saturate(0.65);
+  /* Was brightness(0.3) saturate(0.65) — far too dim, crushed the
+     villa photo into a muddy silhouette. Lifted so the architecture
+     reads. */
+  filter: brightness(0.62) saturate(0.95);
   will-change: transform;
 }
 .lp-about::before {
   content:""; position: absolute; inset:0;
-  background: linear-gradient(160deg, rgba(10,8,20,0.75) 0%, rgba(10,8,20,0.45) 50%, rgba(10,8,20,0.82) 100%);
+  /* Lighter cinematic scrim: left/right corners still hold copy
+     contrast, centre lets the villa breathe. */
+  background: linear-gradient(160deg, rgba(10,8,20,0.55) 0%, rgba(10,8,20,0.20) 50%, rgba(10,8,20,0.62) 100%);
   z-index: 1;
 }
 .lp-about::after {
@@ -1737,9 +1739,10 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
   background:
     radial-gradient(40% 50% at 15% 25%, rgba(217,40,67,0.08), transparent 60%),
     radial-gradient(45% 55% at 88% 80%, rgba(31,64,136,0.08), transparent 60%),
-    /* A lighter scrim so the apartments photo reads as the surface
-       it is, while the value cards still hold their contrast. */
-    linear-gradient(rgba(11,10,16,0.48), rgba(11,10,16,0.48));
+    /* Pulled back from 0.48 to 0.30 so the apartments photo actually
+       reads as a backdrop, not a black panel. Cards still hold
+       contrast because their own panels carry colour. */
+    linear-gradient(rgba(11,10,16,0.30), rgba(11,10,16,0.30));
   z-index: 0;
   pointer-events: none;
 }

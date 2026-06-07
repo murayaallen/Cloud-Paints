@@ -2556,13 +2556,14 @@ html[data-theme="dark"] body::before {
     font-size: clamp(2.4rem, 9vw, 4rem);
   }
   /* Side-gradient hero scrim — switch to vertical on mobile so
-     headline + bucket both sit on darkened ground. */
+     headline + bucket both sit on darkened ground. Lifted so the
+     room photo still reads through the scrim. */
   .lp-hero-bg::after {
     background:
       linear-gradient(180deg,
-        rgba(11,10,16,0.30) 0%,
-        rgba(11,10,16,0.55) 45%,
-        rgba(11,10,16,0.86) 100%) !important;
+        rgba(11,10,16,0.20) 0%,
+        rgba(11,10,16,0.42) 45%,
+        rgba(11,10,16,0.72) 100%) !important;
   }
   [data-theme="light"] .lp-hero-bg::after {
     background:
