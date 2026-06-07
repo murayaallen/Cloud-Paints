@@ -180,6 +180,7 @@
           '<a href="visualiser.html" class="cp-link ' + isActive('visualiser') + '"><span>Visualiser</span></a>' +
           '<a href="projects.html" class="cp-link ' + isActive('projects') + '"><span>Projects</span></a>' +
           '<a href="services.html" class="cp-link ' + isActive('services') + '"><span>Services</span></a>' +
+          '<a href="discover.html" class="cp-link ' + isActive('discover') + '"><span>Discover</span></a>' +
           '<a href="about.html" class="cp-link ' + isActive('about') + '"><span>About</span></a>' +
           '<a href="contact.html" class="cp-link ' + isActive('faq') + ' ' + isActive('contact') + '"><span>FAQ &amp; Contact</span></a>' +
         '</nav>' +
@@ -236,6 +237,7 @@
         '<a href="visualiser.html" class="md-link ' + isActive('visualiser') + '"><em>Visualiser</em>' + useIcon('arrow-up-right', 'md-arr', 18) + '</a>' +
         '<a href="projects.html" class="md-link ' + isActive('projects') + '"><em>Projects</em>' + useIcon('arrow-up-right', 'md-arr', 18) + '</a>' +
         '<a href="services.html" class="md-link ' + isActive('services') + '"><em>Services</em>' + useIcon('arrow-up-right', 'md-arr', 18) + '</a>' +
+        '<a href="discover.html" class="md-link ' + isActive('discover') + '"><em>Discover</em>' + useIcon('arrow-up-right', 'md-arr', 18) + '</a>' +
         '<a href="about.html" class="md-link ' + isActive('about') + '"><em>About</em>' + useIcon('arrow-up-right', 'md-arr', 18) + '</a>' +
         '<a href="contact.html" class="md-link ' + isActive('faq') + ' ' + isActive('contact') + '"><em>FAQ &amp; Contact</em>' + useIcon('arrow-up-right', 'md-arr', 18) + '</a>' +
       '</nav>' +
@@ -315,6 +317,7 @@
     '          <li><a href="visualiser.html">Colour Visualiser</a></li>' +
     '          <li><a href="projects.html">Projects</a></li>' +
     '          <li><a href="services.html">Painting services</a></li>' +
+    '          <li><a href="discover.html">Discover</a></li>' +
     '        </ul>' +
     '      </div>' +
     '      <div class="footer-col">' +
