@@ -122,6 +122,16 @@
       color: '#d92843',
       name:  'Road Marking Paint',
     },
+    // 13 — Roof Paint ↔ green-roofed Kenyan villa — the tiled roof
+    // is the visual subject of the photo, which makes the product-
+    // photo match read instantly.
+    {
+      type:  'bucket',
+      src:   'images/buckets/hero/weatherguard.png',
+      bg:    'images/projects/green-roof-villa.jpg',
+      color: '#2f5d40',
+      name:  'Roof Paint',
+    },
   ];
 
   // Brand slide holds longer (let the effects breathe);

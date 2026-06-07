@@ -233,4 +233,7 @@ window.CLOUD_SHOWCASE = [
   { image: 'images/projects/new-project-3.jpg', accent: '#c4870a' },
   { image: 'images/projects/new-project-4.jpg', accent: '#1f4088' },
   { image: 'images/projects/new-project-5.jpg', accent: '#166534' },
+  { image: 'images/projects/green-roof-villa.jpg',           accent: '#2f5d40' },
+  { image: 'images/projects/cloud-red-roof-residence.jpg',   accent: '#b25a44' },
+  { image: 'images/projects/cloud-apartments-terracotta.jpg', accent: '#a83a1c' },
 ];
