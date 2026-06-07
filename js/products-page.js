@@ -8,16 +8,30 @@
 (function () {
   'use strict';
 
+  // Categories per the new client taxonomy. A chip matches if the
+  // product's cat equals the key OR its surface_tags contains the key,
+  // so cross-cutting filters (metal, wood) pick up enamels and primers
+  // that double-up as metal/wood paint without duplicating data.
   var CAT_ORDER = [
-    { key: 'all',       label: 'All products' },
-    { key: 'emulsion',  label: 'Emulsions' },
-    { key: 'exterior',  label: 'Exterior' },
-    { key: 'enamel',    label: 'Gloss &amp; Enamel' },
-    { key: 'undercoat', label: 'Primers' },
-    { key: 'wood',      label: 'Wood &amp; Varnish' },
-    { key: 'specialty', label: 'Specialty' },
-    { key: 'solvent',   label: 'Solvents' },
+    { key: 'all',            label: 'All products' },
+    { key: 'interior-wall',  label: 'Interior Wall' },
+    { key: 'exterior-wall',  label: 'Exterior Wall' },
+    { key: 'wood',           label: 'Wood' },
+    { key: 'metal',          label: 'Metal' },
+    { key: 'floor',          label: 'Floor' },
+    { key: 'roof',           label: 'Roof' },
+    { key: 'road',           label: 'Road' },
+    { key: 'enamel',         label: 'Enamel' },
+    { key: 'primer',         label: 'Primer' },
+    { key: 'texture',        label: 'Texture' },
+    { key: 'solvent',        label: 'Solvent' },
   ];
+
+  function productMatchesCat(p, key) {
+    if (p.cat === key) return true;
+    if (Array.isArray(p.surface_tags) && p.surface_tags.indexOf(key) !== -1) return true;
+    return false;
+  }
 
   var SURFACE_LABEL = {
     cement:   'Cement',
@@ -42,7 +56,7 @@
       });
     }
     if (key === 'all') return list.length;
-    return list.filter(function (p) { return p.cat === key; }).length;
+    return list.filter(function (p) { return productMatchesCat(p, key); }).length;
   }
 
   function pillHtml(c, activeKey, surface) {
@@ -183,7 +197,7 @@
         // Only show products that have a real mockup photo —
         // imageless entries are hidden from the catalogue.
         if (!p.image) return false;
-        if (filter !== 'all' && p.cat !== filter) return false;
+        if (filter !== 'all' && !productMatchesCat(p, filter)) return false;
         if (surface && !(Array.isArray(p.surface_tags) && p.surface_tags.indexOf(surface) !== -1)) return false;
         return true;
       });

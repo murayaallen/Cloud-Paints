@@ -121,18 +121,23 @@
     function byCat(cats) {
       return products.filter(function (p) { return cats.indexOf(p.cat) !== -1; });
     }
-    var emulsions = byCat(['emulsion', 'undercoat']);
-    var exteriors = byCat(['exterior', 'specialty']);
+    // New taxonomy: 10 customer-facing buckets (+ solvents kept inside
+    // the Primer column so the mega stays tidy).
+    var interior  = byCat(['interior-wall']);
+    var exterior  = byCat(['exterior-wall']);
+    var wood      = byCat(['wood']);
+    var floorRoof = byCat(['floor', 'roof', 'road']);
     var enamels   = byCat(['enamel']);
-    var woodSolv  = byCat(['wood', 'solvent']);
+    var primers   = byCat(['primer', 'solvent']);
     var textures  = byCat(['texture']);
 
     return '<div class="cp-mega" role="menu" aria-label="Products">' +
       '<div class="cp-mega-grid">' +
-        megaColumn('Interior & Primers', emulsions) +
-        megaColumn('Exterior & Specialty', exteriors) +
-        megaColumn('Gloss Enamels', enamels) +
-        megaColumn('Wood Care & Solvents', woodSolv) +
+        megaColumn('Interior Wall Paints', interior) +
+        megaColumn('Exterior Wall Paints', exterior) +
+        megaColumn('Wood &amp; Enamel', wood.concat(enamels)) +
+        megaColumn('Floor, Roof &amp; Road', floorRoof) +
+        megaColumn('Primers &amp; Solvents', primers) +
         megaColumn('Decorative Textures', textures) +
       '</div>' +
       '<div class="cp-mega-foot">' +
@@ -213,13 +218,17 @@
         '<details class="md-sub">' +
           '<summary>Browse by category ' + useIcon('chevron-down', 'md-caret', 16) + '</summary>' +
           '<div class="md-sub-grid">' +
-            '<a href="products.html#emulsion">Interior emulsions</a>' +
-            '<a href="products.html#exterior">Exterior coatings</a>' +
-            '<a href="products.html#enamel">Gloss enamels</a>' +
-            '<a href="products.html#wood">Wood care</a>' +
-            '<a href="products.html#solvent">Solvents</a>' +
-            '<a href="products.html#undercoat">Primers / Undercoats</a>' +
+            '<a href="products.html#interior-wall">Interior wall paints</a>' +
+            '<a href="products.html#exterior-wall">Exterior wall paints</a>' +
+            '<a href="products.html#wood">Wood paints</a>' +
+            '<a href="products.html#metal">Metal paints</a>' +
+            '<a href="products.html#floor">Floor paints</a>' +
+            '<a href="products.html#roof">Roof paints</a>' +
+            '<a href="products.html#road">Road paints</a>' +
+            '<a href="products.html#enamel">Enamels</a>' +
+            '<a href="products.html#primer">Primers</a>' +
             '<a href="products.html#texture">Decorative textures</a>' +
+            '<a href="products.html#solvent">Solvents</a>' +
           '</div>' +
         '</details>' +
         '<a href="textures.html" class="md-link ' + isActive('textures') + '"><em>Texture Collection</em>' + useIcon('arrow-up-right', 'md-arr', 18) + '</a>' +
@@ -292,10 +301,10 @@
     '        <h5>Browse</h5>' +
     '        <ul>' +
     '          <li><a href="products.html">All products</a></li>' +
-    '          <li><a href="products.html#emulsion">Interior emulsions</a></li>' +
-    '          <li><a href="products.html#exterior">Exterior coatings</a></li>' +
-    '          <li><a href="products.html#enamel">Gloss enamels</a></li>' +
-    '          <li><a href="products.html#wood">Wood care</a></li>' +
+    '          <li><a href="products.html#interior-wall">Interior walls</a></li>' +
+    '          <li><a href="products.html#exterior-wall">Exterior walls</a></li>' +
+    '          <li><a href="products.html#wood">Wood paints</a></li>' +
+    '          <li><a href="products.html#enamel">Enamels</a></li>' +
     '          <li><a href="textures.html">Texture Collection</a></li>' +
     '        </ul>' +
     '      </div>' +
