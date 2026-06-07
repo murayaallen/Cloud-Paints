@@ -2110,6 +2110,123 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
   }
 }
 
+/* ============================================================
+   REAL WALLS OF KENYA — 8 colour cards between Why CP and Featured
+   Products. Each card carries a colour-fill placeholder so the
+   section still reads even before close-up shots are dropped into
+   images/walls/. When an image arrives it sits on top of the fill.
+   ============================================================ */
+.lp-walls {
+  background:
+    radial-gradient(50% 60% at 18% 22%, color-mix(in srgb, var(--red-2) 6%, transparent), transparent 65%),
+    radial-gradient(50% 65% at 88% 78%, color-mix(in srgb, var(--blue-2, #1f4088) 6%, transparent), transparent 65%),
+    var(--bg);
+  padding: clamp(70px, 10vw, 120px) 0;
+  border-top: 1px solid var(--border-2);
+}
+.lp-walls-head {
+  max-width: 720px;
+  margin: 0 auto clamp(40px, 5vw, 60px);
+  text-align: center;
+}
+.lp-walls-head h2 {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 4.4vw, 3.4rem);
+  line-height: 1.02;
+  letter-spacing: -0.022em;
+  font-weight: 400;
+  margin: 14px 0 16px;
+}
+.lp-walls-head h2 em { color: var(--red-2); font-style: italic; font-weight: 400; }
+.lp-walls-lede {
+  color: var(--text-2);
+  font-size: 1.04rem;
+  line-height: 1.6;
+  max-width: 60ch;
+  margin: 0 auto;
+}
+
+.lp-walls-strip {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: clamp(10px, 1.2vw, 18px);
+}
+.lp-wall {
+  position: relative;
+  display: block;
+  aspect-ratio: 3 / 4;
+  border-radius: 14px;
+  overflow: hidden;
+  /* Colour-fill placeholder so the card still reads if the close-up
+     image hasn't been generated yet. Image sits over the fill once it
+     exists; img[onerror] hides itself if 404 so the fill shows. */
+  background: var(--c, var(--red-2));
+  text-decoration: none;
+  color: inherit;
+  transition: transform var(--t-mid), box-shadow var(--t-mid);
+}
+.lp-wall:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 22px 44px -22px color-mix(in srgb, var(--c, var(--red-2)) 60%, transparent);
+}
+.lp-wall img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  background: var(--c);
+  transition: transform 0.7s cubic-bezier(.4,0,.2,1);
+}
+.lp-wall:hover img { transform: scale(1.06); }
+.lp-wall::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 45%, rgba(11,10,16,0.72) 100%);
+  pointer-events: none;
+}
+.lp-wall-meta {
+  position: absolute;
+  left: 14px; right: 14px; bottom: 14px;
+  z-index: 1;
+  display: flex; flex-direction: column;
+  gap: 2px;
+  color: #fff;
+}
+.lp-wall-hex {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+.lp-wall-name {
+  font-family: var(--serif);
+  font-size: clamp(0.95rem, 1.1vw, 1.08rem);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  font-weight: 500;
+}
+
+.lp-walls-foot {
+  margin-top: clamp(28px, 3vw, 40px);
+  text-align: center;
+  color: var(--text-2);
+  font-size: 0.94rem;
+}
+.lp-walls-foot a {
+  color: var(--red-2);
+  font-weight: 600;
+  text-decoration: none;
+  margin-left: 4px;
+}
+.lp-walls-foot a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+@media (max-width: 1100px) {
+  .lp-walls-strip { grid-template-columns: repeat(4, 1fr); }
+}
+@media (max-width: 640px) {
+  .lp-walls-strip { grid-template-columns: repeat(2, 1fr); }
+}
+
 /* Why-Cloud-Paints editorial cards on mobile: tighten the lead so the
    serif stays oversized but doesn't push the body off-screen. */
 @media (max-width: 560px) {

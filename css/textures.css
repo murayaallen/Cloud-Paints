@@ -74,6 +74,75 @@
   margin-top: 8px;
 }
 
+/* SWATCH RIBBON ------------------------------------------------- */
+.tx-swatch-ribbon {
+  background: var(--bg);
+  padding: clamp(40px, 5vw, 64px) 0 0;
+}
+.tx-swatch-eyebrow {
+  display: block;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--red-2);
+  text-align: center;
+  margin-bottom: 18px;
+}
+.tx-swatch-row {
+  list-style: none; padding: 0; margin: 0;
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: clamp(8px, 1vw, 12px);
+}
+.tx-swatch-row li {
+  list-style: none;
+}
+.tx-swatch-row a {
+  position: relative;
+  display: block;
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--c, var(--red-2));
+  text-decoration: none;
+  color: inherit;
+  transition: transform var(--t-mid), box-shadow var(--t-mid);
+}
+.tx-swatch-row a:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 30px -14px color-mix(in srgb, var(--c, var(--red-2)) 60%, transparent);
+}
+.tx-swatch-row img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  background: var(--c);
+}
+.tx-swatch-row a::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 50%, rgba(11,10,16,0.72) 100%);
+  pointer-events: none;
+}
+.tx-swatch-row span {
+  position: absolute;
+  left: 8px; right: 8px; bottom: 8px;
+  z-index: 1;
+  color: #fff;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-align: center;
+}
+@media (max-width: 1100px) {
+  .tx-swatch-row { grid-template-columns: repeat(5, 1fr); }
+}
+@media (max-width: 560px) {
+  .tx-swatch-row { grid-template-columns: repeat(2, 1fr); }
+}
+
 /* FIVE-FAMILIES STRIP ------------------------------------------ */
 .tx-families-strip {
   background: var(--bg);

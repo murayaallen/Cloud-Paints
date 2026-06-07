@@ -214,6 +214,29 @@ body[data-page="services"] { background: var(--bg); }
   background: var(--bg-soft);
   position: relative;
 }
+/* Six-step process visual (full-bleed infographic) — sits between the
+   section header and the five-step text list. The graphic is portrait;
+   capped to a comfortable width so it doesn't dominate the section. */
+.sv-process-visual {
+  max-width: 560px;
+  margin: clamp(28px, 4vw, 48px) auto clamp(36px, 5vw, 56px);
+  padding: 0;
+  position: relative;
+}
+.sv-process-visual img {
+  display: block;
+  width: 100%; height: auto;
+  border-radius: 18px;
+  box-shadow: 0 24px 60px -28px rgba(0,0,0,0.55);
+}
+.sv-process-visual figcaption {
+  margin-top: 14px;
+  text-align: center;
+  font-size: 0.92rem;
+  color: var(--text-2);
+  line-height: 1.5;
+  font-style: italic;
+}
 .sv-process {
   list-style: none;
   padding: 0;
