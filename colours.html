@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>(function(){try{var t=localStorage.getItem("cp-theme")||"dark";document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();</script>
+<title>Colour Collection &mdash; Cloud Paints</title>
+<meta name="description" content="544 curated Cloud Paints shades across 17 spectrum families, plus all six sheen levels and six specialty textures. Mixed to order in any finish, in our Industrial Area, Nairobi factory.">
+<link rel="canonical" href="https://cloudpaints.co.ke/colours.html">
+<meta property="og:site_name" content="Cloud Paints">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://cloudpaints.co.ke/colours.html">
+<meta property="og:title" content="Cloud Paints Colour Collection 2026">
+<meta property="og:description" content="544 curated shades across 17 spectrum families. Buy it. Paint it. Love it.">
+<meta property="og:image" content="https://cloudpaints.co.ke/images/logo.png">
+<meta name="theme-color" content="#d92843">
+<link rel="icon" type="image/png" href="images/logo-icon.png">
+<link rel="apple-touch-icon" href="images/logo-icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700;800&family=Montserrat:ital,wght@0,700;0,800;0,900;1,700;1,800;1,900&display=swap" rel="stylesheet" onerror="this.remove()">
+<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/motion.css">
+<link rel="stylesheet" href="css/colours.css">
+</head>
+<body data-page="colours" class="cp-loading">
+
+<!-- HERO -->
+<section class="cl-hero">
+  <div class="container cl-hero-inner reveal-parent">
+    <div data-anim="up">
+      <span class="eyebrow">Colour Collection &middot; 2026 Edition</span>
+      <h1>544 shades. <em>One book.</em></h1>
+      <p class="lede">A complete paint colour reference from Cloudsent Decor Ltd &mdash; seventeen spectrum families, thirty-two shades each, every code mixable to order in any of our six sheen levels or six specialty textures. Choose a shade, note its name and code, and bring it to us. We match it exactly, tin to tin.</p>
+      <div class="cl-hero-meta">
+        <span><strong>17</strong>&nbsp;families</span>
+        <span><strong>544</strong>&nbsp;shades</span>
+        <span><strong>6</strong>&nbsp;sheen levels</span>
+        <span><strong>6</strong>&nbsp;specialty textures</span>
+      </div>
+    </div>
+  </div>
+  <div class="cl-hero-strip" aria-hidden="true">
+    <!-- Inline 17 family swatches as a brand spectrum strip. Renders from
+         data via the page controller so it stays in sync with the data file. -->
+    <div class="cl-hero-strip-inner" id="clHeroStrip"></div>
+  </div>
+</section>
+
+<!-- READING A COLOUR CODE -->
+<section class="cl-codecard-wrap">
+  <div class="container">
+    <div class="cl-codecard">
+      <div class="cl-codecard-eyebrow">Reading a colour code</div>
+      <div class="cl-codecard-grid">
+        <div class="cl-codecard-code">CP&middot;RD220</div>
+        <div class="cl-codecard-meta">
+          <p><strong>CP</strong> &mdash; Cloud Paints</p>
+          <p><strong>RD</strong> &mdash; family (Reds &amp; Crimsons)</p>
+          <p><strong>220</strong> &mdash; position in family (lower = lighter, higher = deeper)</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAMILY NAV (sticky on desktop) -->
+<nav class="cl-famnav" aria-label="Spectrum families">
+  <div class="container">
+    <ol class="cl-famnav-list" id="clFamNav"></ol>
+  </div>
+</nav>
+
+<!-- FAMILY SECTIONS — rendered by colours-page.js -->
+<section class="cl-families" id="clFamilies"></section>
+
+<!-- FINISHES & TEXTURES -->
+<section class="cl-finishes" id="finishes">
+  <div class="container reveal-parent">
+    <header class="cl-finishes-head" data-anim="up">
+      <span class="eyebrow">One colour &middot; many surfaces</span>
+      <h2>Finishes &amp; <em>Textures.</em></h2>
+      <p>Every shade above is available across six sheen levels and six specialty textures. Choose the finish that matches the room.</p>
+    </header>
+
+    <div class="cl-sheens-head">Sheen levels &mdash; flat to mirror</div>
+    <div class="cl-sheens" id="clSheens"></div>
+
+    <div class="cl-textures-head">Specialty textures</div>
+    <div class="cl-textures" id="clTextures"></div>
+
+    <div class="cl-finishes-guide">
+      <h3>Choosing the right finish</h3>
+      <div class="cl-guide-grid">
+        <div class="cl-guide-card" style="--c:#7d7e80">
+          <h4>Matte / Eggshell</h4>
+          <p>Ceilings, low-traffic walls, bedrooms. Hides surface flaws; softest look.</p>
+        </div>
+        <div class="cl-guide-card" style="--c:#2f5d40">
+          <h4>Satin / Silk</h4>
+          <p>Living rooms, hallways, kids&rsquo; rooms. Gentle glow, wipeable, everyday durable.</p>
+        </div>
+        <div class="cl-guide-card" style="--c:#1f4088">
+          <h4>Semi-Gloss</h4>
+          <p>Kitchens, bathrooms, doors, trim. Moisture-resistant and easy to scrub.</p>
+        </div>
+        <div class="cl-guide-card" style="--c:#c4870a">
+          <h4>High-Gloss</h4>
+          <p>Furniture, feature doors, metal. Hard, mirror-like, maximum protection.</p>
+        </div>
+        <div class="cl-guide-card" style="--c:#963318">
+          <h4>Textured</h4>
+          <p>Feature walls &amp; exteriors. Limewash, suede, sandstone &amp; concrete effects.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cl-cta-wrap">
+  <div class="container reveal-parent">
+    <div class="cl-cta" data-anim="up">
+      <span class="eyebrow">Found your shade?</span>
+      <h2>Bring us the <em>code.</em></h2>
+      <p>Note the colour name and code, then WhatsApp us &mdash; we mix it to order in any of our finishes. For larger orders we deliver Nairobi-wide.</p>
+      <div class="cl-cta-btns">
+        <a class="btn-pour" href="https://wa.me/254741405481?text=Hi%20Cloud%20Paints%2C%20I%27d%20like%20to%20order%20colour%20" target="_blank" rel="noopener">
+          WhatsApp a colour order
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </a>
+        <a class="btn-ghost-d" href="visualiser.html">Preview a shade on a real wall</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COLOUR DETAIL POPOVER -->
+<div class="cl-detail" id="clDetail" aria-hidden="true" role="dialog" aria-label="Colour detail">
+  <div class="cl-detail-backdrop" data-detail-close></div>
+  <div class="cl-detail-panel">
+    <button class="cl-detail-x" type="button" aria-label="Close" data-detail-close>&times;</button>
+    <div class="cl-detail-swatch" id="clDetailSwatch"></div>
+    <div class="cl-detail-meta">
+      <div class="cl-detail-eyebrow" id="clDetailFamily"></div>
+      <h3 class="cl-detail-name" id="clDetailName"></h3>
+      <div class="cl-detail-codes">
+        <span class="cl-detail-code" id="clDetailCode"></span>
+        <span class="cl-detail-hex" id="clDetailHex"></span>
+      </div>
+      <div class="cl-detail-actions">
+        <a class="btn-pour" id="clDetailVisualise" href="visualiser.html">Try it on a wall &rarr;</a>
+        <a class="btn-ghost-d" id="clDetailWA" target="_blank" rel="noopener">WhatsApp this colour</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js" defer></script>
+
+<script src="js/products-data.js"></script>
+<script src="js/colours-data.js"></script>
+<script src="js/icon.js"></script>
+<script src="js/partials.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+<script src="js/motion.js" defer></script>
+<script src="js/colours-page.js" defer></script>
+<script src="js/loader.js"></script>
+
+</body>
+</html>

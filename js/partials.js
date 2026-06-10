@@ -176,6 +176,7 @@
             buildMega() +
           '</div>' +
           '<a href="textures.html" class="cp-link ' + isActive('textures') + '"><span>Textures</span></a>' +
+          '<a href="colours.html" class="cp-link ' + isActive('colours') + '"><span>Colours</span></a>' +
           '<a href="inspiration.html" class="cp-link ' + isActive('inspiration') + '"><span>Inspiration</span></a>' +
           '<a href="visualiser.html" class="cp-link ' + isActive('visualiser') + '"><span>Visualiser</span></a>' +
           '<a href="projects.html" class="cp-link ' + isActive('projects') + '"><span>Projects</span></a>' +
@@ -233,6 +234,7 @@
           '</div>' +
         '</details>' +
         '<a href="textures.html" class="md-link ' + isActive('textures') + '"><em>Texture Collection</em>' + useIcon('arrow-up-right', 'md-arr', 18) + '</a>' +
+        '<a href="colours.html" class="md-link ' + isActive('colours') + '"><em>Colour Collection</em>' + useIcon('arrow-up-right', 'md-arr', 18) + '</a>' +
         '<a href="inspiration.html" class="md-link ' + isActive('inspiration') + '"><em>Inspiration</em>' + useIcon('arrow-up-right', 'md-arr', 18) + '</a>' +
         '<a href="visualiser.html" class="md-link ' + isActive('visualiser') + '"><em>Visualiser</em>' + useIcon('arrow-up-right', 'md-arr', 18) + '</a>' +
         '<a href="projects.html" class="md-link ' + isActive('projects') + '"><em>Projects</em>' + useIcon('arrow-up-right', 'md-arr', 18) + '</a>' +
@@ -308,6 +310,7 @@
     '          <li><a href="products.html#wood">Wood paints</a></li>' +
     '          <li><a href="products.html#enamel">Enamels</a></li>' +
     '          <li><a href="textures.html">Texture Collection</a></li>' +
+    '          <li><a href="colours.html">Colour Collection (544)</a></li>' +
     '        </ul>' +
     '      </div>' +
     '      <div class="footer-col">' +
