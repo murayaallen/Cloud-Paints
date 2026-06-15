@@ -334,7 +334,23 @@
   }
 
   // ----------------------------------------------------------
+  // Seed the initial colour from ?hex= in the URL — used when a user
+  // clicks "Try it on a wall" on the Colour Collection page. The hex
+  // can be passed with or without the leading '#' and in any case.
+  function seedFromUrl() {
+    try {
+      var p = new URLSearchParams(location.search || '');
+      var h = (p.get('hex') || '').replace(/^#/, '').trim();
+      if (!/^[0-9a-f]{6}$/i.test(h)) return;
+      var rgb = hexToRgb(h);
+      if (!rgb) return;
+      var hsv = rgbToHsv(rgb[0], rgb[1], rgb[2]);
+      state.h = hsv.h; state.s = hsv.s; state.v = hsv.v;
+    } catch (_) {}
+  }
+
   function init() {
+    seedFromUrl();
     renderRooms();
     renderQuickPicks();
     bindHexInput();

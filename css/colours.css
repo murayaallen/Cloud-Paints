@@ -394,9 +394,21 @@
   background-size: 8px 8px;
 }
 
+/* Card layout — tile on top, caption beneath. Flex column means the
+   caption sits naturally below the tile with predictable spacing,
+   no negative offsets. */
+.cl-sheen-card, .cl-texture-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.cl-sheen-card > .cl-sheen,
+.cl-texture-card > .cl-texture {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+}
 .cl-sheen-label, .cl-texture-label {
-  position: absolute;
-  left: 0; right: 0; bottom: -28px;
   text-align: center;
   font-family: 'Inter', system-ui, sans-serif;
   font-size: 12px;
@@ -415,27 +427,6 @@
 }
 .cl-sheens, .cl-textures {
   margin-bottom: clamp(38px, 5vw, 60px);
-}
-.cl-sheens > div, .cl-textures > div {
-  /* Make room for the label below the tile */
-  padding-bottom: 44px;
-  background: transparent !important;
-}
-.cl-sheens > div > .cl-sheen,
-.cl-textures > div > .cl-texture {
-  height: 100%;
-}
-
-/* Layout: tile + caption stacked */
-.cl-sheen-card, .cl-texture-card {
-  position: relative;
-  padding-bottom: 44px;
-}
-.cl-sheen-card > .cl-sheen,
-.cl-texture-card > .cl-texture {
-  position: relative;
-  height: auto;
-  aspect-ratio: 1 / 1.05;
 }
 
 @media (max-width: 900px) {

@@ -206,8 +206,20 @@
         if (!a) return;
         links.forEach(function (l) { l.classList.remove('is-active'); });
         a.classList.add('is-active');
-        // Scroll the active chip into view in the nav
-        a.scrollIntoView({ behavior: 'smooth', inline: 'nearest', block: 'nearest' });
+        // Scroll the active chip into view in the nav strip ONLY —
+        // never the page. Compute the horizontal delta inside the
+        // chip's scroll container and apply it directly.
+        var strip = a.parentElement && a.parentElement.parentElement;
+        if (strip && strip.scrollWidth > strip.clientWidth) {
+          var stripRect = strip.getBoundingClientRect();
+          var chipRect = a.getBoundingClientRect();
+          var margin = 24;
+          if (chipRect.left < stripRect.left + margin) {
+            strip.scrollBy({ left: chipRect.left - stripRect.left - margin, behavior: 'smooth' });
+          } else if (chipRect.right > stripRect.right - margin) {
+            strip.scrollBy({ left: chipRect.right - stripRect.right + margin, behavior: 'smooth' });
+          }
+        }
       });
     }, { rootMargin: '-30% 0px -55% 0px', threshold: 0 });
     fams.forEach(function (f) {
