@@ -141,9 +141,23 @@
         megaColumn('Decorative Textures', textures) +
       '</div>' +
       '<div class="cp-mega-foot">' +
-        '<a href="textures.html" class="cp-mega-all cp-mega-feature">New &mdash; Decorative Texture Collection ' + useIcon('arrow-right', 'arr', 16) + '</a>' +
+        '<a href="textures.html" class="cp-mega-all cp-mega-feature">Decorative Texture Collection ' + useIcon('arrow-right', 'arr', 16) + '</a>' +
+        '<a href="colours.html" class="cp-mega-all cp-mega-feature">Colour Collection &mdash; 544 shades ' + useIcon('arrow-right', 'arr', 16) + '</a>' +
         '<a href="products.html" class="cp-mega-all">View the full catalogue ' + useIcon('arrow-right', 'arr', 16) + '</a>' +
       '</div>' +
+    '</div>';
+  }
+
+  // Smaller link-list dropdown for non-products groups (Inspiration,
+  // About). Sits beside the big mega in the navbar.
+  function buildDrop(items) {
+    return '<div class="cp-drop" role="menu">' +
+      '<ul>' + items.map(function (it) {
+        return '<li><a href="' + it.href + '">' +
+          '<span class="cp-drop-name">' + it.name + '</span>' +
+          (it.sub ? '<span class="cp-drop-sub">' + it.sub + '</span>' : '') +
+        '</a></li>';
+      }).join('') + '</ul>' +
     '</div>';
   }
 
@@ -169,21 +183,42 @@
 
         '<nav class="cp-primary" aria-label="Primary">' +
           '<a href="index.html" class="cp-link ' + isActive('home') + '"><span>Home</span></a>' +
+
+          /* PRODUCTS — big mega-menu (catalogue + textures + colours) */
           '<div class="cp-has-mega" data-mega>' +
-            '<a href="products.html" class="cp-link ' + isActive('products') + '" aria-haspopup="true" aria-expanded="false"><span>Products</span>' +
+            '<a href="products.html" class="cp-link ' + isActive('products') + ' ' + isActive('textures') + ' ' + isActive('colours') + '" aria-haspopup="true" aria-expanded="false"><span>Products</span>' +
               useIcon('chevron-down', 'cp-link-caret', 14) +
             '</a>' +
             buildMega() +
           '</div>' +
-          '<a href="textures.html" class="cp-link ' + isActive('textures') + '"><span>Textures</span></a>' +
-          '<a href="colours.html" class="cp-link ' + isActive('colours') + '"><span>Colours</span></a>' +
-          '<a href="inspiration.html" class="cp-link ' + isActive('inspiration') + '"><span>Inspiration</span></a>' +
+
           '<a href="visualiser.html" class="cp-link ' + isActive('visualiser') + '"><span>Visualiser</span></a>' +
-          '<a href="projects.html" class="cp-link ' + isActive('projects') + '"><span>Projects</span></a>' +
+
+          /* INSPIRATION — small dropdown: inspiration / projects / discover */
+          '<div class="cp-has-drop" data-drop>' +
+            '<a href="inspiration.html" class="cp-link ' + isActive('inspiration') + ' ' + isActive('projects') + ' ' + isActive('discover') + '" aria-haspopup="true" aria-expanded="false"><span>Inspiration</span>' +
+              useIcon('chevron-down', 'cp-link-caret', 14) +
+            '</a>' +
+            buildDrop([
+              { name: 'Inspiration gallery', href: 'inspiration.html', sub: 'Curated Kenyan rooms' },
+              { name: 'Projects',            href: 'projects.html',    sub: 'Real Cloud Paints jobs' },
+              { name: 'Discover',            href: 'discover.html',    sub: 'Articles &amp; technology' },
+            ]) +
+          '</div>' +
+
           '<a href="services.html" class="cp-link ' + isActive('services') + '"><span>Services</span></a>' +
-          '<a href="discover.html" class="cp-link ' + isActive('discover') + '"><span>Discover</span></a>' +
-          '<a href="about.html" class="cp-link ' + isActive('about') + '"><span>About</span></a>' +
-          '<a href="contact.html" class="cp-link ' + isActive('faq') + ' ' + isActive('contact') + '"><span>FAQ &amp; Contact</span></a>' +
+
+          /* ABOUT — small dropdown: about / faq+contact / legal */
+          '<div class="cp-has-drop" data-drop>' +
+            '<a href="about.html" class="cp-link ' + isActive('about') + ' ' + isActive('faq') + ' ' + isActive('contact') + ' ' + isActive('legal') + '" aria-haspopup="true" aria-expanded="false"><span>About</span>' +
+              useIcon('chevron-down', 'cp-link-caret', 14) +
+            '</a>' +
+            buildDrop([
+              { name: 'About Cloud Paints', href: 'about.html',   sub: 'Our story &amp; standards' },
+              { name: 'FAQ &amp; contact',  href: 'contact.html', sub: 'Reach us, get a quote' },
+              { name: 'Policies',           href: 'legal.html',   sub: 'Terms, privacy, warranty' },
+            ]) +
+          '</div>' +
         '</nav>' +
 
         '<div class="cp-actions">' +
@@ -463,6 +498,30 @@
         if (!megaHost.contains(e.target)) closeMega();
       });
     }
+
+    // ---- Small dropdowns (Inspiration, About) ----
+    // Same hover/keyboard pattern as the mega, applied per-host so any
+    // number of `[data-drop]` blocks in the nav can coexist.
+    Array.prototype.forEach.call(document.querySelectorAll('[data-drop]'), function (host) {
+      var link = host.querySelector('.cp-link');
+      if (!link) return;
+      var closeT;
+      function open()  { clearTimeout(closeT); host.classList.add('is-open'); link.setAttribute('aria-expanded', 'true'); }
+      function close() { host.classList.remove('is-open'); link.setAttribute('aria-expanded', 'false'); }
+      host.addEventListener('mouseenter', function () { if (mqDesktop.matches) open(); });
+      host.addEventListener('mouseleave', function () { if (mqDesktop.matches) closeT = setTimeout(close, 160); });
+      link.addEventListener('keydown', function (e) {
+        if (!mqDesktop.matches) return;
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          host.classList.toggle('is-open');
+          link.setAttribute('aria-expanded', host.classList.contains('is-open'));
+        } else if (e.key === 'Escape') {
+          close();
+        }
+      });
+      document.addEventListener('click', function (e) { if (!host.contains(e.target)) close(); });
+    });
 
     // ---- Mobile drawer ----
     var drawerEl = document.getElementById('mobileDrawer');
