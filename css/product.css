@@ -295,6 +295,147 @@ body[data-page="product"] { background: var(--bg); }
   color: var(--pd-accent, var(--red-2));
   font-weight: 700;
 }
+
+/* Inspiration scenes (e.g. Vinyl Matt ceiling styles) ------- */
+.pd-inspire {
+  margin-top: 28px;
+}
+.pd-inspire h4 {
+  font-family: var(--sans);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--pd-accent, var(--red-2));
+  margin: 0 0 14px;
+}
+.pd-inspire ol {
+  counter-reset: insp;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+  padding: 0;
+  margin: 0;
+}
+.pd-inspire li {
+  counter-increment: insp;
+  position: relative;
+  padding: 18px 18px 18px 50px;
+  background: var(--surface);
+  border: 1px solid var(--border-2);
+  border-radius: 14px;
+  border-top: 3px solid var(--pd-accent, var(--red-2));
+}
+.pd-inspire li::before {
+  content: counter(insp, decimal-leading-zero);
+  position: absolute;
+  left: 16px; top: 14px;
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 1.4rem;
+  color: var(--pd-accent, var(--red-2));
+  line-height: 1;
+}
+.pd-inspire strong {
+  display: block;
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 1.02rem;
+  color: var(--text);
+  margin: 0 0 6px;
+  line-height: 1.25;
+}
+.pd-inspire p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--text-2);
+}
+
+/* Colour combinations (Weatherguard recommended pairings) -- */
+.pd-combos {
+  margin-top: 28px;
+  padding: 20px 22px;
+  border-left: 3px solid var(--pd-accent, var(--red-2));
+  background: color-mix(in srgb, var(--pd-accent, var(--red-2)) 4%, transparent);
+  border-radius: 0 12px 12px 0;
+}
+.pd-combos h4 {
+  font-family: var(--sans);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--pd-accent, var(--red-2));
+  margin: 0 0 12px;
+}
+.pd-combos ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 12px;
+}
+.pd-combos li {
+  display: flex; flex-direction: column;
+  gap: 2px;
+}
+.pd-combo-pair {
+  font-family: var(--serif);
+  font-size: 1.02rem;
+  font-weight: 500;
+  color: var(--text);
+}
+.pd-combo-pair em {
+  font-family: var(--sans);
+  font-style: italic;
+  font-weight: 500;
+  color: var(--text-3);
+  font-size: 0.85rem;
+  padding: 0 4px;
+}
+.pd-combo-note {
+  font-size: 0.88rem;
+  color: var(--text-2);
+  line-height: 1.4;
+}
+
+/* Design tips (best-finish guidance) ------------------------ */
+.pd-tips {
+  margin-top: 28px;
+}
+.pd-tips h4 {
+  font-family: var(--sans);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--pd-accent, var(--red-2));
+  margin: 0 0 12px;
+}
+.pd-tips ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 10px;
+}
+.pd-tips li {
+  position: relative;
+  padding-left: 28px;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--text-2);
+}
+.pd-tips li::before {
+  content: "✦";
+  position: absolute;
+  left: 0; top: 0;
+  color: var(--pd-accent, var(--red-2));
+  font-weight: 700;
+}
 .pd-claims {
   padding: clamp(24px, 3vw, 36px);
   border-radius: var(--radius-lg);

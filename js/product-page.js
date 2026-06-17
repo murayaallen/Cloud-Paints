@@ -284,6 +284,38 @@
           p.uses.map(function (u) { return '<li>' + u + '</li>'; }).join('') +
           '</ul></div>';
       }
+      // Inspiration scenes — e.g. Vinyl Matt ceiling styles. Each
+      // entry is { title, copy } and renders as a small numbered card.
+      if (p.inspiration && p.inspiration.length) {
+        descHtml += '<div class="pd-inspire"><h4>Inspiration</h4><ol>' +
+          p.inspiration.map(function (i) {
+            return '<li>' +
+              '<strong>' + i.title + '</strong>' +
+              '<p>' + i.copy + '</p>' +
+            '</li>';
+          }).join('') +
+          '</ol></div>';
+      }
+      // Recommended colour combinations — Weatherguard ships with five
+      // wall + trim pairings. Each entry is { name, trim, note }.
+      if (p.colour_combos && p.colour_combos.length) {
+        descHtml += '<div class="pd-combos"><h4>Recommended colour combinations</h4><ul>' +
+          p.colour_combos.map(function (c) {
+            return '<li><span class="pd-combo-pair">' +
+              '<span class="pd-combo-wall">' + c.name + '</span>' +
+              ' <em>with</em> ' +
+              '<span class="pd-combo-trim">' + c.trim + '</span>' +
+            '</span>' +
+            '<span class="pd-combo-note">' + c.note + '</span></li>';
+          }).join('') +
+          '</ul></div>';
+      }
+      // Design tips — practical "for the best finish" pointers.
+      if (p.design_tips && p.design_tips.length) {
+        descHtml += '<div class="pd-tips"><h4>Tips for the best finish</h4><ul>' +
+          p.design_tips.map(function (t) { return '<li>' + t + '</li>'; }).join('') +
+          '</ul></div>';
+      }
       descEl.innerHTML = descHtml;
     }
 
