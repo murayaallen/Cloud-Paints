@@ -2077,6 +2077,97 @@ body.cp-loading:not(.cp-loader-mounted)::before {
   .cp-blob, .cp-splat { animation: none !important; }
 }
 
+/* ============================================================
+   SITE-WIDE MORPHING BACKGROUND BLOBS
+   Five paint-coloured blobs fixed behind every page, slowly
+   drifting and morphing under heavy blur. Injected by partials.js
+   at the top of <body> so they appear automatically on every page.
+   ============================================================ */
+.cp-bg-blobs {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  contain: layout style paint;
+}
+.cp-bg-blob {
+  position: absolute;
+  border-radius: 46% 54% 61% 39% / 48% 42% 58% 52%;
+  filter: blur(90px);
+  opacity: 0.40;
+  /* Multiply by default for the light theme so the brand colours
+     read as a warm wash over the cream base. Dark theme overrides
+     below switch to screen for a glow. */
+  mix-blend-mode: multiply;
+  will-change: transform, border-radius;
+}
+/* Five blobs anchored to viewport corners + centre, each drifting
+   on its own 28-44s loop. Sizes are vmin so they scale with the
+   smaller viewport edge — large enough to feel like a wash but
+   never tile the screen. */
+.cp-bg-blob.b1 { width: 55vmin; height: 55vmin; background: #e11f29; top: -10vmin; left: -8vmin;  animation: cpBgBlob1 34s ease-in-out infinite; }
+.cp-bg-blob.b2 { width: 50vmin; height: 50vmin; background: #1f4088; top: 18vh;    right: -10vmin; animation: cpBgBlob2 38s ease-in-out infinite; }
+.cp-bg-blob.b3 { width: 60vmin; height: 60vmin; background: #c4870a; bottom: -12vmin; left: 12vw;  animation: cpBgBlob3 42s ease-in-out infinite; }
+.cp-bg-blob.b4 { width: 48vmin; height: 48vmin; background: #2f5d40; bottom: 8vh;  right: 6vw;     animation: cpBgBlob4 36s ease-in-out infinite; }
+.cp-bg-blob.b5 { width: 42vmin; height: 42vmin; background: #b25a44; top: 38vh;    left: 30vw;     animation: cpBgBlob5 30s ease-in-out infinite; opacity: 0.32; }
+
+/* Dark theme — switch to screen blend so the blobs glow on the
+   near-black ground instead of disappearing into it. */
+[data-theme="dark"] .cp-bg-blob {
+  mix-blend-mode: screen;
+  opacity: 0.28;
+  filter: blur(100px);
+}
+[data-theme="dark"] .cp-bg-blob.b5 { opacity: 0.22; }
+
+@keyframes cpBgBlob1 {
+  0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1);     border-radius: 46% 54% 61% 39% / 48% 42% 58% 52%; }
+  33%      { transform: translate(8vmin, 12vmin) rotate(60deg) scale(1.15); border-radius: 62% 38% 43% 57% / 57% 61% 39% 43%; }
+  66%      { transform: translate(-4vmin, 6vmin) rotate(140deg) scale(0.92); border-radius: 37% 63% 57% 43% / 43% 49% 51% 57%; }
+}
+@keyframes cpBgBlob2 {
+  0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1);     border-radius: 55% 45% 38% 62% / 50% 56% 44% 50%; }
+  40%      { transform: translate(-10vmin, 14vmin) rotate(-50deg) scale(1.20); border-radius: 40% 60% 62% 38% / 60% 40% 60% 40%; }
+  70%      { transform: translate(-4vmin, 4vmin) rotate(-110deg) scale(0.95);  border-radius: 60% 40% 45% 55% / 42% 58% 42% 58%; }
+}
+@keyframes cpBgBlob3 {
+  0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1);     border-radius: 50% 50% 55% 45% / 55% 45% 55% 45%; }
+  45%      { transform: translate(12vmin, -10vmin) rotate(80deg) scale(1.18);  border-radius: 38% 62% 40% 60% / 62% 38% 62% 38%; }
+  72%      { transform: translate(-6vmin, -4vmin) rotate(150deg) scale(0.90);  border-radius: 56% 44% 60% 40% / 38% 62% 40% 60%; }
+}
+@keyframes cpBgBlob4 {
+  0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1);     border-radius: 60% 40% 50% 50% / 45% 55% 45% 55%; }
+  35%      { transform: translate(-14vmin, -10vmin) rotate(-70deg) scale(1.22); border-radius: 42% 58% 55% 45% / 65% 35% 60% 40%; }
+  68%      { transform: translate(6vmin, -16vmin) rotate(-140deg) scale(0.96); border-radius: 55% 45% 38% 62% / 50% 56% 44% 50%; }
+}
+@keyframes cpBgBlob5 {
+  0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1);     border-radius: 52% 48% 47% 53% / 56% 42% 58% 44%; }
+  50%      { transform: translate(8vmin, -8vmin) rotate(120deg) scale(1.10);   border-radius: 38% 62% 60% 40% / 45% 55% 50% 50%; }
+}
+
+/* Reduced motion — freeze the morphing entirely. The blobs stay
+   visible as static colour fields so the page never goes 'flat',
+   they just don't drift. */
+@media (prefers-reduced-motion: reduce) {
+  .cp-bg-blob { animation: none !important; }
+}
+
+/* Mobile — fewer blobs so weak GPUs aren't stressed by 5 large
+   blurred elements. Drops to 3 blobs that still cover the screen. */
+@media (max-width: 640px) {
+  .cp-bg-blob.b2, .cp-bg-blob.b5 { display: none; }
+  .cp-bg-blob { filter: blur(70px); }
+}
+
+/* The body needs to be transparent at the root so the fixed-blob
+   layer behind it can show through. Pages that set their own bg
+   on a wrapper section will still cover the blobs there — they
+   only show through transparent zones (between sections, behind
+   text-only blocks, etc.). */
+html, body { background-color: transparent; }
+html { background-color: var(--bg); }
+
 /* ---------- Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   .cp-mark, .cp-wordmark span, .cp-progress i {

@@ -431,8 +431,22 @@
     '  </div>' +
     '</aside>';
 
-  // Inject — header at top of body, footer + drawer + nav extras at end
-  document.body.insertAdjacentHTML('afterbegin', header);
+  // Site-wide morphing background blobs — fixed behind every page,
+  // five paint-coloured blobs drifting and morphing under heavy blur.
+  // Hidden from a11y tree; pointer-events: none so they never block
+  // clicks. Honours prefers-reduced-motion via the CSS @media query.
+  var bgBlobs =
+    '<div class="cp-bg-blobs" aria-hidden="true">' +
+      '<span class="cp-bg-blob b1"></span>' +
+      '<span class="cp-bg-blob b2"></span>' +
+      '<span class="cp-bg-blob b3"></span>' +
+      '<span class="cp-bg-blob b4"></span>' +
+      '<span class="cp-bg-blob b5"></span>' +
+    '</div>';
+
+  // Inject — bg-blobs first (sit behind everything), header at top,
+  // footer + drawer + nav extras at end.
+  document.body.insertAdjacentHTML('afterbegin', bgBlobs + header);
   document.body.insertAdjacentHTML('beforeend', footer + drawer + mobileDrawer + searchOverlay);
 
   // a11y: mark the first content landmark so the skip-link lands somewhere.
