@@ -131,7 +131,45 @@
     var primers   = byCat(['primer', 'solvent']);
     var textures  = byCat(['texture']);
 
+    // Visual feature cards for the two flagship browse experiences —
+    // sit at the top of the mega so the Colour book and Texture
+    // collection are seen as soon as the menu opens. Built inline so
+    // the spectrum strip stays in sync with the brand palette.
+    var featureCards =
+      '<div class="cp-mega-features">' +
+        '<a class="cp-mega-feat cp-mega-feat--colours" href="colours.html">' +
+          '<span class="cp-mega-feat-strip" aria-hidden="true">' +
+            '<i style="background:#C70F18"></i><i style="background:#E97923"></i>' +
+            '<i style="background:#F0D61B"></i><i style="background:#7CD834"></i>' +
+            '<i style="background:#2CAA50"></i><i style="background:#40CCBD"></i>' +
+            '<i style="background:#348DD8"></i><i style="background:#3D4BCF"></i>' +
+            '<i style="background:#8C74D0"></i><i style="background:#D33898"></i>' +
+            '<i style="background:#B17C5A"></i><i style="background:#1D1F21"></i>' +
+          '</span>' +
+          '<span class="cp-mega-feat-meta">' +
+            '<span class="cp-mega-feat-eyebrow">Colour Collection &middot; 2026</span>' +
+            '<span class="cp-mega-feat-title">544 shades, 17 families</span>' +
+            '<span class="cp-mega-feat-sub">Mixed to order in any finish ' + useIcon('arrow-right', 'arr', 14) + '</span>' +
+          '</span>' +
+        '</a>' +
+        '<a class="cp-mega-feat cp-mega-feat--textures" href="textures.html">' +
+          '<span class="cp-mega-feat-strip cp-mega-feat-strip--tex" aria-hidden="true">' +
+            '<i style="background:#7a6b5c"></i><i style="background:#7d7e80"></i>' +
+            '<i style="background:#6b5e7a"></i><i style="background:#9a7b3f"></i>' +
+            '<i style="background:#d4c4a8"></i><i style="background:#9b6b48"></i>' +
+            '<i style="background:#c4a47c"></i><i style="background:#b58963"></i>' +
+            '<i style="background:#ddc9b5"></i><i style="background:#5e605e"></i>' +
+          '</span>' +
+          '<span class="cp-mega-feat-meta">' +
+            '<span class="cp-mega-feat-eyebrow">Decorative Texture Collection</span>' +
+            '<span class="cp-mega-feat-title">10 hand-applied finishes</span>' +
+            '<span class="cp-mega-feat-sub">Stone &middot; Marble &middot; Concrete &middot; Metallic ' + useIcon('arrow-right', 'arr', 14) + '</span>' +
+          '</span>' +
+        '</a>' +
+      '</div>';
+
     return '<div class="cp-mega" role="menu" aria-label="Products">' +
+      featureCards +
       '<div class="cp-mega-grid">' +
         megaColumn('Interior Wall Paints', interior) +
         megaColumn('Exterior Wall Paints', exterior) +
@@ -141,8 +179,6 @@
         megaColumn('Decorative Textures', textures) +
       '</div>' +
       '<div class="cp-mega-foot">' +
-        '<a href="textures.html" class="cp-mega-all cp-mega-feature">Decorative Texture Collection ' + useIcon('arrow-right', 'arr', 16) + '</a>' +
-        '<a href="colours.html" class="cp-mega-all cp-mega-feature">Colour Collection &mdash; 544 shades ' + useIcon('arrow-right', 'arr', 16) + '</a>' +
         '<a href="products.html" class="cp-mega-all">View the full catalogue ' + useIcon('arrow-right', 'arr', 16) + '</a>' +
       '</div>' +
     '</div>';
