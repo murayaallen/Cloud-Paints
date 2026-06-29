@@ -12,9 +12,14 @@
 
   var SLIDES = [
     // 0 — Brand stage. No bucket; the logo replaces it.
+    // The bg now points at images/hero/hero-brand-stage.jpg, an
+    // AI-generated branded backdrop yet to be created (see
+    // AI-IMAGES-NEEDED.md Section 1A — Hero brand stage). Until that
+    // file exists, CSS provides a vibrant brand gradient fallback on
+    // .lp-hero-brand-bg so the slide never appears empty.
     {
       type:  'brand',
-      bg:    'images/showroom/showroom-hero-new.jpg',
+      bg:    'images/hero/hero-brand-stage.jpg',
       color: '#e11f29',
       name:  'Cloud Paints',
     },

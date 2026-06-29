@@ -222,12 +222,13 @@
 
           /* PRODUCTS — big mega-menu (catalogue + textures + colours) */
           '<div class="cp-has-mega" data-mega>' +
-            '<a href="products.html" class="cp-link ' + isActive('products') + ' ' + isActive('textures') + ' ' + isActive('colours') + '" aria-haspopup="true" aria-expanded="false"><span>Products</span>' +
+            '<a href="products.html" class="cp-link ' + isActive('products') + ' ' + isActive('textures') + '" aria-haspopup="true" aria-expanded="false"><span>Products</span>' +
               useIcon('chevron-down', 'cp-link-caret', 14) +
             '</a>' +
             buildMega() +
           '</div>' +
 
+          '<a href="colours.html" class="cp-link ' + isActive('colours') + '"><span>Colours</span></a>' +
           '<a href="visualiser.html" class="cp-link ' + isActive('visualiser') + '"><span>Visualiser</span></a>' +
 
           /* INSPIRATION — small dropdown: inspiration / projects / discover */

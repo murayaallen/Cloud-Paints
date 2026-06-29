@@ -43,7 +43,22 @@ body[data-page="home"] .lp-seam::before {
   position: absolute; inset: 0;
   overflow: hidden;
   z-index: -3;
-  background: #0b0a10;
+  /* Vibrant brand-gradient fallback — visible whenever the slide 0 bg
+     image is missing (the old studio photo was removed; the AI brand
+     stage is pending). When .lp-hero-bg-img loads it covers this
+     gradient; when its onerror fires it hides itself and reveals it. */
+  background:
+    radial-gradient(60% 70% at 22% 26%, rgba(225,31,41,0.30), transparent 65%),
+    radial-gradient(55% 65% at 78% 22%, rgba(31,64,136,0.30), transparent 65%),
+    radial-gradient(60% 70% at 50% 90%, rgba(232,163,23,0.28), transparent 70%),
+    linear-gradient(135deg, #1d1e51 0%, #4a1f54 45%, #8b1e2c 100%);
+}
+[data-theme="light"] .lp-hero-bg {
+  background:
+    radial-gradient(55% 65% at 22% 26%, rgba(225,31,41,0.22), transparent 65%),
+    radial-gradient(50% 60% at 78% 22%, rgba(31,64,136,0.22), transparent 65%),
+    radial-gradient(60% 70% at 50% 90%, rgba(232,163,23,0.30), transparent 70%),
+    linear-gradient(135deg, #fff9f0 0%, #fde8b8 45%, #f8d7c1 100%);
 }
 .lp-hero-bg-img {
   position: absolute; inset: 0;
@@ -1746,10 +1761,13 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
   pointer-events: none;
 }
 
-/* Kinetic block grid — 8×4 dark rectangles overlay the apartments
-   photo. Each block pulses (scaleY → 0, hold, → 1) on a staggered
-   delay so a wave of rectangles continuously sweeps across the
-   section, exposing the photo beneath in slices. Reads as motion. */
+/* Kinetic block grid — 8×4 light scrim rectangles overlay the
+   apartments photo. Each block pulses (scaleY → 0, hold, → 1) on a
+   staggered delay so a wave of rectangles continuously sweeps across
+   the section, exposing the photo beneath in slices. Reads as motion.
+   For the bright-and-vibrant look, the blocks now use a soft cream
+   wash instead of the previous near-black film — the photo stays
+   visible at all times and the cards float over a luminous backdrop. */
 .lp-why-blocks {
   position: absolute; inset: 0;
   display: grid;
@@ -1757,12 +1775,14 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
   grid-template-rows: repeat(4, 1fr);
   z-index: 0;
   pointer-events: none;
-  /* A baseline darken so the section never goes too bright between
-     waves — keeps the editorial cards readable. */
-  background: rgba(11,10,16,0.18);
+  /* Almost-clear baseline so the photo never feels obscured.
+     The cards carry their own panels, so we don't need a heavy scrim. */
+  background: rgba(250, 246, 236, 0.06);
 }
 .lp-why-blocks i {
-  background: rgba(11,10,16,0.62);
+  /* Cream wash at modest opacity — wave reads as a soft sun-flicker
+     across the apartments photo, not a dark curtain. */
+  background: rgba(250, 246, 236, 0.32);
   transform-origin: 50% 50%;
   will-change: transform, opacity;
   animation: whyBlockPulse 7.5s cubic-bezier(.65,0,.35,1) infinite;
