@@ -29,7 +29,9 @@
   .nf-root::before {
     content: "";
     position: absolute; inset: 0;
-    background-image: var(--grain, none);
+    /* Not var(--grain): url() in a custom property re-resolves against
+       this inline sheet (document base), which walks out of the site. */
+    background-image: url("images/textures/grain.svg");
     opacity: .05; pointer-events: none;
   }
   .nf-inner {

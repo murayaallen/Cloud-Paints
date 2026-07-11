@@ -767,6 +767,7 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
 .lp-feat-deco .fd {
   position: absolute;
   z-index: 0;
+  height: auto; /* the splat <img>s carry a height attribute */
 }
 @media (prefers-reduced-motion: no-preference) {
   .fd-tl  { animation: fd-drift-a 11s ease-in-out infinite; }
@@ -1078,7 +1079,12 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
    Responsive — tablet + mobile
    ============================================================ */
 @media (max-width: 1023px) {
-  .lp-hero-grid { grid-template-columns: 1fr; gap: 0; }
+  /* minmax(0,1fr): a plain 1fr track can't shrink below its items'
+     min-content, and the 420px-wide bucket img was forcing the whole
+     hero column to 450px inside a 375px viewport (copy clipped). */
+  .lp-hero-grid { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .lp-hero-copy, .lp-pour { min-width: 0; }
+  .lp-hero-bucket img { max-width: 100%; height: auto; }
   .lp-pour { min-height: 340px; order: 2; }
   /* Switch bucket from absolute-centred to flow-positioned on tablet/mobile */
   .lp-hero-bucket {

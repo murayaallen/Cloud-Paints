@@ -100,8 +100,10 @@
   // JS just schedules the lift/curtain & cleanup at the end.
   // Compressed/reduced: shorter flash, skip the drip/splash.
 
-  var FULL_MS = 5300;
-  var FULL_LIFT_AT = 4800;
+  // Trimmed from 5300/4800 — a 5s hold on every new tab and reload
+  // made the whole site feel slow; the choreography reads fully by ~2s.
+  var FULL_MS = 2900;
+  var FULL_LIFT_AT = 2400;
   var COMPRESSED_MS = 800;
   var COMPRESSED_LIFT_AT = 350;
   var REDUCED_MS = 350;

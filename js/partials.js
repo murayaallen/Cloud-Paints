@@ -1,4 +1,4 @@
-// ============================================================
+﻿// ============================================================
 // CLOUD PAINTS — Page Partials
 // Injects header, footer and cart drawer into every page.
 // Also exposes window.bucketCardHtml() used by all product
@@ -71,16 +71,28 @@
     wrap.outerHTML = bucketNoImageHtml(p);
   };
 
+  // Error chain: transparent hero cut-out → flat catalogue photo →
+  // branded no-image panel.
+  window.__cpBucketError = function (imgEl, slug) {
+    var p = window.getProduct ? window.getProduct(slug) : null;
+    if (imgEl.src.indexOf('/hero/') !== -1 && p && p.image) {
+      imgEl.src = p.image;
+      return;
+    }
+    window.__cpBucketFallback(imgEl, slug);
+  };
+
   window.bucketCardHtml = function (p) {
     var certBadge = '';
 
-    // Prefer a real product photograph when available
+    // Prefer the transparent hero cut-out (sits cleanly on the card
+    // gradient); fall back to the flat photograph.
     if (p.image) {
       return (
         '<div class="bucket-photo-wrap">' +
-          '<img class="bucket-photo" src="' + p.image + '" alt="' + p.name +
+          '<img class="bucket-photo" src="images/buckets/hero/' + p.slug + '.png" alt="' + p.name +
             '" loading="lazy" decoding="async"' +
-            ' onerror="window.__cpBucketFallback(this,\'' + p.slug + '\')">' +
+            ' onerror="window.__cpBucketError(this,\'' + p.slug + '\')">' +
         '</div>' +
         certBadge
       );
@@ -322,8 +334,8 @@
       '</div>' +
       '<div class="md-foot">' +
         '<div class="md-socials">' +
-          '<a href="https://www.instagram.com/cloudpaintskenya" target="_blank" rel="noopener" aria-label="Instagram">' + useIcon('instagram', null, 20) + '</a>' +
-          '<a href="https://www.facebook.com/cloudpaintskenya" target="_blank" rel="noopener" aria-label="Facebook">' + useIcon('facebook', null, 20) + '</a>' +
+          '<a href="https://www.instagram.com/cloudpaints" target="_blank" rel="noopener" aria-label="Instagram">' + useIcon('instagram', null, 20) + '</a>' +
+          '<a href="https://www.facebook.com/cloudpaintsKE" target="_blank" rel="noopener" aria-label="Facebook">' + useIcon('facebook', null, 20) + '</a>' +
           '<a href="tel:+254741405481" aria-label="Phone">' + useIcon('phone', null, 20) + '</a>' +
           '<a href="mailto:info@cloudpaints.co.ke" aria-label="Email">' + useIcon('mail', null, 20) + '</a>' +
         '</div>' +
@@ -354,7 +366,7 @@
     '    <div class="footer-grid">' +
     '      <div class="footer-brand">' +
     '        <h3>Cloud <em>Paints.</em></h3>' +
-    '        <p>Premium decorative paints, coatings and solvents made in Kenya. Trusted by contractors and homeowners across all 47 counties.</p>' +
+    '        <p>Premium decorative paints, coatings and solvents made in Kenya. Trusted by contractors and homeowners across the country.</p>' +
     '        <div class="cp-kebs" title="KEBS Standardization Mark — certified quality" aria-label="KEBS Standardization Mark — certified quality">' +
     '          <span class="cp-kebs-mark" aria-hidden="true">' +
     '            <svg viewBox="0 0 36 36" width="34" height="34"><circle cx="18" cy="18" r="16" fill="none" stroke="currentColor" stroke-width="2"/><text x="18" y="16.5" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-weight="900" font-size="12" fill="currentColor">S</text><text x="18" y="27" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-weight="700" font-size="4.6" letter-spacing="0.5" fill="currentColor">KEBS</text></svg>' +
@@ -362,10 +374,10 @@
     '          <div class="cp-kebs-text"><strong>KEBS Certified</strong><span>Standardization mark of quality</span></div>' +
     '        </div>' +
     '        <div class="socials">' +
-    '          <a href="https://www.instagram.com/cloudpaintskenya" target="_blank" rel="noopener" aria-label="Instagram">' +
+    '          <a href="https://www.instagram.com/cloudpaints" target="_blank" rel="noopener" aria-label="Instagram">' +
     '            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>' +
     '          </a>' +
-    '          <a href="https://www.facebook.com/cloudpaintskenya" target="_blank" rel="noopener" aria-label="Facebook">' +
+    '          <a href="https://www.facebook.com/cloudpaintsKE" target="_blank" rel="noopener" aria-label="Facebook">' +
     '            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z"/></svg>' +
     '          </a>' +
     '          <a href="https://wa.me/254741405481" target="_blank" rel="noopener" aria-label="WhatsApp">' +
@@ -382,7 +394,7 @@
     '          <li><a href="products.html#wood">Wood paints</a></li>' +
     '          <li><a href="products.html#enamel">Enamels</a></li>' +
     '          <li><a href="textures.html">Texture Collection</a></li>' +
-    '          <li><a href="colours.html">Colour Collection (544)</a></li>' +
+    '          <li><a href="colours.html">Colour Collection</a></li>' +
     '        </ul>' +
     '      </div>' +
     '      <div class="footer-col">' +

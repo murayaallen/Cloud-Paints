@@ -65,24 +65,11 @@
       <!-- Slide 0: the studio "stunner" — animated Cloud Paints brand showcase -->
       <div class="lp-hero-brand hs-active" aria-hidden="true">
         <span class="lp-brand-halo"></span>
-        <svg class="lp-brand-splat s1" viewBox="0 0 120 120" aria-hidden="true">
-          <circle cx="60" cy="60" r="22" fill="#e11f29" opacity="0.55"/>
-          <circle cx="18" cy="34" r="6"  fill="#e11f29" opacity="0.45"/>
-          <circle cx="98" cy="28" r="5"  fill="#e11f29" opacity="0.40"/>
-          <circle cx="96" cy="96" r="8"  fill="#e11f29" opacity="0.45"/>
-          <circle cx="24" cy="100" r="6" fill="#e11f29" opacity="0.40"/>
-        </svg>
-        <svg class="lp-brand-splat s2" viewBox="0 0 120 120" aria-hidden="true">
-          <circle cx="60" cy="60" r="18" fill="#1f4088" opacity="0.45"/>
-          <circle cx="100" cy="30" r="6" fill="#1f4088" opacity="0.40"/>
-          <circle cx="18" cy="96" r="5"  fill="#1f4088" opacity="0.38"/>
-          <circle cx="92" cy="88" r="4"  fill="#1f4088" opacity="0.35"/>
-        </svg>
-        <svg class="lp-brand-splat s3" viewBox="0 0 120 120" aria-hidden="true">
-          <circle cx="60" cy="60" r="14" fill="#e8a317" opacity="0.50"/>
-          <circle cx="100" cy="40" r="5" fill="#e8a317" opacity="0.42"/>
-          <circle cx="28" cy="92" r="4"  fill="#e8a317" opacity="0.38"/>
-        </svg>
+        <!-- Real rendered paint splats (glossy, dimensional) — replaced
+             the flat SVG circle clusters -->
+        <img class="lp-brand-splat s1" src="images/splatter/splash-red-1.png" alt="" width="720" height="720" loading="lazy" aria-hidden="true">
+        <img class="lp-brand-splat s2" src="images/splatter/splash-navy-2.png" alt="" width="720" height="720" loading="lazy" aria-hidden="true">
+        <img class="lp-brand-splat s3" src="images/splatter/splash-gold-1.png" alt="" width="720" height="720" loading="lazy" aria-hidden="true">
         <span class="lp-brand-drop d1"></span>
         <span class="lp-brand-drop d2"></span>
         <span class="lp-brand-drop d3"></span>
@@ -281,20 +268,10 @@
 
   <!-- Reduced paint splash decorations — perf-trimmed from 7 to 3 -->
   <div class="lp-feat-deco" aria-hidden="true">
-    <svg class="fd fd-tl" viewBox="0 0 320 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M60 140 C20 110 0 60 30 30 C55 5 100 18 118 50 C130 70 126 96 140 108 C158 123 185 112 200 128 C220 150 208 185 185 198 C160 213 128 205 108 190 C82 172 98 168 80 158 C70 152 72 148 60 140Z" fill="#d92843" opacity="0.18"/>
-      <circle cx="210" cy="105" r="22" fill="#d92843" opacity="0.13"/>
-      <circle cx="245" cy="148" r="11" fill="#d92843" opacity="0.11"/>
-    </svg>
-    <svg class="fd fd-br" viewBox="0 0 260 240" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M160 60 C188 38 224 48 234 78 C242 102 228 128 206 138 C186 146 162 136 148 118 C132 96 138 78 160 60Z" fill="#1e3a8a" opacity="0.14"/>
-      <circle cx="108" cy="162" r="34" fill="#1e3a8a" opacity="0.11"/>
-      <circle cx="76" cy="128" r="16" fill="#1e3a8a" opacity="0.10"/>
-    </svg>
-    <svg class="fd fd-mid" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="90" cy="90" r="44" fill="#b8934a" opacity="0.10"/>
-      <circle cx="148" cy="118" r="22" fill="#b8934a" opacity="0.09"/>
-    </svg>
+    <!-- Real rendered paint splats, held at ambient opacity -->
+    <img class="fd fd-tl" src="images/splatter/splash-red-2.png" alt="" width="720" height="720" loading="lazy" style="opacity:.16">
+    <img class="fd fd-br" src="images/splatter/splash-navy-1.png" alt="" width="720" height="720" loading="lazy" style="opacity:.13">
+    <img class="fd fd-mid" src="images/splatter/splash-gold-2.png" alt="" width="720" height="720" loading="lazy" style="opacity:.11">
   </div>
 
   <div class="container">

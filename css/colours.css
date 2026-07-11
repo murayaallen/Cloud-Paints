@@ -267,7 +267,14 @@
   .cl-grid { grid-template-columns: repeat(4, 1fr); }
 }
 @media (max-width: 640px) {
-  .cl-grid { grid-template-columns: repeat(2, 1fr); }
+  /* 2 columns of 3:4 tiles made the page ~73,000px tall at 375px.
+     Compact square tiles keep the book scannable on a phone; the
+     hex still lives in the tap-through detail popover. */
+  .cl-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .cl-swatch { aspect-ratio: 1 / 1; }
+  .cl-swatch-label { left: 8px; right: 8px; bottom: 8px; }
+  .cl-swatch-name { font-size: 10.5px; }
+  .cl-swatch-hex { display: none; }
   .cl-family-head { grid-template-columns: 1fr; align-items: start; }
   .cl-family-meta { text-align: left; }
 }

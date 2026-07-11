@@ -192,12 +192,15 @@
     var kebsEl = document.getElementById('pdKebs');
     if (kebsEl) kebsEl.innerHTML = 'Quality <span class="n">Certified</span>';
 
-    // Stage image
+    // Stage image — prefer the transparent hero cut-out (no black
+    // photo box inside the gradient stage); fall back to the flat
+    // catalogue photo, then to a typographic panel.
     var img = document.getElementById('pdStageImg');
     if (img) {
-      img.src = p.image || 'images/buckets/' + p.slug + '.jpg';
+      var flatSrc = p.image || 'images/buckets/' + p.slug + '.jpg';
       img.alt = p.name + ' 4L bucket';
       img.onerror = function () {
+        if (this.src.indexOf('/hero/') !== -1) { this.src = flatSrc; return; }
         this.style.display = 'none';
         var wrap = this.closest('.pd-stage');
         if (wrap) {
@@ -207,6 +210,7 @@
           wrap.appendChild(fallback);
         }
       };
+      img.src = 'images/buckets/hero/' + p.slug + '.png';
     }
 
     // Sizes
