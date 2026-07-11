@@ -284,6 +284,15 @@
           p.uses.map(function (u) { return '<li>' + u + '</li>'; }).join('') +
           '</ul></div>';
       }
+      // Applied gallery — the product photographed where it works
+      // (AI brief section 2). Files land at
+      // images/products/applied/<slug>-applied.jpg; until a file
+      // exists the figure removes itself (onerror wired below).
+      var appliedSrc = p.applied_image || ('images/products/applied/' + p.slug + '-applied.jpg');
+      descHtml += '<figure class="pd-applied">' +
+        '<img src="' + appliedSrc + '" alt="' + p.name + ' applied on a real surface" width="1200" height="800" loading="lazy">' +
+        '<figcaption>' + p.name + ' · seen where it works</figcaption>' +
+        '</figure>';
       // Inspiration scenes — e.g. Vinyl Matt ceiling styles. Each
       // entry is { title, copy } and renders as a small numbered card.
       if (p.inspiration && p.inspiration.length) {
@@ -317,6 +326,13 @@
           '</ul></div>';
       }
       descEl.innerHTML = descHtml;
+      var appliedImg = descEl.querySelector('.pd-applied img');
+      if (appliedImg) {
+        appliedImg.onerror = function () {
+          var fig = this.parentNode;
+          if (fig && fig.parentNode) fig.parentNode.removeChild(fig);
+        };
+      }
     }
 
     var claimsEl = document.getElementById('pdClaims');

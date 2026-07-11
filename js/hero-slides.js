@@ -47,13 +47,13 @@
       color: '#1f4088',
       name:  'Rocketex Wallmaster',
     },
-    // 4 — Premium Emulsion (interior) ↔ warm gold living
+    // 4 — SuperMatt Emulsion (interior ceilings & walls) ↔ warm gold living
     {
       type:  'bucket',
-      src:   'images/buckets/hero/mockup-b.png',
+      src:   'images/buckets/hero/supermatt.png',
       bg:    'images/inspiration/inspiration-savanna-living.jpg',
-      color: '#c4870a',
-      name:  'Premium Emulsion',
+      color: '#2f5d40',
+      name:  'SuperMatt Emulsion',
     },
     // 5 — Gloss Enamel (trim · doors · woodwork) ↔ rust hallway —
     // a hallway with painted doors / frames reads true to the product
@@ -69,7 +69,7 @@
     // emulsion than the previous terracotta pairing.
     {
       type:  'bucket',
-      src:   'images/buckets/hero/mockup-c.png',
+      src:   'images/buckets/hero/iris.png',
       bg:    'images/inspiration/inspiration-rift-cobalt-living.jpg',
       color: '#1f4088',
       name:  'Iris Plastic Emulsion',
@@ -96,7 +96,7 @@
     // The bright high ceiling shows off a flat matte finish.
     {
       type:  'bucket',
-      src:   'images/buckets/hero/mockup-b.png',
+      src:   'images/buckets/hero/vinyl-matt.png',
       bg:    'images/inspiration/inspiration-warm-white-kitchen.jpg',
       color: '#7a8c70',
       name:  'Vinyl Matt',
