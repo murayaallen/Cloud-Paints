@@ -421,3 +421,37 @@ Section 3 filenames; product detail pages and hero pick up Sections
    shows the vibrant brand gradient fallback.
 3. **Section 2 product applied** (18 files) — drop in as you go;
    each one immediately improves its product detail page.
+
+---
+
+# Section 4 — Photo-real paint splashes (optional upgrade, 3 files)
+
+The site now uses procedurally rendered glossy splats
+(images/splatter/splash-*.png). True photography would upgrade them
+further. Shoot/generate against a PURE WHITE background so the
+knock-out to transparency is clean — we have a script ready.
+
+### 4.1. Red splash, frozen mid-air
+> Studio photograph of glossy red paint (#d92843) splashing frozen
+> mid-air, crown-shaped with curved flung tongues and satellite
+> droplets, pure white background, hard side-light with soft box fill,
+> macro sharpness, no bucket, no hands, square crop.
+
+Save as: `images/splatter/photo-splash-red.png` (or .jpg — we convert)
+
+### 4.2. Deep navy splash
+> Same setup as 4.1 in deep navy #1D1E51. The navy must read as
+> #1D1E51, not black — keep highlights warm white.
+
+Save as: `images/splatter/photo-splash-navy.png`
+
+### 4.3. Warm gold pour
+> Studio photograph of warm gold paint (#e8a317) pouring and folding
+> onto itself like ribbon, pure white background, glossy specular
+> highlights, square crop.
+
+Save as: `images/splatter/photo-splash-gold.png`
+
+When these land, tell the developer — the swap points are the three
+`.lp-brand-splat` images in index.html and the three `.fd` images in
+the Featured section.

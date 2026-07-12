@@ -69,7 +69,7 @@
     // emulsion than the previous terracotta pairing.
     {
       type:  'bucket',
-      src:   'images/buckets/hero/iris.png',
+      src:   'images/buckets/hero/iris-economy.png',
       bg:    'images/inspiration/inspiration-rift-cobalt-living.jpg',
       color: '#1f4088',
       name:  'Iris Plastic Emulsion',

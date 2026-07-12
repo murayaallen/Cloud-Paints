@@ -86,11 +86,15 @@
     var certBadge = '';
 
     // Prefer the transparent hero cut-out (sits cleanly on the card
-    // gradient); fall back to the flat photograph.
+    // gradient); fall back to the flat photograph. Texture products
+    // skip the cut-out — their finish close-up IS the right art.
     if (p.image) {
+      var firstSrc = p.cat === 'texture'
+        ? p.image
+        : 'images/buckets/hero/' + p.slug + '.png';
       return (
         '<div class="bucket-photo-wrap">' +
-          '<img class="bucket-photo" src="images/buckets/hero/' + p.slug + '.png" alt="' + p.name +
+          '<img class="bucket-photo" src="' + firstSrc + '" alt="' + p.name +
             '" loading="lazy" decoding="async"' +
             ' onerror="window.__cpBucketError(this,\'' + p.slug + '\')">' +
         '</div>' +

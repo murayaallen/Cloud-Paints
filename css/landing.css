@@ -2208,6 +2208,26 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
   background: linear-gradient(180deg, transparent 45%, rgba(11,10,16,0.72) 100%);
   pointer-events: none;
 }
+/* Fresh-coat sweep — a wet coat of the tile's own shade rolls down
+   on hover. Sits between the photo (z0) and the meta text (child,
+   painted after). Revisit once real wall photos land if the full
+   cover feels too opaque. */
+.lp-wall::before {
+  content: "";
+  position: absolute; inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg,
+    color-mix(in srgb, var(--c, #d92843) 74%, #fff) 0%,
+    color-mix(in srgb, var(--c, #d92843) 92%, #fff) 100%);
+  opacity: 0.92;
+  transform: translateY(-101%);
+  transition: transform 0.55s cubic-bezier(.4,0,.2,1);
+  pointer-events: none;
+}
+.lp-wall:hover::before { transform: translateY(0); }
+@media (prefers-reduced-motion: reduce) {
+  .lp-wall::before { display: none; }
+}
 .lp-wall-meta {
   position: absolute;
   left: 14px; right: 14px; bottom: 14px;
