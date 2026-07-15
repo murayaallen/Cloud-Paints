@@ -235,6 +235,19 @@ body.cp-loading .lp-hero-stats { animation-play-state: paused; }
   pointer-events: none;
 }
 .lp-hero-ctas .btn-pour:hover { transform: translateY(-2px); box-shadow: 0 24px 50px -12px rgba(217,40,67,0.7); }
+/* Colour-book CTA: a little fan-deck spectrum inside the pill */
+.btn-spectrum .spectrum-strip {
+  display: inline-flex;
+  width: 30px; height: 13px;
+  border-radius: 4px;
+  overflow: hidden;
+  background: linear-gradient(90deg,
+    #C70F18 0 14%, #E97923 14% 28%, #F0D61B 28% 42%,
+    #2CAA50 42% 56%, #348DD8 56% 70%, #8C74D0 70% 84%, #D33898 84% 100%);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.4);
+  transition: transform var(--t-fast);
+}
+.btn-spectrum:hover .spectrum-strip { transform: scaleX(1.12); }
 .lp-hero-ctas .btn-ghost-d {
   color: #f5f1e8;
   border: 1px solid rgba(245,241,232,0.25);

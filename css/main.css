@@ -1585,6 +1585,12 @@ footer {
   color: #fff;
   padding: 100px 0 30px;
   position: relative; overflow: hidden;
+  /* Brand-spectrum hairline along the top edge — a soft gradient
+     accent that ties the dark theme's sections together. */
+  border-top: 3px solid transparent;
+  border-image: linear-gradient(90deg,
+    #d92843 0%, #e8a317 22%, #2f5d40 45%,
+    #1f4088 68%, #8C74D0 84%, #d92843 100%) 1;
 }
 footer::before {
   content: ''; position: absolute; top: -100px; right: -100px;
@@ -2281,10 +2287,10 @@ body.cp-loading:not(.cp-loader-mounted)::before {
    near-black ground instead of disappearing into it. */
 [data-theme="dark"] .cp-bg-blob {
   mix-blend-mode: screen;
-  opacity: 0.28;
-  filter: blur(100px);
+  opacity: 0.40;
+  filter: blur(88px);
 }
-[data-theme="dark"] .cp-bg-blob.b5 { opacity: 0.22; }
+[data-theme="dark"] .cp-bg-blob.b5 { opacity: 0.30; }
 
 @keyframes cpBgBlob1 {
   0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1);     border-radius: 46% 54% 61% 39% / 48% 42% 58% 52%; }

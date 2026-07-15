@@ -8,9 +8,10 @@
 
   // ---------- Theme ----------
   // The inline <head> script on every page seeds data-theme from
-  // localStorage['cp-theme'] and defaults to LIGHT (the client's
-  // bright-and-vibrant mandate). A leftover "dark is permanent"
-  // override here was forcing every page dark — do not reintroduce.
+  // localStorage['cp-theme'] and defaults to DARK (chosen 2026-07:
+  // the refined studio look). The toggle below still switches to
+  // light and persists. Never force the attribute here — an old
+  // hard override in this spot silently broke the toggle for months.
 
   // ---------- Header scroll ----------
   var header = document.querySelector('.site-header');
@@ -33,10 +34,10 @@
 
   // ---------- Light / dark theme toggle ----------
   // Inline script in <head> seeds data-theme from localStorage (defaults to
-  // light) before any styles paint, so there's no flash on load.
+  // dark) before any styles paint, so there's no flash on load.
   document.addEventListener('click', function (e) {
     if (!e.target.closest('#themeToggle')) return;
-    var current = document.documentElement.getAttribute('data-theme') || 'light';
+    var current = document.documentElement.getAttribute('data-theme') || 'dark';
     var next = current === 'dark' ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', next);
     try { localStorage.setItem('cp-theme', next); } catch (_) {}
