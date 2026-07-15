@@ -235,19 +235,32 @@ body.cp-loading .lp-hero-stats { animation-play-state: paused; }
   pointer-events: none;
 }
 .lp-hero-ctas .btn-pour:hover { transform: translateY(-2px); box-shadow: 0 24px 50px -12px rgba(217,40,67,0.7); }
-/* Colour-book CTA: a little fan-deck spectrum inside the pill */
-.btn-spectrum .spectrum-strip {
-  display: inline-flex;
-  width: 30px; height: 13px;
-  border-radius: 4px;
-  overflow: hidden;
-  background: linear-gradient(90deg,
-    #C70F18 0 14%, #E97923 14% 28%, #F0D61B 28% 42%,
-    #2CAA50 42% 56%, #348DD8 56% 70%, #8C74D0 70% 84%, #D33898 84% 100%);
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.4);
-  transition: transform var(--t-fast);
+/* Colour-book CTA: the button IS the colour — a blended paint
+   gradient (red → magenta → violet → gold) under a grain texture. */
+.lp-hero-ctas .btn-spectrum,
+.btn-spectrum {
+  background: linear-gradient(115deg,
+    #d92843 0%, #c02364 30%, #7c3aa4 58%, #b86414 82%, #e8a317 100%);
+  background-size: 160% 100%;
+  background-position: 0% 50%;
+  transition: transform var(--t-fast), box-shadow var(--t-fast),
+              background-position 0.6s ease;
+  position: relative; overflow: hidden;
+  box-shadow: 0 18px 40px -14px rgba(160,45,120,0.55),
+              inset 0 1px 0 rgba(255,255,255,0.28);
 }
-.btn-spectrum:hover .spectrum-strip { transform: scaleX(1.12); }
+.btn-spectrum::before {
+  content: ""; position: absolute; inset: 0;
+  background-image: var(--grain);
+  opacity: 0.3; mix-blend-mode: overlay;
+  pointer-events: none;
+}
+.lp-hero-ctas .btn-spectrum:hover,
+.btn-spectrum:hover {
+  background-position: 100% 50%;
+  transform: translateY(-2px);
+  box-shadow: 0 24px 50px -12px rgba(160,45,120,0.65);
+}
 .lp-hero-ctas .btn-ghost-d {
   color: #f5f1e8;
   border: 1px solid rgba(245,241,232,0.25);
@@ -1148,8 +1161,81 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
 }
 
 @media (max-width: 640px) {
-  .lp-hero { padding-top: clamp(80px, 13vh, 110px); }
-  .lp-hero-copy { padding-top: 16px; }
+  /* Mobile hero = one full screen: headline up top, the floating
+     bucket / brand stage centred in the middle, both CTAs anchored
+     at the bottom. The explanatory copy is desktop-only. */
+  .lp-hero {
+    padding-top: clamp(72px, 11vh, 96px);
+    padding-bottom: 0;
+    min-height: 100svh;
+    display: flex;
+  }
+  .lp-hero-grid {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    flex: 1 1 auto; /* fill the 100svh hero */
+    gap: 0;
+  }
+  /* Dissolve the copy wrapper so h1 / pour / ctas can be reordered
+     as siblings in the column. */
+  .lp-hero-copy { display: contents; }
+  .lp-hero-copy .eyebrow,
+  .lp-hero-lede { display: none; }
+  .lp-hero-h1 {
+    order: 1;
+    text-align: center;
+    margin: 6px 0 0;
+  }
+  .lp-pour {
+    order: 2;
+    flex: 1 1 auto;
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* flex items default to min-width:auto — a wide child was
+       blowing the pour out to 450px and shoving the centred
+       bucket off-screen. */
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+  }
+  /* The brand stage and the bucket are BOTH flex children of the
+     pour; the invisible one (opacity 0) still took flow space and
+     pushed the visible one off-centre. Remove it from flow. */
+  .lp-hero-brand:not(.hs-active) { display: none; }
+  .lp-hero.brand-active .lp-hero-bucket { display: none; }
+  /* Hard reset: the desktop float keyframes carry translate(-50%,-50%)
+     and were dragging the bucket half off-screen. Own keyframes here. */
+  .lp-hero-bucket {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    width: clamp(200px, 56vw, 300px);
+    aspect-ratio: 4 / 5;
+    /* mid-low centre: nudged below the vertical middle */
+    margin: clamp(28px, 10vh, 90px) auto 0;
+    /* Keep the fade-in entrance (container starts at opacity 0),
+       swap only the float for the translateY-only variant. */
+    animation: lpBucketInMobile 1.2s var(--t-ease-pour) 1s forwards,
+               lpBucketFloatM 7s ease-in-out 2.3s infinite !important;
+  }
+  .lp-hero-bucket img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: auto;
+  }
+  .lp-hero-ctas {
+    order: 3;
+    flex-direction: column;
+    width: 100%;
+    gap: 12px;
+    margin: 10px 0 0;
+    padding-bottom: max(22px, env(safe-area-inset-bottom));
+  }
   .lp-hero-stats { gap: 18px; flex-wrap: wrap; }
   .lp-hero-ctas .btn-pour, .lp-hero-ctas .btn-ghost-d { width: 100%; justify-content: center; }
   .lp-splat.s4 { display: none; }
@@ -1168,6 +1254,12 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
   .lp-mix-col.a { order: 1; }
   .lp-mix-col.b { order: 3; }
   .lp-cta-btns .btn-red, .lp-cta-btns .btn-line { width: 100%; justify-content: center; }
+}
+
+/* Mobile bucket float — translateY only, no centring translate */
+@keyframes lpBucketFloatM {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-12px); }
 }
 
 /* ---------- Reduced motion ---------- */
@@ -2097,10 +2189,10 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
     order: 2;
   }
 
-  /* Bucket: slightly smaller than current 44vw for less dominance */
+  /* Bucket: the hero visual — generous, floating mid-low centre */
   body[data-page="home"] .lp-hero-bucket {
-    width: clamp(140px, 38vw, 220px);
-    margin: 0 auto;
+    width: clamp(190px, 54vw, 290px);
+    margin: clamp(28px, 9vh, 84px) auto 0;
   }
 
   /* Brand stage: cleaner, centered, smaller halo */

@@ -118,13 +118,14 @@
       color: '#5d8aa8',
       name:  'Gloss Enamel',
     },
-    // 12 — Road Marking Paint ↔ commercial project with hard-surface
-    // approaches / parking
+    // 12 — Road Marking Paint ↔ real yellow road markings on asphalt
+    // (owner-supplied photo — replaced the commercial-building shot
+    // that didn't show the product at all)
     {
       type:  'bucket',
       src:   'images/buckets/hero/road-marking.png',
-      bg:    'images/projects/mlolongo-commercial.jpg',
-      color: '#d92843',
+      bg:    'images/products/applied/road-marking-applied.jpg',
+      color: '#e8a317',
       name:  'Road Marking Paint',
     },
     // 13 — Roof Paint ↔ green-roofed Kenyan villa — the tiled roof
