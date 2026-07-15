@@ -45,6 +45,23 @@
   z-index: -1;
   pointer-events: none;
 }
+/* Light theme flips the copy to navy (var(--text)), so the scrim
+   must flip too: a warm white mist keeps the photo bright and the
+   navy headline crisp. */
+[data-theme="light"] .tx-hero::after {
+  background:
+    linear-gradient(90deg,
+      rgba(255,250,240,0.94) 0%,
+      rgba(255,250,240,0.78) 30%,
+      rgba(255,250,240,0.38) 60%,
+      rgba(255,250,240,0.06) 85%,
+      rgba(255,250,240,0.00) 100%),
+    linear-gradient(180deg,
+      rgba(255,250,240,0.55) 0%,
+      transparent 45%,
+      transparent 75%,
+      rgba(255,250,240,0.30) 100%);
+}
 .tx-hero-inner {
   max-width: 720px;
 }
@@ -140,7 +157,15 @@
   .tx-swatch-row { grid-template-columns: repeat(5, 1fr); }
 }
 @media (max-width: 560px) {
-  .tx-swatch-row { grid-template-columns: repeat(2, 1fr); }
+  /* 2-across made each chip a ~170px stretched block on a phone;
+     keep the "one glance" feel with 5 compact squares per row. */
+  .tx-swatch-row { grid-template-columns: repeat(5, 1fr); gap: 6px; }
+  .tx-swatch-row a { border-radius: 8px; }
+  .tx-swatch-row span {
+    font-size: 7.5px;
+    letter-spacing: 0.03em;
+    left: 3px; right: 3px; bottom: 5px;
+  }
 }
 
 /* FIVE-FAMILIES STRIP ------------------------------------------ */

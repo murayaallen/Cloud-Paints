@@ -216,6 +216,42 @@ p { color: var(--text-2); }
 .btn .arr { transition: transform var(--t-fast); }
 .btn:hover .arr { transform: translateX(4px); }
 
+/* Site-wide base for the hero-style CTA pair. These classes are used
+   on ten pages but were only styled under page-scoped parents
+   (.lp-hero-ctas, .in-cta …), so pages like textures/colours/services
+   rendered them as bare text links. Scoped rules still override. */
+.btn-pour {
+  background: linear-gradient(135deg, var(--red-glow), var(--red-2));
+  color: #fff;
+  padding: 16px 28px;
+  border-radius: 999px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  font-size: 15px;
+  display: inline-flex; align-items: center; gap: 10px;
+  text-decoration: none;
+  box-shadow: 0 18px 40px -14px rgba(217,40,67,0.6), inset 0 1px 0 rgba(255,255,255,0.25);
+  transition: transform var(--t-fast), box-shadow var(--t-fast);
+}
+.btn-pour:hover { transform: translateY(-2px); box-shadow: 0 24px 50px -12px rgba(217,40,67,0.7); }
+.btn-ghost-d {
+  color: var(--text);
+  border: 1px solid color-mix(in srgb, var(--text) 28%, transparent);
+  padding: 16px 28px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 15px;
+  display: inline-flex; align-items: center; gap: 10px;
+  text-decoration: none;
+  transition: border-color var(--t-fast), background var(--t-fast), color var(--t-fast);
+  backdrop-filter: blur(8px);
+}
+.btn-ghost-d:hover {
+  border-color: var(--gold-2);
+  background: rgba(232,163,23,0.08);
+  color: var(--gold-2);
+}
+
 /* ---------- 5. Header — Phase 3 nav system ---------- */
 .site-header {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
@@ -251,6 +287,36 @@ p { color: var(--text-2); }
   gap: 18px;
   min-height: 64px;
 }
+/* Floating back-to-top — appears after ~1400px of scroll */
+.cp-to-top {
+  position: fixed;
+  right: 20px;
+  bottom: 22px;
+  z-index: 90;
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  background: linear-gradient(135deg, var(--red-glow), var(--red-2));
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 12px 28px -10px rgba(217,40,67,0.6);
+  opacity: 0;
+  transform: translateY(14px) scale(0.9);
+  pointer-events: none;
+  transition: opacity var(--t-mid), transform var(--t-mid), box-shadow var(--t-fast);
+}
+.cp-to-top.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+.cp-to-top:hover { box-shadow: 0 18px 36px -10px rgba(217,40,67,0.7); transform: translateY(-2px) scale(1.02); }
+/* Clear the mobile sticky add-to-quote bar on product pages */
+@media (max-width: 900px) {
+  body[data-page="product"] .cp-to-top { bottom: 92px; }
+}
+
 /* Slim vertical divider separating the wordmark from the nav links */
 .cp-nav-inner::before {
   content: none;
@@ -361,7 +427,9 @@ p { color: var(--text-2); }
   gap: 2px;
 }
 @media (min-width: 1024px) {
-  .cp-primary { display: flex; }
+  /* Extra left margin: the italic PAINTS overhang visually eats the
+     grid gap and the wordmark was touching "Home". */
+  .cp-primary { display: flex; margin-left: 18px; }
 }
 .cp-link {
   position: relative;

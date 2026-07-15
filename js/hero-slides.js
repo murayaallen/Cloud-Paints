@@ -164,7 +164,13 @@
 
     var inactiveBg = (bgA && bgB) ? (bgA.classList.contains('hs-active') ? bgB : bgA) : null;
     var activeBg   = (bgA && bgB) ? (bgA.classList.contains('hs-active') ? bgA : bgB) : null;
-    if (inactiveBg) inactiveBg.src = slide.bg;
+    if (inactiveBg) {
+      // The brand-stage img hides itself via onerror while that file
+      // is pending — undo the hide before reusing this element, or
+      // every slide that lands on it shows only the gradient.
+      inactiveBg.style.display = '';
+      inactiveBg.src = slide.bg;
+    }
 
     var inactiveBucket, activeBucket;
     if (slide.type === 'bucket') {

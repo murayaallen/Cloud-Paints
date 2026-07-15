@@ -7,13 +7,10 @@
   'use strict';
 
   // ---------- Theme ----------
-  // Dark mode is now permanent (light theme retired).
-  // We still force the attribute here in case any prior visit had
-  // a 'light' value stored in localStorage from the old toggle.
-  try {
-    document.documentElement.setAttribute('data-theme', 'dark');
-    localStorage.setItem('cloud-theme', 'dark');
-  } catch (e) { /* private mode safe */ }
+  // The inline <head> script on every page seeds data-theme from
+  // localStorage['cp-theme'] and defaults to LIGHT (the client's
+  // bright-and-vibrant mandate). A leftover "dark is permanent"
+  // override here was forcing every page dark — do not reintroduce.
 
   // ---------- Header scroll ----------
   var header = document.querySelector('.site-header');
@@ -36,14 +33,38 @@
 
   // ---------- Light / dark theme toggle ----------
   // Inline script in <head> seeds data-theme from localStorage (defaults to
-  // dark) before any styles paint, so there's no flash on load.
+  // light) before any styles paint, so there's no flash on load.
   document.addEventListener('click', function (e) {
     if (!e.target.closest('#themeToggle')) return;
-    var current = document.documentElement.getAttribute('data-theme') || 'dark';
+    var current = document.documentElement.getAttribute('data-theme') || 'light';
     var next = current === 'dark' ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', next);
     try { localStorage.setItem('cp-theme', next); } catch (_) {}
   });
+
+  // ---------- Scroll-to-top ----------
+  // The colour book and catalogue run tens of thousands of pixels on
+  // a phone; give every page a way back up once the reader is deep.
+  (function () {
+    var fab = document.createElement('button');
+    fab.className = 'cp-to-top';
+    fab.type = 'button';
+    fab.setAttribute('aria-label', 'Back to top');
+    fab.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>';
+    document.body.appendChild(fab);
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    fab.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+    });
+    var shown = false;
+    window.addEventListener('scroll', function () {
+      var want = window.scrollY > 1400;
+      if (want !== shown) {
+        shown = want;
+        fab.classList.toggle('visible', want);
+      }
+    }, { passive: true });
+  })();
 
   // ---------- Legacy reveal (kept for pages not yet migrated) ----------
   // New `[data-anim]` reveals are handled by js/motion.js. This block still

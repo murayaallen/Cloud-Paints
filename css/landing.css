@@ -95,11 +95,30 @@ body[data-page="home"] .lp-seam::before {
   content:""; position:absolute; inset:0;
   background:
     linear-gradient(90deg,
-      rgba(11,10,16,0.50) 0%,
-      rgba(11,10,16,0.28) 22%,
-      rgba(11,10,16,0.08) 50%,
+      rgba(11,10,16,0.60) 0%,
+      rgba(11,10,16,0.36) 24%,
+      rgba(11,10,16,0.10) 50%,
       rgba(11,10,16,0.00) 80%,
       rgba(11,10,16,0.00) 100%);
+}
+/* Typography carries its own contrast so bright photos (sage
+   apartments, white kitchen) stay bright per the client's mandate
+   while the headline stays legible. Dark theme only — the light
+   theme uses navy text on a white mist, where a dark glow smudges. */
+[data-theme="dark"] .lp-hero-h1 .row i {
+  text-shadow: 0 2px 20px rgba(11,10,16,0.55), 0 1px 3px rgba(11,10,16,0.45);
+}
+[data-theme="dark"] .lp-hero-lede {
+  text-shadow: 0 1px 14px rgba(11,10,16,0.65), 0 1px 3px rgba(11,10,16,0.5);
+}
+[data-theme="dark"] .lp-hero-copy .eyebrow {
+  text-shadow: 0 1px 8px rgba(11,10,16,0.55);
+}
+/* Light theme: a soft white lift instead, for when navy text crosses
+   a busy part of the photo. */
+[data-theme="light"] .lp-hero-h1 .row i,
+[data-theme="light"] .lp-hero-lede {
+  text-shadow: 0 1px 16px rgba(255,252,244,0.85), 0 0 3px rgba(255,252,244,0.6);
 }
 .lp-hero::before {
   content:""; position:absolute; inset:-20%;
@@ -1582,29 +1601,48 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
 .lp-brand-wordmark {
   font-family: 'Montserrat', 'Inter', sans-serif;
   font-weight: 900;
-  font-size: clamp(2rem, 4vw, 3rem);
+  font-size: clamp(2.3rem, 4.6vw, 3.5rem);
   letter-spacing: -0.015em;
   text-transform: uppercase;
   display: flex;
   align-items: baseline;
   gap: 0.2em;
+  position: relative;
   z-index: 2;
   opacity: 0;
   transform: translateY(20px);
   filter: blur(8px);
+}
+/* Luminous cream plate behind the lockup — the navy letters were
+   sinking into the dark gradient without it. */
+.lp-brand-wordmark::before {
+  content: "";
+  position: absolute;
+  inset: -30% -8%;
+  background: radial-gradient(ellipse at center,
+    rgba(255,250,238,0.85) 0%,
+    rgba(255,250,238,0.45) 45%,
+    transparent 75%);
+  filter: blur(18px);
+  z-index: -1;
+  border-radius: 50%;
 }
 /* CLOUD uses the true logo navy + a soft cream glow so it stays
    legible against the dark hero scrim while matching the printed logo. */
 .lp-brand-wordmark .c-blue {
   color: #1D1E51;
   text-shadow:
-    0 0 18px rgba(255,255,255,0.60),
-    0 0 38px rgba(255,255,255,0.32);
+    0 0 2px rgba(255,255,255,0.85),
+    0 0 24px rgba(255,255,255,0.75),
+    0 0 52px rgba(255,255,255,0.40);
 }
 .lp-brand-wordmark .c-red {
   color: #e11f29;
   font-style: italic;
-  text-shadow: 0 0 14px rgba(255,255,255,0.32);
+  text-shadow:
+    0 0 2px rgba(255,255,255,0.75),
+    0 0 20px rgba(255,255,255,0.55),
+    0 0 44px rgba(255,214,214,0.35);
 }
 .lp-hero-brand.hs-active .lp-brand-wordmark {
   animation: lpBrandWordIn 0.85s cubic-bezier(.4,0,.2,1) 0.55s forwards;
@@ -1641,9 +1679,9 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
   aspect-ratio: 1;
   border-radius: 50%;
   background: radial-gradient(circle,
-    rgba(225,31,41,0.50) 0%,
-    rgba(225,31,41,0.18) 35%,
-    transparent 65%);
+    rgba(225,31,41,0.62) 0%,
+    rgba(225,31,41,0.26) 38%,
+    transparent 68%);
   filter: blur(36px);
   opacity: 0;
   z-index: 0;
@@ -1664,15 +1702,16 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
 /* Paint splatters around the logo — appear, then slowly orbit */
 .lp-brand-splat {
   position: absolute;
-  width: clamp(80px, 10vw, 140px);
+  width: clamp(130px, 16vw, 230px);
   height: auto;
   opacity: 0;
   z-index: 1;
   pointer-events: none;
+  filter: drop-shadow(0 10px 26px rgba(0,0,0,0.35));
 }
-.lp-brand-splat.s1 { top: 5%;   left: 5%;  }
-.lp-brand-splat.s2 { bottom: 8%; right: 6%; }
-.lp-brand-splat.s3 { top: 12%;  right: 12%; width: clamp(50px, 6vw, 80px); }
+.lp-brand-splat.s1 { top: 1%;   left: -2%;  }
+.lp-brand-splat.s2 { bottom: 4%; right: -1%; }
+.lp-brand-splat.s3 { top: 8%;  right: 6%; width: clamp(80px, 10vw, 140px); }
 .lp-hero-brand.hs-active .lp-brand-splat {
   animation: lpBrandSplatIn 1s cubic-bezier(.4,0,.2,1) 0.8s forwards;
 }
