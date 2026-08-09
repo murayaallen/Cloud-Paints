@@ -29,6 +29,9 @@
 
   function productMatchesCat(p, key) {
     if (p.cat === key) return true;
+    // Some products genuinely belong to two categories — Vinyl Matt is rated
+    // for interior and exterior — so they carry the extras here.
+    if (Array.isArray(p.cat_extra) && p.cat_extra.indexOf(key) !== -1) return true;
     if (Array.isArray(p.surface_tags) && p.surface_tags.indexOf(key) !== -1) return true;
     return false;
   }

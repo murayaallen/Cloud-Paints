@@ -178,6 +178,66 @@ h1 em, h2 em, h3 em {
 }
 [data-theme="dark"] h1 em, [data-theme="dark"] h2 em, [data-theme="dark"] h3 em { color: var(--gold-2); }
 
+/* ---------- 3b. Section heads — name leads, line supports ----------
+   Every section on the site is written as `.eyebrow` (the section's name,
+   e.g. "Why Cloud Paints") followed immediately by an h2/h3 carrying a
+   descriptive line ("Painted with intent."). The section name is the title
+   a reader scans for, so it takes the display size and the descriptive line
+   drops to a subheading beneath it.
+
+   Page heroes are deliberately excluded: there the h1 *is* the page title
+   and already outranks its eyebrow, which is the same hierarchy. Only the
+   h2/h3 pattern inverts.
+
+   The selectors are doubled (.eyebrow.eyebrow) purely for specificity:
+   main.css loads before the per-page sheets, which hold same-specificity
+   rules like `.lp-featured-head h2`, and those would otherwise win on
+   source order. */
+.eyebrow.eyebrow:has(+ h2),
+.eyebrow.eyebrow:has(+ h3) {
+  display: block;
+  font-family: var(--serif);
+  /* Floor kept modest: these names run long ("Where Cloud Paints turns up")
+     and a bigger minimum pushes them into the gutter on a 390px screen. */
+  font-size: clamp(1.75rem, 4.6vw, 3.4rem);
+  font-weight: 600;
+  line-height: 1.06;
+  letter-spacing: -0.02em;
+  text-transform: none;
+  color: var(--text);
+  margin-bottom: 12px;
+  /* Several sections dress the eyebrow as a small pill. That reads as a
+     kicker ornament and falls apart at display size, so strip it. */
+  background: none;
+  border: 0;
+  padding: 0;
+  border-radius: 0;
+  gap: 0;
+}
+/* The accent dash reads as a kicker ornament; at display size it just
+   collides with the cap-height. */
+.eyebrow.eyebrow:has(+ h2)::before,
+.eyebrow.eyebrow:has(+ h3)::before { content: none; }
+
+.eyebrow.eyebrow + h2,
+.eyebrow.eyebrow + h3 {
+  font-family: var(--sans);
+  font-weight: 500;
+  line-height: 1.45;
+  letter-spacing: 0;
+  color: var(--text-2);
+  max-width: 62ch;
+}
+.eyebrow.eyebrow + h2 { font-size: clamp(1.05rem, 1.75vw, 1.4rem); }
+.eyebrow.eyebrow + h3 { font-size: clamp(1rem, 1.5vw, 1.2rem); }
+/* Keep the brand accent alive on the demoted line — it is the only colour
+   left in the pairing now that the name above it sits in --text. */
+.eyebrow.eyebrow + h2 em,
+.eyebrow.eyebrow + h3 em { font-weight: 500; }
+/* Centred section heads must keep their subheading centred too. */
+.section-head .eyebrow.eyebrow + h2,
+.section-head .eyebrow.eyebrow + h3 { margin-inline: auto; }
+
 p { color: var(--text-2); }
 .lead { font-size: 1.125rem; line-height: 1.6; max-width: 60ch; }
 

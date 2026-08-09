@@ -544,3 +544,20 @@ body[data-page="services"] { background: var(--bg); }
   .sv-hero-ctas .btn-pour, .sv-hero-ctas .btn-ghost-d { width: 100%; justify-content: center; }
   .sv-cta-btns .btn-pour, .sv-cta-btns .btn-ghost-d { width: 100%; justify-content: center; }
 }
+
+/* ============================================================
+   PROMISE CARD ACCENTS
+   Were inline hex values on each card. Two of them (#166534 green,
+   #1f4088 navy) are dark enough that on the dark theme — which is the
+   default — the accented <em> in the heading was barely readable. They
+   are classes now so each can carry a lifted dark-theme value.
+   ============================================================ */
+.sv-promise--red   { --accent: #d92843; }
+.sv-promise--navy  { --accent: #1f4088; }
+.sv-promise--gold  { --accent: #b8791a; }
+.sv-promise--green { --accent: #15803d; }
+
+[data-theme="dark"] .sv-promise--red   { --accent: #ff6b7f; }
+[data-theme="dark"] .sv-promise--navy  { --accent: #7ea8ff; }
+[data-theme="dark"] .sv-promise--gold  { --accent: #ffc93d; }
+[data-theme="dark"] .sv-promise--green { --accent: #4ade80; }

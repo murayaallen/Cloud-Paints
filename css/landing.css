@@ -610,6 +610,11 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
 }
 .lp-about-copy { position: relative; z-index: 1; }
 .lp-about-copy .eyebrow { color: #7eb3f5; border-color: rgba(126,179,245,0.3); background: rgba(126,179,245,0.1); }
+/* This section is dark in both themes, so the promoted section name and the
+   demoted line beneath it need explicit light ink — the themed --text /
+   --text-2 tokens would go dark-on-dark here. */
+.lp-about-copy .eyebrow.eyebrow:has(+ h2) { color: #f5f1e8; }
+.lp-about-copy .eyebrow.eyebrow + h2 { color: rgba(245,241,232,0.74); }
 .lp-about-copy h2 {
   font-family: var(--serif);
   font-size: clamp(2rem, 4vw, 3.2rem);
@@ -1476,6 +1481,14 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
   cursor: pointer;
 }
 .lp-insp-tile--lg { grid-column: span 3; grid-row: span 2; }
+/* Four-tile variant — the 6-column bento leaves holes at this count, so the
+   strip becomes a plain 2x2 with tiles tall enough not to letterbox. */
+.lp-insp-grid--four {
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: clamp(210px, 24vw, 330px);
+}
+.lp-insp-grid--four .lp-insp-tile,
+.lp-insp-grid--four .lp-insp-tile--lg { grid-column: span 1; grid-row: span 1; }
 .lp-insp-tile img {
   width: 100%; height: 100%;
   object-fit: cover;
@@ -1512,6 +1525,12 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
   }
   .lp-insp-tile { grid-column: span 2; }
   .lp-insp-tile--lg { grid-column: span 4; grid-row: span 2; }
+  /* Keep the four-tile strip at two per row here — the base rule pins its
+     tiles to span 1, which would otherwise give four across on 4 columns. */
+  .lp-insp-grid--four {
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: clamp(180px, 30vw, 260px);
+  }
 }
 @media (max-width: 560px) {
   .lp-insp-grid {
@@ -1579,6 +1598,9 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
   margin: 18px 0 14px;
 }
 .lp-vis-copy h2 em { font-style: italic; color: var(--gold-2, #ffc93d); }
+/* Always-dark panel — same reason as .lp-about-copy above. */
+.lp-vis-copy .eyebrow.eyebrow:has(+ h2) { color: #fff; }
+.lp-vis-copy .eyebrow.eyebrow + h2 { color: rgba(255,255,255,0.78); }
 .lp-vis-copy p {
   color: rgba(255,255,255,0.80);
   font-size: 1rem;
@@ -1706,17 +1728,24 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
 .lp-brand-wordmark {
   font-family: 'Montserrat', 'Inter', sans-serif;
   font-weight: 900;
-  font-size: clamp(2.3rem, 4.6vw, 3.5rem);
-  letter-spacing: -0.015em;
+  font-size: clamp(3.1rem, 5.8vw, 4.7rem);
+  letter-spacing: -0.02em;
   text-transform: uppercase;
   display: flex;
   align-items: baseline;
-  gap: 0.2em;
+  justify-content: center;
+  gap: 0.18em;
+  max-width: 100%;
   position: relative;
   z-index: 2;
   opacity: 0;
   transform: translateY(20px);
   filter: blur(8px);
+  /* The lockup is the largest type on the site; let it render on the
+     sharp side rather than the heavy side. */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 /* Luminous cream plate behind the lockup — the navy letters were
    sinking into the dark gradient without it. */
@@ -1725,29 +1754,27 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
   position: absolute;
   inset: -30% -8%;
   background: radial-gradient(ellipse at center,
-    rgba(255,250,238,0.85) 0%,
-    rgba(255,250,238,0.45) 45%,
-    transparent 75%);
+    rgba(255,250,238,0.94) 0%,
+    rgba(255,250,238,0.62) 45%,
+    transparent 76%);
   filter: blur(18px);
   z-index: -1;
   border-radius: 50%;
 }
 /* CLOUD uses the true logo navy + a soft cream glow so it stays
    legible against the dark hero scrim while matching the printed logo. */
+/* Contrast comes from the cream plate behind the lockup, not from glow
+   piled onto the glyphs — wide 24-52px halos were bleeding into the
+   counters and reading as a soft, out-of-focus wordmark. A single tight
+   halo keeps the edges crisp at this size. */
 .lp-brand-wordmark .c-blue {
   color: #1D1E51;
-  text-shadow:
-    0 0 2px rgba(255,255,255,0.85),
-    0 0 24px rgba(255,255,255,0.75),
-    0 0 52px rgba(255,255,255,0.40);
+  text-shadow: 0 0 3px rgba(255,252,244,0.95);
 }
 .lp-brand-wordmark .c-red {
   color: #e11f29;
   font-style: italic;
-  text-shadow:
-    0 0 2px rgba(255,255,255,0.75),
-    0 0 20px rgba(255,255,255,0.55),
-    0 0 44px rgba(255,214,214,0.35);
+  text-shadow: 0 0 3px rgba(255,252,244,0.9);
 }
 .lp-hero-brand.hs-active .lp-brand-wordmark {
   animation: lpBrandWordIn 0.85s cubic-bezier(.4,0,.2,1) 0.55s forwards;
@@ -2207,8 +2234,12 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
   body[data-page="home"] .lp-brand-mark {
     width: clamp(110px, 28vw, 160px);
   }
+  /* Sized off the viewport rather than a clamp with a rem floor: the
+     lockup is a single unbreakable line, so a floor taller than the screen
+     can carry just overflows the hero. */
   body[data-page="home"] .lp-brand-wordmark {
-    font-size: clamp(1.6rem, 5vw, 2.2rem);
+    font-size: min(8.2vw, 2.8rem);
+    letter-spacing: -0.03em;
   }
   body[data-page="home"] .lp-brand-tag {
     font-size: 10px;

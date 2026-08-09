@@ -871,3 +871,15 @@ body[data-page="product"] { background: var(--bg); }
   .pd-sticky-bar { display: flex; }
   body[data-page="product"] { padding-bottom: 88px; }
 }
+
+/* KEBS Standardisation Mark on the certification card. White plate because
+   the mark is a transparent blue line drawing and the card is dark-tinted. */
+.pd-smark {
+  display: block;
+  width: 84px;
+  height: auto;
+  margin-top: 18px;
+  padding: 9px;
+  border-radius: 10px;
+  background: #fff;
+}

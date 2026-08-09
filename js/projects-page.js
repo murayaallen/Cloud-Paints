@@ -181,7 +181,7 @@
              '<div class="pj-card-meta">' +
                '<span class="tag">' + p.type_label + '</span>' +
                '<h4>' + p.name + '</h4>' +
-               '<p>' + p.location + ' · ' + p.scope + '</p>' +
+               '<p>' + p.location + '</p>' +
                '<span class="pj-view" aria-hidden="true">' + iconSvg('arrow-up-right') + '</span>' +
              '</div>' +
              '</article>';
@@ -223,7 +223,7 @@
         '<h2>' + feat.name.replace(/·.*/, '').trim() + ' <em>finished in full.</em></h2>' +
         '<div class="pj-meta-row">' +
           '<span class="mk">' + iconSvg('map-pin') + feat.location + '</span>' +
-          '<span class="mk">' + iconSvg('check') + feat.scope + '</span>' +
+          '<span class="mk">' + iconSvg('check') + feat.type_label + '</span>' +
         '</div>' +
         '<p>' + feat.brief + '</p>' +
       '</div>';
@@ -295,15 +295,31 @@
         imgInsp.parentElement.style.display = 'none';
       }
     }
+    // Projects carrying a pre-coating photo show it beside the finished
+    // shot. A labelled pair rather than a drag slider: it stacks cleanly on
+    // narrow screens and still reads in the print stylesheet.
+    var beforeAfter = p.image_before
+      ? '<div class="pj-ba">' +
+          '<figure class="pj-ba-item">' +
+            '<img src="' + p.image_before + '" alt="' + p.name + ' before painting" loading="lazy">' +
+            '<figcaption>Before</figcaption>' +
+          '</figure>' +
+          '<figure class="pj-ba-item">' +
+            '<img src="' + p.image + '" alt="' + p.name + ' after painting" loading="lazy">' +
+            '<figcaption>After</figcaption>' +
+          '</figure>' +
+        '</div>'
+      : '';
+
     body.innerHTML =
       '<span class="eyebrow">' + p.type_label + ' · ' + p.year + '</span>' +
       '<h2>' + p.name.split('·')[0].trim() + '</h2>' +
       '<div class="pj-meta-row">' +
         '<span class="mk">' + iconSvg('map-pin') + p.location + '</span>' +
-        '<span class="mk">' + iconSvg('check') + p.scope + '</span>' +
-        '<span class="mk">' + iconSvg('shield') + (p.client || '—') + '</span>' +
+        '<span class="mk">' + iconSvg('clock') + p.year + '</span>' +
       '</div>' +
-      '<p>' + p.brief + '</p>';
+      '<p>' + p.brief + '</p>' +
+      beforeAfter;
 
     modal.classList.add('is-open');
     modal.setAttribute('aria-hidden', 'false');
@@ -316,30 +332,6 @@
     modal.classList.remove('is-open');
     modal.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
-  }
-
-  // ------------------------------------------------------------
-  // Location strip
-  // ------------------------------------------------------------
-  var CITIES = [
-    { city: 'Nairobi',    county: 'Nairobi',  matchers: ['nairobi', 'madaraka'] },
-    { city: 'Kitengela',  county: 'Kajiado',  matchers: ['kitengela'] },
-    { city: 'Syokimau',   county: 'Machakos', matchers: ['syokimau'] },
-    { city: 'Mlolongo',   county: 'Machakos', matchers: ['mlolongo'] },
-    { city: 'Kilifi',     county: 'Kilifi',   matchers: ['kilifi'] },
-    { city: 'Mombasa',    county: 'Mombasa',  matchers: ['mombasa', 'vipingo'] },
-  ];
-
-  function renderLocations() {
-    var slot = document.getElementById('pjLocs');
-    if (!slot) return;
-    slot.innerHTML = CITIES.map(function (c) {
-      return '<div class="pj-loc">' +
-             '<span class="pin">' + iconSvg('map-pin') + '</span>' +
-             '<div class="city">' + c.city + '</div>' +
-             '<div class="county">' + c.county + ' County</div>' +
-             '</div>';
-    }).join('');
   }
 
   // ------------------------------------------------------------
@@ -361,7 +353,6 @@
     updateCount();
     renderGrid(false);
     renderShowcase();
-    renderLocations();
 
     window.addEventListener('hashchange', function () {
       readHash();

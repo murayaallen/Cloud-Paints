@@ -943,3 +943,47 @@ body[data-theme="dark"] .pj-filter-wrap {
   }
   .pj-showcase-tile img { transition: none !important; }
 }
+
+/* ============================================================
+   BEFORE / AFTER — projects carrying a pre-coating photo
+   (currently Emana Apartments, whose "before" is the bare block)
+   ============================================================ */
+.pj-ba {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(10px, 1.6vw, 18px);
+  margin-top: 26px;
+}
+.pj-ba-item {
+  margin: 0;
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--surface-2);
+}
+.pj-ba-item img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+.pj-ba-item figcaption {
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  padding: 5px 12px;
+  border-radius: 100px;
+  background: rgba(10, 8, 16, 0.72);
+  backdrop-filter: blur(6px);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+/* The "after" is the payoff — mark it in brand red rather than neutral. */
+.pj-ba-item:last-child figcaption { background: rgba(225, 31, 41, 0.92); }
+
+@media (max-width: 560px) {
+  .pj-ba { grid-template-columns: 1fr; }
+}

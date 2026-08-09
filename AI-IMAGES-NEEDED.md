@@ -41,16 +41,16 @@ real surface**, not just any room. Findings from the audit:
 | 1 | Weatherguard | inspiration-villa-cream-charcoal | ✓ exterior villa | no |
 | 2 | Silk Vinyl | inspiration-clay-bedroom | ✓ interior emulsion wall visible | no |
 | 3 | Rocketex Wallmaster | inspiration-apartments-sage | ✓ textured exterior | no |
-| 4 | Premium Emulsion | inspiration-savanna-living | ✓ interior matte walls | no |
-| 5 | Gloss Enamel | inspiration-rust-hallway | ⚠ walls dominate; gloss is for **trim** | **YES** |
-| 6 | Iris Plastic Emulsion | inspiration-rift-cobalt-living | ✓ premium navy wall | no |
+| 4 | Premium Emulsion | supermatt-applied | ✓ flat white ceiling + walls (owner photo) | no |
+| 5 | Gloss Enamel | gloss-enamel-applied | ✓ enamelled metal cladding (owner photo) | no |
+| 6 | Iris Plastic Emulsion | iris-economy-applied | ✓ cream emulsion walls + ceiling (owner photo) | no |
 | 7 | Weatherguard × Pazuri Villa | pazuri-villa | ✓ real CP project | no |
 | 8 | Silk Vinyl × coastal | inspiration-coastal-bedroom | ✓ painted feature wall | no |
-| 9 | Vinyl Matt | inspiration-warm-white-kitchen | ✓ bright matte ceiling | no |
-| 10 | Clear Varnish | inspiration-ochre-dining | ⚠ ochre walls dominate, not varnish | **YES** |
+| 9 | Vinyl Matt | vinyl-matt-applied | ✓ brilliant-white stepped ceiling (owner photo) | no |
+| 10 | Clear Varnish | clear-varnish-applied | ✓ varnished timber cladding (owner photo) | no |
 | 11 | Gloss Enamel × bathroom | inspiration-mist-bathroom | ✓ glossy vanity & trim | no |
 | 12 | Road Marking Paint | mlolongo-commercial | ⚠ road markings not visible | **YES** |
-| 13 | Roof Paint × green roof | green-roof-villa | ✓ tiled roof is subject | no |
+| 13 | Weatherguard × green exterior | weatherguard-applied | ✓ painted exterior wall (owner photo) — but Roof Paint no longer has a slide | **Roof Paint needs one** |
 
 ### 1A. Gloss Enamel — replacement for slide 5
 > A close-up architectural detail of a Kenyan home's front door and

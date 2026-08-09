@@ -883,3 +883,34 @@ body[data-page="about"] { background: var(--bg); }
 @media (max-width: 1023px) {
   .ab-beyond-inner { grid-template-columns: 1fr; }
 }
+
+/* ============================================================
+   KEBS STANDARDISATION MARK — sits under the quality grid
+   ============================================================ */
+.ab-smark {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: clamp(20px, 3vw, 38px);
+  margin-top: clamp(28px, 4vw, 44px);
+  padding: clamp(22px, 3vw, 34px);
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+/* The mark is a transparent PNG of a blue line drawing — on the dark theme
+   it needs a light plate behind it or it disappears into the panel. */
+.ab-smark img {
+  width: clamp(96px, 12vw, 132px);
+  height: auto;
+  display: block;
+  padding: 12px;
+  border-radius: var(--radius);
+  background: #fff;
+}
+.ab-smark-copy h4 { margin-bottom: 10px; }
+.ab-smark-copy p { font-size: 0.98rem; line-height: 1.65; max-width: 62ch; }
+
+@media (max-width: 640px) {
+  .ab-smark { grid-template-columns: 1fr; justify-items: start; gap: 18px; }
+}

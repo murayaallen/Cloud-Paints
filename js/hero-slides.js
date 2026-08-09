@@ -47,31 +47,36 @@
       color: '#1f4088',
       name:  'Rocketex Wallmaster',
     },
-    // 4 — SuperMatt Emulsion (interior ceilings & walls) ↔ warm gold living
+    // 4 — SuperMatt Emulsion (interior ceilings & walls) ↔ owner photo of a
+    // flat white ceiling + walls. Chalk-matte surfaces with no sheen are
+    // exactly what SuperMatt sells, so the finish itself is the subject.
     {
       type:  'bucket',
       src:   'images/buckets/hero/supermatt.png',
-      bg:    'images/inspiration/inspiration-savanna-living.jpg',
-      color: '#2f5d40',
+      bg:    'images/products/applied/supermatt-applied.jpg',
+      bgMobile: 'images/products/applied/supermatt-applied-portrait.jpg',
+      color: '#7f95a3',
       name:  'SuperMatt Emulsion',
     },
-    // 5 — Gloss Enamel (trim · doors · woodwork) ↔ rust hallway —
-    // a hallway with painted doors / frames reads true to the product
+    // 5 — Gloss Enamel (trim · doors · woodwork) ↔ owner photo of enamelled
+    // metal cladding. Gloss on metal reads far truer than the old rust
+    // hallway, where the emulsion walls dominated the frame.
     {
       type:  'bucket',
       src:   'images/buckets/hero/gloss-enamel.png',
-      bg:    'images/inspiration/inspiration-rust-hallway.jpg',
-      color: '#963318',
+      bg:    'images/products/applied/gloss-enamel-applied.jpg',
+      bgMobile: 'images/products/applied/gloss-enamel-applied-portrait.jpg',
+      color: '#5a7183',
       name:  'Gloss Enamel',
     },
-    // 6 — Iris Plastic Emulsion (interior) ↔ deep navy living room.
-    // The richly painted feature wall reads truer to a premium interior
-    // emulsion than the previous terracotta pairing.
+    // 6 — Iris Plastic Emulsion (interior) ↔ owner photo of a warm cream
+    // interior over timber. Broad, evenly-rolled emulsion walls and ceiling
+    // are the subject.
     {
       type:  'bucket',
       src:   'images/buckets/hero/iris-economy.png',
-      bg:    'images/inspiration/inspiration-rift-cobalt-living.jpg',
-      color: '#1f4088',
+      bg:    'images/products/applied/iris-economy-applied.jpg',
+      color: '#b57a2b',
       name:  'Iris Plastic Emulsion',
     },
     // 7 — Weatherguard pairs again ↔ a real Cloud Paints project
@@ -92,21 +97,24 @@
       color: '#5d8aa8',
       name:  'Silk Vinyl',
     },
-    // 9 — Vinyl Matt (matte interior emulsion) ↔ bright-ceiling kitchen.
-    // The bright high ceiling shows off a flat matte finish.
+    // 9 — Vinyl Matt (matte emulsion, rated interior *and* exterior) ↔ owner
+    // photo of a brilliant-white stepped ceiling. The large unbroken white
+    // plane is the product claim made visible.
     {
       type:  'bucket',
       src:   'images/buckets/hero/vinyl-matt.png',
-      bg:    'images/inspiration/inspiration-warm-white-kitchen.jpg',
-      color: '#7a8c70',
+      bg:    'images/products/applied/vinyl-matt-applied.jpg',
+      color: '#6b7b8c',
       name:  'Vinyl Matt',
     },
-    // 10 — Clear Varnish / Wood Care ↔ ochre dining room with wood
-    // table + warm panel woodwork up front.
+    // 10 — Clear Varnish / Wood Care ↔ owner photo of varnished timber
+    // cladding on an A-frame. Bare sealed wood, lit warm — the varnish is
+    // the subject rather than a background note.
     {
       type:  'bucket',
       src:   'images/buckets/hero/clear-varnish.png',
-      bg:    'images/inspiration/inspiration-ochre-dining.jpg',
+      bg:    'images/products/applied/clear-varnish-applied.jpg',
+      bgMobile: 'images/products/applied/clear-varnish-applied-portrait.jpg',
       color: '#c4870a',
       name:  'Clear Varnish',
     },
@@ -128,14 +136,27 @@
       color: '#e8a317',
       name:  'Road Marking Paint',
     },
-    // 13 — Roof Paint ↔ green-roofed Kenyan villa — the tiled roof
-    // is the visual subject of the photo, which makes the product-
-    // photo match read instantly.
+    // 13 — Weatherguard ↔ owner photo of a green exterior in full sun.
+    // NOTE: this slot used to carry Roof Paint (green-roof-villa). The
+    // replacement photo is a painted exterior *wall*, not a roof, so the
+    // pairing is now Weatherguard; Roof Paint is currently unrepresented
+    // in the rotation.
     {
       type:  'bucket',
       src:   'images/buckets/hero/weatherguard.png',
-      bg:    'images/projects/green-roof-villa.jpg',
+      bg:    'images/products/applied/weatherguard-applied.jpg',
+      bgMobile: 'images/products/applied/weatherguard-applied-portrait.jpg',
       color: '#2f5d40',
+      name:  'Weatherguard · Green exterior',
+    },
+    // 14 — Roof Paint ↔ the green-roofed villa. Slide 13 used to carry Roof
+    // Paint; when its photo was replaced with a painted exterior wall the
+    // product lost its only slide, so it gets this one back.
+    {
+      type:  'bucket',
+      src:   'images/buckets/hero/roof-paint.png',
+      bg:    'images/projects/green-roof-villa.jpg',
+      color: '#1f7a4d',
       name:  'Roof Paint',
     },
   ];
@@ -151,6 +172,15 @@
   var timer   = null;
 
   var pour, bucketA, bucketB, bgA, bgB, brandStage;
+
+  // The hero is taller than it is wide on a phone, so object-fit: cover
+  // throws away the sides of a landscape backdrop. Slides that ship a
+  // portrait rendition use it there instead — same photo, far more of it.
+  var mqPortrait = window.matchMedia('(max-width: 780px)');
+
+  function bgFor(slide) {
+    return (slide.bgMobile && mqPortrait.matches) ? slide.bgMobile : slide.bg;
+  }
 
   function applyColor(color) {
     if (pour) pour.style.setProperty('--hero-color', color);
@@ -170,7 +200,7 @@
       // is pending — undo the hide before reusing this element, or
       // every slide that lands on it shows only the gradient.
       inactiveBg.style.display = '';
-      inactiveBg.src = slide.bg;
+      inactiveBg.src = bgFor(slide);
     }
 
     var inactiveBucket, activeBucket;
@@ -241,7 +271,7 @@
     SLIDES.forEach(function (s, i) {
       if (i === 0) return;
       if (s.src) { var b = new Image(); b.src = s.src; }
-      if (s.bg)  { var g = new Image(); g.src = s.bg; }
+      if (s.bg)  { var g = new Image(); g.src = bgFor(s); }
     });
   }
 
@@ -261,7 +291,7 @@
     }
 
     // Initial state — slide 0 is the brand stage
-    if (bgA) bgA.src = SLIDES[0].bg;
+    if (bgA) bgA.src = bgFor(SLIDES[0]);
     if (bgA) bgA.classList.add('hs-active');
     bucketA.classList.remove('hs-active');
     bucketB.classList.remove('hs-active');
