@@ -106,10 +106,10 @@
     ) : 999;
     state.matchedName = (d < 12 && nearest) ? nearest.name : 'Custom Mix';
 
-    // Wall overlay — paint the canvas with the current colour through
-    // the active room's mask. Uses real pixel alpha so no CSS mask
-    // quirks. paintCanvas() is a no-op until the mask Image has loaded.
-    paintCanvas(hex);
+    // Wall overlay — recolour the canvas through the active room's mask.
+    // Coalesced to one repaint per frame: the picker fires continuously
+    // while dragging and the recolour touches every pixel.
+    schedulePaint(hex);
 
     // SV canvas hue base
     var svCanvas = document.getElementById('vsSVCanvas');
@@ -245,6 +245,48 @@
   var roomImg = null, roomReady = false;
   var maskImg = null, maskReady = false;
 
+  // Per-room pixel cache. Decoding the photo and the mask is the expensive
+  // part and neither changes while the user drags the picker, so both are
+  // read once per room and only the recolour loop runs per frame.
+  var cache = null;   // { w, h, src:Uint8ClampedArray, alpha:Uint8Array, refL, out:ImageData }
+
+  function buildCache() {
+    if (!roomReady || !roomImg) return null;
+    var w = roomImg.naturalWidth, h = roomImg.naturalHeight;
+    if (!w || !h) return null;
+
+    var c = document.createElement('canvas');
+    c.width = w; c.height = h;
+    var cx = c.getContext('2d', { willReadFrequently: true });
+    cx.drawImage(roomImg, 0, 0, w, h);
+    var src = cx.getImageData(0, 0, w, h);
+
+    var alpha = new Uint8Array(w * h);
+    if (maskImg && maskReady) {
+      cx.clearRect(0, 0, w, h);
+      cx.drawImage(maskImg, 0, 0, w, h);
+      var md = cx.getImageData(0, 0, w, h).data;
+      for (var i = 0, p = 3; i < alpha.length; i++, p += 4) alpha[i] = md[p];
+    }
+
+    // Mean wall luminance — the pivot the target colour is shaded around.
+    var sum = 0, wsum = 0;
+    for (var j = 0, q = 0; j < alpha.length; j++, q += 4) {
+      var a = alpha[j];
+      if (!a) continue;
+      sum += a * (0.2126 * src.data[q] + 0.7152 * src.data[q + 1] + 0.0722 * src.data[q + 2]);
+      wsum += a;
+    }
+
+    return {
+      w: w, h: h,
+      src: src.data,
+      alpha: alpha,
+      refL: wsum ? (sum / wsum) / 255 : 0.5,
+      out: cx.createImageData(w, h),
+    };
+  }
+
   function applyRoom(idx) {
     var r = DATA.rooms[idx];
     if (!r) return;
@@ -253,18 +295,55 @@
 
     roomReady = false;
     maskReady = false;
+    cache = null;
+
+    function ready() {
+      // Wait for both before caching, else refL is computed with no mask.
+      if (!roomReady || (r.mask && !maskReady)) return;
+      cache = buildCache();
+      paintCanvas(currentHex());
+    }
 
     roomImg = new Image();
-    roomImg.onload = function () { roomReady = true; paintCanvas(currentHex()); };
+    roomImg.onload = function () { roomReady = true; ready(); };
     roomImg.onerror = function () { console.warn('[Visualiser] room photo failed:', r.image); };
     roomImg.src = r.image;
 
     if (r.mask) {
       maskImg = new Image();
-      maskImg.onload = function () { maskReady = true; paintCanvas(currentHex()); };
-      maskImg.onerror = function () { console.warn('[Visualiser] mask failed:', r.mask); };
+      maskImg.onload = function () { maskReady = true; ready(); };
+      maskImg.onerror = function () {
+        console.warn('[Visualiser] mask failed:', r.mask);
+        maskReady = true; ready();     // fall back to the untouched photo
+      };
       maskImg.src = r.mask;
     }
+  }
+
+  var paintQueued = false, pendingHex = null, paintRaf = 0, paintTimer = 0;
+
+  // Coalesce repaints to one per frame — the picker fires continuously
+  // while dragging and the recolour touches every pixel.
+  //
+  // A timer races the animation frame and whichever arrives first wins.
+  // rAF alone is smoother but is not guaranteed to be serviced (hidden
+  // tab, occluded window, headless), and if it never runs the canvas
+  // silently stops tracking the picker.
+  function schedulePaint(hex) {
+    pendingHex = hex;
+    if (paintQueued) return;
+    paintQueued = true;
+
+    var run = function () {
+      if (!paintQueued) return;
+      paintQueued = false;
+      if (paintRaf) { cancelAnimationFrame(paintRaf); paintRaf = 0; }
+      if (paintTimer) { clearTimeout(paintTimer); paintTimer = 0; }
+      paintCanvas(pendingHex);
+    };
+
+    paintRaf = (window.requestAnimationFrame || function () { return 0; })(run);
+    paintTimer = setTimeout(run, 32);
   }
 
   function paintCanvas(hex) {
@@ -276,32 +355,73 @@
     if (canvas.height !== h) canvas.height = h;
     var ctx = canvas.getContext('2d');
 
-    // 1) Base — the room photo, full opacity, no blend mode.
-    ctx.globalCompositeOperation = 'source-over';
-    ctx.drawImage(roomImg, 0, 0, w, h);
-
-    // 2) Wall colour — build the tint layer on an off-screen canvas:
-    //    draw mask (alpha = wall grade), then source-in fill with hex.
-    if (maskImg && maskReady) {
-      var tint = document.createElement('canvas');
-      tint.width = w; tint.height = h;
-      var tctx = tint.getContext('2d');
-      tctx.drawImage(maskImg, 0, 0, w, h);
-      tctx.globalCompositeOperation = 'source-in';
-      tctx.fillStyle = hex;
-      tctx.fillRect(0, 0, w, h);
-
-      // 3) Multiply that tint back onto the room photo, then layer a
-      //    softer 'color' pass for hue transfer that keeps shadows.
-      ctx.globalCompositeOperation = 'multiply';
-      ctx.globalAlpha = 0.88;
-      ctx.drawImage(tint, 0, 0);
-      ctx.globalCompositeOperation = 'color';
-      ctx.globalAlpha = 0.45;
-      ctx.drawImage(tint, 0, 0);
-      ctx.globalAlpha = 1;
+    // Without a cache yet, show the untouched photo rather than nothing.
+    if (!cache) {
       ctx.globalCompositeOperation = 'source-over';
+      ctx.drawImage(roomImg, 0, 0, w, h);
+      return;
     }
+
+    // Recolour, per pixel.
+    //
+    // The old pipeline multiplied a flat fill over the photo. Multiply can
+    // only ever darken, so light shades were impossible: asking for white
+    // returned the wall unchanged, and half a paint range read as dirty.
+    //
+    // Instead: keep the photo's shading *relative to the wall's mean*, and
+    // re-centre it on the chosen colour's own lightness. A wall lit at
+    // refL becomes exactly the target colour; brighter and darker patches
+    // keep their offset, so shadows, corners and light falloff survive.
+    var src = cache.src, alpha = cache.alpha, out = cache.out, dst = out.data;
+    var rgb = hexToRgb(hex) || [255, 255, 255];
+    var tr = rgb[0], tg = rgb[1], tb = rgb[2];
+    var targetL = (0.2126 * tr + 0.7152 * tg + 0.0722 * tb) / 255;
+    var refL = cache.refL;
+    var inv = 1 / Math.max(targetL, 0.004);
+
+    for (var i = 0, p = 0; i < alpha.length; i++, p += 4) {
+      var a = alpha[i];
+      if (a === 0) {
+        dst[p] = src[p]; dst[p+1] = src[p+1]; dst[p+2] = src[p+2]; dst[p+3] = 255;
+        continue;
+      }
+
+      var sr = src[p], sg = src[p+1], sb = src[p+2];
+      var L = (0.2126 * sr + 0.7152 * sg + 0.0722 * sb) / 255;
+      var d = L - refL;
+
+      var outL = targetL + d;
+      if (outL < 0) outL = 0; else if (outL > 1) outL = 1;
+
+      var k = outL * inv;
+      var nr = tr * k, ng = tg * k, nb = tb * k;
+
+      // Specular highlights (a gloss hotspot, sun on the wall) should stay
+      // bright and neutral rather than take on full chroma, or they read as
+      // flat paint. Above the shoulder, lift toward white.
+      var hot = (d - 0.22) * 4;
+      if (hot > 0) {
+        if (hot > 1) hot = 1;
+        var lift = d * 255;
+        nr += (nr + lift - nr) * hot; ng += (ng + lift - ng) * hot; nb += (nb + lift - nb) * hot;
+      }
+
+      if (nr > 255) nr = 255; else if (nr < 0) nr = 0;
+      if (ng > 255) ng = 255; else if (ng < 0) ng = 0;
+      if (nb > 255) nb = 255; else if (nb < 0) nb = 0;
+
+      if (a === 255) {
+        dst[p] = nr; dst[p+1] = ng; dst[p+2] = nb;
+      } else {
+        var t = a / 255, it = 1 - t;
+        dst[p]   = sr * it + nr * t;
+        dst[p+1] = sg * it + ng * t;
+        dst[p+2] = sb * it + nb * t;
+      }
+      dst[p+3] = 255;
+    }
+
+    ctx.putImageData(out, 0, 0);
   }
 
   function renderRooms() {
