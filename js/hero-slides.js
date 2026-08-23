@@ -30,6 +30,7 @@
       bg:    'images/inspiration/inspiration-villa-cream-charcoal.jpg',
       color: '#d92843',
       name:  'Weatherguard',
+      cat:   'Exterior wall paint',
     },
     // 2 — Silk Vinyl (interior premium emulsion) ↔ warm interior bedroom
     {
@@ -38,6 +39,7 @@
       bg:    'images/inspiration/inspiration-clay-bedroom.jpg',
       color: '#9b2ca8',
       name:  'Silk Vinyl',
+      cat:   'Interior wall paint',
     },
     // 3 — Rocketex (textured exterior) ↔ apartment block exterior
     {
@@ -46,6 +48,7 @@
       bg:    'images/inspiration/inspiration-apartments-sage.jpg',
       color: '#1f4088',
       name:  'Rocketex Wallmaster',
+      cat:   'Textured exterior',
     },
     // 4 — SuperMatt Emulsion (interior ceilings & walls) ↔ owner photo of a
     // flat white ceiling + walls. Chalk-matte surfaces with no sheen are
@@ -57,6 +60,7 @@
       bgMobile: 'images/products/applied/supermatt-applied-portrait.jpg',
       color: '#7f95a3',
       name:  'SuperMatt Emulsion',
+      cat:   'Ceilings & walls',
     },
     // 5 — Gloss Enamel (trim · doors · woodwork) ↔ owner photo of enamelled
     // metal cladding. Gloss on metal reads far truer than the old rust
@@ -68,6 +72,7 @@
       bgMobile: 'images/products/applied/gloss-enamel-applied-portrait.jpg',
       color: '#5a7183',
       name:  'Gloss Enamel',
+      cat:   'Wood & metal',
     },
     // 6 — Iris Plastic Emulsion (interior) ↔ owner photo of a warm cream
     // interior over timber. Broad, evenly-rolled emulsion walls and ceiling
@@ -78,6 +83,7 @@
       bg:    'images/products/applied/iris-economy-applied.jpg',
       color: '#b57a2b',
       name:  'Iris Plastic Emulsion',
+      cat:   'Interior wall paint',
     },
     // 7 — Weatherguard pairs again ↔ a real Cloud Paints project
     {
@@ -86,6 +92,8 @@
       bg:    'images/projects/pazuri-villa.jpg',
       color: '#c4870a',
       name:  'Weatherguard · Pazuri Villa',
+      label: 'Weatherguard',
+      cat:   'Exterior wall paint',
     },
     // 8 — Silk Vinyl second pass ↔ soft-blue coastal bedroom.
     // The painted feature wall and silky finish make this a clean
@@ -96,6 +104,7 @@
       bg:    'images/inspiration/inspiration-coastal-bedroom.jpg',
       color: '#5d8aa8',
       name:  'Silk Vinyl',
+      cat:   'Interior wall paint',
     },
     // 9 — Vinyl Matt (matte emulsion, rated interior *and* exterior) ↔ owner
     // photo of a brilliant-white stepped ceiling. The large unbroken white
@@ -106,6 +115,7 @@
       bg:    'images/products/applied/vinyl-matt-applied.jpg',
       color: '#6b7b8c',
       name:  'Vinyl Matt',
+      cat:   'Interior & exterior',
     },
     // 10 — Clear Varnish / Wood Care ↔ owner photo of varnished timber
     // cladding on an A-frame. Bare sealed wood, lit warm — the varnish is
@@ -117,6 +127,7 @@
       bgMobile: 'images/products/applied/clear-varnish-applied-portrait.jpg',
       color: '#c4870a',
       name:  'Clear Varnish',
+      cat:   'Wood varnish',
     },
     // 11 — Gloss Enamel pairs again ↔ mist bathroom (gloss trim suits)
     {
@@ -125,6 +136,7 @@
       bg:    'images/inspiration/inspiration-mist-bathroom.jpg',
       color: '#5d8aa8',
       name:  'Gloss Enamel',
+      cat:   'Wood & metal',
     },
     // 12 — Road Marking Paint ↔ real yellow road markings on asphalt
     // (owner-supplied photo — replaced the commercial-building shot
@@ -135,6 +147,7 @@
       bg:    'images/products/applied/road-marking-applied.jpg',
       color: '#e8a317',
       name:  'Road Marking Paint',
+      cat:   'Road & line marking',
     },
     // 13 — Weatherguard ↔ owner photo of a green exterior in full sun.
     // NOTE: this slot used to carry Roof Paint (green-roof-villa). The
@@ -148,6 +161,8 @@
       bgMobile: 'images/products/applied/weatherguard-applied-portrait.jpg',
       color: '#2f5d40',
       name:  'Weatherguard · Green exterior',
+      label: 'Weatherguard',
+      cat:   'Exterior wall paint',
     },
     // 14 — Roof Paint ↔ the green-roofed villa. Slide 13 used to carry Roof
     // Paint; when its photo was replaced with a painted exterior wall the
@@ -158,6 +173,7 @@
       bg:    'images/projects/green-roof-villa.jpg',
       color: '#1f7a4d',
       name:  'Roof Paint',
+      cat:   'Roofs & tiles',
     },
   ];
 
@@ -188,6 +204,31 @@
     if (bucketB) bucketB.style.setProperty('--bucket-glow', color);
   }
 
+  // One product, one name. The brand stage carries no label — it is the
+  // company, not a product.
+  var labelEl = null;
+  function applyLabel(slide) {
+    if (!labelEl) return;
+    if (slide.type === 'brand') {
+      labelEl.style.opacity = 0;
+      return;
+    }
+    labelEl.style.setProperty('--c', slide.color);
+    labelEl.querySelector('.cat').textContent = slide.cat || '';
+    labelEl.querySelector('.nm').textContent = slide.label || slide.name;
+
+    labelEl.style.opacity = 1;
+    labelEl.querySelector('.cat').animate(
+      [{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'none' }],
+      { duration: 320, delay: 60, easing: 'cubic-bezier(.25,.8,.35,1)', fill: 'both' });
+    labelEl.querySelector('.nm').animate(
+      [{ opacity: 0, transform: 'translateY(14px)' }, { opacity: 1, transform: 'none' }],
+      { duration: 420, delay: 120, easing: 'cubic-bezier(.25,.8,.35,1)', fill: 'both' });
+    labelEl.querySelector('.tick').animate(
+      [{ width: '0px' }, { width: '40px' }],
+      { duration: 460, delay: 220, easing: 'cubic-bezier(.25,.8,.35,1)', fill: 'both' });
+  }
+
   function switchTo(index) {
     if (busy) return;
     busy = true;
@@ -215,6 +256,7 @@
       pending--;
       if (pending > 0) return;
       applyColor(slide.color);
+      applyLabel(slide);
 
       // Switch foreground: brand stage vs bucket image
       var heroEl = document.querySelector('.lp-hero');
@@ -278,6 +320,7 @@
   function init() {
     pour       = document.querySelector('.lp-pour');
     brandStage = document.querySelector('.lp-hero-brand');
+    labelEl    = document.querySelector('.lp-slide-label');
     var bucketEl = document.querySelector('.lp-hero-bucket');
     var bgEl     = document.querySelector('.lp-hero-bg');
     if (!pour || !bucketEl) return;
@@ -297,16 +340,29 @@
     bucketB.classList.remove('hs-active');
     if (brandStage) brandStage.classList.add('hs-active');
     applyColor(SLIDES[0].color);
+    applyLabel(SLIDES[0]);
 
     function startSlides() {
       preloadAll();
       scheduleNext();
     }
 
-    if (document.body.classList.contains('cp-ready')) {
+    // The intro flash owns the stage first; it emits hero:intro-done when
+    // the range has cleared. Fall back on a timer so a dropped frame or a
+    // missing hero-intro.js can never strand the rotation.
+    var launched = false;
+    function launch() {
+      if (launched) return;
+      launched = true;
       startSlides();
+    }
+    window.addEventListener('hero:intro-done', launch, { once: true });
+    if (document.body.classList.contains('cp-ready')) {
+      setTimeout(launch, 2600);
     } else {
-      window.addEventListener('loader:done', startSlides, { once: true });
+      window.addEventListener('loader:done', function () {
+        setTimeout(launch, 2600);
+      }, { once: true });
     }
   }
 

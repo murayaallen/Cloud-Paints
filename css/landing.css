@@ -2546,3 +2546,126 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
     padding: 6px 12px;
   }
 }
+
+/* ============================================================
+   HERO INTRO FLASH — the range bounces in once on load
+   Sits inside .lp-pour, removes itself, hands over to the slides.
+   ============================================================ */
+.lp-intro {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  overflow: hidden;
+  pointer-events: none;
+}
+/* The brand stage and the bucket both sit idle until the flash clears,
+   so the hand-off is a clean cut rather than a cross-dissolve. */
+.lp-hero.intro-running .lp-hero-brand,
+.lp-hero.intro-running .lp-hero-bucket { opacity: 0 !important; }
+
+.lp-intro-it {
+  position: absolute;
+  left: 50%;
+  bottom: 34%;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+.lp-intro-it img {
+  display: block;
+  height: clamp(56px, 7.4vw, 94px);
+  width: auto;
+  filter: drop-shadow(0 14px 20px rgba(0,0,0,0.42));
+}
+.lp-intro-pool {
+  position: absolute;
+  left: 50%; bottom: -9px;
+  width: 84px; height: 18px;
+  transform: translateX(-50%) scale(.4);
+  opacity: 0;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, var(--c), transparent 70%);
+  filter: blur(7px);
+}
+.lp-intro-ring {
+  position: absolute;
+  left: 50%; bottom: -4px;
+  width: 20px; height: 8px;
+  margin-left: -10px;
+  border: 2px solid var(--c);
+  border-radius: 50%;
+  opacity: 0;
+}
+.lp-intro-sheen {
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 34%;
+  opacity: 0;
+  background: linear-gradient(105deg, transparent,
+    rgba(255,255,255,0.28) 45%, rgba(255,255,255,0.05) 62%, transparent);
+  filter: blur(2px);
+}
+@media (max-width: 780px) {
+  .lp-intro-pool { width: 54px; height: 13px; }
+  .lp-slide-label { bottom: 4%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lp-intro { display: none; }
+}
+
+/* ------------------------------------------------------------
+   HERO SLIDE LABEL — one product, one name
+   ------------------------------------------------------------ */
+.lp-slide-label {
+  position: absolute;
+  left: 0; right: 0;
+  bottom: 9%;
+  z-index: 5;
+  text-align: center;
+  pointer-events: none;
+  opacity: 0;
+  padding-inline: 16px;
+}
+/* The backdrop behind this changes every slide and some are bright, so the
+   label carries its own soft scrim rather than relying on the photo. */
+.lp-slide-label::before {
+  content: "";
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 120%; height: 260%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(ellipse at center, rgba(8,7,12,0.55), transparent 70%);
+  z-index: -1;
+}
+[data-theme="light"] .lp-slide-label::before {
+  background: radial-gradient(ellipse at center, rgba(250,244,236,0.62), transparent 70%);
+}
+.lp-slide-label .cat {
+  display: block;
+  font-family: var(--sans);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(245,241,232,0.62);
+  margin-bottom: 9px;
+}
+.lp-slide-label .nm {
+  display: block;
+  font-family: var(--serif);
+  font-size: clamp(1.15rem, 2.1vw, 1.65rem);
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+  color: #f5f1e8;
+  text-shadow: 0 2px 14px rgba(0,0,0,0.55);
+}
+.lp-slide-label .tick {
+  display: block;
+  height: 2px;
+  width: 0;
+  margin: 10px auto 0;
+  border-radius: 3px;
+  background: var(--c, var(--red-2));
+}
+[data-theme="light"] .lp-slide-label .cat { color: rgba(26,21,37,0.6); }
+[data-theme="light"] .lp-slide-label .nm  { color: #1a1525; text-shadow: 0 2px 14px rgba(255,252,244,0.6); }
