@@ -2564,9 +2564,40 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
    as ambient glow behind the tins; the mark, wordmark, tagline and splats
    would only compete with them. */
 .lp-brand-mark,
-.lp-brand-wordmark,
 .lp-brand-tag,
 .lp-brand-splat { display: none !important; }
+
+/* The lockup used to be a centred flex column sized to its contents. With
+   only the wordmark left in it, percentage offsets resolved inside that
+   small box, so the name floated above the tins. Let it span the column
+   instead, and the halo goes: it sat right behind the tins and washed the
+   labels out. */
+.lp-hero .lp-hero-brand {
+  inset: 0;
+  left: 0; top: 0;
+  width: auto;
+  transform: none;
+  display: block;
+}
+.lp-brand-halo { display: none !important; }
+
+/* The name comes back — just the name — sitting under the line-up. */
+.lp-hero .lp-brand-wordmark {
+  display: flex !important;
+  position: absolute;
+  left: 50%;
+  /* Keyed off the tins' own offset (30%) so the two never drift apart,
+     whatever the column height. */
+  bottom: calc(30% - 3.5rem);
+  transform: translateX(-50%) !important;
+  font-size: clamp(1.5rem, 2.9vw, 2.5rem);
+  white-space: nowrap;
+  opacity: 0;
+  filter: none !important;
+  animation: none !important;
+  transition: opacity 0.5s ease 0.35s;
+}
+.lp-hero.brand-active .lp-brand-wordmark { opacity: 1; }
 
 /* The rotating bucket sits idle while the line-up holds the stage. */
 .lp-hero.intro-running .lp-hero-bucket { opacity: 0 !important; }
@@ -2580,9 +2611,12 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
 }
 .lp-intro-it img {
   display: block;
-  height: clamp(88px, 11vw, 168px);
-  width: auto;
-  filter: drop-shadow(0 14px 20px rgba(0,0,0,0.42));
+  /* A fixed box with contain, so every tin occupies the same footprint.
+     Sizing on height alone made the wide tins read as bigger products.
+     No filter — the labels have to stay legible. */
+  width: clamp(74px, 9.2vw, 128px);
+  height: clamp(86px, 10.6vw, 150px);
+  object-fit: contain;
 }
 .lp-intro-pool {
   position: absolute;
@@ -2603,18 +2637,17 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
   border-radius: 50%;
   opacity: 0;
 }
-.lp-intro-sheen {
-  position: absolute;
-  top: 0; bottom: 0;
-  width: 34%;
-  opacity: 0;
-  background: linear-gradient(105deg, transparent,
-    rgba(255,255,255,0.28) 45%, rgba(255,255,255,0.05) 62%, transparent);
-  filter: blur(2px);
-}
 @media (max-width: 780px) {
   .lp-intro-pool { width: 76px; height: 17px; }
   .lp-slide-label { bottom: 4%; }
+  /* Short column: lift the tins and drop the name so they stop overlapping.
+     Outranks the older mobile wordmark rule, which sizes it for the
+     full-height brand stage this replaced. */
+  .lp-intro-it { bottom: 38%; }
+  body[data-page="home"] .lp-hero .lp-brand-wordmark {
+    font-size: min(6.6vw, 2rem);
+    bottom: calc(38% - 3rem);
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   .lp-intro { display: none; }

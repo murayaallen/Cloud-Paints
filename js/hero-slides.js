@@ -179,7 +179,7 @@
 
   // Brand slide holds longer (let the effects breathe);
   // regular slides at the standard tempo.
-  var BRAND_HOLD_MS  = 6500;
+  var BRAND_HOLD_MS  = 4200;   // static line-up; the old value paced a logo animation
   var SLIDE_HOLD_MS  = 5200;
   var FADE_MS        = 900;
 

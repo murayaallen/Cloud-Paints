@@ -28,7 +28,7 @@
   var OUT  = 'cubic-bezier(.2,.9,.3,1.32)';
   var SOFT = 'cubic-bezier(.25,.8,.35,1)';
   var FALL = 'cubic-bezier(.5,0,.9,.4)';
-  var STAGGER = 150, FLY = 900, GAP_WIDE = 108, GAP_TIGHT = 62;
+  var STAGGER = 105, FLY = 700, GAP_WIDE = 108, GAP_TIGHT = 62;
 
   var done = false, cleared = false, exposed = null;
 
@@ -103,30 +103,21 @@
         { transform: 'scale(1.1,.88)', offset: .55 },
         { transform: 'scale(.97,1.04)', offset: .78 },
         { transform: 'scale(1,1)' }
-      ], { duration: 420, delay: d + 660, easing: SOFT, fill: 'both' });
+      ], { duration: 340, delay: d + 505, easing: SOFT, fill: 'both' });
 
       el.querySelector('.lp-intro-pool').animate([
         { opacity: 0, transform: 'translateX(-50%) scale(.4)' },
         { opacity: .9, transform: 'translateX(-50%) scale(1.15)', offset: .35 },
         { opacity: .45, transform: 'translateX(-50%) scale(1)' }
-      ], { duration: 640, delay: d + 640, easing: SOFT, fill: 'both' });
+      ], { duration: 500, delay: d + 490, easing: SOFT, fill: 'both' });
 
       el.querySelector('.lp-intro-ring').animate([
         { opacity: .8, transform: 'scale(.5)' },
         { opacity: 0, transform: 'scale(7,3.4)' }
-      ], { duration: 700, delay: d + 660, easing: 'cubic-bezier(.15,.7,.3,1)', fill: 'both' });
+      ], { duration: 560, delay: d + 505, easing: 'cubic-bezier(.15,.7,.3,1)', fill: 'both' });
     });
 
     var settled = (n - 1) * STAGGER + FLY;
-
-    var sheen = document.createElement('span');
-    sheen.className = 'lp-intro-sheen';
-    layer.appendChild(sheen);
-    sheen.animate([
-      { transform: 'translateX(-40%) skewX(-12deg)', opacity: 0 },
-      { opacity: .85, offset: .35 },
-      { transform: 'translateX(330%) skewX(-12deg)', opacity: 0 }
-    ], { duration: 950, delay: settled - 80, easing: 'cubic-bezier(.3,0,.4,1)', fill: 'both' });
 
     // The line-up *is* the brand stage now — the logo lockup it replaced
     // used to hold this slot. So it stays put once landed, and only clears
@@ -151,7 +142,7 @@
     window.CloudHeroIntro = exposed;
 
     // Landed and holding — the rotation may start its clock now.
-    setTimeout(function () { finish(null); }, settled + 260);
+    setTimeout(function () { finish(null); }, settled + 200);
   }
 
   function boot() {
