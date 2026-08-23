@@ -299,9 +299,20 @@
     if (pending === 0) { pending = 1; done(); }
   }
 
+  var INTRO_CLEAR_MS = 780;   // long enough for the line-up to fall away
+
   function scheduleNext() {
     var hold = SLIDES[current].type === 'brand' ? BRAND_HOLD_MS : SLIDE_HOLD_MS;
     clearTimeout(timer);
+
+    // The intro line-up holds the opening stage in place of the old logo
+    // lockup. Drop it *before* the first product arrives so the two never
+    // share the stage — a clean break, not a cross-fade.
+    if (SLIDES[current].type === 'brand' && window.CloudHeroIntro) {
+      setTimeout(function () {
+        if (window.CloudHeroIntro) window.CloudHeroIntro.clear();
+      }, Math.max(0, hold - INTRO_CLEAR_MS));
+    }
     timer = setTimeout(function () {
       current = (current + 1) % SLIDES.length;
       switchTo(current);

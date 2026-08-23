@@ -2555,31 +2555,39 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
   position: absolute;
   inset: 0;
   z-index: 4;
-  overflow: hidden;
+  /* visible, not hidden: fit() sizes the row to the column, and clipping
+     here only hid the overflow instead of fixing it */
+  overflow: visible;
   pointer-events: none;
 }
-/* The brand stage and the bucket both sit idle until the flash clears,
-   so the hand-off is a clean cut rather than a cross-dissolve. */
-.lp-hero.intro-running .lp-hero-brand,
+/* The opening stage shows the range, not the logo lockup. The halo stays
+   as ambient glow behind the tins; the mark, wordmark, tagline and splats
+   would only compete with them. */
+.lp-brand-mark,
+.lp-brand-wordmark,
+.lp-brand-tag,
+.lp-brand-splat { display: none !important; }
+
+/* The rotating bucket sits idle while the line-up holds the stage. */
 .lp-hero.intro-running .lp-hero-bucket { opacity: 0 !important; }
 
 .lp-intro-it {
   position: absolute;
   left: 50%;
-  bottom: 34%;
+  bottom: 30%;
   opacity: 0;
   will-change: transform, opacity;
 }
 .lp-intro-it img {
   display: block;
-  height: clamp(56px, 7.4vw, 94px);
+  height: clamp(88px, 11vw, 168px);
   width: auto;
   filter: drop-shadow(0 14px 20px rgba(0,0,0,0.42));
 }
 .lp-intro-pool {
   position: absolute;
   left: 50%; bottom: -9px;
-  width: 84px; height: 18px;
+  width: 128px; height: 26px;
   transform: translateX(-50%) scale(.4);
   opacity: 0;
   border-radius: 50%;
@@ -2605,7 +2613,7 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
   filter: blur(2px);
 }
 @media (max-width: 780px) {
-  .lp-intro-pool { width: 54px; height: 13px; }
+  .lp-intro-pool { width: 76px; height: 17px; }
   .lp-slide-label { bottom: 4%; }
 }
 @media (prefers-reduced-motion: reduce) {
