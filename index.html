@@ -35,6 +35,14 @@
 <section class="lp-hero brand-active" aria-labelledby="lp-hero-h1">
   <!-- Rotating backdrop — crossfades with the bucket / brand stage -->
   <div class="lp-hero-bg" aria-hidden="true">
+    <!-- Velvet bed for the opening slide. Jewel tones on independent
+         clocks, a sheen crossing the pile, grain so it reads as fabric.
+         Only visible while the brand slide holds; the rotation's own
+         photographs take over from slide 1. -->
+    <div class="lp-velvet" aria-hidden="true">
+      <i class="v1"></i><i class="v2"></i><i class="v3"></i>
+      <i class="vnext"></i><i class="vsheen"></i>
+    </div>
     <img class="lp-hero-bg-img hs-active" src="images/hero/hero-brand-stage.jpg" alt="" fetchpriority="high" width="2400" height="1500" loading="eager" decoding="async" onerror="this.style.display='none'">
     <img class="lp-hero-bg-img" src="images/inspiration/inspiration-villa-cream-charcoal.jpg" alt="" aria-hidden="true" width="1219" height="818" loading="lazy" onerror="this.style.display='none'">
   </div>
@@ -82,15 +90,17 @@
         <div class="lp-brand-tag">Made in Kenya · Any colour, mixed for you</div>
       </div>
 
-      <!-- One product, one name — populated per slide by hero-slides.js -->
-      <div class="lp-slide-label" aria-hidden="true">
-        <span class="cat"></span><span class="nm"></span><span class="tick"></span>
-      </div>
-
-      <!-- Slides 1+: bucket floating in front of the room photo -->
+      <!-- Slides 1+: bucket floating in front of the room photo.
+           The name lives *inside* the bucket element so it sits directly
+           underneath it at every breakpoint — the bucket is absolutely
+           centred on desktop but sits in normal flow on mobile, so no
+           single set of coordinates could track it. -->
       <div class="lp-hero-bucket">
         <img src="images/buckets/hero/weatherguard.png" alt="Cloud Paints paint bucket" width="420" height="525" loading="lazy">
         <img src="images/buckets/hero/silk-vinyl.png" alt="Cloud Paints paint bucket" width="420" height="525" aria-hidden="true" loading="lazy">
+        <div class="lp-slide-label" aria-hidden="true">
+          <span class="cat"></span><span class="nm"></span><span class="tick"></span>
+        </div>
       </div>
     </div>
   </div>

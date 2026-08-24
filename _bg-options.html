@@ -1,0 +1,174 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hero backdrop — pulsing gradients</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Inter:wght@400;600;700;800&family=Montserrat:wght@900&display=swap" rel="stylesheet" onerror="this.remove()">
+<style>
+ *{box-sizing:border-box}
+ body{margin:0;background:#08070c;color:#f5f1e8;font:15px/1.5 'Inter',system-ui,sans-serif}
+ header{padding:20px 24px 4px}
+ h1{font:500 21px/1.2 'Fraunces',Georgia,serif;margin:0 0 4px}
+ .sub{color:#948da6;font-size:13px;margin:0}
+ .bar{padding:10px 24px 14px;display:flex;gap:8px;flex-wrap:wrap}
+ button{font:600 13px/1 inherit;color:#fff;background:#1b1926;border:1px solid #2f2b3d;
+        padding:9px 14px;border-radius:100px;cursor:pointer}
+ button.on{border-color:#ffc93d;color:#ffc93d}
+ .opt{margin:0 24px 26px}
+ .cap{font:800 10px/1 'Inter';letter-spacing:.2em;text-transform:uppercase;color:#ffc93d;padding:0 0 8px}
+ .note{color:#8d8699;font-size:12.5px;padding:8px 0 0}
+ .hero{position:relative;height:min(66vh,560px);border-radius:14px;overflow:hidden;
+       display:flex;align-items:center;isolation:isolate}
+
+ /* ---- gradient beds: each blob pulses AND travels ---- */
+ .bed{position:absolute;inset:0;z-index:0;overflow:hidden}
+ .bed i{position:absolute;border-radius:50%;display:block;will-change:transform,opacity}
+
+ /* S1 - orbiting brand colours */
+ .g1{background:#100d18}
+ .g1 .b1{width:72%;aspect-ratio:1;left:-14%;top:-26%;background:radial-gradient(circle,rgba(225,31,41,.66),transparent 66%);filter:blur(60px);animation:orbitA 19s ease-in-out infinite}
+ .g1 .b2{width:68%;aspect-ratio:1;right:-16%;top:-20%;background:radial-gradient(circle,rgba(31,64,136,.64),transparent 66%);filter:blur(60px);animation:orbitB 23s ease-in-out infinite}
+ .g1 .b3{width:76%;aspect-ratio:1;left:22%;bottom:-42%;background:radial-gradient(circle,rgba(232,163,23,.52),transparent 66%);filter:blur(70px);animation:orbitC 27s ease-in-out infinite}
+
+ /* S2 - wide diagonal drift */
+ .g2{background:#0d0a12}
+ .g2 .b1{width:92%;aspect-ratio:1.25;left:-18%;top:-34%;background:radial-gradient(ellipse,rgba(139,30,44,.78),transparent 64%);filter:blur(80px);animation:crossA 21s ease-in-out infinite}
+ .g2 .b2{width:66%;aspect-ratio:1;right:-18%;bottom:-30%;background:radial-gradient(circle,rgba(212,148,45,.58),transparent 66%);filter:blur(70px);animation:crossB 25s ease-in-out infinite}
+
+ /* S3 - travelling + hue rotating through the range */
+ .g3{background:#0e0b14;animation:hue 26s linear infinite}
+ .g3 .b1{width:78%;aspect-ratio:1;left:-10%;top:-24%;background:radial-gradient(circle,rgba(225,31,41,.62),transparent 66%);filter:blur(65px);animation:orbitB 18s ease-in-out infinite}
+ .g3 .b2{width:70%;aspect-ratio:1;right:-12%;bottom:-28%;background:radial-gradient(circle,rgba(60,90,220,.62),transparent 66%);filter:blur(65px);animation:orbitA 22s ease-in-out infinite}
+
+ /* S4 - spotlight that tracks along the row */
+ .g4{background:radial-gradient(120% 90% at 50% 120%,#241826,#0a080e 70%)}
+ .g4 .b1{width:58%;aspect-ratio:1.25;left:22%;bottom:4%;background:radial-gradient(ellipse,rgba(216,72,60,.66),transparent 68%);filter:blur(70px);animation:track 15s ease-in-out infinite}
+ .g4 .b2{width:40%;aspect-ratio:1;right:8%;top:-14%;background:radial-gradient(circle,rgba(232,163,23,.36),transparent 68%);filter:blur(70px);animation:orbitC 20s ease-in-out infinite}
+
+ /* S5 - bands sweeping the full width */
+ .g5{background:#0b0a12}
+ .g5 .b1{width:150%;height:40%;left:-25%;top:4%;background:linear-gradient(90deg,transparent,rgba(93,138,168,.52),rgba(155,44,168,.46),transparent);filter:blur(70px);animation:bandA 20s ease-in-out infinite}
+ .g5 .b2{width:150%;height:36%;left:-25%;bottom:0%;background:linear-gradient(90deg,transparent,rgba(196,135,10,.46),rgba(217,40,67,.42),transparent);filter:blur(70px);animation:bandB 26s ease-in-out infinite}
+
+ /* Travel paths. Percentages are of each blob's own size, and the blobs are
+    large, so these move a long way across the frame while pulsing. */
+ @keyframes orbitA{
+   0%,100%{transform:translate(0,0) scale(1);opacity:.82}
+   25%{transform:translate(26%,12%) scale(1.16);opacity:1}
+   50%{transform:translate(44%,-8%) scale(1.04);opacity:.88}
+   75%{transform:translate(16%,-18%) scale(1.22);opacity:1}}
+ @keyframes orbitB{
+   0%,100%{transform:translate(0,0) scale(1.06);opacity:.86}
+   30%{transform:translate(-30%,16%) scale(1.2);opacity:1}
+   60%{transform:translate(-46%,-10%) scale(1);opacity:.84}
+   85%{transform:translate(-14%,-20%) scale(1.14);opacity:1}}
+ @keyframes orbitC{
+   0%,100%{transform:translate(0,0) scale(1);opacity:.78}
+   35%{transform:translate(-24%,-18%) scale(1.24);opacity:1}
+   70%{transform:translate(22%,-26%) scale(1.08);opacity:.9}}
+ @keyframes crossA{
+   0%,100%{transform:translate(0,0) scale(1);opacity:.85}
+   50%{transform:translate(40%,18%) scale(1.18);opacity:1}}
+ @keyframes crossB{
+   0%,100%{transform:translate(0,0) scale(1.1);opacity:.8}
+   50%{transform:translate(-46%,-22%) scale(1);opacity:1}}
+ @keyframes track{
+   0%,100%{transform:translateX(-38%) scale(1);opacity:.72}
+   50%{transform:translateX(38%) scale(1.16);opacity:1}}
+ @keyframes bandA{
+   0%,100%{transform:translateX(-14%) translateY(0) scaleY(1);opacity:.85}
+   50%{transform:translateX(16%) translateY(18%) scaleY(1.25);opacity:1}}
+ @keyframes bandB{
+   0%,100%{transform:translateX(14%) translateY(0) scaleY(1.15);opacity:.8}
+   50%{transform:translateX(-16%) translateY(-16%) scaleY(1);opacity:1}}
+ @keyframes hue{0%{filter:hue-rotate(0deg)}100%{filter:hue-rotate(360deg)}}
+ body.still .bed,body.still .bed i{animation-play-state:paused !important}
+
+ .copy{position:relative;z-index:2;padding-left:clamp(20px,4vw,54px);max-width:46%}
+ .copy h2{font:400 clamp(1.9rem,4.2vw,3.4rem)/1.02 'Fraunces',Georgia,serif;margin:0 0 12px}
+ .copy h2 i{font-style:italic;color:#e8b23c}
+ .copy p{color:rgba(245,241,232,.82);font-size:14px;max-width:38ch;margin:0}
+ .stageR{position:absolute;right:0;top:0;bottom:0;width:56%;z-index:2}
+ .row{position:absolute;left:50%;bottom:30%;transform:translateX(-50%);
+      display:flex;align-items:flex-end;gap:clamp(10px,2vw,28px)}
+ .tin{position:relative;display:block;opacity:0}
+ .tin img{width:clamp(52px,6.4vw,112px);height:clamp(60px,7.4vw,132px);object-fit:contain;display:block}
+ .tin .pool{position:absolute;left:50%;bottom:-8px;width:78%;height:16px;border-radius:50%;
+   transform:translateX(-50%) scale(.4);opacity:0;
+   background:radial-gradient(ellipse,var(--c),transparent 70%);filter:blur(7px)}
+ .tin .ring{position:absolute;left:50%;bottom:-3px;width:18px;height:7px;margin-left:-9px;
+   border:2px solid var(--c);border-radius:50%;opacity:0}
+ .wm{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(30% - 3.4rem);
+     font-family:'Montserrat','Inter',sans-serif;font-weight:900;text-transform:uppercase;
+     font-size:clamp(1.2rem,2.5vw,2.2rem);letter-spacing:-.02em;white-space:nowrap;display:flex;gap:.18em;z-index:2}
+ .wm .b{color:#1D1E51;text-shadow:0 0 3px rgba(255,252,244,.95)}
+ .wm .r{color:#e11f29;font-style:italic;text-shadow:0 0 3px rgba(255,252,244,.9)}
+ .wm::before{content:"";position:absolute;inset:-40% -10%;z-index:-1;border-radius:50%;
+   background:radial-gradient(ellipse at center,rgba(255,250,238,.9),rgba(255,250,238,.5) 45%,transparent 76%);filter:blur(16px)}
+ body.nowm .wm{display:none}
+</style></head><body>
+<header>
+ <h1>Hero backdrop — pulsing colour gradients</h1>
+ <p class="sub">Each bed pulses and travels across the frame. Freeze to compare the still composition.</p>
+</header>
+<div class="bar">
+ <button onclick="playAll()">&#9654; Replay animation</button>
+ <button id="wmBtn" class="on" onclick="document.body.classList.toggle('nowm');this.classList.toggle('on')">Wordmark: on</button>
+ <button id="stillBtn" onclick="document.body.classList.toggle('still');this.classList.toggle('on')">Freeze gradients</button>
+</div>
+<div id="wrap"></div>
+<script>
+var TINS=['weatherguard','silk-vinyl','vinyl-matt','supermatt','iris-economy'];
+var COLS={'weatherguard':'#d92843','silk-vinyl':'#ec4899','vinyl-matt':'#3b5bdb',
+          'supermatt':'#d92843','iris-economy':'#fbbf24'};
+var OPTS=[
+ ['g1',3,'S1 - Orbiting brand colours','Red, navy and gold each travelling a different loop on a different clock. Never repeats to the eye.'],
+ ['g2',2,'S2 - Diagonal drift','Two big masses crossing the frame in opposite directions. Slowest, widest movement.'],
+ ['g3',2,'S3 - Travel + hue shift','Blobs orbit while the whole bed rotates through the spectrum over 26s.'],
+ ['g4',2,'S4 - Tracking spotlight','A warm pool sweeping left to right along the row, as if lighting each tin in turn.'],
+ ['g5',2,'S5 - Sweeping bands','Full-width bands travelling and swelling in opposite directions.']
+];
+document.getElementById('wrap').innerHTML = OPTS.map(function(o){
+ var blobs=''; for(var i=1;i<=o[1];i++) blobs+='<i class="b'+i+'"></i>';
+ return '<div class="opt" data-k="'+o[0]+'"><div class="cap">'+o[2]+'</div>'+
+   '<div class="hero"><div class="bed '+o[0]+'">'+blobs+'</div>'+
+   '<div class="copy"><h2>Paint<br>that moves<br><i>with you.</i></h2>'+
+   '<p>Premium decorative paints, coatings and solvents - made in Nairobi.</p></div>'+
+   '<div class="stageR"><div class="row">'+TINS.map(function(t){
+      return '<span class="tin" style="--c:'+COLS[t]+'"><i class="pool"></i><i class="ring"></i>'+
+             '<img src="images/buckets/intro/'+t+'.webp" alt=""></span>';}).join('')+'</div>'+
+   '<div class="wm"><span class="b">Cloud</span><span class="r">Paints</span></div></div></div>'+
+   '<div class="note">'+o[3]+'</div></div>';
+}).join('');
+
+var OUT='cubic-bezier(.2,.9,.3,1.32)', SOFT='cubic-bezier(.25,.8,.35,1)';
+var STAGGER=105, FLY=700;
+function play(hero){
+ var tins=hero.querySelectorAll('.tin'), wm=hero.querySelector('.wm');
+ tins.forEach(function(el,i){
+  var d=i*STAGGER;
+  el.getAnimations().forEach(function(a){a.cancel();});
+  el.animate([{transform:'translateX(420px) translateY(-16px) scale(.88) rotate(9deg)',opacity:0},
+              {transform:'translateX(0) translateY(-18px) scale(1.08) rotate(-2deg)',opacity:1,offset:.68},
+              {transform:'none',opacity:1}],{duration:FLY,delay:d,easing:OUT,fill:'both'});
+  el.querySelector('img').animate([{transform:'scale(1,1)'},{transform:'scale(1.1,.88)',offset:.55},
+              {transform:'scale(.97,1.04)',offset:.78},{transform:'scale(1,1)'}],
+              {duration:340,delay:d+505,easing:SOFT,fill:'both'});
+  el.querySelector('.pool').animate([{opacity:0,transform:'translateX(-50%) scale(.4)'},
+              {opacity:.9,transform:'translateX(-50%) scale(1.15)',offset:.35},
+              {opacity:.45,transform:'translateX(-50%) scale(1)'}],
+              {duration:500,delay:d+490,easing:SOFT,fill:'both'});
+  el.querySelector('.ring').animate([{opacity:.8,transform:'scale(.5)'},{opacity:0,transform:'scale(7,3.4)'}],
+              {duration:560,delay:d+505,easing:'cubic-bezier(.15,.7,.3,1)',fill:'both'});
+ });
+ if(wm){wm.getAnimations().forEach(function(a){a.cancel();});
+  wm.animate([{opacity:0,transform:'translateX(-50%) translateY(10px)'},
+              {opacity:1,transform:'translateX(-50%) translateY(0)'}],
+    {duration:520,delay:(tins.length-1)*STAGGER+FLY-120,easing:SOFT,fill:'both'});}
+}
+function playAll(){document.querySelectorAll('.hero').forEach(play);}
+document.querySelectorAll('.hero').forEach(function(h){
+  new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting) play(e.target); });
+  },{threshold:.45}).observe(h);
+});
+setTimeout(playAll,300);
+</script></body></html>

@@ -258,6 +258,11 @@
       applyColor(slide.color);
       applyLabel(slide);
 
+      if (slide.type === 'brand') {
+        var vn = document.querySelector('.lp-velvet .vnext');
+        if (vn) vn.classList.remove('warm');
+      }
+
       // Switch foreground: brand stage vs bucket image
       var heroEl = document.querySelector('.lp-hero');
       if (slide.type === 'brand') {
@@ -308,9 +313,19 @@
     // The intro line-up holds the opening stage in place of the old logo
     // lockup. Drop it *before* the first product arrives so the two never
     // share the stage — a clean break, not a cross-fade.
-    if (SLIDES[current].type === 'brand' && window.CloudHeroIntro) {
+    //
+    // At the same moment the velvet bed warms toward the colour of the
+    // slide about to arrive, so the ground has already moved before the
+    // photograph cuts in.
+    if (SLIDES[current].type === 'brand') {
+      var nextSlide = SLIDES[(current + 1) % SLIDES.length];
       setTimeout(function () {
         if (window.CloudHeroIntro) window.CloudHeroIntro.clear();
+        var vnext = document.querySelector('.lp-velvet .vnext');
+        if (vnext && nextSlide) {
+          vnext.style.setProperty('--next', nextSlide.color);
+          vnext.classList.add('warm');
+        }
       }, Math.max(0, hold - INTRO_CLEAR_MS));
     }
     timer = setTimeout(function () {

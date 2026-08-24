@@ -1,0 +1,240 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hero opening — full bleed</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Inter:wght@400;600;700;800&family=Montserrat:wght@900&display=swap" rel="stylesheet" onerror="this.remove()">
+<style>
+ *{box-sizing:border-box}
+ html,body{margin:0;height:100%;background:#07060b;color:#f5f1e8;
+   font:15px/1.5 'Inter',system-ui,sans-serif;overflow:hidden}
+
+ .hero{position:relative;width:100vw;height:100vh;overflow:hidden;isolation:isolate;
+       display:flex;align-items:center}
+
+ /* ---- opening bed: velvet ------------------------------------------
+    Jewel tones rather than bright brand hues, plush falloff, a slow sheen
+    travelling across the pile, fine grain so it reads as fabric, and a
+    vignette to sink the corners. Movement stays quick (9s / 11s / 13s). */
+ .bed{position:absolute;inset:0;z-index:0;overflow:hidden;
+   background:radial-gradient(140% 110% at 62% 46%,#241030,#0b0610 72%);
+   transition:opacity 1.1s ease}
+ .bed i{position:absolute;display:block;border-radius:50%;will-change:transform,opacity;
+   mix-blend-mode:screen}
+ .bed .r1{width:78%;aspect-ratio:1;left:-16%;top:-28%;
+   background:radial-gradient(circle,rgba(150,20,52,.95),rgba(96,12,40,.55) 42%,transparent 70%);
+   filter:blur(74px);animation:orbitA 9s ease-in-out infinite}
+ .bed .r2{width:74%;aspect-ratio:1;right:-18%;top:-22%;
+   background:radial-gradient(circle,rgba(28,36,120,.92),rgba(18,22,78,.52) 44%,transparent 70%);
+   filter:blur(74px);animation:orbitB 11s ease-in-out infinite}
+ .bed .r3{width:80%;aspect-ratio:1;left:20%;bottom:-44%;
+   background:radial-gradient(circle,rgba(150,100,18,.72),rgba(96,62,10,.40) 44%,transparent 72%);
+   filter:blur(84px);animation:orbitC 13s ease-in-out infinite}
+ .bed .nx{width:62%;aspect-ratio:1.3;right:4%;bottom:0%;
+   background:radial-gradient(ellipse,var(--next,#d92843),transparent 68%);
+   filter:blur(94px);opacity:0;transition:opacity 1.1s ease}
+ .bed .nx.warm{opacity:.58}
+
+ /* Sheen — light running across the pile. Wide, weak, and slow. */
+ .bed .sheen{position:absolute;inset:-20% -40%;border-radius:0;mix-blend-mode:screen;
+   background:linear-gradient(102deg,transparent 34%,rgba(255,226,196,.16) 48%,
+     rgba(255,238,214,.05) 56%,transparent 68%);
+   filter:blur(26px);animation:pile 14s ease-in-out infinite}
+ /* Grain — the pile itself. Without it the bed reads as gas, not fabric. */
+ .bed::after{content:"";position:absolute;inset:0;pointer-events:none;
+   background:url("images/textures/grain.svg") repeat;opacity:.16;mix-blend-mode:overlay}
+ /* Vignette — velvet is darkest where it folds away. */
+ .bed::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:1;
+   background:radial-gradient(120% 100% at 60% 45%,transparent 42%,rgba(6,4,10,.72) 100%)}
+
+ @keyframes orbitA{0%,100%{transform:translate(0,0) scale(.96);opacity:.72}
+   25%{transform:translate(38%,18%) scale(1.28);opacity:1}
+   50%{transform:translate(62%,-12%) scale(1.02);opacity:.78}
+   75%{transform:translate(22%,-26%) scale(1.34);opacity:1}}
+ @keyframes orbitB{0%,100%{transform:translate(0,0) scale(1.04);opacity:.76}
+   30%{transform:translate(-44%,24%) scale(1.32);opacity:1}
+   60%{transform:translate(-66%,-14%) scale(.98);opacity:.72}
+   85%{transform:translate(-20%,-30%) scale(1.24);opacity:1}}
+ @keyframes orbitC{0%,100%{transform:translate(0,0) scale(.98);opacity:.66}
+   35%{transform:translate(-36%,-26%) scale(1.36);opacity:1}
+   70%{transform:translate(32%,-38%) scale(1.1);opacity:.86}}
+ @keyframes pile{0%,100%{transform:translateX(-16%) skewX(-6deg);opacity:.5}
+   50%{transform:translateX(14%) skewX(-6deg);opacity:1}}
+
+ /* ---- the product slide underneath ---- */
+ .shot{position:absolute;inset:0;z-index:0;opacity:0;transition:opacity 1.1s ease}
+ .shot img{width:100%;height:100%;object-fit:cover;display:block}
+ .shot::after{content:"";position:absolute;inset:0;
+   background:linear-gradient(90deg,rgba(11,10,16,.62),rgba(11,10,16,.34) 32%,transparent 62%)}
+ .hero.handed .shot{opacity:1}
+ .hero.handed .bed{opacity:0}
+
+ /* ---- copy column ---- */
+ .copy{position:relative;z-index:3;padding-left:clamp(22px,6vw,90px);max-width:44%}
+ .copy .eb{display:inline-block;font:800 10px/1 'Inter';letter-spacing:.2em;text-transform:uppercase;
+   color:#e8b23c;border:1px solid rgba(232,178,60,.32);background:rgba(232,178,60,.09);
+   padding:7px 13px;border-radius:100px;margin-bottom:20px}
+ .copy h1{font:400 clamp(2.2rem,5.4vw,4.6rem)/1.0 'Fraunces',Georgia,serif;margin:0 0 18px}
+ .copy h1 i{font-style:italic;color:#e8b23c}
+ .copy p{color:rgba(245,241,232,.8);font-size:15px;max-width:40ch;margin:0 0 26px}
+ .ctas{display:flex;gap:12px;flex-wrap:wrap}
+ .btn{font:600 14px/1 inherit;padding:14px 22px;border-radius:100px;text-decoration:none;color:#fff;
+   background:linear-gradient(120deg,#e11f29,#8b1e6b)}
+ .btn2{font:600 14px/1 inherit;padding:14px 22px;border-radius:100px;text-decoration:none;
+   color:#f5f1e8;border:1px solid rgba(245,241,232,.28)}
+
+ /* ---- right stage ---- */
+ .stage{position:absolute;right:0;top:0;bottom:0;width:54%;z-index:3}
+ .row{position:absolute;left:50%;bottom:32%;transform:translateX(-50%);
+   display:flex;align-items:flex-end;gap:clamp(10px,2.2vw,30px)}
+ .tin{position:relative;display:block;opacity:0}
+ .tin img{width:clamp(54px,6.6vw,116px);height:clamp(62px,7.6vw,136px);object-fit:contain;display:block}
+ .tin .pool{position:absolute;left:50%;bottom:-8px;width:78%;height:16px;border-radius:50%;
+   transform:translateX(-50%) scale(.4);opacity:0;
+   background:radial-gradient(ellipse,var(--c),transparent 70%);filter:blur(7px)}
+ .wm{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(32% - 3.6rem);
+   font-family:'Montserrat','Inter',sans-serif;font-weight:900;text-transform:uppercase;
+   font-size:clamp(1.3rem,2.7vw,2.4rem);letter-spacing:-.02em;white-space:nowrap;
+   display:flex;gap:.18em;opacity:0;z-index:3}
+ .wm .b{color:#1D1E51;text-shadow:0 0 3px rgba(255,252,244,.95)}
+ .wm .r{color:#e11f29;font-style:italic;text-shadow:0 0 3px rgba(255,252,244,.9)}
+ .wm::before{content:"";position:absolute;inset:-42% -12%;z-index:-1;border-radius:50%;
+   background:radial-gradient(ellipse at center,rgba(255,250,238,.92),rgba(255,250,238,.5) 45%,transparent 76%);
+   filter:blur(17px)}
+
+ /* the single product that arrives after the hand-off */
+ .one{position:absolute;left:50%;bottom:30%;transform:translateX(-50%);opacity:0;z-index:3}
+ .one img{width:clamp(120px,15vw,250px);height:auto;display:block;
+   filter:drop-shadow(0 26px 34px rgba(0,0,0,.5))}
+ .one .lab{position:absolute;left:50%;top:100%;transform:translateX(-50%);
+   margin-top:14px;width:max-content;text-align:center;opacity:0}
+ .one .lab em{display:block;font:800 10px/1 'Inter';letter-spacing:.24em;text-transform:uppercase;
+   font-style:normal;color:rgba(245,241,232,.66);margin-bottom:10px}
+ .one .lab b{display:block;font:500 clamp(1.2rem,2.2vw,1.7rem)/1.05 'Fraunces',Georgia,serif;
+   text-shadow:0 2px 14px rgba(0,0,0,.55)}
+ .one .lab i{display:block;height:2px;width:0;margin:11px auto 0;border-radius:3px;background:var(--next,#d92843)}
+
+ .ui{position:fixed;left:14px;top:14px;z-index:20;display:flex;gap:8px}
+ .ui button{font:600 12px/1 inherit;color:#fff;background:rgba(20,18,28,.82);
+   border:1px solid #34304a;padding:8px 13px;border-radius:100px;cursor:pointer;backdrop-filter:blur(6px)}
+ .ui button.on{border-color:#ffc93d;color:#ffc93d}
+ .hint{position:fixed;left:14px;bottom:14px;z-index:20;color:#7d768e;font-size:12px}
+</style></head><body>
+
+<div class="ui">
+ <button onclick="run()">&#9654; Replay</button>
+ <button id="hoBtn" class="on" onclick="HANDOFF=!HANDOFF;this.classList.toggle('on');this.textContent='Colour hand-off: '+(HANDOFF?'on':'off');run()">Colour hand-off: on</button>
+</div>
+<div class="hint" id="hint"></div>
+
+<section class="hero" id="hero">
+  <div class="bed"><i class="r1"></i><i class="r2"></i><i class="r3"></i><i class="nx" id="pool"></i><i class="sheen"></i></div>
+  <div class="shot"><img src="images/inspiration/inspiration-villa-cream-charcoal.jpg" alt=""></div>
+
+  <div class="copy">
+    <span class="eb">Made in Kenya &middot; Any colour, mixed for you</span>
+    <h1>Paint<br>that moves<br><i>with you.</i></h1>
+    <p>Premium decorative paints, coatings and solvents &mdash; formulated, certified and packed in Industrial Area, Nairobi.</p>
+    <div class="ctas"><a class="btn" href="#">Colour Collection &rarr;</a><a class="btn2" href="#">Try the Visualiser</a></div>
+  </div>
+
+  <div class="stage">
+    <div class="row" id="row"></div>
+    <div class="wm" id="wm"><span class="b">Cloud</span><span class="r">Paints</span></div>
+    <div class="one" id="one"><img src="images/buckets/hero/weatherguard.png" alt=""><div class="lab" id="lab"><em>Exterior wall paint</em><b>Weatherguard</b><i></i></div></div>
+  </div>
+</section>
+
+<script>
+var TINS=[['weatherguard','#d92843'],['silk-vinyl','#ec4899'],['vinyl-matt','#3b5bdb'],
+          ['supermatt','#d92843'],['iris-economy','#fbbf24']];
+var NEXT='#d92843';                    // colour of the slide about to arrive
+var HANDOFF=true;
+var OUT='cubic-bezier(.2,.9,.3,1.32)', SOFT='cubic-bezier(.25,.8,.35,1)',
+    FALL='cubic-bezier(.5,0,.9,.4)';
+var STAGGER=105, FLY=700, HOLD=2600;
+var timers=[];
+
+document.getElementById('row').innerHTML = TINS.map(function(t){
+  return '<span class="tin" style="--c:'+t[1]+'"><i class="pool"></i>'+
+         '<img src="images/buckets/intro/'+t[0]+'.webp" alt=""></span>';}).join('');
+
+function reset(){
+  timers.forEach(clearTimeout); timers=[];
+  var h=document.getElementById('hero'); h.classList.remove('handed');
+  ['#row','#wm','#one','#lab'].forEach(function(s){
+    var n=document.querySelector(s);
+    n.getAnimations().forEach(function(a){a.cancel();});
+    n.querySelectorAll('*').forEach(function(c){c.getAnimations().forEach(function(a){a.cancel();});});
+  });
+  document.getElementById('wm').style.opacity=0;
+  document.getElementById('one').style.opacity=0;
+  document.getElementById('lab').style.opacity=0;
+  var p=document.getElementById('pool');
+  p.classList.remove('warm');
+  document.getElementById('hero').style.setProperty('--next',NEXT);
+}
+function later(fn,d){timers.push(setTimeout(fn,d));}
+
+function run(){
+  reset();
+  var tins=document.querySelectorAll('.tin');
+  tins.forEach(function(el,i){
+    var d=i*STAGGER;
+    el.animate([{transform:'translateX(430px) translateY(-16px) scale(.88) rotate(9deg)',opacity:0},
+                {transform:'translateX(0) translateY(-18px) scale(1.08) rotate(-2deg)',opacity:1,offset:.68},
+                {transform:'none',opacity:1}],{duration:FLY,delay:d,easing:OUT,fill:'both'});
+    el.querySelector('img').animate([{transform:'scale(1,1)'},{transform:'scale(1.1,.88)',offset:.55},
+                {transform:'scale(.97,1.04)',offset:.78},{transform:'scale(1,1)'}],
+                {duration:340,delay:d+505,easing:SOFT,fill:'both'});
+    el.querySelector('.pool').animate([{opacity:0,transform:'translateX(-50%) scale(.4)'},
+                {opacity:.9,transform:'translateX(-50%) scale(1.15)',offset:.35},
+                {opacity:.45,transform:'translateX(-50%) scale(1)'}],
+                {duration:500,delay:d+490,easing:SOFT,fill:'both'});
+  });
+  var settled=(tins.length-1)*STAGGER+FLY;
+
+  document.getElementById('wm').animate(
+    [{opacity:0,transform:'translateX(-50%) translateY(12px)'},
+     {opacity:1,transform:'translateX(-50%) translateY(0)'}],
+    {duration:520,delay:settled-140,easing:SOFT,fill:'both'});
+
+  // Warm the ground toward the incoming slide BEFORE the tins leave.
+  if(HANDOFF){
+    later(function(){
+      var p=document.getElementById('pool');
+      p.style.setProperty('--next',NEXT);
+      p.classList.add('warm');
+    }, settled+HOLD-900);
+  }
+
+  // Tins drop, then the photograph arrives on empty ground.
+  var clearAt=settled+HOLD;
+  later(function(){
+    tins.forEach(function(el,i){
+      el.animate([{transform:'none',opacity:1},
+                  {transform:'translateY(150px) scale(.8)',opacity:0}],
+        {duration:400,delay:(tins.length-i)*32,easing:FALL,fill:'both'});
+    });
+    document.getElementById('wm').animate([{opacity:1},{opacity:0}],
+      {duration:260,easing:SOFT,fill:'both'});
+  },clearAt);
+
+  var shotAt=clearAt+560;
+  later(function(){
+    document.getElementById('hero').classList.add('handed');
+    var one=document.getElementById('one'); one.style.opacity=1;
+    one.animate([{opacity:0,transform:'translateX(-50%) translateY(26px) scale(.94)'},
+                 {opacity:1,transform:'translateX(-50%) translateY(0) scale(1)'}],
+      {duration:640,easing:OUT,fill:'both'});
+    var lab=document.getElementById('lab'); lab.style.opacity=1;
+    lab.querySelector('em').animate([{opacity:0,transform:'translateY(8px)'},{opacity:1,transform:'none'}],
+      {duration:320,delay:140,easing:SOFT,fill:'both'});
+    lab.querySelector('b').animate([{opacity:0,transform:'translateY(14px)'},{opacity:1,transform:'none'}],
+      {duration:420,delay:200,easing:SOFT,fill:'both'});
+    lab.querySelector('i').animate([{width:'0px'},{width:'46px'}],
+      {duration:460,delay:300,easing:SOFT,fill:'both'});
+    document.getElementById('hint').textContent =
+      'line-up at '+(settled/1000).toFixed(2)+'s  ·  first slide at '+(shotAt/1000).toFixed(2)+'s';
+  },shotAt);
+}
+addEventListener('load',function(){setTimeout(run,300);});
+</script></body></html>

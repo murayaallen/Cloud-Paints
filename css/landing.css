@@ -47,11 +47,9 @@ body[data-page="home"] .lp-seam::before {
      image is missing (the old studio photo was removed; the AI brand
      stage is pending). When .lp-hero-bg-img loads it covers this
      gradient; when its onerror fires it hides itself and reveals it. */
-  background:
-    radial-gradient(60% 70% at 22% 26%, rgba(225,31,41,0.30), transparent 65%),
-    radial-gradient(55% 65% at 78% 22%, rgba(31,64,136,0.30), transparent 65%),
-    radial-gradient(60% 70% at 50% 90%, rgba(232,163,23,0.28), transparent 70%),
-    linear-gradient(135deg, #1d1e51 0%, #4a1f54 45%, #8b1e2c 100%);
+  /* Neutral ground. The opening slide's colour now comes from .lp-velvet,
+     and this three-hue wash fought it. */
+  background: radial-gradient(140% 110% at 62% 46%, #1b0d26, #09060f 74%);
 }
 [data-theme="light"] .lp-hero-bg {
   background:
@@ -2639,7 +2637,6 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
 }
 @media (max-width: 780px) {
   .lp-intro-pool { width: 76px; height: 17px; }
-  .lp-slide-label { bottom: 4%; }
   /* Short column: lift the tins and drop the name so they stop overlapping.
      Outranks the older mobile wordmark rule, which sizes it for the
      full-height brand stage this replaced. */
@@ -2657,14 +2654,19 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
    HERO SLIDE LABEL — one product, one name
    ------------------------------------------------------------ */
 .lp-slide-label {
+  /* Anchored to the bucket, not to the column, so it tracks the product
+     wherever the bucket lands. */
   position: absolute;
-  left: 0; right: 0;
-  bottom: 9%;
+  left: 50%;
+  top: 100%;
+  transform: translateX(-50%);
+  margin-top: clamp(10px, 1.6vw, 20px);
+  width: max-content;
+  max-width: min(88vw, 460px);
   z-index: 5;
   text-align: center;
   pointer-events: none;
   opacity: 0;
-  padding-inline: 16px;
 }
 /* The backdrop behind this changes every slide and some are bright, so the
    label carries its own soft scrim rather than relying on the photo. */
@@ -2710,3 +2712,107 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
 }
 [data-theme="light"] .lp-slide-label .cat { color: rgba(26,21,37,0.6); }
 [data-theme="light"] .lp-slide-label .nm  { color: #1a1525; text-shadow: 0 2px 14px rgba(255,252,244,0.6); }
+
+/* ============================================================
+   VELVET BED — the opening slide's ground
+   Jewel tones rather than bright brand hues, plush two-stop falloff,
+   a slow sheen across the pile, grain so it reads as fabric, and a
+   vignette to sink the corners. Only shown while slide 0 holds.
+   ============================================================ */
+.lp-velvet {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1.1s ease;
+  background: radial-gradient(140% 110% at 62% 46%, #241030, #0b0610 72%);
+}
+.lp-hero.brand-active .lp-velvet { opacity: 1; }
+
+.lp-velvet i {
+  position: absolute;
+  display: block;
+  border-radius: 50%;
+  mix-blend-mode: screen;
+  will-change: transform, opacity;
+}
+.lp-velvet .v1 {
+  width: 78%; aspect-ratio: 1; left: -16%; top: -28%;
+  background: radial-gradient(circle, rgba(150,20,52,.95), rgba(96,12,40,.55) 42%, transparent 70%);
+  filter: blur(74px); animation: lpVelA 9s ease-in-out infinite;
+}
+.lp-velvet .v2 {
+  width: 74%; aspect-ratio: 1; right: -18%; top: -22%;
+  background: radial-gradient(circle, rgba(28,36,120,.92), rgba(18,22,78,.52) 44%, transparent 70%);
+  filter: blur(74px); animation: lpVelB 11s ease-in-out infinite;
+}
+.lp-velvet .v3 {
+  width: 80%; aspect-ratio: 1; left: 20%; bottom: -44%;
+  background: radial-gradient(circle, rgba(150,100,18,.72), rgba(96,62,10,.40) 44%, transparent 72%);
+  filter: blur(84px); animation: lpVelC 13s ease-in-out infinite;
+}
+/* Warms to the incoming slide's colour just before the hand-off, so the
+   ground has already moved toward the photograph before the cut. */
+.lp-velvet .vnext {
+  width: 62%; aspect-ratio: 1.3; right: 4%; bottom: 0;
+  background: radial-gradient(ellipse, var(--next, #d92843), transparent 68%);
+  filter: blur(94px);
+  opacity: 0;
+  transition: opacity 1.1s ease;
+}
+.lp-velvet .vnext.warm { opacity: .58; }
+
+.lp-velvet .vsheen {
+  inset: -20% -40%;
+  width: auto; height: auto;
+  border-radius: 0;
+  background: linear-gradient(102deg, transparent 34%, rgba(255,226,196,.16) 48%,
+    rgba(255,238,214,.05) 56%, transparent 68%);
+  filter: blur(26px);
+  animation: lpVelPile 14s ease-in-out infinite;
+}
+/* The pile. Without texture a soft gradient reads as gas, not fabric. */
+.lp-velvet::after {
+  content: "";
+  position: absolute; inset: 0;
+  pointer-events: none;
+  background: var(--grain) repeat;
+  opacity: .16;
+  mix-blend-mode: overlay;
+}
+/* Velvet is darkest where it folds away. */
+.lp-velvet::before {
+  content: "";
+  position: absolute; inset: 0;
+  pointer-events: none; z-index: 1;
+  background: radial-gradient(120% 100% at 60% 45%, transparent 42%, rgba(6,4,10,.72) 100%);
+}
+
+@keyframes lpVelA {
+  0%,100% { transform: translate(0,0) scale(.96); opacity: .72 }
+  25%     { transform: translate(38%,18%) scale(1.28); opacity: 1 }
+  50%     { transform: translate(62%,-12%) scale(1.02); opacity: .78 }
+  75%     { transform: translate(22%,-26%) scale(1.34); opacity: 1 }
+}
+@keyframes lpVelB {
+  0%,100% { transform: translate(0,0) scale(1.04); opacity: .76 }
+  30%     { transform: translate(-44%,24%) scale(1.32); opacity: 1 }
+  60%     { transform: translate(-66%,-14%) scale(.98); opacity: .72 }
+  85%     { transform: translate(-20%,-30%) scale(1.24); opacity: 1 }
+}
+@keyframes lpVelC {
+  0%,100% { transform: translate(0,0) scale(.98); opacity: .66 }
+  35%     { transform: translate(-36%,-26%) scale(1.36); opacity: 1 }
+  70%     { transform: translate(32%,-38%) scale(1.1); opacity: .86 }
+}
+@keyframes lpVelPile {
+  0%,100% { transform: translateX(-16%) skewX(-6deg); opacity: .5 }
+  50%     { transform: translateX(14%) skewX(-6deg); opacity: 1 }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-velvet i { animation: none !important; }
+  .lp-velvet .vsheen { display: none; }
+}
