@@ -2927,13 +2927,9 @@ html[data-theme="dark"] body::before {
     min-height: 360px;
     padding-top: 24px;
   }
-  body[data-page="home"] .lp-hero-brand {
-    position: relative;
-    left: auto; top: auto;
-    transform: none;
-    margin: 0 auto;
-    width: clamp(240px, 78vw, 380px);
-  }
+  /* Deliberately empty. This used to flip the brand stage to
+     position:relative on mobile — see the note in css/landing.css. The
+     stage is absolute and spans the hero column at every width now. */
   body[data-page="home"] .lp-hero-grid {
     gap: clamp(20px, 4vw, 40px);
   }

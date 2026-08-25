@@ -2225,35 +2225,53 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
   /* Bucket: the hero visual — generous, floating mid-low centre */
   /* The tin used to sit at 9vh from the top of the column, which put its
      bottom edge flush with the bottom of .lp-pour — and .lp-pour clips. The
-     slide label hangs off the bucket's bottom edge, so it landed outside the
-     clip and was invisible on every phone, overlapping the CTA block on the
-     way out. Lift the tin so the tin AND its label fit inside the column. */
-  /* The slide label hangs off the bucket's bottom edge, and .lp-pour clips.
-     With the tin centred in the full column its bottom edge landed flush
-     with the bottom of the clip, so the product name fell outside it: on a
-     phone the label was invisible, and what you could see of it sat over
-     the CTA block.
-
-     overflow:hidden clips at the PADDING edge, so reserving a band of
-     bottom padding gives the label somewhere legal to live. The tin then
-     centres in what is left, which lifts it — which is the composition we
-     wanted anyway. Nothing here depends on the tin's height, so it holds
-     from a 360px phone up to the tablet breakpoint. */
+  /* ---- the mobile hero column ----------------------------------------
+     One box, the same height in both phases, with whatever is on stage
+     centred on its midline. Sized from content it grew when the tin was
+     large and the whole hero changed height between the opening line-up
+     and the first product slide — 110px of the page jumping under the
+     reader's thumb, which is the shift Google measures. */
   body[data-page="home"] .lp-pour {
-    padding-bottom: clamp(70px, 10vh, 96px);
+    flex: 0 0 auto;
+    height: clamp(290px, 42vh, 400px);
+    min-height: 0;
+    padding-bottom: 0;
   }
+
+  /* The name that hangs under the tin: its own height, plus the gap above
+     it, plus a little air. Named once because two rules have to agree on
+     it — the tin shortens by exactly this much, and pushes itself up by
+     exactly this much, so the tin AND its name centre as one object. */
   body[data-page="home"] .lp-hero-bucket {
-    width: clamp(190px, 54vw, 290px);
-    margin: clamp(6px, 1.6vh, 18px) auto 0;
+    --name-band: 74px;
+    height: calc(100% - var(--name-band));
+    width: auto;
+    max-width: min(58vw, 280px);
+    margin: 0 auto var(--name-band);
   }
+  body[data-page="home"] .lp-hero-bucket img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  /* The opening line-up, centred as one object: five tins with the company
+     name directly beneath them. The tin is 86px tall here and the lockup
+     41px, so the group is 135px tall and its midline sits 18px above the
+     tins' bottom edge. Both offsets are measured from the same 50% of the
+     same box, which is why they cannot drift apart. */
+  body[data-page="home"] .lp-intro-it { bottom: calc(50% - 18px); }
+  body[data-page="home"] .lp-hero .lp-brand-wordmark { bottom: calc(50% - 67px); }
 
   /* Brand stage: cleaner, centered, smaller halo */
+  /* The brand stage stays ABSOLUTE on mobile, spanning the column.
+     It used to be flipped to position:relative here, which made it an
+     in-flow flex item 216px wide inside a 358px column: it took the space,
+     the tin was squeezed into the 142px left over and shoved flush right,
+     and — because the wordmark is positioned against it — the company name
+     centred on that 216px box instead of on the page. Both of the mobile
+     hero's placement faults came from these six lines. */
   body[data-page="home"] .lp-hero-brand {
-    position: relative;
-    left: auto; top: auto;
-    transform: none;
-    margin: 0 auto;
-    width: min(82vw, 360px);
     gap: 12px;
   }
   body[data-page="home"] .lp-brand-mark {
@@ -2664,13 +2682,13 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
 }
 @media (max-width: 780px) {
   .lp-intro-pool { width: 76px; height: 17px; }
-  /* Short column: lift the tins and drop the name so they stop overlapping.
-     Outranks the older mobile wordmark rule, which sizes it for the
-     full-height brand stage this replaced. */
-  .lp-intro-it { bottom: 38%; }
+  /* Size only. Placement for both the line-up and the lockup is set once,
+     together, in the mobile hero column block above — they have to be
+     measured from the same 50% of the same box or they drift apart, which
+     is how the name ended up sitting on top of the tins. A `bottom` here
+     would win on source order and undo that. */
   body[data-page="home"] .lp-hero .lp-brand-wordmark {
     font-size: min(6.6vw, 2rem);
-    bottom: calc(38% - 3rem);
   }
 }
 @media (prefers-reduced-motion: reduce) {
