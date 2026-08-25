@@ -18,7 +18,6 @@ window.CLOUD_VISUALISER = {
     { slug: 'hallway',        label: 'Hallway',           image: 'images/rooms/room-hallway.jpg',        mask: 'images/rooms/room-hallway-mask.png' },
     { slug: 'office',         label: 'Home office',       image: 'images/rooms/room-office.jpg',         mask: 'images/rooms/room-office-mask.png' },
     { slug: 'child',          label: "Child's bedroom",   image: 'images/rooms/room-child.jpg',          mask: 'images/rooms/room-child-mask.png' },
-    { slug: 'exterior',       label: 'Exterior',          image: 'images/rooms/room-exterior.jpg',       mask: 'images/rooms/room-exterior-mask.png' },
   ],
 
   // Popular-shades rail — Kenya-flavoured inspiration. Just a starting

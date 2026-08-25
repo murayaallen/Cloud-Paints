@@ -179,7 +179,7 @@
 
   // Brand slide holds longer (let the effects breathe);
   // regular slides at the standard tempo.
-  var BRAND_HOLD_MS  = 4200;   // static line-up; the old value paced a logo animation
+  var BRAND_HOLD_MS  = 3000;   // static line-up; the old value paced a logo animation
   var SLIDE_HOLD_MS  = 5200;
   var FADE_MS        = 900;
 
@@ -207,12 +207,22 @@
   // One product, one name. The brand stage carries no label — it is the
   // company, not a product.
   var labelEl = null;
+  var labelTimer = null;
+
+  // The bucket crossfades over FADE_MS, so writing the new name the instant
+  // the slide changes shows the *outgoing* bucket under the incoming name —
+  // a Weatherguard tin labelled Gloss Enamel, for the length of the fade.
+  // The name drops out first and comes back once the swap has landed.
   function applyLabel(slide) {
     if (!labelEl) return;
-    if (slide.type === 'brand') {
-      labelEl.style.opacity = 0;
-      return;
-    }
+    clearTimeout(labelTimer);
+    labelEl.style.opacity = 0;
+    if (slide.type === 'brand') return;
+    labelTimer = setTimeout(function () { writeLabel(slide); }, FADE_MS * 0.62);
+  }
+
+  function writeLabel(slide) {
+    if (!labelEl) return;
     labelEl.style.setProperty('--c', slide.color);
     labelEl.querySelector('.cat').textContent = slide.cat || '';
     labelEl.querySelector('.nm').textContent = slide.label || slide.name;
@@ -366,7 +376,7 @@
     bucketB.classList.remove('hs-active');
     if (brandStage) brandStage.classList.add('hs-active');
     applyColor(SLIDES[0].color);
-    applyLabel(SLIDES[0]);
+    applyLabel(SLIDES[0]);   // brand slide: hides the label
 
     function startSlides() {
       preloadAll();

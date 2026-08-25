@@ -1955,30 +1955,29 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
   background: rgba(250, 246, 236, 0.06);
 }
 .lp-why-blocks i {
-  /* Cream wash at modest opacity — wave reads as a soft sun-flicker
-     across the apartments photo, not a dark curtain. */
   background: rgba(250, 246, 236, 0.32);
   transform-origin: 50% 50%;
-  will-change: transform, opacity;
-  animation: whyBlockPulse 7.5s cubic-bezier(.65,0,.35,1) infinite;
-  /* Wave delay: --i runs 0..31, so the wave passes left-to-right
-     across the grid then loops. 0.06s per block × 32 blocks = ~1.9s
-     of delay spread, well within the 7.5s cycle. */
-  animation-delay: calc(var(--i, 0) * 0.06s);
 }
-@keyframes whyBlockPulse {
-  0%, 100% { transform: scaleY(1); opacity: 1; }
-  40%      { transform: scaleY(0.05); opacity: 0.05; }
-  60%      { transform: scaleY(0.05); opacity: 0.05; }
+/* The wave used to loop forever behind the copy — perpetual flicker with
+   no meaning, and 32 elements compositing on every frame whether or not
+   the section was on screen. It now passes once, when the section arrives,
+   and then rests. */
+.lp-why.is-painting .lp-why-blocks i {
+  will-change: transform, opacity;
+  animation: whyBlockPass 1.5s cubic-bezier(.65,0,.35,1) 1 both;
+  animation-delay: calc(var(--i, 0) * 0.022s);
+}
+@keyframes whyBlockPass {
+  0%   { transform: scaleY(1); opacity: 1; }
+  45%  { transform: scaleY(0.04); opacity: 0.04; }
+  100% { transform: scaleY(1); opacity: 1; }
 }
 /* Respect reduced motion: hold the blocks at half-opacity instead of
    animating, so the section still looks intentional but doesn't
    distract. */
 @media (prefers-reduced-motion: reduce) {
-  .lp-why-blocks i {
-    animation: none;
-    opacity: 0.55;
-  }
+  .lp-why.is-painting .lp-why-blocks i { animation: none; }
+  .lp-why-blocks i { opacity: 0.55; }
 }
 .lp-why > .container { position: relative; z-index: 1; }
 /* Mobile Safari has issues with background-attachment: fixed —
@@ -2815,4 +2814,35 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
 @media (prefers-reduced-motion: reduce) {
   .lp-velvet i { animation: none !important; }
   .lp-velvet .vsheen { display: none; }
+}
+
+/* The rotating bucket defaults to the Weatherguard artwork, and it was
+   only hidden on the opening slide inside a mobile media query. On desktop
+   it appeared over the velvet for the ~780ms between the line-up clearing
+   and the first product arriving. The opening slide shows the range, never
+   a single product, at any width. */
+.lp-hero.brand-active .lp-hero-bucket { opacity: 0 !important; }
+
+/* ============================================================
+   WHY CARDS — rolled on, not faded in
+   Each card is covered by its own accent, which then rolls off and
+   leaves the content behind. It is a paint metaphor on a paint site,
+   it carries the card's accent colour, and it happens once.
+   ============================================================ */
+.lp-why-paint {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  background: var(--accent, var(--red-2));
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+/* Content waits behind the paint until the roller has passed. */
+.lp-why-card > :not(.lp-why-paint) { opacity: 0; }
+.lp-why-card.painted > :not(.lp-why-paint) { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-why-paint { display: none; }
+  .lp-why-card > :not(.lp-why-paint) { opacity: 1; }
 }
