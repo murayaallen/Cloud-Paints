@@ -1,19 +1,27 @@
-# Where things stand — 25 August 2026
+# Where things stand — 25 August 2026, end of day
 
-Everything is committed on branch `v2`. Copy the whole `Cloud Paints` folder to
-the flash drive and it travels complete: working files, generated PDFs, and the
-git history in `.git`.
+Everything is committed **and pushed** on branch `v2`.
+Last commit: `36878fe` — the range flier rework and the pack-size correction.
+
+    https://github.com/murayaallen/Cloud-Paints  ·  branch v2
+
+Two ways to pick this up on another machine — see section 2. The short version
+is that `git clone` gets you everything that matters in about 190 MB, and the
+folder copy is only worth it if you want the 76 MB of already-rendered PDFs
+without waiting two minutes to regenerate them.
 
 ---
 
 ## 1. What is in this folder
 
-**The website** (`index.html`, `css/`, `js/`, `images/`) — branch `v2`.
-Last work: the mobile placement of *Real Walls of Kenya* directly under the
-hero, the tile rush-and-blink sequence, the *Why Cloud Paints* paint-roller
-reveal, hero timing, the stray Weatherguard bucket on the gradient, bucket/label
-sync in the hero sequence, and the removal of the `exterior` room from the
-visualiser.
+**The website** (`index.html`, `css/`, `js/`, `images/`, `paints/`) — branch
+`v2`. A full review and repair pass today: real product URLs, self-hosted
+fonts and libraries, security headers, structured data on every page, the
+first-load weight cut from 9.5 MB to 2.8 MB, and the mobile hero rebuilt.
+Section 1a has the detail. Verified at the end of it: 43 pages with no console
+errors, no failed requests, no broken images; all 60 internal links returning
+200 when actually requested; 19 functional checks passing under the production
+Content-Security-Policy; no horizontal overflow at 390, 820 or 1440px.
 
 **The client package** (`client-package/`) — 56 print-ready PDFs generated from
 the website's own product catalogue. See `client-package/README.md` for the full
@@ -197,7 +205,33 @@ Accessibility › Visual effects › Animation effects is the toggle.
 
 ## 2. Continuing on another machine
 
-The folder is self-contained apart from three tools:
+### Getting the work there
+
+**Either** clone it — everything is pushed, so this is the whole project:
+
+```bash
+git clone -b v2 https://github.com/murayaallen/Cloud-Paints.git
+cd Cloud-Paints
+node build/site.mjs && node build/schema.mjs     # regenerate what git ignores
+cd client-package && node build/build.mjs && node build/render.mjs
+```
+
+**Or** copy the folder. It travels complete, including `.git` and the rendered
+PDFs. Close any PDF open in Acrobat first, and stop the local server if it is
+running, or Windows may skip a locked file mid-copy.
+
+What is in the 494 MB, so you know what you can leave behind:
+
+| | | |
+|---|---|---|
+| `.git` | 186 MB | the history — needed if you want to keep committing |
+| `client-package/pdf/` | 76 MB | generated; two minutes to rebuild |
+| `Cloud-Paints-2.zip` | 61 MB | an old archive, gitignored — safe to skip |
+| `images/` | 28 MB | needed |
+
+### Tools
+
+The folder is self-contained apart from three:
 
 | Needed | For | Check |
 |---|---|---|
@@ -220,12 +254,22 @@ python build/verify.py    # check the finished PDFs        (~10 seconds)
 A clean run ends with three passes: page geometry, font embedding, text
 integrity.
 
-**The website needs a local server** — it uses ES modules, so opening
-`index.html` from the file system will not work:
+**The website needs a local server**, and specifically this one:
 
 ```bash
-python -m http.server 8000
+node build/serve.mjs            # http://127.0.0.1:8322
+node build/serve.mjs 8323 Cloud-Paints   # the same site mounted in a subfolder
 ```
+
+Not `python -m http.server`. In production `.htaccess` does real work — it
+serves `/products` from `products.html`, redirects every old URL, and sets a
+strict Content-Security-Policy. `build/serve.mjs` reproduces all three, and
+gzips text the way mod_deflate does, so what you test is what you deploy. A
+plain static server ignores the lot and will happily hide a broken redirect or
+a policy that blocks a real asset.
+
+The site also uses ES modules, so opening `index.html` from the file system
+will not work at all.
 
 ---
 
@@ -243,12 +287,25 @@ library, the price table, the fonts and the prepared artwork.
 
 ## 4. Open items
 
-**Nothing has been pushed.** The commits are local only. When you want the
-offsite copy:
+**Nothing is on the live host yet.** The work is committed and pushed to
+GitHub, but `cloudpaints.co.ke` has not been updated. The deployable set is
+the repository contents minus `build/`, `client-package/`, `new/`, `samples/`
+and `Finishes/` — `.htaccess` refuses those anyway, as a second line of
+defence.
 
-```bash
-git push origin v2
-```
+**The upload zip has not been built.** It was deliberately held pending
+sign-off.
+
+**Three product photographs are owed** — Varnish Stain, Metal Primer and
+Universal Undercoat. Drop them at
+`client-package/assets/img/buckets/<slug>.png`, shot against white. They then
+need `python build/prep-art.py`, a rebuild, and a WebP pass for the site. With
+photographs those three can move from *Also in the range* on the flier's back
+cover into the inside spread — but each panel holds exactly six, so three
+others would have to step out.
+
+**Google Search Console is not set up.** Verification was to be done by hand.
+The submission runbook was drafted but not delivered.
 
 **The price list ships unpriced, on purpose.** Every pack size prints a ruled
 blank. Fill in `client-package/build/prices.js` — one file, numbers only — and
