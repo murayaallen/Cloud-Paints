@@ -98,10 +98,17 @@
       var x = x0 + i * gap, d = i * STAGGER;
 
       if (still) {
-        // Final resting state, drawn directly. No flight, no squash, no
-        // pool, no ring — every one of those is motion.
+        // Reduced motion, so nothing travels: each tin is already in its
+        // final position and only its opacity changes. Keeping the same
+        // stagger means the range still arrives one product at a time
+        // rather than appearing all at once as a hard cut — a fade is a
+        // change of opacity, not of position, which is the distinction the
+        // preference is actually about.
         el.style.transform = tx(x);
-        el.style.opacity = '1';
+        el.animate(
+          [{ opacity: 0 }, { opacity: 1 }],
+          { duration: 460, delay: d, easing: SOFT, fill: 'both' }
+        );
         return;
       }
 
@@ -130,7 +137,8 @@
       ], { duration: 560, delay: d + 505, easing: 'cubic-bezier(.15,.7,.3,1)', fill: 'both' });
     });
 
-    var settled = still ? 0 : (n - 1) * STAGGER + FLY;
+    // The stagger applies either way; only the per-item duration differs.
+    var settled = (n - 1) * STAGGER + (still ? 460 : FLY);
 
     // The line-up *is* the brand stage now — the logo lockup it replaced
     // used to hold this slot. So it stays put once landed, and only clears

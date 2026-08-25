@@ -160,6 +160,27 @@ filenames with spaces in them are percent-encoded, which they were not.
 `build/serve.mjs` now gzips text the way `mod_deflate` does in production, so
 local weight measurements are honest: CSS 218KB → 51KB, JS 341KB → 115KB.
 
+**Reduced motion gets a fade, not a hard cut.**
+
+Worth knowing why this took three rounds to pin down. This workstation had
+Windows animation effects switched off, so every browser on it reports
+`prefers-reduced-motion: reduce` — and the site was correctly honouring it.
+The opening line-up appeared with no movement at all, which from the other
+side of the screen is indistinguishable from an animation that failed.
+
+Every test until then had been headless with the preference emulated, so
+none of them ever read the real setting. Driving a visible browser did, and
+it said `reduceMotion: true` in one line.
+
+The line-up now fades in under that preference, keeping the same stagger, so
+the range still arrives one product at a time. A fade is a change of opacity
+rather than of position, which is the distinction the preference is actually
+about — and "no movement at all" was a poor reading of it.
+
+Chromium reads `SPI_GETCLIENTAREAANIMATION` for this, not the `MinAnimate`
+registry value, which is a separate and older setting. Settings ›
+Accessibility › Visual effects › Animation effects is the toggle.
+
 **Left alone on purpose**
 
 - The 2.9-second opening loader. It is the Largest Contentful Paint and Google
