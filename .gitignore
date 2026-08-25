@@ -28,3 +28,7 @@ client-package/pdf/
 # small, and a deploy must never depend on someone remembering to run a build
 # first. Regenerate them with:
 #     node build/site.mjs && node build/schema.mjs
+
+# The flash-drive working copy, brought back and merged. A folder copy of
+# this repo is not a submodule; it must never be committed as one.
+/Cloud Paints today*/

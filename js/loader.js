@@ -123,6 +123,26 @@
     if (progress) progress.style.display = 'none';
   }
 
+  /* Hold the curtain until the opening line-up can actually be painted.
+     The splash exists to cover exactly this: the moment before the hero is
+     ready. Lifting it on a timer while the five tins are still decoding is
+     how the line-up flew in as empty boxes on a cold cache.
+     ART_WAIT_MS is the ceiling — the tins are ~50KB and preloaded in the
+     head, so on any normal visit this resolves before the choreography has
+     finished and adds nothing at all. On a slow connection the splash holds
+     a little longer, which is the right trade: a beat more curtain beats a
+     line-up of blank rectangles. */
+  var ART_WAIT_MS = 1200;
+
+  function whenArtReady(cb) {
+    var fired = false;
+    function once() { if (!fired) { fired = true; cb(); } }
+    setTimeout(once, ART_WAIT_MS);
+    var p = window.CloudHeroArtReady;
+    if (p && typeof p.then === 'function') p.then(once, once);
+    else once();
+  }
+
   function cleanup() {
     var loader = document.getElementById('cpLoader');
     document.body.classList.remove('cp-loading');
@@ -137,9 +157,11 @@
     var holdMs = Math.max(0, FULL_LIFT_AT - elapsed);
 
     setTimeout(function () {
-      var loader = document.getElementById('cpLoader');
-      if (loader) loader.classList.add('cp-lift');
-      setTimeout(cleanup, FULL_MS - FULL_LIFT_AT);
+      whenArtReady(function () {
+        var loader = document.getElementById('cpLoader');
+        if (loader) loader.classList.add('cp-lift');
+        setTimeout(cleanup, FULL_MS - FULL_LIFT_AT);
+      });
     }, holdMs);
   }
 
@@ -149,9 +171,11 @@
     var holdMs = Math.max(0, COMPRESSED_LIFT_AT - elapsed);
 
     setTimeout(function () {
-      var loader = document.getElementById('cpLoader');
-      if (loader) loader.classList.add('cp-lift');
-      setTimeout(cleanup, COMPRESSED_MS - COMPRESSED_LIFT_AT);
+      whenArtReady(function () {
+        var loader = document.getElementById('cpLoader');
+        if (loader) loader.classList.add('cp-lift');
+        setTimeout(cleanup, COMPRESSED_MS - COMPRESSED_LIFT_AT);
+      });
     }, holdMs);
   }
 

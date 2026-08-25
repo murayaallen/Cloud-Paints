@@ -331,16 +331,20 @@
           p.uses.map(function (u) { return '<li>' + u + '</li>'; }).join('') +
           '</ul></div>';
       }
-      // Applied gallery — the product photographed where it works
-      // (AI brief section 2). Files land at
-      // images/products/applied/<slug>-applied.jpg; until a file
-      // exists the figure removes itself (onerror wired below).
+      // Applied gallery — the product photographed where it works.
+      // Only seven of the twenty-eight products have this photograph, so the
+      // figure is built only when build/site.mjs found the file on disk.
+      // It used to be requested on spec and removed again in an onerror
+      // handler: the page looked right, and 404'd on every visit to the
+      // other twenty-one.
       var toUrl2 = window.cpUrl || function (x) { return x; };
-      var appliedSrc = toUrl2(p.applied_image || ('images/products/applied/' + p.slug + '-applied.jpg'));
-      descHtml += '<figure class="pd-applied">' +
-        '<img src="' + appliedSrc + '" alt="' + p.name + ' applied on a real surface" width="1200" height="800" loading="lazy">' +
-        '<figcaption>' + p.name + ' · seen where it works</figcaption>' +
-        '</figure>';
+      var appliedRel = (window.CLOUD_APPLIED || {})[p.slug] || p.applied_image;
+      if (appliedRel) {
+        descHtml += '<figure class="pd-applied">' +
+          '<img src="' + toUrl2(appliedRel) + '" alt="' + p.name + ' applied on a real surface" width="1200" height="800" loading="lazy">' +
+          '<figcaption>' + p.name + ' · seen where it works</figcaption>' +
+          '</figure>';
+      }
       // Inspiration scenes — e.g. Vinyl Matt ceiling styles. Each
       // entry is { title, copy } and renders as a small numbered card.
       if (p.inspiration && p.inspiration.length) {

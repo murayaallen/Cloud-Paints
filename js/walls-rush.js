@@ -1,11 +1,13 @@
 // ============================================================
 // CLOUD PAINTS — Real Walls of Kenya
 //
-// 1. On phones the section moves up to sit directly under the hero.
-//    Colour is the first thing worth showing on a small screen.
-// 2. The tiles sweep in across the page, overshoot with a zoom, then
-//    settle; each blinks in turn, and finally all of them blink once
-//    together.
+// The tiles sweep in across the page, overshoot with a zoom, then
+// settle; each blinks in turn, and finally all of them blink once
+// together.
+//
+// Where this section sits on a phone is js/mobile-order.js — it is
+// hoisted under the hero along with the product range, and having two
+// scripts reorder the same region would race.
 //
 // The tiles carry no data-anim, so they render normally if this never
 // runs — the animation is an enhancement, not a dependency.
@@ -26,37 +28,7 @@
 
   var MOBILE = '(max-width: 900px)';
 
-  // ---------- 1. mobile placement ----------------------------
-  function placement() {
-    var walls = document.querySelector('.lp-walls');
-    if (!walls) return;
-
-    // Remember where it lives on desktop so the move is reversible.
-    var home = walls.nextElementSibling;
-    var parent = walls.parentNode;
-    var afterHero = document.querySelector('.lp-marquee-wrap') ||
-                    document.querySelector('.lp-hero');
-    if (!afterHero) return;
-
-    var mq = window.matchMedia(MOBILE);
-    var moved = false;
-
-    function apply() {
-      if (mq.matches && !moved) {
-        afterHero.insertAdjacentElement('afterend', walls);
-        moved = true;
-      } else if (!mq.matches && moved) {
-        if (home && home.parentNode === parent) parent.insertBefore(walls, home);
-        else parent.appendChild(walls);
-        moved = false;
-      }
-    }
-    apply();
-    if (mq.addEventListener) mq.addEventListener('change', apply);
-    else if (mq.addListener) mq.addListener(apply);
-  }
-
-  // ---------- 2. rush, then blink ----------------------------
+  // ---------- rush, then blink -------------------------------
   function rush(strip) {
     var tiles = strip.querySelectorAll('.lp-wall');
     if (!tiles.length) return;
@@ -125,8 +97,6 @@
   }
 
   function init() {
-    placement();
-
     var strip = document.getElementById('lpWallsStrip');
     if (!strip) return;
 

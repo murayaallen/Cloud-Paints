@@ -173,21 +173,36 @@
     setTimeout(function () { finish(null); }, settled + 200);
   }
 
+  /* Fetch and decode the five tins now — not at loader:done.
+     `decode()` rather than `onload`: onload fires when the bytes have
+     arrived, which is not the same as the browser being able to paint the
+     image. A tin can be "loaded" and still draw blank on its first frame,
+     which is exactly what the opening line-up used to do on a cold cache.
+     The promise is published so the splash can hold for it; if anything
+     here fails, it resolves anyway and the intro runs regardless. */
+  var artReady = (function () {
+    var toUrl = window.cpUrl || function (x) { return x; };
+    return Promise.all(RANGE.map(function (p) {
+      var im = new Image();
+      im.src = toUrl('images/buckets/intro/' + p.s + '.webp');
+      if (im.decode) return im.decode().catch(function () {});
+      return new Promise(function (res) { im.onload = im.onerror = res; });
+    }));
+  })();
+  window.CloudHeroArtReady = artReady;
+
   function boot() {
-    // Give the tins a moment to decode so the first ones do not pop in blank.
-    var pending = RANGE.length;
+    // The splash has already waited on these, so on a normal visit they are
+    // decoded and this resolves in the same tick. The cap is for the case
+    // where the splash gave up waiting.
     var started = false;
     function go() {
       if (started) return;
       started = true;
       run();
     }
-    RANGE.forEach(function (p) {
-      var im = new Image();
-      im.onload = im.onerror = function () { if (--pending === 0) go(); };
-      im.src = 'images/buckets/intro/' + p.s + '.webp';
-    });
-    setTimeout(go, 600);   // do not wait on a slow connection
+    artReady.then(go, go);
+    setTimeout(go, 600);   // never hang on a slow connection
   }
 
   if (document.body.classList.contains('cp-ready')) boot();

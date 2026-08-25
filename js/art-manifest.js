@@ -28,3 +28,15 @@ window.CLOUD_ART = {
  "cloud-luxury-stucco": "images/textures/cloud-luxury-stucco.jpg",
  "cloud-rockshield-exterior": "images/textures/cloud-rockshield-exterior.jpg"
 };
+
+// The in-situ photograph, where one exists. Same rule: absent means absent,
+// so the page never requests one on the chance that it is there.
+window.CLOUD_APPLIED = {
+ "vinyl-matt": "images/products/applied/vinyl-matt-applied.jpg",
+ "iris-economy": "images/products/applied/iris-economy-applied.jpg",
+ "supermatt": "images/products/applied/supermatt-applied.jpg",
+ "weatherguard": "images/products/applied/weatherguard-applied.jpg",
+ "gloss-enamel": "images/products/applied/gloss-enamel-applied.jpg",
+ "road-marking": "images/products/applied/road-marking-applied.jpg",
+ "clear-varnish": "images/products/applied/clear-varnish-applied.jpg"
+};
