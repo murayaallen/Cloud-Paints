@@ -890,25 +890,30 @@ function brochure(cfg) {
    tokenised per size rather than scaled, so the small one stays
    readable instead of becoming a 70% photocopy.
    ============================================================ */
+/* Type runs about a fifth larger than it did. The A5 fold in particular was
+   set for someone holding it still under good light; at arm's length on a
+   site it was small. The character budgets (txLen, noteLen) come DOWN by
+   roughly the same proportion — bigger type in the same box means fewer
+   words, and the alternative is copy that overflows and is silently cut. */
 const RANGE_SIZES = {
   A4: { sheet: '420mm 297mm', w: '420mm', h: '297mm', panel: '210mm', k: 1,
         frame: '8mm', pad: '17mm',
-        logo: '30mm', kebs: '19mm', h1: '42pt', kick: '10.5pt', strap: '12.5pt',
+        logo: '46mm', kebs: '20mm', h1: '48pt', kick: '12.2pt', strap: '15pt',
         sw: '7mm', lineH: '78mm', tinH: '46mm', tinGap: '3mm', rowIn: '4mm', rowUp: '26mm',
-        footFs: '7.4pt',
-        ipH2: '19pt', gridGap: '7mm 6mm', cellImg: '46mm',
-        nm: '11pt', tx: '7.2pt', sz: '6.6pt', txLen: 260,
-        bcH3: '17pt', bcV: '7.6pt', restB: '8pt', restS: '6.6pt', aboutFs: '8.2pt',
-        secGap: '8mm', calc: true, aboutParas: 2, ticks: 5, noteLen: 300 },
+        footFs: '8.4pt',
+        ipH2: '22pt', gridGap: '6mm 6mm', cellImg: '42mm',
+        nm: '12.6pt', tx: '8.4pt', sz: '7.8pt', txLen: 185,
+        bcH3: '19.5pt', bcV: '8.8pt', restB: '9.2pt', restS: '7.6pt', aboutFs: '9.4pt',
+        secGap: '8mm', calc: true, aboutParas: 2, ticks: 5, noteLen: 240 },
   A5: { sheet: '297mm 210mm', w: '297mm', h: '210mm', panel: '148.5mm', k: 0.707,
         frame: '5.5mm', pad: '12mm',
-        logo: '21mm', kebs: '13mm', h1: '27pt', kick: '7.6pt', strap: '9pt',
+        logo: '33mm', kebs: '14mm', h1: '31pt', kick: '8.8pt', strap: '10.6pt',
         sw: '5mm', lineH: '55mm', tinH: '30mm', tinGap: '2mm', rowIn: '3mm', rowUp: '22mm',
-        footFs: '6pt',
-        ipH2: '13.5pt', gridGap: '5mm 4mm', cellImg: '29mm',
-        nm: '8.6pt', tx: '6.2pt', sz: '5.8pt', txLen: 96,
-        bcH3: '12pt', bcV: '6.2pt', restB: '6.6pt', restS: '5.6pt', aboutFs: '6.4pt',
-        secGap: '4mm', calc: false, aboutParas: 2, ticks: 5, noteLen: 140, cellImg2: '29mm' },
+        footFs: '6.9pt',
+        ipH2: '15.5pt', gridGap: '4mm 4mm', cellImg: '27mm',
+        nm: '10pt', tx: '7.2pt', sz: '6.8pt', txLen: 88,
+        bcH3: '13.8pt', bcV: '7.2pt', restB: '7.6pt', restS: '6.5pt', aboutFs: '7.4pt',
+        secGap: '4mm', calc: false, aboutParas: 2, ticks: 5, noteLen: 135, cellImg2: '29mm' },
 };
 
 /* The eight paint colours the website mixes its decorative fields from.
@@ -916,6 +921,20 @@ const RANGE_SIZES = {
    company to say "we make colour" without writing the sentence. */
 const SWATCHES = ['#d92843', '#e8a317', '#1e3a8a', '#166534',
                   '#6e3122', '#84cc16', '#5a4374', '#d6b884'];
+
+/* "Buy it… Paint it… Love it..!" in the brand's own colours — blue, red,
+   blue, the way the tagline is set beneath the logo itself.
+   The literal brand navy is unreadable on the cover's dark ground, so each
+   word takes a lightened version of the same hue. It reads as the brand
+   pairing at a glance; the true #1e3a8a and #e11f29 are used wherever the
+   tagline sits on white. */
+function strapColoured() {
+  const parts = CO.strap.split('…').map(t => t.trim()).filter(Boolean);
+  const tone = ['s-blue', 's-red', 's-blue'];
+  return parts
+    .map((t, i) => `<span class="${tone[i % 3]}">${esc(t)}</span>`)
+    .join('<span class="s-dot">·</span>');
+}
 
 const rangeCss = z => `
 @page { size: ${z.sheet}; margin: 0; }
@@ -930,31 +949,56 @@ const rangeCss = z => `
 .frame { position:absolute; inset:${z.frame}; border:.3mm solid var(--fr, var(--rule));
          z-index:4; pointer-events:none; }
 
-/* ---- cover ---- */
-.cover { background:var(--blue-deep); color:#fff; --fr:rgba(255,255,255,.32); }
+/* ---- cover ----
+   The ground is the website's opening hero, flattened for print. On screen
+   that is a dark plum base with three blurred pools drifting over it — a
+   crimson top-left, a deep blue top-right and an amber low centre — composited
+   with mix-blend-mode: screen. Blend modes and 74px blurs are not things to
+   hand a press, so the same composition is rebuilt as four stacked radial
+   gradients with ordinary painting: same hues, same positions, same feel,
+   and it rasterises cleanly. */
+.cover {
+  color:#fff; --fr:rgba(255,255,255,.32);
+  background:
+    radial-gradient(58% 46% at 14% 6%,  rgba(150,20,52,.85),  transparent 68%),
+    radial-gradient(56% 44% at 88% 4%,  rgba(30,40,132,.82),  transparent 68%),
+    radial-gradient(70% 40% at 56% 96%, rgba(150,100,18,.55), transparent 70%),
+    radial-gradient(140% 110% at 62% 46%, #241030, #0b0610 72%);
+}
 
 /* Shapes, in the brand palette, sized off one multiplier so the small fold
    keeps the same composition rather than a different one. */
 .cover i { position:absolute; display:block; }
+/* Held right back now the ground carries the colour. At their old weight
+   the band and the blob cut straight across the gradient's pools and the
+   cover read as two designs arguing. */
 .sh-ring { width:calc(168mm * var(--k)); height:calc(168mm * var(--k));
            right:calc(-58mm * var(--k)); top:calc(-52mm * var(--k));
-           border-radius:50%; border:calc(11mm * var(--k)) solid rgba(232,163,23,.16); }
+           border-radius:50%; border:calc(11mm * var(--k)) solid rgba(232,163,23,.10); }
 .sh-band { left:calc(-24mm * var(--k)); right:calc(-24mm * var(--k));
            height:calc(30mm * var(--k)); bottom:calc(74mm * var(--k));
-           background:rgba(139,30,44,.5); transform:rotate(-5.5deg); }
+           background:rgba(139,30,44,.16); transform:rotate(-5.5deg); }
 .sh-blob { width:calc(48mm * var(--k)); height:calc(48mm * var(--k));
            left:calc(-16mm * var(--k)); bottom:calc(104mm * var(--k));
-           border-radius:50%; background:rgba(37,71,184,.45); }
+           border-radius:50%; background:rgba(37,71,184,.16); }
 .sh-bar  { right:0; width:calc(3.4mm * var(--k)); top:0; bottom:0;
            background:linear-gradient(180deg,var(--red-glow),var(--gold) 55%,var(--blue-2)); }
 
-.cover-in { position:absolute; inset:${z.pad} ${z.pad} 0; z-index:2;
-            display:flex; flex-direction:column; }
-.cover .chip { background:#fff; border-radius:2mm; padding:3mm 3.4mm;
-               display:inline-flex; align-items:center; gap:3.4mm; align-self:flex-start; }
+/* Bounded at the bottom by the line-up it sits above. With a zero bottom inset the
+   column ran the full height of the panel, so the tagline flowed down into
+   the tins and the standards mark was drawn straight over it. */
+.cover-in { position:absolute; z-index:2;
+            top:${z.pad}; left:${z.pad}; right:${z.pad};
+            bottom:calc(${z.rowUp} + ${z.tinH} + ${z.kebs} + 9mm);
+            display:flex; flex-direction:column; align-items:center;
+            justify-content:center; text-align:center; }
+.cover-in .swatch { justify-content:center; }
+/* The logo alone, centred, and larger than it was. The standards mark used
+   to share this chip, which made it look like part of the brand rather than
+   a certification of the product; it has moved down to the tins. */
+.cover .chip { background:#fff; border-radius:2mm; padding:3.4mm 5mm;
+               display:inline-flex; align-items:center; align-self:center; }
 .cover .chip > img:first-child { width:${z.logo}; }
-.cover .chip .kebs { height:${z.kebs}; width:auto; }
-.cover .chip-rule { width:.3mm; align-self:stretch; background:var(--rule); margin:1.5mm 0; }
 
 .swatch { display:flex; gap:1.2mm; }
 .swatch i { position:static; width:${z.sw}; height:calc(${z.sw} * .62); border-radius:.8mm; }
@@ -962,11 +1006,28 @@ const rangeCss = z => `
 .cover h1 { font:400 ${z.h1}/0.98 var(--serif); letter-spacing:-.02em; color:#fff; }
 .cover h1 em { font-style:italic; color:var(--gold-2, #ffc93d); }
 .cover .kick { font:400 ${z.kick}/1.55 var(--sans); color:rgba(255,255,255,.86); }
-.cover .strap { font:400 italic ${z.strap}/1.3 var(--serif); color:var(--gold); }
+.cover .strap { font:400 italic ${z.strap}/1.3 var(--serif); }
+.cover .strap .s-blue { color:#8fb0ff; }
+.cover .strap .s-red  { color:#ff5f70; }
+.cover .strap .s-dot  { color:rgba(255,255,255,.42); margin:0 .5em; font-style:normal; }
 .cover .rule-g { height:.8mm; width:calc(34mm * var(--k)); background:var(--gold); }
 
 .cover-line { position:absolute; left:0; right:0; bottom:0;
               height:${z.lineH}; z-index:2; }
+/* Directly above the line-up, so the mark reads as certifying what is
+   underneath it. Positioned against the panel, clear of the tins. */
+.cover-mark { position:absolute; left:${z.frame}; right:${z.frame};
+              bottom:calc(${z.rowUp} + ${z.tinH} + 4mm);
+              display:flex; align-items:center; justify-content:center;
+              gap:2.4mm; z-index:3; }
+.cover .cover-mark img { height:${z.kebs}; width:auto; background:#fff;
+                         padding:1mm; border-radius:1mm; flex:none; }
+.cover-mark span { font:500 calc(${z.footFs} * .96)/1.25 var(--sans); text-align:left;
+                   color:rgba(255,255,255,.9); }
+.cover-mark b { display:block; color:var(--gold); font-weight:700;
+                letter-spacing:.14em; text-transform:uppercase;
+                font-size:calc(${z.footFs} * .84); }
+
 .cover-line .row { position:absolute; left:${z.rowIn}; right:${z.rowIn}; bottom:${z.rowUp};
                    display:flex; align-items:flex-end; justify-content:center; gap:${z.tinGap}; }
 .cover-line img { height:${z.tinH}; width:auto; flex:none; }
@@ -1001,6 +1062,27 @@ const rangeCss = z => `
               font-variant-numeric:tabular-nums; }
 
 /* ---- back cover ---- */
+
+/* "What you get" reads as a list of things offered, so the marker points
+   forward rather than confirming something already done. A shaded plate with
+   a solid arrow on it — both drawn in CSS, because a glyph like ▸ would make
+   the renderer reach past Fraunces and Inter and embed a whole third font to
+   draw one shape. The tick stays everywhere else in the package. */
+.bc-ticks li { padding-left:6.6mm; margin-bottom:2mm;
+               font:400 ${z.bcV}/1.42 var(--sans); color:var(--ink-2); }
+.bc-ticks li::before {
+  content:''; position:absolute; left:0; top:.35mm;
+  width:4.2mm; height:4.2mm; border-radius:.9mm;
+  background:var(--accent-soft); border:0; transform:none;
+}
+.bc-ticks li::after {
+  content:''; position:absolute; left:1.65mm; top:1.4mm;
+  width:0; height:0;
+  border-left:1.5mm solid var(--accent);
+  border-top:1.05mm solid transparent;
+  border-bottom:1.05mm solid transparent;
+}
+
 .bc { position:absolute; inset:${z.pad}; display:flex; flex-direction:column; }
 .bc .mt-4 { margin-top:${z.secGap}; }
 .bc-h { font:700 7pt/1 var(--sans); letter-spacing:.15em; text-transform:uppercase;
@@ -1015,8 +1097,7 @@ const rangeCss = z => `
 .also2 .r b { font:600 ${z.restB}/1.2 var(--sans); color:var(--ink); display:block; }
 .also2 .r span { font:400 ${z.restS}/1.3 var(--sans); color:var(--ink-3); }
 
-.bc-ticks li { font:400 ${z.aboutFs}/1.4 var(--sans); color:var(--ink-2); margin-bottom:1.8mm; }
-.bc-ticks li::before { border-color:var(--blue); }
+
 
 .bc-calc { margin-top:${z.secGap}; }
 .bc-calc .cover-calc { margin-top:0; padding-top:3.5mm; border-top:.5mm solid var(--rule); }
@@ -1092,8 +1173,6 @@ function rangeFlier(size) {
       <div class="cover-in">
         <span class="chip">
           <img src="${a}/img/brand/logo.png" alt="Cloud Paints">
-          <span class="chip-rule"></span>
-          <img class="kebs" src="${a}/img/brand/kebs.png" alt="KEBS Standardisation Mark">
         </span>
         <div class="rule-g mt-3"></div>
         <h1 class="mt-2">The complete<br><em>Cloud Paints</em> range</h1>
@@ -1101,13 +1180,21 @@ function rangeFlier(size) {
           ${SWATCHES.map(c => `<i style="background:${c}"></i>`).join('')}
         </div>
         <p class="kick mt-2">Paints, coatings and decorative finishes manufactured in
-          Industrial Area, Nairobi. Eighteen tinned lines and ten hand-applied finishes,
-          made for Kenyan walls, Kenyan weather and Kenyan light — from the primer that
-          goes on first to the topcoat everybody sees.</p>
-        <p class="kick mt-1">Every tin is mixed and tinted to your colour at our counter,
-          carries the KEBS Standardisation Mark, and comes with a technical datasheet.
-          Trade rates for stockists, painters and contractors.</p>
-        <p class="strap mt-2">${esc(CO.strap)}</p>
+          Industrial Area, Nairobi — made for Kenyan walls, Kenyan weather and Kenyan
+          light, from the primer that goes on first to the topcoat everybody sees.</p>
+        <p class="kick mt-1">Every tin is mixed and tinted to your colour at our factory,
+          carries the KEBS Standardisation Mark, and comes with a technical datasheet.</p>
+        <p class="strap mt-2">${strapColoured()}</p>
+      </div>
+
+      <!-- The standards mark sits with the product it certifies, not tucked
+           into the logo lockup where it reads as part of the brand. Kept a
+           sibling of .cover-line rather than a child: inside it, the rule
+           that sizes the tins to 30mm matched this image too and blew the
+           mark up to tin height, straight over the tagline. -->
+      <div class="cover-mark">
+        <img src="${a}/img/brand/kebs.png" alt="KEBS Standardisation Mark">
+        <span><b>KEBS</b>Standardisation Mark</span>
       </div>
 
       <div class="cover-line">
@@ -1129,7 +1216,7 @@ function rangeFlier(size) {
       <div class="bc">
         <div class="bc-h">About Cloud Paints</div>
         <p class="about"><b>Cloud Paints is the flagship brand of Cloudsent Decor Ltd</b>,
-          a Nairobi manufacturer of decorative paints, coatings and solvents. We spent a
+          a Nairobi Manufacturer of Decorative Paints, Coatings and Solvents. We spent a
           decade in home décor, interior planning and gypsum fitting before we started
           making the paint ourselves — customer after customer asked where we sourced it,
           and whether they could buy the same quality for their own projects.</p>
@@ -1141,8 +1228,12 @@ function rangeFlier(size) {
 
         <div class="bc-h mt-4">Also in the range</div>
         <div class="also2">
-          ${rest.map(p => `<div class="r"><b>${esc(p.name)}</b>
-            <span>${esc(p.cat_label)} · ${esc((p.sizes || []).join(' · '))}</span></div>`).join('')}
+          ${rest.map(p => {
+            const cat = p.cat_label && p.cat_label.toLowerCase() !== p.name.toLowerCase()
+              ? esc(p.cat_label) + ' · ' : '';
+            return `<div class="r"><b>${esc(p.name)}</b>
+            <span>${cat}${esc((p.sizes || []).join(' · '))}</span></div>`;
+          }).join('')}
         </div>
 
         <div class="bc-h mt-4">What you get at the counter</div>
@@ -1186,11 +1277,11 @@ function rangeFlier(size) {
 
 <!-- PAGE 2 · INSIDE — left to right: inner left | inner right -->
 <div class="sheet"><div class="fold">
-  ${innerPanel('Walls, inside and out',
+  ${innerPanel('Walls, Inside and Out',
     'Sheen is the decision most people get wrong. Silk lifts colour and wipes clean; matt hides an uneven wall and calms a bright room. Weatherguard and Rocketex take the weather outside, and SuperMatt is the base that makes any of them last.',
     WALLS, '#1e3a8a')}
-  ${innerPanel('Wood, metal, roofs &amp; road',
-    'Doors, frames, grilles, gates, balustrades, roofs and car parks all take a beating. These are the hard-drying finishes for them — and the thinner that keeps the brushes usable afterwards.',
+  ${innerPanel('Wood, Metal, Roofs &amp; Road',
+    'Doors, Frames, Grills, Gates, Balustrades, Roofs and Car Parks all take a beating. These are the hard-drying finishes for them — and the thinner that keeps the brushes usable afterwards.',
     TRADE, '#8b1e2c')}
 </div></div>` + tail;
 }

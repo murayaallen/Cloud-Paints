@@ -40,7 +40,7 @@ window.CLOUD_PRODUCTS = [
     primary: '#6b1f6e',
     accent: '#ec4899',
     image: 'images/buckets/SILK VINYL 4LTS REV SEP.jpg',
-    sizes: ['1L', '4L', '20L'],
+    sizes: ['20L', '4L', '1L'],
     short: 'A subtle, elegant sheen that adds depth, richness and a premium feel — colours appear more vibrant, and the surface stays easy to clean in busy homes and commercial spaces.',
     full: 'Cloud Paints Silk Vinyl Paint is ideal for creating interiors with a subtle, elegant sheen that adds depth, richness and a premium feel. Unlike matt finishes, silk paint reflects a soft amount of light, making colours appear more vibrant while remaining easy to clean — perfect for busy homes and commercial spaces. Crafted to deliver a smooth, elegant sheen and rich, lasting colour, it combines beauty with durability, giving walls a refined finish that\'s both washable and easy to maintain.',
     features: [
@@ -114,7 +114,7 @@ window.CLOUD_PRODUCTS = [
     primary: '#1e3a8a',
     accent: '#3b5bdb',
     image: 'images/buckets/VINYL MATT 4LTS REV SEP.jpg',
-    sizes: ['1L', '4L', '20L'],
+    sizes: ['20L', '4L', '1L'],
     short: 'A brilliant, long-lasting white with a smooth non-reflective matte finish. Rated for interior and exterior walls and ceilings alike, delivering exceptional whiteness and a refined modern appearance.',
     full: 'Cloud Paints Vinyl Matt – Brilliant White is engineered to transform ordinary ceilings and walls into flawless architectural features, inside the building and out. Featuring our Colour Lock Technology, excellent hiding power and low VOC formulation, it delivers exceptional whiteness and a silky smooth matte finish. The breathable coating helps reduce peeling, the anti-flashing formulation gives a uniform appearance, and the anti-fungal protection keeps the painted area clean for years to come — which is what makes the same tin suitable for a sheltered exterior elevation as well as an interior ceiling.',
     features: [
@@ -204,7 +204,7 @@ window.CLOUD_PRODUCTS = [
     primary: '#d4940a',
     accent: '#fbbf24',
     image: 'images/buckets/IRISH REV 4L SEP.jpg',
-    sizes: ['1L', '4L', '20L'],
+    sizes: ['20L', '4L', '1L'],
     short: 'Acrylic co-polymer based economy emulsion with a smooth, flat decorative finish and good hiding power. Anti-fungal and anti-bacterial — recommended for interior walls and ceilings.',
     full: 'Cloud Paints Iris Plastic Emulsion is an acrylic co-polymer based quality economical emulsion paint with a smooth, flat and decorative finish with good hiding power. It contains anti-fungal and anti-bacterial additives. It is recommended for masonry application and decoration of interior surfaces like concrete, plaster, gypsum board, asbestos, walls and ceilings.',
     features: [
@@ -266,7 +266,7 @@ window.CLOUD_PRODUCTS = [
     primary: '#b8243a',
     accent: '#d92843',
     image: 'images/buckets/SUPERMATT REV 4L.jpg',
-    sizes: ['1L', '4L', '20L'],
+    sizes: ['30kg', '10kg'],
     short: 'Trade-quality water-based emulsion undercoat with excellent coverage, filling properties and a long-lasting bright matt finish. The smooth base for every decorative top coat.',
     full: 'Cloud Paints SuperMatt is a trade quality emulsion paint used for both interior and exterior. A water-based undercoat that has an excellent coverage, finish and application properties. It also provides a smooth base for the top coat application of all decorative products. Its high-quality filling properties has made it ideal for use on all types of interior, exterior and masonry surfaces. Cloud Paints SuperMatt is a high quality, acrylic-based paint, fast drying with a long lasting bright matt finish.',
     features: [
@@ -328,7 +328,7 @@ window.CLOUD_PRODUCTS = [
     primary: '#8b1e2c',
     accent: '#d92843',
     image: 'images/buckets/WEATHERGUARD 4LTS REV SEP.jpg',
-    sizes: ['1L', '4L', '20L'],
+    sizes: ['20L', '4L', '1L'],
     short: 'Advanced silicone technology and premium acrylic performance — a finish that repels water, resists harsh weather, and keeps colours looking vibrant. Built to protect, designed to impress.',
     full: 'Cloud Paints Weatherguard with Silicone is engineered for every climate. Whether exposed to intense sunshine, heavy rain, or changing temperatures, it forms a durable protective barrier that helps maintain the beauty of your home year after year. The advanced silicone technology delivers superior water repellency, while the anti-carbonation formulation and excellent UV resistance keep colours vivid and reduce fading. From elegant family homes to landmark commercial projects, Weatherguard delivers dependable protection with a premium finish.',
     features: [
@@ -414,7 +414,7 @@ window.CLOUD_PRODUCTS = [
     primary: '#1f2547',
     accent: '#3b5bdb',
     image: 'images/buckets/ROCKETEX 30KG.jpg',
-    sizes: ['5kg', '30kg'],
+    sizes: ['30kg', '5kg'],
     short: 'Super-premium 100% acrylic textured coating. Trowel or roller applied for multi-directional textures and designer finishes. 15-year all-weather protection warranty. Over 5,000 colour shades.',
     full: 'Cloud RockTEX Texture is a super-premium Acrylic Emulsion based on an acrylic resin for a textured finish with guaranteed high performance, formulated to provide multi-directional textures (creation of designer texture and designs). It comes in more than 5,000 exuberant colours on any exterior & interior cementitious surface. A flexible acrylic texture applied directly from the bucket. Formulated with special materials such as tough stone crystals that give it unparalleled toughness and durability, making it a perfect choice for exterior painting and also interiors.',
     features: [
@@ -484,7 +484,7 @@ window.CLOUD_PRODUCTS = [
     primary: '#0f1f5c',
     accent: '#1e3a8a',
     image: 'images/buckets/GLOSS ENAMEL 4L.jpg',
-    sizes: ['250ml', '1L', '4L'],
+    sizes: ['4L', '1L'],
     short: 'Oil-based gloss enamel for interior and exterior wood, metal and plaster. Tough, durable high-sheen finish with good knock and scuff resistance, excellent hiding power and UV fastness.',
     full: 'Cloud Enamel Paint is a high VOC content gloss enamel finish and washable oil-based product, suitable for interior and exterior use. Gives a tough, durable high-sheen finish on wood, metal and plaster providing good resistance to knocking and scuffing. Can be applied over most previously painted surfaces without an undercoat. On new surfaces apply over the top of a suitable primer and undercoat. A fast-drying enamel manufactured to provide a strong paint film with good chemical resistance; a selection of high-quality pigments further enhances the properties by providing improved weathering resistance and UV light fastness of the coating.',
     features: [
@@ -553,7 +553,7 @@ window.CLOUD_PRODUCTS = [
     primary: '#1e3a8a',
     accent: '#3b5bdb',
     image: 'images/buckets/SUPER GLOSS 4L.jpg',
-    sizes: ['1L', '4L', '20L'],
+    sizes: ['20L', '4L', '1L'],
     short: 'Superior alkyd-based high gloss with excellent flow, giving surfaces a tough, durable high-gloss finish. Touch-dry in 1 hour. Formulated for tropical coastal weather conditions.',
     full: 'Cloud Super High Gloss is an alkyd-based superior Solvent-based formulation which offers excellent flow, giving surfaces a tough, durable high gloss finish. Cloud Super Gloss is formulated to offer maximum durability in extreme tropical coastal weather conditions. Self-undercoating, wipeable, non-yellowing. Suitable for use on plaster, wallboards, brickwork and stonework etc., over the appropriate primer and undercoat.',
     features: [
@@ -622,7 +622,7 @@ window.CLOUD_PRODUCTS = [
     primary: '#8b1e2c',
     accent: '#d92843',
     image: 'images/buckets/ROOF PAINT 4L.jpg',
-    sizes: ['1L', '4L', '20L'],
+    sizes: ['4L', '1L'],
     short: 'High-quality durable flexible coating for galvanised roofs and exposed steelwork. Unique formulation withstands extreme weather variations. Available in Green, Red Oxide, Granite Grey and 17 special colours.',
     full: 'Cloud Roof Paint is a high-quality durable, flexible, beautiful coating for the protection of galvanised roofs and exposed steelwork. Manufactured from the finest light-fast pigments ground in a flexible medium paint product. Its unique formulation provides a flexible coating to withstand extreme variations in various weather conditions. It has excellent hiding power. One finishing coat is normally sufficient for redecoration work.',
     features: [
@@ -686,7 +686,7 @@ window.CLOUD_PRODUCTS = [
     primary: '#1a202c',
     accent: '#4a5568',
     image: 'images/buckets/ROAD MARKING 4L.jpg',
-    sizes: ['1L', '4L', '20L'],
+    sizes: ['20L', '4L', '1L'],
     short: 'Single-pack fast-drying road marking paint on a durable alkyd-modified chlorinated rubber resin. Clean high-visibility lines on concrete and bitumen. White, yellow and black.',
     full: 'Cloud Road Marking Paint is a single pack fast drying coating based on a durable alkyd-modified chlorinated rubber resin. It is most suitable for concrete and bitumen surfaces without bleeding or discolouration, providing clean lines of high visibility. Manufactured from high-quality pigments and a mixture of high-quality resins for added durability. Advantages: good flexibility, excellent adhesion and quick drying.',
     features: [
@@ -753,7 +753,7 @@ window.CLOUD_PRODUCTS = [
     primary: '#4a5568',
     accent: '#718096',
     image: 'images/buckets/metal-primer.jpg',
-    sizes: ['1L', '4L', '20L'],
+    sizes: ['5L', '1L'],
     short: 'Alkyd-based anti-corrosive primer for ferrous metal surfaces. Creates a tight, durable bond with the substrate and acts as the perfect foundation for Cloud Paints gloss enamel top coats.',
     full: 'Cloud Paints Metal Primer is an alkyd-based anti-corrosive primer formulated specifically for ferrous metal surfaces. Creates a tight, durable bond with the substrate and acts as the perfect undercoat foundation for any of our gloss enamel or industrial top coats. Inhibits rust and extends the service life of exposed steelwork.',
     features: [
@@ -818,7 +818,7 @@ window.CLOUD_PRODUCTS = [
     primary: '#718096',
     accent: '#a0aec0',
     image: 'images/buckets/universal-undercoat.jpg',
-    sizes: ['1L', '4L', '20L'],
+    sizes: ['4L', '1L'],
     short: 'All-purpose solvent-based undercoat for interior and exterior wood, metal and primed masonry. The standard base coat for Cloud Gloss Enamel and Super Gloss.',
     full: 'Cloud Universal Undercoat is the companion product to Cloud Gloss Enamel and Super Gloss — a solvent-based alkyd undercoat providing excellent adhesion, fill and a uniform base for any oil-based top coat. Saves time, promotes even sheen in the topcoat and ensures truer final colour. Suitable for wood, primed metal and primed masonry.',
     features: [
@@ -882,7 +882,7 @@ window.CLOUD_PRODUCTS = [
     primary: '#92400e',
     accent: '#d69e2e',
     image: 'images/buckets/CLEAR VARNISH 4L.jpg',
-    sizes: ['1L', '4L', '20L'],
+    sizes: ['20L', '4L', '1L'],
     short: 'Quick-drying multipurpose clear varnish for interior woodwork. Blend of modified polyurethane alkyd resin and hardening agent that preserves the natural beauty of timber.',
     full: 'Cloud Multipurpose Clear Varnish is a quick-drying clear varnish formulated to produce a tough, gloss finish on interior woodwork. Recommended for use as a furniture finish and for general application on new or sanded door panels and frames, counters, timber pelmets, skirting boards, wall partitions etc. Manufactured from a blend of high-quality oil-modified polyurethane alkyd resin and a special hardening resin that maintains the natural beauty of the timber. Retains the natural beauty of timber · High spreading capacity and quick drying · Tough, hard-wearing abrasion-resistant clear gloss finish.',
     features: [
@@ -946,7 +946,7 @@ window.CLOUD_PRODUCTS = [
     brandClass: 'brand-varnish',
     primary: '#7c2d12',
     accent: '#c2410c',
-    sizes: ['1L', '4L', '20L'],
+    sizes: ['5L', '1L'],
     short: 'Tinted polyurethane alkyd varnish that stains and protects in a single coat. Deepens the natural look of wood with rich classic tones.',
     full: 'Cloud Paints Varnish Stain combines colour and protection in a single coat — adding rich, classic wood tones while sealing and protecting the surface. Built on the same polyurethane alkyd platform as Cloud Clear Varnish for hard-wearing, abrasion-resistant performance. Perfect for furniture, doors and trim where you want to deepen the natural look of wood without painting over the grain.',
     features: [
@@ -1010,7 +1010,7 @@ window.CLOUD_PRODUCTS = [
     brandClass: 'brand-floor',
     primary: '#2d3748',
     accent: '#4a5568',
-    sizes: ['4L', '20L'],
+    sizes: ['4L', '1L'],
     short: 'Hard-wearing alkyd-based floor coating for concrete and wooden floors. Resists abrasion, chemicals, oil spills and heavy foot traffic. Built for warehouses, garages and residential floors.',
     full: 'Cloud Paints Floor Paint is a heavy-duty alkyd-based coating designed for concrete, wooden and industrial floors. Resists abrasion, chemicals, oil spills and heavy foot traffic. Ideal for warehouses, garages, workshops, factory floors and residential utility areas. Delivers a tough semi-gloss finish that is easy to clean and stands up to years of wear.',
     features: [
@@ -1074,7 +1074,7 @@ window.CLOUD_PRODUCTS = [
     brandClass: 'brand-thinner',
     primary: '#a0aec0',
     accent: '#cbd5e0',
-    sizes: ['1L', '5L', '20L'],
+    sizes: ['5L', '1L'],
     short: 'High-purity petroleum distillate for thinning oil-based paints, varnishes and enamels, and for cleaning brushes, rollers and spray equipment. Pairs with the Cloud Gloss and Varnish range.',
     full: 'Cloud Paints White Spirit is a high-purity petroleum distillate solvent for thinning oil-based paints, varnishes, enamels and stains. Also ideal for cleaning brushes, rollers and spray equipment, and for removing fresh paint splashes from hard surfaces. The standard cleanup solvent for the Cloud Gloss Enamel, Super Gloss, Roof Paint and Clear Varnish range.',
     features: [
@@ -1137,7 +1137,7 @@ window.CLOUD_PRODUCTS = [
     primary: '#9ca3af',
     accent: '#d1d5db',
     image: 'images/buckets/TURPENTINE 5L.jpg',
-    sizes: ['1L', '5L', '20L'],
+    sizes: ['5L', '1L'],
     short: 'Professional-quality pine-tree-derived thinner for oil-based paints, enamels and varnishes. Multi-purpose — removes grease and grime, cleans brushes, dissolves polish components. Meets Federal Specification TT-T-801 C Type 1.',
     full: 'Turpentine Paint Remover is a pine tree-derived, professional-quality thinner for oil-based paints, enamels and varnishes. Cloud Turpentine is a multi-purpose product that can be used for many applications such as removing grease, grime from surfaces, as well as cleaning paintbrushes and paint rollers used with solvent-based paints such as Gloss Enamel, Primers and Varnishes etc. It can also be used for thinning down or spraying alkyd-based decorative paints. Can be used to dissolve polish components, e.g. Beeswax. Removes tar, grease and tree sap. Meets Federal Specification TT-T-801 C Type 1.',
     features: [
@@ -1202,7 +1202,7 @@ window.CLOUD_PRODUCTS = [
     brandClass: 'brand-thinner',
     primary: '#cbd5e0',
     accent: '#e2e8f0',
-    sizes: ['1L', '4L', '20L'],
+    sizes: ['5L', '1L'],
     short: 'All-round hydrocarbon-blend thinner for Cloud Paints enamels and undercoats. The contractor\'s choice for high-volume thinning and equipment cleaning across the Cloud solvent-based range.',
     full: 'Cloud Paints Standard Thinner is the universal, all-purpose thinner formulated for use with Cloud Paints enamel paints and undercoats. Compatible with the full Cloud Paints oil-based product range and ideal for cleanup of brushes, rollers and spray equipment. The cost-effective contractor-grade choice for high-volume work.',
     features: [
@@ -1269,7 +1269,7 @@ window.CLOUD_PRODUCTS = [
     primary: '#7a6b5c',
     accent: '#c4a575',
     image: 'images/textures/cloud-stone-texture.jpg',
-    sizes: ['20kg', '25kg'],
+    sizes: ['25kg', '20kg'],
     short: 'A high-build decorative texture that hand-renders into a natural stone appearance — durable, weather-resistant and Kenyan-climate ready.',
     full: 'Cloud Stone Texture is a premium decorative coating from the Cloud Paints Texture Collection. Hand-trowelled and sculpted on site by certified applicators, it produces a tactile stone-look finish that protects boundary walls, gate pillars and façades against rain, dust and UV while adding architectural character.',
     features: [
@@ -1329,7 +1329,7 @@ window.CLOUD_PRODUCTS = [
     primary: '#7d7e80',
     accent: '#a8a6a1',
     image: 'images/textures/cloud-concrete-finish.jpg',
-    sizes: ['5kg', '20kg'],
+    sizes: ['20kg', '5kg'],
     short: 'A sophisticated raw-concrete look for modern apartments, TV walls and reception areas — masks minor wall imperfections while reading architectural and considered.',
     full: 'Cloud Concrete Finish is a fine-grain decorative coating that recreates the cool, matte surface of polished concrete. Ideal where the design language wants industrial calm without exposing actual concrete. Hand-applied by certified Cloud Paints teams over plastered or gypsum substrates.',
     features: [
@@ -1389,7 +1389,7 @@ window.CLOUD_PRODUCTS = [
     primary: '#6b5e7a',
     accent: '#c0a7b8',
     image: 'images/textures/cloud-velvet-texture.jpg',
-    sizes: ['4L', '20L'],
+    sizes: ['20L', '4L'],
     short: 'A subtly textured accent finish with a soft velvet sheen that catches light differently across the wall — designed for bedrooms and luxury lounges.',
     full: 'Cloud Velvet Texture is a smooth-bodied decorative paint that builds a low-relief brush pattern under a gentle velvet sheen. The result reads as quietly luxurious — pattern only emerges as the eye moves along the wall. Designed for accent walls in bedrooms, lounges and restaurants.',
     features: [
@@ -1449,7 +1449,7 @@ window.CLOUD_PRODUCTS = [
     primary: '#9a7b3f',
     accent: '#e0c787',
     image: 'images/textures/cloud-metallic-illusion.jpg',
-    sizes: ['1L', '4L'],
+    sizes: ['4L', '1L'],
     short: 'A reflective metallic decorative finish that adds depth, shimmer and movement to a single feature wall — engineered for hotels, showrooms and luxury lounges.',
     full: 'Cloud Metallic Illusion suspends fine metallic particles in a water-based binder; trowel-application creates flowing strokes that catch light like brushed metal. Used sparingly on feature walls, it transforms an otherwise quiet interior into a piece of architecture.',
     features: [
@@ -1509,7 +1509,7 @@ window.CLOUD_PRODUCTS = [
     primary: '#d4c4a8',
     accent: '#9b8765',
     image: 'images/textures/cloud-venetian-marble.jpg',
-    sizes: ['1L', '4L'],
+    sizes: ['4L', '1L'],
     short: 'A traditional Venetian plaster finish layered and burnished to a high-polish marble look with depth, veining and movement that shifts under light.',
     full: 'Cloud Venetian Marble is a fine-particle lime-style plaster applied in thin layered passes and burnished to a glass-smooth marble finish. Veining and depth appear as the layers build. The premium choice for hotel lobbies, executive offices and master suites that want true craft on the wall.',
     features: [
@@ -1569,7 +1569,7 @@ window.CLOUD_PRODUCTS = [
     primary: '#9b6b48',
     accent: '#c69372',
     image: 'images/textures/cloud-rustic-texture.jpg',
-    sizes: ['10kg', '20kg'],
+    sizes: ['20kg', '10kg'],
     short: 'A warm, hand-rendered texture with earthy tones — perfect for restaurants, lounges and any wall that wants a worked-in artisan feel.',
     full: 'Cloud Rustic Texture is a coarse-grain decorative coating laid in irregular hand strokes for a deliberately imperfect, artisan finish. The character comes from the variation — no two walls read the same. Built for restaurants, lounges, boutique hotels and accent walls in residential spaces.',
     features: [
@@ -1629,7 +1629,7 @@ window.CLOUD_PRODUCTS = [
     primary: '#c4a47c',
     accent: '#dbc4a0',
     image: 'images/textures/cloud-sand-finish.jpg',
-    sizes: ['4L', '20L'],
+    sizes: ['20L', '4L'],
     short: 'A fine, sandy textured paint that feels softly granular to the touch — gives walls a subtle natural-stone character without heavy build.',
     full: 'Cloud Sand Finish is a fine-aggregate decorative paint that introduces a soft sandstone texture to interior walls. Lighter build than the stone collection, easier to apply, and ideal where you want texture as a whisper rather than a statement.',
     features: [
@@ -1689,7 +1689,7 @@ window.CLOUD_PRODUCTS = [
     primary: '#b58963',
     accent: '#d7b58a',
     image: 'images/textures/cloud-desert-stone.jpg',
-    sizes: ['20kg', '25kg'],
+    sizes: ['25kg', '20kg'],
     short: 'A warm, Saharan-toned heavy-build stone texture for exterior walls, gate pillars and boundary walls — UV-stable and built for Kenyan dry zones.',
     full: 'Cloud Desert Stone is a heavy-build decorative coating with a warm, sandy stone profile. Hand-trowelled and sculpted to mimic dry-region rock, it offers strong UV stability and weather resistance — well-suited to Kenya\'s drier counties and rift-zone architecture.',
     features: [
@@ -1749,7 +1749,7 @@ window.CLOUD_PRODUCTS = [
     primary: '#ddc9b5',
     accent: '#b09b85',
     image: 'images/textures/cloud-luxury-stucco.jpg',
-    sizes: ['1L', '4L'],
+    sizes: ['4L', '1L'],
     short: 'A premium polished-plaster finish with soft cloud-like depth — sister to the Venetian Marble but with a gentler, more contemporary feel.',
     full: 'Cloud Luxury Stucco is a polished plaster from the same Venetian family, but laid in broader, softer passes for a contemporary cloud-like depth instead of crisp marble veining. Used in master suites, executive offices and any interior that wants quiet luxury without grand drama.',
     features: [
@@ -1809,7 +1809,7 @@ window.CLOUD_PRODUCTS = [
     primary: '#5e605e',
     accent: '#8b8f8b',
     image: 'images/textures/cloud-rockshield-exterior.jpg',
-    sizes: ['20kg', '25kg'],
+    sizes: ['25kg', '20kg'],
     short: 'A heavy-duty, weather-shielded exterior texture engineered for commercial buildings and high-exposure walls — the strongest member of the Cloud Texture Collection.',
     full: 'Cloud RockShield Exterior Texture pairs the Cloud Texture Collection\'s decorative range with a reinforced weather-shield system. Built for commercial façades, high-rise exposed walls and high-rainfall regions, it combines a sculpted stone profile with the Dual Protection Technology that anchors Cloud Paints\' Weatherguard exterior system.',
     features: [

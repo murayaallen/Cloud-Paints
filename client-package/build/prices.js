@@ -34,34 +34,34 @@ export const TRADE_NOTE =
 export const PRICES = {
 
   /* ---- Interior wall paints ---- */
-  'silk-vinyl':          { '1L': 0, '4L': 0, '20L': 0 },
-  'vinyl-matt':          { '1L': 0, '4L': 0, '20L': 0 },
-  'iris-economy':        { '1L': 0, '4L': 0, '20L': 0 },
+  'silk-vinyl':          { '20L': 0, '4L': 0, '1L': 0 },
+  'vinyl-matt':          { '20L': 0, '4L': 0, '1L': 0 },
+  'iris-economy':        { '20L': 0, '4L': 0, '1L': 0 },
 
   /* ---- Primers, sealers & undercoats ---- */
-  'supermatt':           { '1L': 0, '4L': 0, '20L': 0 },
-  'universal-undercoat': { '1L': 0, '4L': 0, '20L': 0 },
-  'metal-primer':        { '1L': 0, '4L': 0, '20L': 0 },
+  'supermatt':           { '30kg': 0, '10kg': 0 },
+  'universal-undercoat': { '4L': 0, '1L': 0 },
+  'metal-primer':        { '5L': 0, '1L': 0 },
 
   /* ---- Exterior & roof ---- */
-  'weatherguard':        { '1L': 0, '4L': 0, '20L': 0 },
-  'rocketex':            { '5kg': 0, '30kg': 0 },
-  'roof-paint':          { '1L': 0, '4L': 0, '20L': 0 },
+  'weatherguard':        { '20L': 0, '4L': 0, '1L': 0 },
+  'rocketex':            { '30kg': 0, '5kg': 0 },
+  'roof-paint':          { '4L': 0, '1L': 0 },
 
   /* ---- Wood & metal ---- */
-  'gloss-enamel':        { '250ml': 0, '1L': 0, '4L': 0 },
-  'super-gloss':         { '1L': 0, '4L': 0, '20L': 0 },
-  'clear-varnish':       { '1L': 0, '4L': 0, '20L': 0 },
-  'varnish-stain':       { '1L': 0, '4L': 0, '20L': 0 },
+  'gloss-enamel':        { '4L': 0, '1L': 0 },
+  'super-gloss':         { '20L': 0, '4L': 0, '1L': 0 },
+  'clear-varnish':       { '20L': 0, '4L': 0, '1L': 0 },
+  'varnish-stain':       { '5L': 0, '1L': 0 },
 
   /* ---- Floor & road ---- */
-  'floor-paint':         { '4L': 0, '20L': 0 },
-  'road-marking':        { '1L': 0, '4L': 0, '20L': 0 },
+  'floor-paint':         { '4L': 0, '1L': 0 },
+  'road-marking':        { '20L': 0, '4L': 0, '1L': 0 },
 
   /* ---- Solvents & thinners ---- */
-  'white-spirit':        { '1L': 0, '5L': 0, '20L': 0 },
-  'turpentine':          { '1L': 0, '5L': 0, '20L': 0 },
-  'standard-thinner':    { '1L': 0, '4L': 0, '20L': 0 },
+  'white-spirit':        { '5L': 0, '1L': 0 },
+  'turpentine':          { '5L': 0, '1L': 0 },
+  'standard-thinner':    { '5L': 0, '1L': 0 },
 };
 
 // Order and grouping of the printed price list. Each group becomes a
