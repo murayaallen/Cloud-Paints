@@ -42,7 +42,7 @@
   function productChip(slug) {
     var prod = window.getProduct && window.getProduct(slug);
     if (!prod) return '';
-    return '<a class="pj-product-chip" href="product.html?p=' + prod.slug + '">' +
+    return '<a class="pj-product-chip" href="/paints/' + prod.slug + '">' +
            '<span class="sw" style="background:' + prod.primary + '"></span>' +
            prod.name +
            '</a>';

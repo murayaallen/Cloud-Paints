@@ -1,37 +1,136 @@
+# ============================================================
 # Cloud Paints — production config for DirectAdmin / Apache
+# ============================================================
+# Everything the site needs from the server: canonical URLs,
+# redirects from the old ones, compression, caching, and the
+# security headers.
+#
+# The URL rules and the 301s belong together and in this order.
+# Read them top to bottom: force HTTPS, settle on one hostname,
+# retire the old URL shapes, then serve the clean ones.
+# ============================================================
 
-# Force HTTPS
+Options -Indexes
+DirectoryIndex index.html
+
 <IfModule mod_rewrite.c>
   RewriteEngine On
-  RewriteCond %{HTTPS} !=on
-  RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+
+  # ---- 1. One scheme, one hostname -------------------------
+  # Every page must live at exactly one address or Google has to
+  # guess which is canonical. HTTPS and the bare domain win; the
+  # two redirects are combined so http://www. costs one hop, not two.
+  RewriteCond %{HTTPS} !=on [OR]
+  RewriteCond %{HTTP_HOST} ^www\. [NC]
+  RewriteCond %{HTTP_HOST} ^(?:www\.)?(.+)$ [NC]
+  RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
+
+  # ---- 2. Retire the old product URLs ----------------------
+  # /product.html?p=silk-vinyl  ->  /paints/silk-vinyl
+  # Both query keys were in use. The slug is checked against a
+  # safe character set so a junk query cannot be reflected into
+  # a redirect target.
+  RewriteCond %{QUERY_STRING} (?:^|&)(?:p|slug)=([a-z0-9-]+)(?:&|$)
+  RewriteRule ^product\.html$ /paints/%1? [R=301,L]
+  # No slug, or one we do not recognise: send them to the catalogue.
+  RewriteRule ^product\.html$ /products? [R=301,L]
+
+  # ---- 3. Retire the .html extension -----------------------
+  # A request that still names the file is redirected once to the
+  # clean URL. REDIRECT_STATUS is empty only on a real client
+  # request, so this never fires on the internal rewrite in rule 4
+  # (which would be an infinite loop).
+  RewriteCond %{ENV:REDIRECT_STATUS} ^$
+  RewriteRule ^(.+)\.html$ /$1 [R=301,L]
+
+  # ---- 4. Serve the clean URLs -----------------------------
+  # /products -> products.html, /paints/silk-vinyl -> paints/silk-vinyl.html
+  # Internal rewrite, no redirect: the clean URL is the real one.
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{DOCUMENT_ROOT}/$1.html -f
+  RewriteRule ^(.+?)/?$ /$1.html [L]
 </IfModule>
 
 # Branded 404
 ErrorDocument 404 /404.html
 
+# ============================================================
 # Compression
+# ============================================================
 <IfModule mod_deflate.c>
   AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml
   AddOutputFilterByType DEFLATE application/javascript application/json
-  AddOutputFilterByType DEFLATE image/svg+xml
+  AddOutputFilterByType DEFLATE image/svg+xml application/xml
+  # woff2 is already compressed — running deflate over it costs CPU
+  # on both ends and gains nothing.
 </IfModule>
 
-# Cache lifetimes — images are immutable-ish, code changes on deploy
+# ============================================================
+# Cache lifetimes
+# ============================================================
 <IfModule mod_expires.c>
   ExpiresActive On
   ExpiresByType image/jpeg  "access plus 30 days"
   ExpiresByType image/png   "access plus 30 days"
+  ExpiresByType image/webp  "access plus 30 days"
   ExpiresByType image/svg+xml "access plus 30 days"
   ExpiresByType image/x-icon "access plus 30 days"
   ExpiresByType application/pdf "access plus 30 days"
+  # Self-hosted fonts are content-hashed by Google's own filenames,
+  # so a year is safe: a new face arrives under a new name.
+  ExpiresByType font/woff2  "access plus 1 year"
   ExpiresByType text/css    "access plus 7 days"
   ExpiresByType application/javascript "access plus 7 days"
   ExpiresByType text/html   "access plus 1 hour"
 </IfModule>
 
-# Light security headers
 <IfModule mod_headers.c>
-  Header set X-Content-Type-Options "nosniff"
-  Header set Referrer-Policy "strict-origin-when-cross-origin"
+  <FilesMatch "\.woff2$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+
+  # ============================================================
+  # Security headers
+  # ============================================================
+  # HSTS. Two years, subdomains included. Do NOT add `preload` until
+  # you are certain every subdomain will serve HTTPS forever — that
+  # list is very hard to get out of.
+  Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains"
+
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set X-Frame-Options "SAMEORIGIN"
+
+  # Features the site never uses. Denying them means a compromised
+  # script cannot quietly turn any of them on.
+  Header always set Permissions-Policy "geolocation=(), microphone=(), camera=(), payment=(), usb=(), magnetometer=(), gyroscope=(), interest-cohort=()"
+
+  # ---- Content-Security-Policy -----------------------------
+  # Everything the site loads is now served from this origin: the
+  # animation libraries are vendored under /js/vendor and the fonts
+  # under /fonts, so no third-party host needs to be allowed.
+  #
+  # 'unsafe-inline' is still required for scripts and styles: the
+  # theme-flash guard is an inline <script> in every <head>, the page
+  # partials write inline style attributes, and several templates set
+  # custom properties inline. Removing it means nonce-ing every one
+  # of those, which is a change to the pages rather than to this file.
+  #
+  # data: is allowed for images because the visualiser paints to a
+  # canvas and reads it back as a data URI, and openstreetmap.org is
+  # allowed to be framed because the contact page embeds the map of
+  # the Industrial Area premises. Those are the only two exceptions.
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; frame-src 'self' https://www.openstreetmap.org; media-src 'self'; object-src 'none'; frame-ancestors 'self'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests"
+</IfModule>
+
+# ============================================================
+# Don't serve what isn't the website
+# ============================================================
+<FilesMatch "\.(md|mjs|py|json|zip|docx|bak)$">
+  Require all denied
+</FilesMatch>
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteRule ^(build|client-package|new|samples|Finishes)/ - [F,L]
 </IfModule>

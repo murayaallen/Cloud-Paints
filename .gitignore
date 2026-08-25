@@ -17,3 +17,14 @@ Finishes/
 # versioned, because 76MB of PDFs would weigh down every clone for ever.
 client-package/html/
 client-package/pdf/
+
+# Editor / assistant session state
+.claude/
+
+# NOTE on generated files that ARE committed.
+# paints/, fonts/, css/fonts.css, js/art-manifest.js and sitemap.xml are all
+# generated — by build/site.mjs, build/vendor-fonts.mjs and build/schema.mjs —
+# but they are versioned on purpose. They are what gets uploaded, they are
+# small, and a deploy must never depend on someone remembering to run a build
+# first. Regenerate them with:
+#     node build/site.mjs && node build/schema.mjs

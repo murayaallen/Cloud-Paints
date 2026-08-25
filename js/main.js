@@ -24,13 +24,16 @@
   onScroll();
 
   // ---------- Mobile nav ----------
-  document.addEventListener('click', function (e) {
-    if (e.target.closest('#menuToggle')) {
-      document.querySelector('.nav').classList.toggle('open');
-    } else if (e.target.closest('.nav a')) {
-      document.querySelector('.nav').classList.remove('open');
-    }
-  });
+  // Owned by partials.js, which builds the header and drives #mobileDrawer
+  // and #navBackdrop with focus handling and a scroll lock.
+  //
+  // A second handler used to live here, toggling `.open` on a `.nav`
+  // element that the current header does not have. It threw
+  // "Cannot read properties of null" on every single tap of the menu
+  // button — the drawer still opened, because partials.js had already
+  // handled the same click, so the only visible symptom was an exception
+  // in the console. Deleted rather than guarded: a null check would have
+  // left dead code that looks like it does something.
 
   // ---------- Light / dark theme toggle ----------
   // Inline script in <head> seeds data-theme from localStorage (defaults to

@@ -40,10 +40,15 @@
 
   function run() {
     var pour = document.querySelector('.lp-pour');
-    // Reduced motion, or no stage to play on: hand straight over.
-    if (!pour || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      return finish();
-    }
+    if (!pour) return finish();
+
+    // Reduced motion used to skip this entirely, which threw the content
+    // away along with the movement: anyone with Reduce Motion on — a normal
+    // OS setting, not an edge case — got an empty stage where the range
+    // should be. The preference is about motion, so the line-up is still
+    // built and still held; it simply arrives in place instead of flying in,
+    // and leaves on a fade instead of a fall.
+    var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     var hero = document.querySelector('.lp-hero');
     if (hero) hero.classList.add('intro-running');
@@ -64,7 +69,7 @@
       el.innerHTML =
         '<span class="lp-intro-pool"></span>' +
         '<span class="lp-intro-ring"></span>' +
-        '<img src="images/buckets/intro/' + p.s + '.webp" alt="">';
+        '<img src="/images/buckets/intro/' + p.s + '.webp" alt="">';
       layer.appendChild(el);
       return el;
     });
@@ -92,6 +97,14 @@
     items.forEach(function (el, i) {
       var x = x0 + i * gap, d = i * STAGGER;
 
+      if (still) {
+        // Final resting state, drawn directly. No flight, no squash, no
+        // pool, no ring — every one of those is motion.
+        el.style.transform = tx(x);
+        el.style.opacity = '1';
+        return;
+      }
+
       el.animate([
         { transform: tx(x + 420) + ' translateY(-16px) scale(.88) rotate(9deg)', opacity: 0 },
         { transform: tx(x) + ' translateY(-18px) scale(1.08) rotate(-2deg)', opacity: 1, offset: .68 },
@@ -117,7 +130,7 @@
       ], { duration: 560, delay: d + 505, easing: 'cubic-bezier(.15,.7,.3,1)', fill: 'both' });
     });
 
-    var settled = (n - 1) * STAGGER + FLY;
+    var settled = still ? 0 : (n - 1) * STAGGER + FLY;
 
     // The line-up *is* the brand stage now — the logo lockup it replaced
     // used to hold this slot. So it stays put once landed, and only clears
@@ -128,6 +141,13 @@
         cleared = true;
         items.forEach(function (el, i) {
           var x = x0 + i * gap;
+          if (still) {
+            // A fade is a change of opacity, not of position — it is the one
+            // exit that reduced motion still allows.
+            el.animate([{ opacity: 1 }, { opacity: 0 }],
+              { duration: 260, easing: SOFT, fill: 'both' });
+            return;
+          }
           el.animate([
             { transform: tx(x), opacity: 1 },
             { transform: tx(x) + ' translateY(150px) scale(.8)', opacity: 0 }
@@ -136,7 +156,7 @@
         setTimeout(function () {
           if (hero) hero.classList.remove('intro-running');
           if (layer && layer.parentNode) layer.parentNode.removeChild(layer);
-        }, 420 + n * 34 + 60);
+        }, still ? 300 : 420 + n * 34 + 60);
       }
     };
     window.CloudHeroIntro = exposed;
@@ -157,7 +177,7 @@
     RANGE.forEach(function (p) {
       var im = new Image();
       im.onload = im.onerror = function () { if (--pending === 0) go(); };
-      im.src = 'images/buckets/intro/' + p.s + '.webp';
+      im.src = '/images/buckets/intro/' + p.s + '.webp';
     });
     setTimeout(go, 600);   // do not wait on a slow connection
   }

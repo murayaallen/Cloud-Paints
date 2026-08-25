@@ -1733,8 +1733,14 @@ footer::after {
   letter-spacing: .18em; text-transform: uppercase;
   margin-bottom: 18px;
 }
-.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 11px; }
+/* The gap used to be 11px between 17px-tall inline links: a 17px tap target,
+   well under the 24px minimum, on every page of the site. Moving the space
+   inside the link as padding makes the target 25px without changing the
+   rhythm of the list — 25 + 2 lands within a pixel of the old 17 + 11. */
+.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 2px; }
 .footer-col a {
+  display: inline-block;
+  padding: 4px 0;
   font-size: 14px; color: rgba(255,255,255,0.65);
   transition: color var(--t-fast);
 }
@@ -1765,6 +1771,12 @@ footer::after {
   font-size: 12px;
 }
 .footer-legal-links a {
+  /* Inline at 12px these were 19px-tall tap targets. Padding takes them
+     over the 24px minimum without changing where the line sits — the row
+     is centred, so the extra height grows evenly above and below. */
+  display: inline-block;
+  padding: 4px 2px;
+  margin: -4px 0;
   color: rgba(255,255,255,0.55);
   transition: color var(--t-fast);
 }
@@ -3171,4 +3183,30 @@ html { scroll-padding-top: 96px; }
   .lp-about-bg, .lp-hero-bg-img { display: none !important; }
   h1, h2, h3 { page-break-after: avoid; }
   p, blockquote { page-break-inside: avoid; }
+}
+
+/* ============================================================
+   Mobile legibility floor — forms only
+   ============================================================
+   The small uppercase eyebrow is a deliberate editorial device and
+   it stays as it is. Form furniture is different: a field label you
+   have to read before typing, and the consent line under a submit
+   button, are the two places on the site where 11px on a phone
+   costs someone something. Both go to 12px below the tablet
+   breakpoint, which is the floor Google measures against too.
+
+   Letter-spacing comes down a touch at the same time — uppercase at
+   12px with 0.14em set is wider than the field it labels on a
+   360px screen. */
+@media (max-width: 767px) {
+  .ct-field label,
+  .pd-calc-field label,
+  .cart-field label {
+    font-size: 12px;
+    letter-spacing: 0.1em;
+  }
+  .ct-form-card .fineprint {
+    font-size: 12px;
+    line-height: 1.5;
+  }
 }

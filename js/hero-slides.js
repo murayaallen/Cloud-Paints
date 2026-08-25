@@ -12,22 +12,26 @@
 
   var SLIDES = [
     // 0 — Brand stage. No bucket; the logo replaces it.
-    // The bg now points at images/hero/hero-brand-stage.jpg, an
-    // AI-generated branded backdrop yet to be created (see
-    // AI-IMAGES-NEEDED.md Section 1A — Hero brand stage). Until that
-    // file exists, CSS provides a vibrant brand gradient fallback on
-    // .lp-hero-brand-bg so the slide never appears empty.
+    //
+    // No backdrop photograph. This slide used to point at
+    // images/hero/hero-brand-stage.jpg (AI-IMAGES-NEEDED.md Section 1A),
+    // which was never produced — so every homepage load spent its one
+    // high-priority image slot on a 404 before falling back. The velvet
+    // bed in CSS is the backdrop now, and it is the better one.
+    //
+    // If that photograph is ever shot, put the path back on `bg` and the
+    // crossfade picks it up again with no other change.
     {
       type:  'brand',
-      bg:    'images/hero/hero-brand-stage.jpg',
+      bg:    '',
       color: '#e11f29',
       name:  'Cloud Paints',
     },
     // 1 — Weatherguard (exterior emulsion) ↔ modern villa exterior
     {
       type:  'bucket',
-      src:   'images/buckets/hero/weatherguard.png',
-      bg:    'images/inspiration/inspiration-villa-cream-charcoal.jpg',
+      src:   '/images/buckets/hero/weatherguard.png',
+      bg:    '/images/inspiration/inspiration-villa-cream-charcoal.jpg',
       color: '#d92843',
       name:  'Weatherguard',
       cat:   'Exterior wall paint',
@@ -35,8 +39,8 @@
     // 2 — Silk Vinyl (interior premium emulsion) ↔ warm interior bedroom
     {
       type:  'bucket',
-      src:   'images/buckets/hero/silk-vinyl.png',
-      bg:    'images/inspiration/inspiration-clay-bedroom.jpg',
+      src:   '/images/buckets/hero/silk-vinyl.png',
+      bg:    '/images/inspiration/inspiration-clay-bedroom.jpg',
       color: '#9b2ca8',
       name:  'Silk Vinyl',
       cat:   'Interior wall paint',
@@ -44,8 +48,8 @@
     // 3 — Rocketex (textured exterior) ↔ apartment block exterior
     {
       type:  'bucket',
-      src:   'images/buckets/hero/rocketex.png',
-      bg:    'images/inspiration/inspiration-apartments-sage.jpg',
+      src:   '/images/buckets/hero/rocketex.png',
+      bg:    '/images/inspiration/inspiration-apartments-sage.jpg',
       color: '#1f4088',
       name:  'Rocketex Wallmaster',
       cat:   'Textured exterior',
@@ -55,9 +59,9 @@
     // exactly what SuperMatt sells, so the finish itself is the subject.
     {
       type:  'bucket',
-      src:   'images/buckets/hero/supermatt.png',
-      bg:    'images/products/applied/supermatt-applied.jpg',
-      bgMobile: 'images/products/applied/supermatt-applied-portrait.jpg',
+      src:   '/images/buckets/hero/supermatt.png',
+      bg:    '/images/products/applied/supermatt-applied.jpg',
+      bgMobile: '/images/products/applied/supermatt-applied-portrait.jpg',
       color: '#7f95a3',
       name:  'SuperMatt Emulsion',
       cat:   'Ceilings & walls',
@@ -67,9 +71,9 @@
     // hallway, where the emulsion walls dominated the frame.
     {
       type:  'bucket',
-      src:   'images/buckets/hero/gloss-enamel.png',
-      bg:    'images/products/applied/gloss-enamel-applied.jpg',
-      bgMobile: 'images/products/applied/gloss-enamel-applied-portrait.jpg',
+      src:   '/images/buckets/hero/gloss-enamel.png',
+      bg:    '/images/products/applied/gloss-enamel-applied.jpg',
+      bgMobile: '/images/products/applied/gloss-enamel-applied-portrait.jpg',
       color: '#5a7183',
       name:  'Gloss Enamel',
       cat:   'Wood & metal',
@@ -79,8 +83,8 @@
     // are the subject.
     {
       type:  'bucket',
-      src:   'images/buckets/hero/iris-economy.png',
-      bg:    'images/products/applied/iris-economy-applied.jpg',
+      src:   '/images/buckets/hero/iris-economy.png',
+      bg:    '/images/products/applied/iris-economy-applied.jpg',
       color: '#b57a2b',
       name:  'Iris Plastic Emulsion',
       cat:   'Interior wall paint',
@@ -88,8 +92,8 @@
     // 7 — Weatherguard pairs again ↔ a real Cloud Paints project
     {
       type:  'bucket',
-      src:   'images/buckets/hero/weatherguard.png',
-      bg:    'images/projects/pazuri-villa.jpg',
+      src:   '/images/buckets/hero/weatherguard.png',
+      bg:    '/images/projects/pazuri-villa.jpg',
       color: '#c4870a',
       name:  'Weatherguard · Pazuri Villa',
       label: 'Weatherguard',
@@ -100,8 +104,8 @@
     // Silk Vinyl scene (was previously mis-paired with Gloss Enamel).
     {
       type:  'bucket',
-      src:   'images/buckets/hero/silk-vinyl.png',
-      bg:    'images/inspiration/inspiration-coastal-bedroom.jpg',
+      src:   '/images/buckets/hero/silk-vinyl.png',
+      bg:    '/images/inspiration/inspiration-coastal-bedroom.jpg',
       color: '#5d8aa8',
       name:  'Silk Vinyl',
       cat:   'Interior wall paint',
@@ -111,8 +115,8 @@
     // plane is the product claim made visible.
     {
       type:  'bucket',
-      src:   'images/buckets/hero/vinyl-matt.png',
-      bg:    'images/products/applied/vinyl-matt-applied.jpg',
+      src:   '/images/buckets/hero/vinyl-matt.png',
+      bg:    '/images/products/applied/vinyl-matt-applied.jpg',
       color: '#6b7b8c',
       name:  'Vinyl Matt',
       cat:   'Interior & exterior',
@@ -122,9 +126,9 @@
     // the subject rather than a background note.
     {
       type:  'bucket',
-      src:   'images/buckets/hero/clear-varnish.png',
-      bg:    'images/products/applied/clear-varnish-applied.jpg',
-      bgMobile: 'images/products/applied/clear-varnish-applied-portrait.jpg',
+      src:   '/images/buckets/hero/clear-varnish.png',
+      bg:    '/images/products/applied/clear-varnish-applied.jpg',
+      bgMobile: '/images/products/applied/clear-varnish-applied-portrait.jpg',
       color: '#c4870a',
       name:  'Clear Varnish',
       cat:   'Wood varnish',
@@ -132,8 +136,8 @@
     // 11 — Gloss Enamel pairs again ↔ mist bathroom (gloss trim suits)
     {
       type:  'bucket',
-      src:   'images/buckets/hero/gloss-enamel.png',
-      bg:    'images/inspiration/inspiration-mist-bathroom.jpg',
+      src:   '/images/buckets/hero/gloss-enamel.png',
+      bg:    '/images/inspiration/inspiration-mist-bathroom.jpg',
       color: '#5d8aa8',
       name:  'Gloss Enamel',
       cat:   'Wood & metal',
@@ -143,8 +147,8 @@
     // that didn't show the product at all)
     {
       type:  'bucket',
-      src:   'images/buckets/hero/road-marking.png',
-      bg:    'images/products/applied/road-marking-applied.jpg',
+      src:   '/images/buckets/hero/road-marking.png',
+      bg:    '/images/products/applied/road-marking-applied.jpg',
       color: '#e8a317',
       name:  'Road Marking Paint',
       cat:   'Road & line marking',
@@ -156,9 +160,9 @@
     // in the rotation.
     {
       type:  'bucket',
-      src:   'images/buckets/hero/weatherguard.png',
-      bg:    'images/products/applied/weatherguard-applied.jpg',
-      bgMobile: 'images/products/applied/weatherguard-applied-portrait.jpg',
+      src:   '/images/buckets/hero/weatherguard.png',
+      bg:    '/images/products/applied/weatherguard-applied.jpg',
+      bgMobile: '/images/products/applied/weatherguard-applied-portrait.jpg',
       color: '#2f5d40',
       name:  'Weatherguard · Green exterior',
       label: 'Weatherguard',
@@ -169,8 +173,8 @@
     // product lost its only slide, so it gets this one back.
     {
       type:  'bucket',
-      src:   'images/buckets/hero/roof-paint.png',
-      bg:    'images/projects/green-roof-villa.jpg',
+      src:   '/images/buckets/hero/roof-paint.png',
+      bg:    '/images/projects/green-roof-villa.jpg',
       color: '#1f7a4d',
       name:  'Roof Paint',
       cat:   'Roofs & tiles',
@@ -195,7 +199,7 @@
   var mqPortrait = window.matchMedia('(max-width: 780px)');
 
   function bgFor(slide) {
-    return (slide.bgMobile && mqPortrait.matches) ? slide.bgMobile : slide.bg;
+    return (slide.bgMobile && mqPortrait.matches) ? slide.bgMobile : (slide.bg || '');
   }
 
   function applyColor(color) {
@@ -247,11 +251,18 @@
     var inactiveBg = (bgA && bgB) ? (bgA.classList.contains('hs-active') ? bgB : bgA) : null;
     var activeBg   = (bgA && bgB) ? (bgA.classList.contains('hs-active') ? bgA : bgB) : null;
     if (inactiveBg) {
-      // The brand-stage img hides itself via onerror while that file
-      // is pending — undo the hide before reusing this element, or
-      // every slide that lands on it shows only the gradient.
-      inactiveBg.style.display = '';
-      inactiveBg.src = bgFor(slide);
+      // A slide with no backdrop (the brand stage) shows the velvet bed
+      // instead. Clear the element rather than pointing it at nothing —
+      // an img left holding the previous slide's photo would flash it
+      // back on, and one pointed at '' re-requests the page itself.
+      var nextBg = bgFor(slide);
+      if (nextBg) {
+        inactiveBg.style.display = '';
+        inactiveBg.src = nextBg;
+      } else {
+        inactiveBg.removeAttribute('src');
+        inactiveBg.style.display = 'none';
+      }
     }
 
     var inactiveBucket, activeBucket;
@@ -369,9 +380,14 @@
       bgA = bgImgs[0]; bgB = bgImgs[1];
     }
 
-    // Initial state — slide 0 is the brand stage
-    if (bgA) bgA.src = bgFor(SLIDES[0]);
-    if (bgA) bgA.classList.add('hs-active');
+    // Initial state — slide 0 is the brand stage, which carries no
+    // backdrop photograph: the velvet bed behind it is the backdrop.
+    var firstBg = bgFor(SLIDES[0]);
+    if (bgA) {
+      if (firstBg) bgA.src = firstBg;
+      else { bgA.removeAttribute('src'); bgA.style.display = 'none'; }
+      bgA.classList.add('hs-active');
+    }
     bucketA.classList.remove('hs-active');
     bucketB.classList.remove('hs-active');
     if (brandStage) brandStage.classList.add('hs-active');

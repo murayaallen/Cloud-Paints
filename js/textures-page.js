@@ -25,7 +25,7 @@
     var sizes = (p.sizes || []).map(function (s) {
       return '<span class="tx-card-size">' + s + '</span>';
     }).join('');
-    var url = 'product.html?p=' + encodeURIComponent(p.slug);
+    var url = '/paints/' + encodeURIComponent(p.slug);
     return (
       '<a class="tx-card" href="' + url + '" style="--c:' + (p.accent || p.primary || '#d92843') + '">' +
         '<div class="tx-card-img">' +

@@ -83,7 +83,7 @@
 
   function cardHtml(p, i) {
     return (
-      '<a href="product.html?p=' + p.slug + '" ' +
+      '<a href="/paints/' + p.slug + '" ' +
          'class="product-card ' + p.brandClass + '" ' +
          'data-cat="' + p.cat + '" ' +
          'data-slug="' + p.slug + '" ' +

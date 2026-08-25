@@ -1,5 +1,19 @@
+# Cloud Paints — cloudpaints.co.ke
+# Cloudsent Decor Ltd, Industrial Area, Nairobi
+
 User-agent: *
 Allow: /
-Disallow: /trials/
+
+# Working directories. The server already refuses these; saying so here
+# keeps crawlers from spending their budget finding that out.
+Disallow: /build/
+Disallow: /client-package/
+Disallow: /new/
+Disallow: /samples/
+Disallow: /Finishes/
+
+# The old product URL. It 301s to /paints/<slug>, so it stays crawlable
+# on purpose — that redirect is how the ranking of the old address moves
+# to the new one. Blocking it here would strand it instead.
 
 Sitemap: https://cloudpaints.co.ke/sitemap.xml

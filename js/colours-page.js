@@ -169,7 +169,7 @@
       hex.textContent = s.hex;
       var msg = encodeURIComponent('Hi Cloud Paints, I’d like to order colour ' + s.name + ' (' + s.code + ', ' + s.hex + ').');
       wa.href = 'https://wa.me/254741405481?text=' + msg;
-      visualise.href = 'visualiser.html?hex=' + encodeURIComponent(s.hex.replace('#', ''));
+      visualise.href = '/visualiser?hex=' + encodeURIComponent(s.hex.replace('#', ''));
       detail.classList.add('is-open');
       detail.setAttribute('aria-hidden', 'false');
       try { history.replaceState(null, '', '?c=' + s.slug + location.hash); } catch (e2) {}

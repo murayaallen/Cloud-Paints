@@ -1889,19 +1889,28 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
   .lp-brand-splat.s3 { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
+  /* Reduced motion means stop the movement, not undo the layout. These
+     rules used to reset `transform` on everything in the stage — but the
+     wordmark is centred with translateX(-50%), so clearing it dragged the
+     lockup half its own width to the right, where the hero column's
+     overflow:hidden cut the last letter off the page. Anyone browsing with
+     Reduce Motion on saw "CLOUD PAINT".
+
+     So: kill the animation, reveal the element, and leave placement to the
+     layout rules that own it. The mark, tag, halo and splats are display:none
+     in the current hero, and are listed here only so the stage still behaves
+     if they are ever brought back. */
   .lp-hero-brand.hs-active .lp-brand-mark,
   .lp-hero-brand.hs-active .lp-brand-wordmark,
   .lp-hero-brand.hs-active .lp-brand-tag,
   .lp-hero-brand.hs-active .lp-brand-halo,
-  .lp-hero-brand.hs-active .lp-brand-splat,
-  .lp-hero-brand.hs-active .lp-brand-drop {
+  .lp-hero-brand.hs-active .lp-brand-splat {
     animation: none !important;
     opacity: 1 !important;
-    transform: translate(-50%, -50%) !important;
+    filter: none !important;
   }
   .lp-hero-brand.hs-active .lp-brand-mark { transform: scale(1) !important; }
-  .lp-hero-brand.hs-active .lp-brand-wordmark,
-  .lp-hero-brand.hs-active .lp-brand-tag { transform: none !important; filter: none !important; }
+  .lp-hero-brand.hs-active .lp-brand-halo { transform: translate(-50%, -50%) !important; }
   .lp-hero-brand.hs-active .lp-brand-drop { display: none; }
 }
 
@@ -2214,9 +2223,28 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
   }
 
   /* Bucket: the hero visual — generous, floating mid-low centre */
+  /* The tin used to sit at 9vh from the top of the column, which put its
+     bottom edge flush with the bottom of .lp-pour — and .lp-pour clips. The
+     slide label hangs off the bucket's bottom edge, so it landed outside the
+     clip and was invisible on every phone, overlapping the CTA block on the
+     way out. Lift the tin so the tin AND its label fit inside the column. */
+  /* The slide label hangs off the bucket's bottom edge, and .lp-pour clips.
+     With the tin centred in the full column its bottom edge landed flush
+     with the bottom of the clip, so the product name fell outside it: on a
+     phone the label was invisible, and what you could see of it sat over
+     the CTA block.
+
+     overflow:hidden clips at the PADDING edge, so reserving a band of
+     bottom padding gives the label somewhere legal to live. The tin then
+     centres in what is left, which lifts it — which is the composition we
+     wanted anyway. Nothing here depends on the tin's height, so it holds
+     from a 360px phone up to the tablet breakpoint. */
+  body[data-page="home"] .lp-pour {
+    padding-bottom: clamp(70px, 10vh, 96px);
+  }
   body[data-page="home"] .lp-hero-bucket {
     width: clamp(190px, 54vw, 290px);
-    margin: clamp(28px, 9vh, 84px) auto 0;
+    margin: clamp(6px, 1.6vh, 18px) auto 0;
   }
 
   /* Brand stage: cleaner, centered, smaller halo */
@@ -2646,7 +2674,15 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .lp-intro { display: none; }
+  /* The line-up stays. hero-intro.js draws it in its resting position with
+     no flight, no squash and no splash under this preference, so there is
+     nothing left here to suppress — and hiding it threw away the content
+     along with the movement, leaving an empty stage where the range should
+     be. Only the falling exit is a problem, and that is handled in JS too.
+
+     The one thing worth killing here is the idle shimmer on the pool. */
+  .lp-intro-pool,
+  .lp-intro-ring { display: none; }
 }
 
 /* ------------------------------------------------------------
@@ -2659,7 +2695,10 @@ body.cp-loading .lp-pour-col { animation-play-state: paused; }
   left: 50%;
   top: 100%;
   transform: translateX(-50%);
-  margin-top: clamp(10px, 1.6vw, 20px);
+  /* Tight to the tin. The label is anchored to the bucket's bottom edge, so
+     every millimetre here is a millimetre closer to whatever sits under the
+     hero column — on a phone that is the call-to-action block. */
+  margin-top: clamp(6px, 1vw, 12px);
   width: max-content;
   max-width: min(88vw, 460px);
   z-index: 5;

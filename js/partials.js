@@ -71,12 +71,34 @@
     wrap.outerHTML = bucketNoImageHtml(p);
   };
 
-  // Error chain: transparent hero cut-out → flat catalogue photo →
-  // branded no-image panel.
+  // Root-relative, always. These cards render on pages at the site root and
+  // on product pages one level down at /paints/<slug>, where a bare
+  // "images/..." resolves to /paints/images/... and 404s.
+  function asset(path) {
+    if (!path) return '';
+    return /^(?:https?:|\/|data:)/.test(path) ? path : '/' + path;
+  }
+  window.cpAsset = asset;
+
+  // What art this product actually has, from the manifest build/site.mjs
+  // generates off the filesystem. The old code asked every card for a
+  // transparent cut-out — art only twelve of the twenty-eight products own —
+  // and let onerror sort out the rest, which cost a 404 per card for the
+  // other sixteen.
+  function artFor(p) {
+    if (!p) return '';
+    var m = window.CLOUD_ART;
+    if (m && m[p.slug]) return m[p.slug];
+    return asset(p.image);
+  }
+  window.cpArtFor = artFor;
+
+  // Still the last word: a card rendered before the manifest loads, or a file
+  // removed from disk without a rebuild, both land here.
   window.__cpBucketError = function (imgEl, slug) {
     var p = window.getProduct ? window.getProduct(slug) : null;
     if (imgEl.src.indexOf('/hero/') !== -1 && p && p.image) {
-      imgEl.src = p.image;
+      imgEl.src = asset(p.image);
       return;
     }
     window.__cpBucketFallback(imgEl, slug);
@@ -85,13 +107,8 @@
   window.bucketCardHtml = function (p) {
     var certBadge = '';
 
-    // Prefer the transparent hero cut-out (sits cleanly on the card
-    // gradient); fall back to the flat photograph. Texture products
-    // skip the cut-out — their finish close-up IS the right art.
-    if (p.image) {
-      var firstSrc = p.cat === 'texture'
-        ? p.image
-        : 'images/buckets/hero/' + p.slug + '.png';
+    var firstSrc = artFor(p);
+    if (firstSrc) {
       return (
         '<div class="bucket-photo-wrap">' +
           '<img class="bucket-photo" src="' + firstSrc + '" alt="' + p.name +
@@ -127,7 +144,7 @@
     return '<div class="cp-mega-col">' +
       '<h5>' + title + '</h5>' +
       '<ul>' + items.map(function (it) {
-        return '<li><a href="product.html?slug=' + it.slug + '">' + it.name + '</a></li>';
+        return '<li><a href="/paints/' + it.slug + '">' + it.name + '</a></li>';
       }).join('') + '</ul>' +
     '</div>';
   }
@@ -153,7 +170,7 @@
     // the spectrum strip stays in sync with the brand palette.
     var featureCards =
       '<div class="cp-mega-features">' +
-        '<a class="cp-mega-feat cp-mega-feat--colours" href="colours.html">' +
+        '<a class="cp-mega-feat cp-mega-feat--colours" href="/colours">' +
           '<span class="cp-mega-feat-strip" aria-hidden="true">' +
             '<i style="background:#C70F18"></i><i style="background:#E97923"></i>' +
             '<i style="background:#F0D61B"></i><i style="background:#7CD834"></i>' +
@@ -168,7 +185,7 @@
             '<span class="cp-mega-feat-sub">Mixed to order in any finish ' + useIcon('arrow-right', 'arr', 14) + '</span>' +
           '</span>' +
         '</a>' +
-        '<a class="cp-mega-feat cp-mega-feat--textures" href="textures.html">' +
+        '<a class="cp-mega-feat cp-mega-feat--textures" href="/textures">' +
           '<span class="cp-mega-feat-strip cp-mega-feat-strip--tex" aria-hidden="true">' +
             '<i style="background:#7a6b5c"></i><i style="background:#7d7e80"></i>' +
             '<i style="background:#6b5e7a"></i><i style="background:#9a7b3f"></i>' +
@@ -195,7 +212,7 @@
         megaColumn('Decorative Textures', textures) +
       '</div>' +
       '<div class="cp-mega-foot">' +
-        '<a href="products.html" class="cp-mega-all">View the full catalogue ' + useIcon('arrow-right', 'arr', 16) + '</a>' +
+        '<a href="/products" class="cp-mega-all">View the full catalogue ' + useIcon('arrow-right', 'arr', 16) + '</a>' +
       '</div>' +
     '</div>';
   }
@@ -217,8 +234,8 @@
     '<a href="#main-content" class="skip-to-content">Skip to content</a>' +
     '<header class="site-header" data-nav>' +
       '<div class="container cp-nav-inner">' +
-        '<a href="index.html" class="cp-logo" aria-label="Cloud Paints — home">' +
-          '<img class="cp-logo-mark" src="images/logo-mark.png" alt="Cloud Paints" width="1140" height="968">' +
+        '<a href="/" class="cp-logo" aria-label="Cloud Paints — home">' +
+          '<img class="cp-logo-mark" src="/images/logo-mark.png" alt="Cloud Paints" width="1140" height="968">' +
           '<span class="cp-logo-text">' +
             '<span class="cp-logo-name">' +
               '<span class="c-blue">Cloud</span><span class="c-red">Paints</span>' +
@@ -234,42 +251,42 @@
         '<span class="cp-nav-divider" aria-hidden="true"></span>' +
 
         '<nav class="cp-primary" aria-label="Primary">' +
-          '<a href="index.html" class="cp-link ' + isActive('home') + '"><span>Home</span></a>' +
+          '<a href="/" class="cp-link ' + isActive('home') + '"><span>Home</span></a>' +
 
           /* PRODUCTS — big mega-menu (catalogue + textures + colours) */
           '<div class="cp-has-mega" data-mega>' +
-            '<a href="products.html" class="cp-link ' + isActive('products') + ' ' + isActive('textures') + '" aria-haspopup="true" aria-expanded="false"><span>Products</span>' +
+            '<a href="/products" class="cp-link ' + isActive('products') + ' ' + isActive('textures') + '" aria-haspopup="true" aria-expanded="false"><span>Products</span>' +
               useIcon('chevron-down', 'cp-link-caret', 14) +
             '</a>' +
             buildMega() +
           '</div>' +
 
-          '<a href="colours.html" class="cp-link ' + isActive('colours') + '"><span>Colours</span></a>' +
-          '<a href="visualiser.html" class="cp-link ' + isActive('visualiser') + '"><span>Visualiser</span></a>' +
+          '<a href="/colours" class="cp-link ' + isActive('colours') + '"><span>Colours</span></a>' +
+          '<a href="/visualiser" class="cp-link ' + isActive('visualiser') + '"><span>Visualiser</span></a>' +
 
           /* INSPIRATION — small dropdown: inspiration / projects / discover */
           '<div class="cp-has-drop" data-drop>' +
-            '<a href="inspiration.html" class="cp-link ' + isActive('inspiration') + ' ' + isActive('projects') + ' ' + isActive('discover') + '" aria-haspopup="true" aria-expanded="false"><span>Inspiration</span>' +
+            '<a href="/inspiration" class="cp-link ' + isActive('inspiration') + ' ' + isActive('projects') + ' ' + isActive('discover') + '" aria-haspopup="true" aria-expanded="false"><span>Inspiration</span>' +
               useIcon('chevron-down', 'cp-link-caret', 14) +
             '</a>' +
             buildDrop([
-              { name: 'Inspiration gallery', href: 'inspiration.html', sub: 'Curated Kenyan rooms' },
-              { name: 'Projects',            href: 'projects.html',    sub: 'Real Cloud Paints jobs' },
-              { name: 'Discover',            href: 'discover.html',    sub: 'Articles &amp; technology' },
+              { name: 'Inspiration gallery', href: '/inspiration', sub: 'Curated Kenyan rooms' },
+              { name: 'Projects',            href: '/projects',    sub: 'Real Cloud Paints jobs' },
+              { name: 'Discover',            href: '/discover',    sub: 'Articles &amp; technology' },
             ]) +
           '</div>' +
 
-          '<a href="services.html" class="cp-link ' + isActive('services') + '"><span>Services</span></a>' +
+          '<a href="/services" class="cp-link ' + isActive('services') + '"><span>Services</span></a>' +
 
           /* ABOUT — small dropdown: about / faq+contact / legal */
           '<div class="cp-has-drop" data-drop>' +
-            '<a href="about.html" class="cp-link ' + isActive('about') + ' ' + isActive('faq') + ' ' + isActive('contact') + ' ' + isActive('legal') + '" aria-haspopup="true" aria-expanded="false"><span>About</span>' +
+            '<a href="/about" class="cp-link ' + isActive('about') + ' ' + isActive('faq') + ' ' + isActive('contact') + ' ' + isActive('legal') + '" aria-haspopup="true" aria-expanded="false"><span>About</span>' +
               useIcon('chevron-down', 'cp-link-caret', 14) +
             '</a>' +
             buildDrop([
-              { name: 'About Cloud Paints', href: 'about.html',   sub: 'Our story &amp; standards' },
-              { name: 'FAQ &amp; contact',  href: 'contact.html', sub: 'Reach us, get a quote' },
-              { name: 'Policies',           href: 'legal.html',   sub: 'Terms, privacy, warranty' },
+              { name: 'About Cloud Paints', href: '/about',   sub: 'Our story &amp; standards' },
+              { name: 'FAQ &amp; contact',  href: '/contact', sub: 'Reach us, get a quote' },
+              { name: 'Policies',           href: '/legal',   sub: 'Terms, privacy, warranty' },
             ]) +
           '</div>' +
         '</nav>' +
@@ -303,33 +320,33 @@
         '<button id="navClose" class="icon-btn" aria-label="Close menu">' + useIcon('close') + '</button>' +
       '</div>' +
       '<nav class="md-nav" aria-label="Mobile primary">' +
-        '<a href="index.html" class="md-link ' + isActive('home') + '"><em>Home</em>' + useIcon('arrow-up-right', 'md-arr', 18) + '</a>' +
-        '<a href="products.html" class="md-link ' + isActive('products') + '"><em>Products</em>' + useIcon('arrow-up-right', 'md-arr', 18) + '</a>' +
+        '<a href="/" class="md-link ' + isActive('home') + '"><em>Home</em>' + useIcon('arrow-up-right', 'md-arr', 18) + '</a>' +
+        '<a href="/products" class="md-link ' + isActive('products') + '"><em>Products</em>' + useIcon('arrow-up-right', 'md-arr', 18) + '</a>' +
         '<details class="md-sub">' +
           '<summary>Browse by category ' + useIcon('chevron-down', 'md-caret', 16) + '</summary>' +
           '<div class="md-sub-grid">' +
-            '<a href="products.html#interior-wall">Interior wall paints</a>' +
-            '<a href="products.html#exterior-wall">Exterior wall paints</a>' +
-            '<a href="products.html#wood">Wood paints</a>' +
-            '<a href="products.html#metal">Metal paints</a>' +
-            '<a href="products.html#floor">Floor paints</a>' +
-            '<a href="products.html#roof">Roof paints</a>' +
-            '<a href="products.html#road">Road paints</a>' +
-            '<a href="products.html#enamel">Enamels</a>' +
-            '<a href="products.html#primer">Primers</a>' +
-            '<a href="products.html#texture">Decorative textures</a>' +
-            '<a href="products.html#solvent">Solvents</a>' +
+            '<a href="/products#interior-wall">Interior wall paints</a>' +
+            '<a href="/products#exterior-wall">Exterior wall paints</a>' +
+            '<a href="/products#wood">Wood paints</a>' +
+            '<a href="/products#metal">Metal paints</a>' +
+            '<a href="/products#floor">Floor paints</a>' +
+            '<a href="/products#roof">Roof paints</a>' +
+            '<a href="/products#road">Road paints</a>' +
+            '<a href="/products#enamel">Enamels</a>' +
+            '<a href="/products#primer">Primers</a>' +
+            '<a href="/products#texture">Decorative textures</a>' +
+            '<a href="/products#solvent">Solvents</a>' +
           '</div>' +
         '</details>' +
-        '<a href="textures.html" class="md-link ' + isActive('textures') + '"><em>Texture Collection</em>' + useIcon('arrow-up-right', 'md-arr', 18) + '</a>' +
-        '<a href="colours.html" class="md-link ' + isActive('colours') + '"><em>Colour Collection</em>' + useIcon('arrow-up-right', 'md-arr', 18) + '</a>' +
-        '<a href="inspiration.html" class="md-link ' + isActive('inspiration') + '"><em>Inspiration</em>' + useIcon('arrow-up-right', 'md-arr', 18) + '</a>' +
-        '<a href="visualiser.html" class="md-link ' + isActive('visualiser') + '"><em>Visualiser</em>' + useIcon('arrow-up-right', 'md-arr', 18) + '</a>' +
-        '<a href="projects.html" class="md-link ' + isActive('projects') + '"><em>Projects</em>' + useIcon('arrow-up-right', 'md-arr', 18) + '</a>' +
-        '<a href="services.html" class="md-link ' + isActive('services') + '"><em>Services</em>' + useIcon('arrow-up-right', 'md-arr', 18) + '</a>' +
-        '<a href="discover.html" class="md-link ' + isActive('discover') + '"><em>Discover</em>' + useIcon('arrow-up-right', 'md-arr', 18) + '</a>' +
-        '<a href="about.html" class="md-link ' + isActive('about') + '"><em>About</em>' + useIcon('arrow-up-right', 'md-arr', 18) + '</a>' +
-        '<a href="contact.html" class="md-link ' + isActive('faq') + ' ' + isActive('contact') + '"><em>FAQ &amp; Contact</em>' + useIcon('arrow-up-right', 'md-arr', 18) + '</a>' +
+        '<a href="/textures" class="md-link ' + isActive('textures') + '"><em>Texture Collection</em>' + useIcon('arrow-up-right', 'md-arr', 18) + '</a>' +
+        '<a href="/colours" class="md-link ' + isActive('colours') + '"><em>Colour Collection</em>' + useIcon('arrow-up-right', 'md-arr', 18) + '</a>' +
+        '<a href="/inspiration" class="md-link ' + isActive('inspiration') + '"><em>Inspiration</em>' + useIcon('arrow-up-right', 'md-arr', 18) + '</a>' +
+        '<a href="/visualiser" class="md-link ' + isActive('visualiser') + '"><em>Visualiser</em>' + useIcon('arrow-up-right', 'md-arr', 18) + '</a>' +
+        '<a href="/projects" class="md-link ' + isActive('projects') + '"><em>Projects</em>' + useIcon('arrow-up-right', 'md-arr', 18) + '</a>' +
+        '<a href="/services" class="md-link ' + isActive('services') + '"><em>Services</em>' + useIcon('arrow-up-right', 'md-arr', 18) + '</a>' +
+        '<a href="/discover" class="md-link ' + isActive('discover') + '"><em>Discover</em>' + useIcon('arrow-up-right', 'md-arr', 18) + '</a>' +
+        '<a href="/about" class="md-link ' + isActive('about') + '"><em>About</em>' + useIcon('arrow-up-right', 'md-arr', 18) + '</a>' +
+        '<a href="/contact" class="md-link ' + isActive('faq') + ' ' + isActive('contact') + '"><em>FAQ &amp; Contact</em>' + useIcon('arrow-up-right', 'md-arr', 18) + '</a>' +
       '</nav>' +
       '<div class="md-cta">' +
         '<a href="https://wa.me/254741405481" class="btn btn-wa md-wa" target="_blank" rel="noopener">' +
@@ -392,31 +409,31 @@
     '      <div class="footer-col">' +
     '        <h5>Browse</h5>' +
     '        <ul>' +
-    '          <li><a href="products.html">All products</a></li>' +
-    '          <li><a href="products.html#interior-wall">Interior walls</a></li>' +
-    '          <li><a href="products.html#exterior-wall">Exterior walls</a></li>' +
-    '          <li><a href="products.html#wood">Wood paints</a></li>' +
-    '          <li><a href="products.html#enamel">Enamels</a></li>' +
-    '          <li><a href="textures.html">Texture Collection</a></li>' +
-    '          <li><a href="colours.html">Colour Collection</a></li>' +
+    '          <li><a href="/products">All products</a></li>' +
+    '          <li><a href="/products#interior-wall">Interior walls</a></li>' +
+    '          <li><a href="/products#exterior-wall">Exterior walls</a></li>' +
+    '          <li><a href="/products#wood">Wood paints</a></li>' +
+    '          <li><a href="/products#enamel">Enamels</a></li>' +
+    '          <li><a href="/textures">Texture Collection</a></li>' +
+    '          <li><a href="/colours">Colour Collection</a></li>' +
     '        </ul>' +
     '      </div>' +
     '      <div class="footer-col">' +
     '        <h5>Explore</h5>' +
     '        <ul>' +
-    '          <li><a href="inspiration.html">Inspiration</a></li>' +
-    '          <li><a href="visualiser.html">Colour Visualiser</a></li>' +
-    '          <li><a href="projects.html">Projects</a></li>' +
-    '          <li><a href="services.html">Painting services</a></li>' +
-    '          <li><a href="discover.html">Discover</a></li>' +
+    '          <li><a href="/inspiration">Inspiration</a></li>' +
+    '          <li><a href="/visualiser">Colour Visualiser</a></li>' +
+    '          <li><a href="/projects">Projects</a></li>' +
+    '          <li><a href="/services">Painting services</a></li>' +
+    '          <li><a href="/discover">Discover</a></li>' +
     '        </ul>' +
     '      </div>' +
     '      <div class="footer-col">' +
     '        <h5>Company</h5>' +
     '        <ul>' +
-    '          <li><a href="about.html">Our story</a></li>' +
-    '          <li><a href="about.html#certifications">Quality &amp; standards</a></li>' +
-    '          <li><a href="contact.html">FAQ &amp; contact</a></li>' +
+    '          <li><a href="/about">Our story</a></li>' +
+    '          <li><a href="/about#certifications">Quality &amp; standards</a></li>' +
+    '          <li><a href="/contact">FAQ &amp; contact</a></li>' +
     '        </ul>' +
     '      </div>' +
     '      <div class="footer-col">' +
@@ -428,13 +445,13 @@
     '    <div class="footer-base">' +
     '      <span>© 2026 Cloudsent Decor Ltd · Cloud Paints®</span>' +
     '      <span class="footer-legal-links">' +
-    '        <a href="legal.html#privacy-policy">Privacy</a>' +
+    '        <a href="/legal#privacy-policy">Privacy</a>' +
     '        <span aria-hidden="true">·</span>' +
-    '        <a href="legal.html#cookie-policy">Cookies</a>' +
+    '        <a href="/legal#cookie-policy">Cookies</a>' +
     '        <span aria-hidden="true">·</span>' +
-    '        <a href="legal.html#service-delivery">Terms</a>' +
+    '        <a href="/legal#service-delivery">Terms</a>' +
     '        <span aria-hidden="true">·</span>' +
-    '        <a href="legal.html">All policies</a>' +
+    '        <a href="/legal">All policies</a>' +
     '      </span>' +
     '      <span class="tag">Buy it · Paint it · Love it.</span>' +
     '    </div>' +
@@ -668,7 +685,7 @@
         return;
       }
       searchResults.innerHTML = matches.map(function (p) {
-        return '<a class="so-row" href="product.html?slug=' + p.slug + '">' +
+        return '<a class="so-row" href="/paints/' + p.slug + '">' +
           '<span class="so-swatch" style="background:' + p.primary + '"></span>' +
           '<span class="so-txt"><strong>' + p.name + '</strong><em>' + (p.cat_label || '') + '</em></span>' +
           useIcon('arrow-up-right', 'so-arr', 18) +

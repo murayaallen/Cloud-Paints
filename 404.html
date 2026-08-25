@@ -10,7 +10,12 @@
 <meta name="theme-color" content="#d92843">
 <link rel="icon" type="image/png" href="images/logo-icon.png">
 <link rel="apple-touch-icon" href="images/logo-icon.png">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700;800&family=Montserrat:ital,wght@0,700;0,800;0,900;1,700;1,800;1,900&display=swap" rel="stylesheet" onerror="this.remove()">
+<!-- Fraunces, Inter and Montserrat are served from this site, not from
+     fonts.googleapis.com: the package has to work with no network, and a
+     strict CSP should not have to allow a third-party origin for type.
+     Regenerate with: node build/vendor-fonts.mjs -->
+<link rel="preload" as="font" type="font/woff2" href="/fonts/inter-latin-UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2" crossorigin>
+<link rel="stylesheet" href="/css/fonts.css">
 <link rel="stylesheet" href="css/main.css">
 <link rel="stylesheet" href="css/motion.css">
 <style>
@@ -122,12 +127,13 @@
         Take me home
         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
       </a>
-      <a href="products.html" class="ghost">Browse products</a>
-      <a href="contact.html" class="ghost">Contact us</a>
+      <a href="/products" class="ghost">Browse products</a>
+      <a href="/contact" class="ghost">Contact us</a>
     </div>
   </div>
 </main>
 
+<script src="js/art-manifest.js"></script>
 <script src="js/products-data.js"></script>
 <script src="js/icon.js"></script>
 <script src="js/partials.js"></script>
