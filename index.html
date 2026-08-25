@@ -29,6 +29,16 @@
      Regenerate with: node build/vendor-fonts.mjs -->
 <link rel="preload" as="font" type="font/woff2" href="fonts/inter-latin-UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2" crossorigin>
 <link rel="stylesheet" href="css/fonts.css">
+<!-- The five tins in the opening line-up. hero-intro.js does not request
+     these until the loader hands over, then gives them 600ms before it
+     animates regardless — so on a cold cache the line-up flew in as five
+     empty boxes. 50KB total, fetched during the splash, ready when needed. -->
+<link rel="preload" as="image" type="image/webp" href="images/buckets/intro/weatherguard.webp">
+<link rel="preload" as="image" type="image/webp" href="images/buckets/intro/silk-vinyl.webp">
+<link rel="preload" as="image" type="image/webp" href="images/buckets/intro/vinyl-matt.webp">
+<link rel="preload" as="image" type="image/webp" href="images/buckets/intro/supermatt.webp">
+<link rel="preload" as="image" type="image/webp" href="images/buckets/intro/iris-economy.webp">
+
 <link rel="stylesheet" href="css/main.css">
 <link rel="stylesheet" href="css/motion.css">
 <link rel="stylesheet" href="css/landing.css">
@@ -277,13 +287,13 @@
         <span class="lp-brand-halo"></span>
         <!-- Real rendered paint splats (glossy, dimensional) — replaced
              the flat SVG circle clusters -->
-        <img class="lp-brand-splat s1" src="images/splatter/splash-red-1.png" alt="" width="720" height="720" loading="lazy" aria-hidden="true">
-        <img class="lp-brand-splat s2" src="images/splatter/splash-navy-2.png" alt="" width="720" height="720" loading="lazy" aria-hidden="true">
-        <img class="lp-brand-splat s3" src="images/splatter/splash-gold-1.png" alt="" width="720" height="720" loading="lazy" aria-hidden="true">
+        <img class="lp-brand-splat s1" src="images/splatter/splash-red-1.webp" alt="" width="720" height="720" loading="lazy" aria-hidden="true">
+        <img class="lp-brand-splat s2" src="images/splatter/splash-navy-2.webp" alt="" width="720" height="720" loading="lazy" aria-hidden="true">
+        <img class="lp-brand-splat s3" src="images/splatter/splash-gold-1.webp" alt="" width="720" height="720" loading="lazy" aria-hidden="true">
         <span class="lp-brand-drop d1"></span>
         <span class="lp-brand-drop d2"></span>
         <span class="lp-brand-drop d3"></span>
-        <img class="lp-brand-mark" src="images/logo-mark.png" alt="Cloud Paints" width="1140" height="968" loading="lazy">
+        <img class="lp-brand-mark" src="images/logo-mark.webp" alt="Cloud Paints" width="1140" height="968" loading="lazy">
         <div class="lp-brand-wordmark">
           <span class="c-blue">Cloud</span><span class="c-red">Paints</span>
         </div>
@@ -296,8 +306,8 @@
            centred on desktop but sits in normal flow on mobile, so no
            single set of coordinates could track it. -->
       <div class="lp-hero-bucket">
-        <img src="images/buckets/hero/weatherguard.png" alt="Cloud Paints paint bucket" width="420" height="525" loading="lazy">
-        <img src="images/buckets/hero/silk-vinyl.png" alt="Cloud Paints paint bucket" width="420" height="525" aria-hidden="true" loading="lazy">
+        <img src="images/buckets/hero/weatherguard.webp" alt="Cloud Paints paint bucket" width="420" height="525" loading="lazy">
+        <img src="images/buckets/hero/silk-vinyl.webp" alt="Cloud Paints paint bucket" width="420" height="525" aria-hidden="true" loading="lazy">
         <div class="lp-slide-label" aria-hidden="true">
           <span class="cat"></span><span class="nm"></span><span class="tick"></span>
         </div>
@@ -490,9 +500,9 @@
   <!-- Reduced paint splash decorations — perf-trimmed from 7 to 3 -->
   <div class="lp-feat-deco" aria-hidden="true">
     <!-- Real rendered paint splats, held at ambient opacity -->
-    <img class="fd fd-tl" src="images/splatter/splash-red-2.png" alt="" width="720" height="720" loading="lazy" style="opacity:.16">
-    <img class="fd fd-br" src="images/splatter/splash-navy-1.png" alt="" width="720" height="720" loading="lazy" style="opacity:.13">
-    <img class="fd fd-mid" src="images/splatter/splash-gold-2.png" alt="" width="720" height="720" loading="lazy" style="opacity:.11">
+    <img class="fd fd-tl" src="images/splatter/splash-red-2.webp" alt="" width="720" height="720" loading="lazy" style="opacity:.16">
+    <img class="fd fd-br" src="images/splatter/splash-navy-1.webp" alt="" width="720" height="720" loading="lazy" style="opacity:.13">
+    <img class="fd fd-mid" src="images/splatter/splash-gold-2.webp" alt="" width="720" height="720" loading="lazy" style="opacity:.11">
   </div>
 
   <div class="container">

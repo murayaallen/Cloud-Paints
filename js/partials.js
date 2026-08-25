@@ -238,7 +238,7 @@
     '<header class="site-header" data-nav>' +
       '<div class="container cp-nav-inner">' +
         '<a href="/" class="cp-logo" aria-label="Cloud Paints — home">' +
-          '<img class="cp-logo-mark" src="/images/logo-mark.png" alt="Cloud Paints" width="1140" height="968">' +
+          '<img class="cp-logo-mark" src="/images/logo-mark.webp" alt="Cloud Paints" width="1140" height="968">' +
           '<span class="cp-logo-text">' +
             '<span class="cp-logo-name">' +
               '<span class="c-blue">Cloud</span><span class="c-red">Paints</span>' +

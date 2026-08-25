@@ -120,6 +120,46 @@ It also found the Datasheet button: the catalogue stores
 new product URLs. That button led nowhere on all twelve products that have a
 datasheet, and nothing but requesting every link would have caught it.
 
+**The first load was 9.5MB, and the splash waited for all of it.**
+
+Reported as "the bucket animation isn't happening on the first load". It was
+happening — around twenty seconds in, to nobody. Three faults stacked:
+
+1. `loader.js` started its sequence on `window.load`, which is the last byte
+   of the page. On anything slower than an office connection the splash sat
+   there until the whole 9.5MB had arrived. It now starts on whichever comes
+   first: `load`, or a short beat after the document is parsed. The splash is
+   bounded by its own choreography instead of by the network.
+2. `hero-slides.js` preloaded every one of the twelve slides' tins and
+   backdrops the moment the rotation started — about 6MB, for a hero that
+   shows one slide every five seconds. It now fetches one slide ahead.
+3. `hero-intro.js` did not even request the five line-up tins until the
+   loader handed over, then gave them 600ms before animating regardless. On
+   a cold cache the line-up flew in as five empty boxes. They are preloaded
+   in the head now — 50KB, fetched during the splash.
+
+Then the images. Six megabytes of the page was PNG, and a PNG with an alpha
+channel is the worst possible container for a photograph of a paint tin. The
+tin cut-outs, the logo mark and the splatters are WebP now: 5.25MB to 0.78MB,
+an 85% cut with no visible difference. Not converted, deliberately: the
+visualiser's room masks, where lossy compression would fray the alpha and let
+paint bleed past the wall; and `logo.png`, which is the og:image.
+
+  homepage, first visit    9.48 MB  ->  2.84 MB
+  first six seconds                     1.92 MB
+  cold cache at 4 Mbps     never*   ->  splash hands over at 4.1s
+  cold cache on 3G                      15s, and the tins are decoded
+
+  * the page did not finish loading within 45 seconds
+
+Social cards are separate from on-page art for the same reason: product pages
+show the WebP cut-out but advertise the JPEG to scrapers, because WhatsApp is
+how this catalogue actually gets shared and its WebP handling is uneven. The
+filenames with spaces in them are percent-encoded, which they were not.
+
+`build/serve.mjs` now gzips text the way `mod_deflate` does in production, so
+local weight measurements are honest: CSS 218KB → 51KB, JS 341KB → 115KB.
+
 **Left alone on purpose**
 
 - The 2.9-second opening loader. It is the Largest Contentful Paint and Google

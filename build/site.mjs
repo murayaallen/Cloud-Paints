@@ -77,7 +77,8 @@ const ART = {};
 const noArt = [];
 for (const p of P) {
   const candidates = [
-    `images/buckets/hero/${p.slug}.png`,   // transparent cut-out, best
+    `images/buckets/hero/${p.slug}.webp`,  // transparent cut-out, best
+    `images/buckets/hero/${p.slug}.png`,   // same, before the WebP pass
     p.image,                                // catalogue photo or texture render
     `images/buckets/${p.slug}.jpg`,         // legacy flat photo
   ].filter(Boolean);
@@ -123,7 +124,7 @@ function oneLevelDown(html) {
     .replace(/(\surl\(")(?!https?:|\/|data:)/g, '$1../');
 }
 
-function productJsonLd(p, url, imgUrl) {
+function productJsonLd(p, url, schemaImg) {
   const props = Object.entries(p.specs || {}).map(([name, value]) => ({
     '@type': 'PropertyValue', name, value: String(value),
   }));
@@ -147,7 +148,7 @@ function productJsonLd(p, url, imgUrl) {
       },
     },
     countryOfOrigin: { '@type': 'Country', name: 'Kenya' },
-    ...(imgUrl ? { image: imgUrl } : {}),
+    ...(schemaImg ? { image: schemaImg } : {}),
     ...(props.length ? { additionalProperty: props } : {}),
     ...(p.sizes && p.sizes.length
       ? { hasVariant: p.sizes.map(s => ({ '@type': 'Product', name: `${p.name} ${s}`, sku: `${p.slug}-${s.toLowerCase()}` })) }
@@ -173,7 +174,25 @@ let written = 0;
 for (const p of P) {
   const url = `${ORIGIN}/paints/${p.slug}`;
   const art = ART[p.slug];
-  const imgUrl = art ? `${ORIGIN}/${art}` : '';
+
+  /* The social card is NOT the on-page image. The tin cut-outs are WebP,
+     which is right for the page — a tenth the weight of the PNG — but link
+     previews are rendered by scrapers, and WhatsApp is how most of this
+     catalogue actually gets shared in Kenya. Their WebP support is uneven
+     and a preview that fails silently is worse than a plainer one that
+     works, so the card falls back through the formats every scraper reads:
+     the flat catalogue photograph, then the logo. */
+  const socialSrc = [p.image, `images/buckets/${p.slug}.jpg`]
+    .filter(Boolean)
+    .filter(f => !/\.webp$/i.test(f))
+    .find(has) || 'images/logo.png';
+  // Several catalogue photographs are named with spaces — "SILK VINYL 4LTS
+  // REV SEP.jpg". A raw space in an og:image URL is not a URL, and a scraper
+  // that cannot parse it shows no preview at all rather than a broken one.
+  const imgUrl = ORIGIN + '/' + socialSrc
+    .replace(/\\/g, '/').replace(/^\//, '')
+    .split('/').map(encodeURIComponent).join('/');
+  const schemaImg = art ? `${ORIGIN}/${art}` : imgUrl;
   /* Google shows about 60 characters of title. The category is genuinely
      useful there — "Weatherguard" alone says nothing to someone searching
      for exterior paint — so it stays whenever it fits, and is the first
@@ -201,7 +220,7 @@ for (const p of P) {
     `<meta name="twitter:description" content="${esc(desc)}">`,
     imgUrl ? `<meta name="twitter:image" content="${imgUrl}">` : '',
     `<meta name="theme-color" content="#d92843">`,
-    productJsonLd(p, url, imgUrl),
+    productJsonLd(p, url, schemaImg),
     `<script>window.CP_PRODUCT_SLUG = ${JSON.stringify(p.slug)};</script>`,
   ].filter(Boolean).join('\n');
 

@@ -74,7 +74,7 @@
         '</svg>' +
       '</div>' +
       '<div class="cp-stage">' +
-        '<img class="cp-mark" src="' + (window.cpUrl ? window.cpUrl('images/logo-mark.png') : '/images/logo-mark.png') + '" alt="Cloud Paints" width="1140" height="968">' +
+        '<img class="cp-mark" src="' + (window.cpUrl ? window.cpUrl('images/logo-mark.webp') : '/images/logo-mark.webp') + '" alt="Cloud Paints" width="1140" height="968">' +
         '<div class="cp-wordmark" aria-label="Cloud Paints">' + wordmarkHtml(WORDMARK) + '</div>' +
         '<div class="cp-progress"><i></i></div>' +
       '</div>' +
@@ -173,11 +173,34 @@
     runFull();
   }
 
-  // Fire after resources load so motion.js boots on a settled page
-  if (document.readyState === 'complete') {
+  // Start on `load` when that is soon, but never wait on it.
+  //
+  // This used to be `load` alone, which ties the splash to the LAST byte of
+  // the page — and the homepage is 9.5MB on a first visit. On anything
+  // slower than an office connection the splash sat there for twenty seconds
+  // or more, and the opening line-up finally played to nobody. Which is
+  // exactly the report: "the bucket animation isn't happening on first load".
+  // It was happening, long after anyone was still watching.
+  //
+  // So: whichever comes first, `load` or a short beat after the document is
+  // parsed. The splash is now bounded by its own choreography rather than by
+  // the network.
+  var begun = false;
+  function begin() {
+    if (begun) return;
+    begun = true;
     start();
+  }
+  if (document.readyState === 'complete') {
+    begin();
   } else {
-    window.addEventListener('load', start);
+    window.addEventListener('load', begin);
+    var afterParse = function () { setTimeout(begin, 900); };
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', afterParse, { once: true });
+    } else {
+      afterParse();
+    }
   }
 
 })();

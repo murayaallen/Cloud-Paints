@@ -14,6 +14,7 @@
 // ============================================================
 
 import http from 'node:http';
+import zlib from 'node:zlib';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -74,13 +75,26 @@ const send = (res, code, body, headers = {}) => {
 const redirect = (res, to) => send(res, 301, '', { Location: to, 'Content-Type': 'text/plain' });
 const mounted = p => (MOUNT ? MOUNT + p : p);
 
-const serveFile = (res, file, code = 200) => {
+/* Production runs mod_deflate over HTML, CSS, JS, SVG and XML. Serving those
+   uncompressed here would make every local measurement of page weight and
+   load time pessimistic by roughly a factor of four on exactly the files
+   that block rendering — so the harness compresses them too. */
+const COMPRESS = /^(text\/|application\/(javascript|json|xml)|image\/svg)/;
+
+const serveFile = (res, file, code = 200, req) => {
   const ext = path.extname(file).toLowerCase();
-  const body = fs.readFileSync(file);
-  send(res, code, body, {
-    'Content-Type': TYPES[ext] || 'application/octet-stream',
-    'Content-Length': body.length,
-  });
+  const type = TYPES[ext] || 'application/octet-stream';
+  let body = fs.readFileSync(file);
+  const headers = { 'Content-Type': type };
+
+  const accepts = (req && req.headers['accept-encoding'] || '').includes('gzip');
+  if (accepts && COMPRESS.test(type) && body.length > 512) {
+    body = zlib.gzipSync(body, { level: 6 });
+    headers['Content-Encoding'] = 'gzip';
+    headers['Vary'] = 'Accept-Encoding';
+  }
+  headers['Content-Length'] = body.length;
+  send(res, code, body, headers);
 };
 
 http.createServer((req, res) => {
@@ -118,11 +132,11 @@ http.createServer((req, res) => {
   const asPage = path.join(ROOT, pathname.replace(/\/$/, '') + '.html');
 
   // .htaccess rule 4 — clean URL to the file behind it
-  if (fs.existsSync(asFile) && fs.statSync(asFile).isFile()) return serveFile(res, asFile);
-  if (fs.existsSync(asPage) && fs.statSync(asPage).isFile()) return serveFile(res, asPage);
+  if (fs.existsSync(asFile) && fs.statSync(asFile).isFile()) return serveFile(res, asFile, 200, req);
+  if (fs.existsSync(asPage) && fs.statSync(asPage).isFile()) return serveFile(res, asPage, 200, req);
 
   const notFound = path.join(ROOT, '404.html');
-  if (fs.existsSync(notFound)) return serveFile(res, notFound, 404);
+  if (fs.existsSync(notFound)) return serveFile(res, notFound, 404, req);
   return send(res, 404, 'Not found', { 'Content-Type': 'text/plain' });
 }).listen(PORT, '127.0.0.1', () => {
   console.log(`Cloud Paints — serving ${ROOT}`);

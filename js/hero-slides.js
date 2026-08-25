@@ -30,7 +30,7 @@
     // 1 — Weatherguard (exterior emulsion) ↔ modern villa exterior
     {
       type:  'bucket',
-      src:   'images/buckets/hero/weatherguard.png',
+      src:   'images/buckets/hero/weatherguard.webp',
       bg:    'images/inspiration/inspiration-villa-cream-charcoal.jpg',
       color: '#d92843',
       name:  'Weatherguard',
@@ -39,7 +39,7 @@
     // 2 — Silk Vinyl (interior premium emulsion) ↔ warm interior bedroom
     {
       type:  'bucket',
-      src:   'images/buckets/hero/silk-vinyl.png',
+      src:   'images/buckets/hero/silk-vinyl.webp',
       bg:    'images/inspiration/inspiration-clay-bedroom.jpg',
       color: '#9b2ca8',
       name:  'Silk Vinyl',
@@ -48,7 +48,7 @@
     // 3 — Rocketex (textured exterior) ↔ apartment block exterior
     {
       type:  'bucket',
-      src:   'images/buckets/hero/rocketex.png',
+      src:   'images/buckets/hero/rocketex.webp',
       bg:    'images/inspiration/inspiration-apartments-sage.jpg',
       color: '#1f4088',
       name:  'Rocketex Wallmaster',
@@ -59,7 +59,7 @@
     // exactly what SuperMatt sells, so the finish itself is the subject.
     {
       type:  'bucket',
-      src:   'images/buckets/hero/supermatt.png',
+      src:   'images/buckets/hero/supermatt.webp',
       bg:    'images/products/applied/supermatt-applied.jpg',
       bgMobile: 'images/products/applied/supermatt-applied-portrait.jpg',
       color: '#7f95a3',
@@ -71,7 +71,7 @@
     // hallway, where the emulsion walls dominated the frame.
     {
       type:  'bucket',
-      src:   'images/buckets/hero/gloss-enamel.png',
+      src:   'images/buckets/hero/gloss-enamel.webp',
       bg:    'images/products/applied/gloss-enamel-applied.jpg',
       bgMobile: 'images/products/applied/gloss-enamel-applied-portrait.jpg',
       color: '#5a7183',
@@ -83,7 +83,7 @@
     // are the subject.
     {
       type:  'bucket',
-      src:   'images/buckets/hero/iris-economy.png',
+      src:   'images/buckets/hero/iris-economy.webp',
       bg:    'images/products/applied/iris-economy-applied.jpg',
       color: '#b57a2b',
       name:  'Iris Plastic Emulsion',
@@ -92,7 +92,7 @@
     // 7 — Weatherguard pairs again ↔ a real Cloud Paints project
     {
       type:  'bucket',
-      src:   'images/buckets/hero/weatherguard.png',
+      src:   'images/buckets/hero/weatherguard.webp',
       bg:    'images/projects/pazuri-villa.jpg',
       color: '#c4870a',
       name:  'Weatherguard · Pazuri Villa',
@@ -104,7 +104,7 @@
     // Silk Vinyl scene (was previously mis-paired with Gloss Enamel).
     {
       type:  'bucket',
-      src:   'images/buckets/hero/silk-vinyl.png',
+      src:   'images/buckets/hero/silk-vinyl.webp',
       bg:    'images/inspiration/inspiration-coastal-bedroom.jpg',
       color: '#5d8aa8',
       name:  'Silk Vinyl',
@@ -115,7 +115,7 @@
     // plane is the product claim made visible.
     {
       type:  'bucket',
-      src:   'images/buckets/hero/vinyl-matt.png',
+      src:   'images/buckets/hero/vinyl-matt.webp',
       bg:    'images/products/applied/vinyl-matt-applied.jpg',
       color: '#6b7b8c',
       name:  'Vinyl Matt',
@@ -126,7 +126,7 @@
     // the subject rather than a background note.
     {
       type:  'bucket',
-      src:   'images/buckets/hero/clear-varnish.png',
+      src:   'images/buckets/hero/clear-varnish.webp',
       bg:    'images/products/applied/clear-varnish-applied.jpg',
       bgMobile: 'images/products/applied/clear-varnish-applied-portrait.jpg',
       color: '#c4870a',
@@ -136,7 +136,7 @@
     // 11 — Gloss Enamel pairs again ↔ mist bathroom (gloss trim suits)
     {
       type:  'bucket',
-      src:   'images/buckets/hero/gloss-enamel.png',
+      src:   'images/buckets/hero/gloss-enamel.webp',
       bg:    'images/inspiration/inspiration-mist-bathroom.jpg',
       color: '#5d8aa8',
       name:  'Gloss Enamel',
@@ -147,7 +147,7 @@
     // that didn't show the product at all)
     {
       type:  'bucket',
-      src:   'images/buckets/hero/road-marking.png',
+      src:   'images/buckets/hero/road-marking.webp',
       bg:    'images/products/applied/road-marking-applied.jpg',
       color: '#e8a317',
       name:  'Road Marking Paint',
@@ -160,7 +160,7 @@
     // in the rotation.
     {
       type:  'bucket',
-      src:   'images/buckets/hero/weatherguard.png',
+      src:   'images/buckets/hero/weatherguard.webp',
       bg:    'images/products/applied/weatherguard-applied.jpg',
       bgMobile: 'images/products/applied/weatherguard-applied-portrait.jpg',
       color: '#2f5d40',
@@ -173,7 +173,7 @@
     // product lost its only slide, so it gets this one back.
     {
       type:  'bucket',
-      src:   'images/buckets/hero/roof-paint.png',
+      src:   'images/buckets/hero/roof-paint.webp',
       bg:    'images/projects/green-roof-villa.jpg',
       color: '#1f7a4d',
       name:  'Roof Paint',
@@ -349,6 +349,9 @@
         }
       }, Math.max(0, hold - INTRO_CLEAR_MS));
     }
+    // Fetch the slide after next while this one is on screen.
+    preloadSlide(current + 2);
+
     timer = setTimeout(function () {
       current = (current + 1) % SLIDES.length;
       switchTo(current);
@@ -356,12 +359,22 @@
     }, hold);
   }
 
-  function preloadAll() {
-    SLIDES.forEach(function (s, i) {
-      if (i === 0) return;
-      if (s.src) { var b = new Image(); b.src = s.src; }
-      if (s.bg)  { var g = new Image(); g.src = bgFor(s); }
-    });
+  /* Fetch one slide ahead, not all twelve.
+     This used to pull every slide's tin and backdrop the moment the rotation
+     started — around 6MB of images for a hero that shows one slide every
+     five seconds, competing with the fonts, the CSS and the visible page for
+     the same connection. A visitor who never scrolls past the hero paid for
+     the lot.
+     One slide ahead is all the rotation can actually use: at five seconds a
+     slide, the next image has ample time to arrive. */
+  var preloaded = {};
+  function preloadSlide(i) {
+    var s = SLIDES[i % SLIDES.length];
+    if (!s || preloaded[i]) return;
+    preloaded[i] = true;
+    if (s.src) { var b = new Image(); b.src = s.src; }
+    var bg = bgFor(s);
+    if (bg) { var g = new Image(); g.src = bg; }
   }
 
   function init() {
@@ -395,7 +408,7 @@
     applyLabel(SLIDES[0]);   // brand slide: hides the label
 
     function startSlides() {
-      preloadAll();
+      preloadSlide(1);      // the first product is next; fetch just that
       scheduleNext();
     }
 
