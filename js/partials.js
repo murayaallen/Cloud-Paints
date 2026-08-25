@@ -74,10 +74,13 @@
   // Root-relative, always. These cards render on pages at the site root and
   // on product pages one level down at /paints/<slug>, where a bare
   // "images/..." resolves to /paints/images/... and 404s.
-  function asset(path) {
-    if (!path) return '';
-    return /^(?:https?:|\/|data:)/.test(path) ? path : '/' + path;
-  }
+  // js/base.js knows where the site is mounted — the domain root in
+  // production, /<repo>/ on a GitHub Pages project site, a folder on a
+  // staging box. Everything built here is inserted at two different page
+  // depths from one string, so it cannot use a relative path and must not
+  // assume the domain root.
+  var asset = window.cpUrl || function (p) { return p; };
+  var localise = window.cpLocalise || function (h) { return h; };
   window.cpAsset = asset;
 
   // What art this product actually has, from the manifest build/site.mjs
@@ -516,8 +519,9 @@
 
   // Inject — bg-blobs first (sit behind everything), header at top,
   // footer + drawer + nav extras at end.
-  document.body.insertAdjacentHTML('afterbegin', bgBlobs + header);
-  document.body.insertAdjacentHTML('beforeend', footer + drawer + mobileDrawer + searchOverlay);
+  document.body.insertAdjacentHTML('afterbegin', localise(bgBlobs + header));
+  document.body.insertAdjacentHTML('beforeend',
+    localise(footer + drawer + mobileDrawer + searchOverlay));
 
   // a11y: mark the first content landmark so the skip-link lands somewhere.
   // Prefer an existing <main>, otherwise the first <section> after the header.
@@ -684,13 +688,13 @@
         searchResults.innerHTML = '<div class="so-hint">No products matched "' + q + '".</div>';
         return;
       }
-      searchResults.innerHTML = matches.map(function (p) {
+      searchResults.innerHTML = localise(matches.map(function (p) {
         return '<a class="so-row" href="/paints/' + p.slug + '">' +
           '<span class="so-swatch" style="background:' + p.primary + '"></span>' +
           '<span class="so-txt"><strong>' + p.name + '</strong><em>' + (p.cat_label || '') + '</em></span>' +
           useIcon('arrow-up-right', 'so-arr', 18) +
         '</a>';
-      }).join('');
+      }).join(''));
     }
     function openSearch() {
       if (!searchOv) return;

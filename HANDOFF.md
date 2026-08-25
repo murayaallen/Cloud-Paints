@@ -103,6 +103,23 @@ a result actually shows.
 
 The scripts are in `build/` and re-runnable.
 
+**Portable paths.** The site no longer assumes it is mounted at the domain
+root. HTML uses relative paths, resolved per depth — a bare path at the root,
+`../` under `paints/`. Anything built in JavaScript, where one string is
+inserted at both depths, goes through `window.cpUrl` / `window.cpLocalise`
+from `js/base.js`, which reads the mount point off its own script URL.
+
+This came out of a real failure: the GitHub Pages build lost every logo and
+photograph while the files sat there answering 200, because a project site
+serves from `/<repo>/` and every root-relative path missed by exactly that
+prefix. `node build/serve.mjs 8323 Cloud-Paints` reproduces that shape, and
+the site is now verified at both.
+
+It also found the Datasheet button: the catalogue stores
+`datasheets/<slug>.pdf`, which resolved to `/paints/datasheets/...` on the
+new product URLs. That button led nowhere on all twelve products that have a
+datasheet, and nothing but requesting every link would have caught it.
+
 **Left alone on purpose**
 
 - The 2.9-second opening loader. It is the Largest Contentful Paint and Google

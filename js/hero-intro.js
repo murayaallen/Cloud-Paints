@@ -69,7 +69,7 @@
       el.innerHTML =
         '<span class="lp-intro-pool"></span>' +
         '<span class="lp-intro-ring"></span>' +
-        '<img src="/images/buckets/intro/' + p.s + '.webp" alt="">';
+        '<img src="images/buckets/intro/' + p.s + '.webp" alt="">';
       layer.appendChild(el);
       return el;
     });
@@ -177,7 +177,7 @@
     RANGE.forEach(function (p) {
       var im = new Image();
       im.onload = im.onerror = function () { if (--pending === 0) go(); };
-      im.src = '/images/buckets/intro/' + p.s + '.webp';
+      im.src = 'images/buckets/intro/' + p.s + '.webp';
     });
     setTimeout(go, 600);   // do not wait on a slow connection
   }

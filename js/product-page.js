@@ -226,7 +226,9 @@
       // four have no photograph at all — the old guess-then-fall-back chain
       // fired up to two 404s on those pages before landing on the panel it
       // could have drawn immediately.
+      var toUrl = window.cpUrl || function (x) { return x; };
       var art = (window.CLOUD_ART && window.CLOUD_ART[p.slug]) || '';
+      if (art) art = toUrl(art);
       function typographicPanel() {
         img.style.display = 'none';
         var wrap = img.closest('.pd-stage');
@@ -285,9 +287,14 @@
     // Download datasheet — link to PDF if present, else hide
     var sheet = document.getElementById('pdSheet');
     if (sheet) {
+      // The catalogue stores "datasheets/<slug>.pdf", a path from the site
+      // root. This page is served one level down at /paints/<slug>, where a
+      // relative path would resolve to /paints/datasheets/... — so the
+      // Datasheet button on all twelve products that have one led nowhere.
+      var toUrl3 = window.cpUrl || function (x) { return x; };
       var sheetUrl = p.datasheet || p.datasheet_url;
       if (sheetUrl) {
-        sheet.href = sheetUrl;
+        sheet.href = toUrl3(sheetUrl);
         sheet.setAttribute('target', '_blank');
       } else {
         sheet.style.display = 'none';
@@ -328,7 +335,8 @@
       // (AI brief section 2). Files land at
       // images/products/applied/<slug>-applied.jpg; until a file
       // exists the figure removes itself (onerror wired below).
-      var appliedSrc = p.applied_image || ('/images/products/applied/' + p.slug + '-applied.jpg');
+      var toUrl2 = window.cpUrl || function (x) { return x; };
+      var appliedSrc = toUrl2(p.applied_image || ('images/products/applied/' + p.slug + '-applied.jpg'));
       descHtml += '<figure class="pd-applied">' +
         '<img src="' + appliedSrc + '" alt="' + p.name + ' applied on a real surface" width="1200" height="800" loading="lazy">' +
         '<figcaption>' + p.name + ' · seen where it works</figcaption>' +
@@ -545,7 +553,7 @@
     pool = pool.slice(0, 3);
     grid.innerHTML = pool.map(function (q) {
       return (
-        '<a href="/paints/' + q.slug + '" class="product-card ' + q.brandClass + '">' +
+        '<a href="' + (window.cpUrl ? window.cpUrl('paints/' + q.slug) : '/paints/' + q.slug) + '" class="product-card ' + q.brandClass + '">' +
           '<div class="product-thumb">' +
             window.bucketCardHtml(q) +
             '<span class="floating-chip">' + q.cat_label + '</span>' +

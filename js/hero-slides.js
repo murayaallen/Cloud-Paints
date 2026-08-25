@@ -30,8 +30,8 @@
     // 1 — Weatherguard (exterior emulsion) ↔ modern villa exterior
     {
       type:  'bucket',
-      src:   '/images/buckets/hero/weatherguard.png',
-      bg:    '/images/inspiration/inspiration-villa-cream-charcoal.jpg',
+      src:   'images/buckets/hero/weatherguard.png',
+      bg:    'images/inspiration/inspiration-villa-cream-charcoal.jpg',
       color: '#d92843',
       name:  'Weatherguard',
       cat:   'Exterior wall paint',
@@ -39,8 +39,8 @@
     // 2 — Silk Vinyl (interior premium emulsion) ↔ warm interior bedroom
     {
       type:  'bucket',
-      src:   '/images/buckets/hero/silk-vinyl.png',
-      bg:    '/images/inspiration/inspiration-clay-bedroom.jpg',
+      src:   'images/buckets/hero/silk-vinyl.png',
+      bg:    'images/inspiration/inspiration-clay-bedroom.jpg',
       color: '#9b2ca8',
       name:  'Silk Vinyl',
       cat:   'Interior wall paint',
@@ -48,8 +48,8 @@
     // 3 — Rocketex (textured exterior) ↔ apartment block exterior
     {
       type:  'bucket',
-      src:   '/images/buckets/hero/rocketex.png',
-      bg:    '/images/inspiration/inspiration-apartments-sage.jpg',
+      src:   'images/buckets/hero/rocketex.png',
+      bg:    'images/inspiration/inspiration-apartments-sage.jpg',
       color: '#1f4088',
       name:  'Rocketex Wallmaster',
       cat:   'Textured exterior',
@@ -59,9 +59,9 @@
     // exactly what SuperMatt sells, so the finish itself is the subject.
     {
       type:  'bucket',
-      src:   '/images/buckets/hero/supermatt.png',
-      bg:    '/images/products/applied/supermatt-applied.jpg',
-      bgMobile: '/images/products/applied/supermatt-applied-portrait.jpg',
+      src:   'images/buckets/hero/supermatt.png',
+      bg:    'images/products/applied/supermatt-applied.jpg',
+      bgMobile: 'images/products/applied/supermatt-applied-portrait.jpg',
       color: '#7f95a3',
       name:  'SuperMatt Emulsion',
       cat:   'Ceilings & walls',
@@ -71,9 +71,9 @@
     // hallway, where the emulsion walls dominated the frame.
     {
       type:  'bucket',
-      src:   '/images/buckets/hero/gloss-enamel.png',
-      bg:    '/images/products/applied/gloss-enamel-applied.jpg',
-      bgMobile: '/images/products/applied/gloss-enamel-applied-portrait.jpg',
+      src:   'images/buckets/hero/gloss-enamel.png',
+      bg:    'images/products/applied/gloss-enamel-applied.jpg',
+      bgMobile: 'images/products/applied/gloss-enamel-applied-portrait.jpg',
       color: '#5a7183',
       name:  'Gloss Enamel',
       cat:   'Wood & metal',
@@ -83,8 +83,8 @@
     // are the subject.
     {
       type:  'bucket',
-      src:   '/images/buckets/hero/iris-economy.png',
-      bg:    '/images/products/applied/iris-economy-applied.jpg',
+      src:   'images/buckets/hero/iris-economy.png',
+      bg:    'images/products/applied/iris-economy-applied.jpg',
       color: '#b57a2b',
       name:  'Iris Plastic Emulsion',
       cat:   'Interior wall paint',
@@ -92,8 +92,8 @@
     // 7 — Weatherguard pairs again ↔ a real Cloud Paints project
     {
       type:  'bucket',
-      src:   '/images/buckets/hero/weatherguard.png',
-      bg:    '/images/projects/pazuri-villa.jpg',
+      src:   'images/buckets/hero/weatherguard.png',
+      bg:    'images/projects/pazuri-villa.jpg',
       color: '#c4870a',
       name:  'Weatherguard · Pazuri Villa',
       label: 'Weatherguard',
@@ -104,8 +104,8 @@
     // Silk Vinyl scene (was previously mis-paired with Gloss Enamel).
     {
       type:  'bucket',
-      src:   '/images/buckets/hero/silk-vinyl.png',
-      bg:    '/images/inspiration/inspiration-coastal-bedroom.jpg',
+      src:   'images/buckets/hero/silk-vinyl.png',
+      bg:    'images/inspiration/inspiration-coastal-bedroom.jpg',
       color: '#5d8aa8',
       name:  'Silk Vinyl',
       cat:   'Interior wall paint',
@@ -115,8 +115,8 @@
     // plane is the product claim made visible.
     {
       type:  'bucket',
-      src:   '/images/buckets/hero/vinyl-matt.png',
-      bg:    '/images/products/applied/vinyl-matt-applied.jpg',
+      src:   'images/buckets/hero/vinyl-matt.png',
+      bg:    'images/products/applied/vinyl-matt-applied.jpg',
       color: '#6b7b8c',
       name:  'Vinyl Matt',
       cat:   'Interior & exterior',
@@ -126,9 +126,9 @@
     // the subject rather than a background note.
     {
       type:  'bucket',
-      src:   '/images/buckets/hero/clear-varnish.png',
-      bg:    '/images/products/applied/clear-varnish-applied.jpg',
-      bgMobile: '/images/products/applied/clear-varnish-applied-portrait.jpg',
+      src:   'images/buckets/hero/clear-varnish.png',
+      bg:    'images/products/applied/clear-varnish-applied.jpg',
+      bgMobile: 'images/products/applied/clear-varnish-applied-portrait.jpg',
       color: '#c4870a',
       name:  'Clear Varnish',
       cat:   'Wood varnish',
@@ -136,8 +136,8 @@
     // 11 — Gloss Enamel pairs again ↔ mist bathroom (gloss trim suits)
     {
       type:  'bucket',
-      src:   '/images/buckets/hero/gloss-enamel.png',
-      bg:    '/images/inspiration/inspiration-mist-bathroom.jpg',
+      src:   'images/buckets/hero/gloss-enamel.png',
+      bg:    'images/inspiration/inspiration-mist-bathroom.jpg',
       color: '#5d8aa8',
       name:  'Gloss Enamel',
       cat:   'Wood & metal',
@@ -147,8 +147,8 @@
     // that didn't show the product at all)
     {
       type:  'bucket',
-      src:   '/images/buckets/hero/road-marking.png',
-      bg:    '/images/products/applied/road-marking-applied.jpg',
+      src:   'images/buckets/hero/road-marking.png',
+      bg:    'images/products/applied/road-marking-applied.jpg',
       color: '#e8a317',
       name:  'Road Marking Paint',
       cat:   'Road & line marking',
@@ -160,9 +160,9 @@
     // in the rotation.
     {
       type:  'bucket',
-      src:   '/images/buckets/hero/weatherguard.png',
-      bg:    '/images/products/applied/weatherguard-applied.jpg',
-      bgMobile: '/images/products/applied/weatherguard-applied-portrait.jpg',
+      src:   'images/buckets/hero/weatherguard.png',
+      bg:    'images/products/applied/weatherguard-applied.jpg',
+      bgMobile: 'images/products/applied/weatherguard-applied-portrait.jpg',
       color: '#2f5d40',
       name:  'Weatherguard · Green exterior',
       label: 'Weatherguard',
@@ -173,8 +173,8 @@
     // product lost its only slide, so it gets this one back.
     {
       type:  'bucket',
-      src:   '/images/buckets/hero/roof-paint.png',
-      bg:    '/images/projects/green-roof-villa.jpg',
+      src:   'images/buckets/hero/roof-paint.png',
+      bg:    'images/projects/green-roof-villa.jpg',
       color: '#1f7a4d',
       name:  'Roof Paint',
       cat:   'Roofs & tiles',

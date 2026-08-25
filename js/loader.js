@@ -74,7 +74,7 @@
         '</svg>' +
       '</div>' +
       '<div class="cp-stage">' +
-        '<img class="cp-mark" src="/images/logo-mark.png" alt="Cloud Paints" width="1140" height="968">' +
+        '<img class="cp-mark" src="' + (window.cpUrl ? window.cpUrl('images/logo-mark.png') : '/images/logo-mark.png') + '" alt="Cloud Paints" width="1140" height="968">' +
         '<div class="cp-wordmark" aria-label="Cloud Paints">' + wordmarkHtml(WORDMARK) + '</div>' +
         '<div class="cp-progress"><i></i></div>' +
       '</div>' +

@@ -83,7 +83,7 @@
 
   function cardHtml(p, i) {
     return (
-      '<a href="/paints/' + p.slug + '" ' +
+      '<a href="' + (window.cpUrl ? window.cpUrl('paints/' + p.slug) : '/paints/' + p.slug) + '" ' +
          'class="product-card ' + p.brandClass + '" ' +
          'data-cat="' + p.cat + '" ' +
          'data-slug="' + p.slug + '" ' +

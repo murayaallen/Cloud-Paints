@@ -21,6 +21,19 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const PORT = Number(process.argv[2]) || 8322;
 
+/* Serve the site from a subdirectory, the way a GitHub Pages project site
+   does: `node build/serve.mjs 8323 /Cloud-Paints`. Production is the domain
+   root, but the site has to survive being mounted anywhere, and the only
+   way to know it does is to serve it that way. */
+const MOUNT = (() => {
+  // Accept "Cloud-Paints" or "/Cloud-Paints". A Git Bash shell rewrites a
+  // bare leading slash into a Windows path before Node ever sees it, so the
+  // slash-less form is the one that survives every shell.
+  const raw = (process.argv[3] || '').trim().replace(/^[A-Za-z]:[\/].*[\/]/, '');
+  const clean = raw.replace(/^\/+|\/+$/g, '');
+  return clean ? '/' + clean : '';
+})();
+
 const TYPES = {
   '.html': 'text/html; charset=utf-8',
   '.css': 'text/css; charset=utf-8',
@@ -59,6 +72,7 @@ const send = (res, code, body, headers = {}) => {
   res.end(body);
 };
 const redirect = (res, to) => send(res, 301, '', { Location: to, 'Content-Type': 'text/plain' });
+const mounted = p => (MOUNT ? MOUNT + p : p);
 
 const serveFile = (res, file, code = 200) => {
   const ext = path.extname(file).toLowerCase();
@@ -73,6 +87,15 @@ http.createServer((req, res) => {
   let [pathname, query = ''] = req.url.split('?');
   try { pathname = decodeURIComponent(pathname); } catch { /* leave as-is */ }
 
+  if (MOUNT) {
+    if (pathname === MOUNT) return redirect(res, MOUNT + '/');
+    if (!pathname.startsWith(MOUNT + '/')) {
+      return send(res, 404, `Not found. The site is mounted at ${MOUNT}/`,
+        { 'Content-Type': 'text/plain' });
+    }
+    pathname = pathname.slice(MOUNT.length) || '/';
+  }
+
   // .htaccess rule: never serve the workshop
   if (BLOCKED_DIR.test(pathname) || BLOCKED_EXT.test(pathname)) {
     return send(res, 403, 'Forbidden', { 'Content-Type': 'text/plain' });
@@ -81,12 +104,12 @@ http.createServer((req, res) => {
   // .htaccess rule 2 — old product URLs
   if (pathname === '/product.html') {
     const m = query.match(/(?:^|&)(?:p|slug)=([a-z0-9-]+)(?:&|$)/);
-    return redirect(res, m ? `/paints/${m[1]}` : '/products');
+    return redirect(res, mounted(m ? `/paints/${m[1]}` : '/products'));
   }
 
   // .htaccess rule 3 — retire the .html extension
   if (pathname.endsWith('.html') && pathname !== '/404.html') {
-    return redirect(res, pathname.slice(0, -5) + (query ? '?' + query : ''));
+    return redirect(res, mounted(pathname.slice(0, -5)) + (query ? '?' + query : ''));
   }
 
   if (pathname === '/') pathname = '/index.html';
@@ -103,6 +126,7 @@ http.createServer((req, res) => {
   return send(res, 404, 'Not found', { 'Content-Type': 'text/plain' });
 }).listen(PORT, '127.0.0.1', () => {
   console.log(`Cloud Paints — serving ${ROOT}`);
-  console.log(`  http://127.0.0.1:${PORT}/`);
+  console.log(`  http://127.0.0.1:${PORT}${MOUNT}/`);
+  if (MOUNT) console.log(`  mounted at ${MOUNT} — the GitHub Pages shape`);
   console.log(`  clean URLs, 301s and the production CSP are all in force here.`);
 });
