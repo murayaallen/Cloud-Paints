@@ -10,3 +10,10 @@ desktop.ini
 *.swp
 *.swo
 Finishes/
+
+# Client package — generated output.
+# Regenerates with: node build/build.mjs && node build/render.mjs
+# The files themselves still travel with a folder copy; they are simply not
+# versioned, because 76MB of PDFs would weigh down every clone for ever.
+client-package/html/
+client-package/pdf/

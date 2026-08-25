@@ -1,0 +1,394 @@
+/* ==========================================================================
+   CLOUD PAINTS — Print design system
+   Cloudsent Decor Ltd · Nairobi
+   --------------------------------------------------------------------------
+   Shared by every document in the client package: posters, fliers,
+   tri-fold brochures and the price list.
+
+   Print notes that drove the decisions here:
+   · The ground is WHITE, not the website's cream. A full-bleed tint on
+     every page costs ink, shifts unpredictably on uncoated stock, and
+     gains nothing at reading distance. Cream appears only as panel fill.
+   · No box-shadows. Chromium rasterises them and cheap presses band the
+     result into visible steps. Hairline rules do the same job cleanly.
+   · Every measurement is mm or pt. Nothing is in px, so the artwork is
+     resolution-independent and a printer can trust the numbers.
+   · print-color-adjust: exact — without it Chromium drops background
+     fills from the PDF and the colour bars disappear.
+   ========================================================================== */
+
+@import url("fonts.css");
+
+/* ---------- 1. Tokens ---------------------------------------------------- */
+:root {
+  /* Brand — lifted from css/main.css so print and web stay in step */
+  --blue:      #1e3a8a;
+  --blue-deep: #0f1f5c;
+  --red:       #8b1e2c;
+  --red-glow:  #d92843;
+  --gold:      #e8a317;
+
+  --ink:    #12142b;   /* body text — near-black, warmed toward navy   */
+  --ink-2:  #4a4d68;   /* secondary text                               */
+  --ink-3:  #7a7d95;   /* captions, legal                              */
+
+  --paper:  #ffffff;
+  --cream:  #f8f4ea;   /* panel fill — the website's warm ground       */
+  --cream-2:#f1ead9;   /* second-level fill, table banding             */
+  --rule:   #d9d4c6;   /* hairline                                     */
+  --rule-2: #ebe6da;
+
+  /* Accent — every template overrides these per product/category */
+  --accent:      var(--blue);
+  --accent-soft: #eef1f9;
+
+  --serif: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --sans:  'Inter', 'Segoe UI', Arial, sans-serif;
+}
+
+/* ---------- 2. Reset ----------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+}
+
+body {
+  font-family: var(--sans);
+  color: var(--ink);
+  background: #55565e;          /* screen-only surround; never prints */
+  font-feature-settings: 'kern' 1, 'liga' 1, 'tnum' 0;
+  text-rendering: geometricPrecision;
+}
+
+img { display: block; max-width: 100%; }
+ul  { list-style: none; }
+em  { font-style: italic; }
+
+/* ---------- 3. The sheet ------------------------------------------------- */
+/* One .sheet = one printed side. Templates set --sheet-w / --sheet-h and a
+   matching @page size. On screen the sheets stack with a gap so the whole
+   document can be proofed by scrolling; in print each is its own page.     */
+
+.sheet {
+  position: relative;
+  width:  var(--sheet-w);
+  height: var(--sheet-h);
+  background: var(--paper);
+  overflow: hidden;
+  margin: 0 auto;
+  page-break-after: always;
+  break-after: page;
+}
+.sheet:last-child { page-break-after: auto; break-after: auto; }
+
+@media screen {
+  body { padding: 12mm 0; }
+  .sheet { margin-bottom: 12mm; box-shadow: 0 4mm 12mm rgba(0,0,0,.45); }
+}
+
+/* Inner safe area. Nothing that must survive trimming goes outside this. */
+.pad {
+  position: absolute;
+  inset: var(--pad, 13mm);
+}
+
+/* ---------- 4. Masthead -------------------------------------------------- */
+.mast {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 6mm;
+}
+.mast-logo { width: var(--logo-w, 26mm); height: auto; }
+
+.mast-right {
+  display: flex;
+  align-items: center;
+  gap: 4mm;
+}
+
+/* Category tag — the one piece of colour in the masthead */
+.tag {
+  display: inline-block;
+  font: 600 6.6pt/1 var(--sans);
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: #fff;
+  background: var(--accent);
+  padding: 2.1mm 3.4mm 1.9mm;
+  border-radius: 1mm;
+  white-space: nowrap;
+}
+.tag--ghost {
+  color: var(--accent);
+  background: none;
+  border: .3mm solid var(--accent);
+}
+.tag--grade {
+  color: var(--ink-2);
+  background: var(--cream-2);
+}
+
+.kebs { width: 11mm; height: auto; }
+.kebs--sm { width: 8.5mm; }
+
+/* ---------- 5. Type ------------------------------------------------------ */
+.eyebrow {
+  font: 600 7pt/1.2 var(--sans);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.eyebrow--muted { color: var(--ink-3); }
+
+.h-xl { font: 400 40pt/0.98 var(--serif); letter-spacing: -.015em; color: var(--ink); }
+.h-lg { font: 400 27pt/1.03 var(--serif); letter-spacing: -.012em; color: var(--ink); }
+.h-md { font: 400 16pt/1.12 var(--serif); letter-spacing: -.008em; color: var(--ink); }
+.h-sm { font: 600 10pt/1.2  var(--sans);  letter-spacing: -.005em; color: var(--ink); }
+
+/* Section label: small caps rule that opens a block of information */
+.slab {
+  font: 700 7pt/1 var(--sans);
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  padding-bottom: 1.6mm;
+  margin-bottom: 2.6mm;
+  border-bottom: .3mm solid var(--accent);
+}
+.slab--ink { color: var(--ink); border-bottom-color: var(--rule); }
+
+.lede { font: 400 10.5pt/1.5 var(--sans); color: var(--ink-2); }
+.body { font: 400 9pt/1.52   var(--sans); color: var(--ink-2); }
+.body-sm { font: 400 8pt/1.46 var(--sans); color: var(--ink-2); }
+.fine { font: 400 6.6pt/1.4  var(--sans); color: var(--ink-3); }
+
+.tagline {
+  font: 400 italic 12pt/1.3 var(--serif);
+  color: var(--accent);
+}
+
+/* ---------- 6. Lists ----------------------------------------------------- */
+/* Ticks rather than bullets — reads as a claim list, not a shopping list. */
+.ticks li {
+  position: relative;
+  padding-left: 4.6mm;
+  margin-bottom: 1.9mm;
+  font: 400 8.4pt/1.38 var(--sans);
+  color: var(--ink-2);
+  break-inside: avoid;
+}
+.ticks li::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 1.15mm;
+  width: 2.9mm; height: 1.5mm;
+  border-left: .45mm solid var(--accent);
+  border-bottom: .45mm solid var(--accent);
+  transform: rotate(-45deg);
+}
+.ticks--tight li { margin-bottom: 1.3mm; font-size: 7.8pt; }
+
+.dots li {
+  position: relative;
+  padding-left: 3.6mm;
+  margin-bottom: 1.5mm;
+  font: 400 8.2pt/1.38 var(--sans);
+  color: var(--ink-2);
+}
+.dots li::before {
+  content: '';
+  position: absolute;
+  left: .5mm; top: 1.5mm;
+  width: 1.3mm; height: 1.3mm;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+/* ---------- 7. Spec table ------------------------------------------------ */
+/* Label left, value right, hairline between. The densest, most-scanned
+   block on any datasheet — it earns tabular figures.                      */
+.specs { width: 100%; border-collapse: collapse; }
+.specs tr { border-bottom: .25mm solid var(--rule-2); }
+.specs tr:last-child { border-bottom: 0; }
+/* baseline, not top: the label is set smaller than the value, and aligning
+   their first baselines is what makes the column read as a single line   */
+.specs th,
+.specs td { padding: 1.7mm 0; vertical-align: baseline; text-align: left; }
+.specs th {
+  font: 600 7.2pt/1.3 var(--sans);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  white-space: nowrap;
+  padding-right: 3mm;
+  width: 30%;
+}
+.specs td {
+  font: 500 8.2pt/1.35 var(--sans);
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- 8. Panels ---------------------------------------------------- */
+.panel {
+  background: var(--cream);
+  border-radius: 1.6mm;
+  padding: 5mm;
+}
+.panel--accent {
+  background: var(--accent-soft);
+}
+.panel--outline {
+  background: none;
+  border: .3mm solid var(--rule);
+}
+
+/* Pack sizes — the answer to "what can I buy it in" */
+.packs { display: flex; gap: 1.6mm; flex-wrap: wrap; }
+.pack {
+  font: 600 8pt/1 var(--sans);
+  letter-spacing: .02em;
+  color: var(--ink);
+  background: var(--paper);
+  border: .3mm solid var(--rule);
+  border-radius: 1mm;
+  padding: 2.2mm 3mm 2mm;
+  font-variant-numeric: tabular-nums;
+}
+.pack--solid { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+/* ---------- 9. Colour bar ------------------------------------------------ */
+/* A single band of product colour at the head of the sheet. This is the
+   whole of the decoration budget — everything else stays black on white. */
+.band {
+  position: absolute;
+  left: 0; right: 0; top: 0;
+  height: var(--band-h, 6mm);
+  background: var(--accent);
+}
+.band-foot {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 2mm;
+  background: var(--accent);
+}
+
+/* ---------- 10. Contact footer ------------------------------------------ */
+.foot {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  background: var(--blue-deep);
+  color: #fff;
+  padding: 4.4mm var(--pad, 13mm);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5mm;
+}
+.foot-items { display: flex; gap: 6mm; flex-wrap: wrap; }
+.foot-item { font: 400 7.4pt/1.35 var(--sans); color: rgba(255,255,255,.82); }
+.foot-item strong {
+  display: block;
+  font: 600 6.2pt/1 var(--sans);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.1mm;
+}
+.foot-brand {
+  font: 600 7.6pt/1.3 var(--sans);
+  color: #fff;
+  text-align: right;
+  white-space: nowrap;
+}
+.foot-brand span { display: block; color: var(--gold); font-size: 6.6pt; letter-spacing: .1em; text-transform: uppercase; }
+
+/* Two-line variant for A5 and anything else too narrow for three columns.
+   Fixed line count, so the band's height is predictable and the page above
+   it can reserve exactly the right space. */
+.foot--slim { padding: 3.4mm var(--pad, 11mm); align-items: flex-end; }
+.foot-lines div {
+  font: 400 6.9pt/1.5 var(--sans);
+  color: rgba(255,255,255,.85);
+  white-space: nowrap;
+}
+.foot--slim .foot-brand { font-size: 7pt; }
+.foot--slim .foot-brand span { font-size: 6pt; }
+
+/* ---------- 11. Product cards (poster grid, brochure range) -------------- */
+.pcard {
+  border: .3mm solid var(--rule-2);
+  border-radius: 1.6mm;
+  padding: 3.4mm 3.4mm 3mm;
+  display: flex;
+  flex-direction: column;
+  background: var(--paper);
+  break-inside: avoid;
+}
+.pcard-top { border-top: 1.1mm solid var(--accent); }
+.pcard-img {
+  height: var(--pcard-img-h, 30mm);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  margin-bottom: 2.6mm;
+}
+.pcard-img img { max-height: 100%; width: auto; object-fit: contain; }
+.pcard-name {
+  font: 400 10pt/1.1 var(--serif);
+  color: var(--ink);
+  margin-bottom: 1mm;
+}
+.pcard-cat {
+  font: 600 5.9pt/1.25 var(--sans);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.8mm;
+}
+.pcard-note {
+  font: 400 7pt/1.35 var(--sans);
+  color: var(--ink-2);
+  margin-bottom: 2.4mm;
+  flex: 1;
+}
+.pcard-sizes {
+  font: 500 6.6pt/1 var(--sans);
+  color: var(--ink-3);
+  letter-spacing: .05em;
+  font-variant-numeric: tabular-nums;
+  padding-top: 2mm;
+  border-top: .25mm solid var(--rule-2);
+}
+
+/* ---------- 12. Utilities ------------------------------------------------ */
+.row { display: flex; }
+.col { display: flex; flex-direction: column; }
+.grow { flex: 1; }
+.center { text-align: center; }
+.rule { height: .3mm; background: var(--rule); border: 0; }
+.rule--accent { height: .8mm; background: var(--accent); }
+
+.mt-1 { margin-top: 2mm; }  .mt-2 { margin-top: 4mm; }
+.mt-3 { margin-top: 6mm; }  .mt-4 { margin-top: 9mm; }
+.mb-1 { margin-bottom: 2mm; } .mb-2 { margin-bottom: 4mm; }
+.mb-3 { margin-bottom: 6mm; } .mb-4 { margin-bottom: 9mm; }
+
+/* ---------- 13. Crop marks (print/bleed builds only) --------------------- */
+/* Added when the sheet carries 3mm bleed. Marks sit in the bleed area,
+   offset 1mm from the trim so they never print inside the finished piece. */
+.crop { position: absolute; width: 4mm; height: 4mm; }
+.crop::before, .crop::after { content: ''; position: absolute; background: #000; }
+.crop::before { width: 4mm; height: .2mm; top: 0; }
+.crop::after  { width: .2mm; height: 4mm; left: 0; }
+.crop-tl { top: 0; left: 0; }
+.crop-tr { top: 0; right: 0; }
+.crop-tr::after { left: auto; right: 0; }
+.crop-bl { bottom: 0; left: 0; }
+.crop-bl::before { top: auto; bottom: 0; }
+.crop-br { bottom: 0; right: 0; }
+.crop-br::before { top: auto; bottom: 0; }
+.crop-br::after  { left: auto; right: 0; }
