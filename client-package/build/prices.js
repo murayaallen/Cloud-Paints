@@ -11,14 +11,18 @@
 //        '20L': null       ->  prints  —
 //   3. Leave it as 0 if the pack exists but the price is not yet set.
 //        '20L': 0          ->  prints  a blank rule to write on
-//   4. Set EFFECTIVE_FROM to the date the list takes effect.
-//   5. Re-run:  node build/build.mjs  &&  node build/render.mjs
+//   4. Re-run:  node build/build.mjs  &&  node build/render.mjs
 //
 // Sizes must match the product's own size list in js/products-data.js.
 // Anything listed here that the product does not stock is ignored.
+//
+// The list carries no effective date and no page numbers, by request: it is
+// reprinted whenever the numbers move, so a date only ages it on the counter.
+//
+// Textured and decorative finishes are NOT in this list. They are sold by
+// weight, applied by hand and quoted per wall, so they are handled on the
+// decorative-finishes brochure and by the trade desk instead.
 // ============================================================
-
-export const EFFECTIVE_FROM = '';   // e.g. '01.09.2026' — blank prints a fill-in rule
 
 export const CURRENCY = 'KSHS';
 
@@ -58,22 +62,15 @@ export const PRICES = {
   'white-spirit':        { '1L': 0, '5L': 0, '20L': 0 },
   'turpentine':          { '1L': 0, '5L': 0, '20L': 0 },
   'standard-thinner':    { '1L': 0, '4L': 0, '20L': 0 },
-
-  /* ---- Decorative & textured finishes ---- */
-  'cloud-stone-texture':      { '20kg': 0, '25kg': 0 },
-  'cloud-rockshield-exterior':{ '20kg': 0, '25kg': 0 },
-  'cloud-desert-stone':       { '20kg': 0, '25kg': 0 },
-  'cloud-rustic-texture':     { '10kg': 0, '20kg': 0 },
-  'cloud-concrete-finish':    { '5kg': 0, '20kg': 0 },
-  'cloud-sand-finish':        { '4L': 0, '20L': 0 },
-  'cloud-velvet-texture':     { '4L': 0, '20L': 0 },
-  'cloud-metallic-illusion':  { '1L': 0, '4L': 0 },
-  'cloud-venetian-marble':    { '1L': 0, '4L': 0 },
-  'cloud-luxury-stucco':      { '1L': 0, '4L': 0 },
 };
 
 // Order and grouping of the printed price list. Each group becomes a
 // headed section. Slugs not listed here simply do not print.
+//
+// Within a section the builder floats the photographed tins to the top and
+// lets the unphotographed lines settle at the foot, so the picture column
+// never breaks up mid-section. Order inside each of those two blocks is
+// whatever you write here.
 export const PRICE_GROUPS = [
   { title: 'Interior application',
     slugs: ['silk-vinyl', 'vinyl-matt', 'iris-economy'] },
@@ -92,10 +89,4 @@ export const PRICE_GROUPS = [
 
   { title: 'Solvents & thinners',
     slugs: ['white-spirit', 'turpentine', 'standard-thinner'] },
-
-  { title: 'Textured & decorative finishes',
-    slugs: ['cloud-stone-texture', 'cloud-rockshield-exterior', 'cloud-desert-stone',
-            'cloud-rustic-texture', 'cloud-concrete-finish', 'cloud-sand-finish',
-            'cloud-velvet-texture', 'cloud-metallic-illusion',
-            'cloud-venetian-marble', 'cloud-luxury-stucco'] },
 ];

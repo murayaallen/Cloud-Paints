@@ -19,9 +19,9 @@ whole package follows.
 | `pdf/2-product-fliers-A4/` | One product per sheet, full technical detail | A4 | 1 | 22 |
 | `pdf/3-product-fliers-A5/` | The hand-out version — same product, the essentials | A5 | 1 | 22 |
 | `pdf/4-brochures/` | Tri-fold brochures, printed both sides | A4 landscape | 2 | 5 |
-| `pdf/5-price-list/` | Trade and retail price list | A4 | 3 | 1 |
+| `pdf/5-price-list/` | Trade and retail price list | A4 | 2 | 1 |
 
-**56 documents, 65 pages, 75 MB.** All RGB. Every glyph is embedded as a
+**56 documents, 64 pages, 75 MB.** All RGB. Every glyph is embedded as a
 vector outline, so nothing depends on a font being installed at the printer.
 Median document is 1.1 MB — small enough to send on WhatsApp or email.
 
@@ -102,6 +102,7 @@ break in it, so the alternative would be shortening the label copy itself.
 | A4 flier | 210 × 297 mm | 150–170 gsm gloss art | Optional gloss lamination |
 | A5 flier | 148 × 210 mm | 150 gsm gloss art | None — these are giveaways |
 | Tri-fold brochure | 297 × 210 mm folded to 99 × 210 mm | 150 gsm silk | Matt lamination, then fold |
+| Range flier | A3 420 × 297 mm → folds to A4 · **A4 297 × 210 mm → folds to A5** | 150 gsm silk | Matt lamination, then fold |
 | Price list | 210 × 297 mm | 100–120 gsm bond | None — it gets written on |
 
 ### Duplex and folding — the brochures
@@ -182,8 +183,6 @@ are decided. Nothing in this package invents a price.
 To fill them in, edit **one file**: `build/prices.js`
 
 ```js
-export const EFFECTIVE_FROM = '01.09.2026';   // prints in the masthead
-
 export const PRICES = {
   'silk-vinyl': { '1L': 800, '4L': 2800, '20L': 14000 },
   //                    ^ numbers only — no commas, no "KSHS"
@@ -195,6 +194,22 @@ export const PRICES = {
 
 Then re-generate (see below). `PRICE_GROUPS` in the same file controls the
 section order and which products appear.
+
+**The list carries no effective date and no page numbers.** It is reprinted
+whenever the numbers move, so a date only ages it on the counter, and page
+numbers are furniture on a two-page document nobody files.
+
+**Textured and decorative finishes are not in the list.** They are sold by
+weight, applied by hand and quoted per wall, so they are handled by the
+decorative-finishes brochure and the trade desk instead. The closing note on
+the last page says so. They are still on the range poster, in the range flier
+and in their own brochure — only the price list drops them.
+
+**Within a section the photographed tins float to the top** and the six lines
+with no print-quality photograph settle at the foot of that section, so the
+picture column never breaks up mid-section. Their cards still print the empty
+picture panel, because a card that stops 19 mm short of its neighbour breaks
+the grid far more visibly than a blank panel does.
 
 ---
 

@@ -16,7 +16,7 @@ import {
   assets, heroImage, thumbImage, appliedImage, isTexture,
   head, tail, mast, foot, footCompact, footLine, accentVars, write, tint, readable,
 } from './lib.mjs';
-import { PRICES, PRICE_GROUPS, EFFECTIVE_FROM, CURRENCY, TRADE_NOTE } from './prices.js';
+import { PRICES, PRICE_GROUPS, CURRENCY, TRADE_NOTE } from './prices.js';
 
 const P = loadProducts();
 const bySlug = Object.fromEntries(P.map(p => [p.slug, p]));
@@ -1206,53 +1206,111 @@ const PRICE_CSS = `
 @page { size: 210mm 297mm; margin: 0; }
 .sheet { --sheet-w:210mm; --sheet-h:297mm; }
 
-.ph { background:var(--blue-deep); color:#fff; padding:11mm 14mm 9mm;
-      display:flex; justify-content:space-between; align-items:center; gap:8mm; }
-.ph h1 { font:400 34pt/1 var(--serif); letter-spacing:-.01em; color:#fff; }
-.ph .eff { font:500 8.4pt/1.4 var(--sans); color:var(--gold); letter-spacing:.06em;
-           text-transform:uppercase; margin-top:3mm; }
-.ph .eff .rule-in { display:inline-block; width:34mm; border-bottom:.35mm solid var(--gold);
-                    margin-left:1mm; vertical-align:-.4mm; }
-.ph img { width:36mm; background:#fff; padding:2.5mm; border-radius:1.5mm; }
+/* ---- The frame -------------------------------------------------------
+   A double keyline — a half-millimetre navy rule with a gold hairline set
+   just inside it — is the cheapest mark of quality available on a press:
+   both colours are already on the sheet, and it needs no lamination, no
+   die and no second pass. Everything on the page lives inside it, so a
+   trim that wanders half a millimetre never makes the layout look
+   crooked. The masthead and the signature bar run the full width of the
+   frame and the gold hairline crosses both, which ties the three together
+   instead of stacking three separate boxes. */
+.pinner { position:absolute; inset:8mm; border:.5mm solid var(--blue-deep);
+          display:flex; flex-direction:column; overflow:hidden; }
+.pinner::after { content:''; position:absolute; inset:1.3mm; z-index:3;
+                 border:.2mm solid var(--gold); pointer-events:none; }
 
-.prh { display:flex; justify-content:space-between; align-items:center;
-       padding:7mm 14mm 4mm; border-bottom:.3mm solid var(--rule); }
-.prh .b { font:600 7.4pt/1 var(--sans); letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3); }
-.prh img { width:24mm; }
+/* ---- Masthead, page one ---------------------------------------------- */
+.ph { height:44mm; flex:none; background:var(--blue-deep); color:#fff;
+      padding:0 9mm; display:flex; justify-content:space-between;
+      align-items:center; gap:8mm; }
+.ph .eyebrow { color:var(--gold); }
+.ph h1 { font:400 33pt/1 var(--serif); letter-spacing:-.015em; color:#fff; margin-top:2.6mm; }
+.ph .cur { display:flex; align-items:center; gap:3mm; margin-top:3.6mm;
+           font:600 6.8pt/1 var(--sans); letter-spacing:.14em;
+           text-transform:uppercase; color:#c8d0e6; }
+.ph .cur::before { content:''; width:12mm; height:.35mm; background:var(--gold); flex:none; }
+.ph-mark { display:flex; align-items:center; gap:4.5mm; flex:none; }
+.ph-mark .lg { width:33mm; background:#fff; padding:2.4mm; border-radius:1.2mm; }
+.ph-mark .kb { width:12.5mm; background:#fff; padding:1.2mm; border-radius:1mm; }
 
-.pbody { padding:7mm 14mm 0; }
+/* ---- Running head, every page after the first ------------------------- */
+.prh { height:18mm; flex:none; display:flex; justify-content:space-between;
+       align-items:center; padding:0 9mm; border-bottom:.3mm solid var(--rule); }
+.prh .b { font:600 7.2pt/1 var(--sans); letter-spacing:.16em;
+          text-transform:uppercase; color:var(--ink-3); }
+.prh img { height:12mm; width:auto; }   /* by height — the 18mm head clips a logo set by width */
 
-.gh { display:flex; align-items:center; gap:4mm; margin:0 0 4mm; }
-.gh .t { font:700 8.4pt/1 var(--sans); letter-spacing:.12em; text-transform:uppercase; color:var(--blue); white-space:nowrap; }
+.pbody { flex:1; min-height:0; overflow:hidden; padding:6mm 9mm 0; }
+
+/* ---- Section heading -------------------------------------------------- */
+.grp { margin-bottom:8mm; }
+.grp:last-child { margin-bottom:0; }
+.gh { display:flex; align-items:center; gap:2.8mm; margin:0 0 5.5mm; }
+.gh .sq { width:1.9mm; height:1.9mm; background:var(--gold); flex:none; }
+.gh .t { font:700 8.4pt/1 var(--sans); letter-spacing:.14em; text-transform:uppercase;
+         color:var(--blue-deep); white-space:nowrap; }
 .gh .ln { flex:1; height:.25mm; background:var(--rule); }
-.gh + .gh, .grp + .grp { margin-top:0; }
-.grp { margin-bottom:7mm; }
 
 .cards { display:grid; grid-template-columns:1fr 1fr; gap:4mm 5mm; }
 
-.pc { border:.3mm solid var(--rule-2); border-radius:1.6mm; overflow:hidden; display:flex; }
-.pc-b { flex:1; min-width:0; }
-.pc-h { background:var(--accent); color:#fff; padding:2.2mm 3mm 2mm;
-        font:600 8pt/1.15 var(--sans); letter-spacing:.005em;
-        display:flex; align-items:center; gap:2mm; }
-.pc-h .n { font-size:6.2pt; opacity:.75; font-variant-numeric:tabular-nums; }
-.pc-sizes { display:flex; }
-.pc-sz { flex:1; padding:2.4mm 3mm 2.8mm; border-right:.25mm solid var(--rule-2); }
+/* ---- One product ------------------------------------------------------
+   Ruled on all four sides and divided between pack sizes. The list ships
+   unpriced, so every cell has to read as a field waiting for a number
+   rather than as something the printer dropped — which is exactly what an
+   open, borderless cell with a blank in it looks like. The writing rule
+   runs the full width of its cell for the same reason: a short rule
+   floating in a wide cell reads as decoration, a full one as a field. */
+.pc { border:.3mm solid var(--rule); border-radius:1.2mm; overflow:hidden;
+      display:flex; min-height:24mm; }
+.pc-b { flex:1; min-width:0; display:flex; flex-direction:column; }
+.pc-h { background:var(--accent); color:#fff; padding:2.9mm 3mm 2.7mm;
+        font:600 8.4pt/1.15 var(--sans); letter-spacing:.005em;
+        display:flex; align-items:baseline; gap:2.2mm; }
+.pc-h .n { font:600 6.2pt/1 var(--sans); color:var(--gold); flex:none;
+           letter-spacing:.06em; font-variant-numeric:tabular-nums; }
+.pc-h .nm { min-width:0; }
+.pc-sizes { display:flex; flex:1; }
+.pc-sz { flex:1; min-width:0; padding:3mm 3mm 2.8mm; border-right:.25mm solid var(--rule-2); }
 .pc-sz:last-child { border-right:0; }
-.pc-sz .s { font:500 7.4pt/1 var(--sans); color:var(--ink-2); font-variant-numeric:tabular-nums; }
-.pc-sz .p { font:600 9pt/1 var(--sans); color:var(--ink); margin-top:1.8mm; font-variant-numeric:tabular-nums; white-space:nowrap; }
-.pc-sz .p small { font-weight:500; font-size:5.8pt; color:var(--ink-3); letter-spacing:.06em; }
+.pc-sz .s { font:600 6.6pt/1 var(--sans); letter-spacing:.1em; text-transform:uppercase;
+            color:var(--ink-2); font-variant-numeric:tabular-nums; }
+.pc-sz .p { font:600 9.5pt/1 var(--sans); color:var(--ink); margin-top:2.3mm;
+            font-variant-numeric:tabular-nums; white-space:nowrap; }
+.pc-sz .p small { font-weight:500; font-size:6pt; color:var(--ink-3); letter-spacing:.06em; }
 .pc-sz .p.na { color:var(--ink-3); font-weight:500; }
-.pc-sz .p.tbc { border-bottom:.3mm solid var(--rule); display:block; width:15mm; height:3.4mm; }
-.pc-img { width:19mm; flex:none; background:var(--cream); display:flex;
-          align-items:center; justify-content:center; padding:2mm; }
-.pc-img img { max-height:26mm; width:auto; max-width:100%; object-fit:contain; }
+.pc-sz .p.tbc { display:block; height:4mm; border-bottom:.3mm solid var(--ink-3); }
 
-.pfoot { padding:0 14mm; }
-.note { background:var(--cream); border-radius:1.6mm; padding:4.5mm 5mm; }
+/* The picture column is drawn whether or not there is a photograph to put
+   in it. Six lines have none, and a card that simply stops 19mm short of
+   its neighbour breaks the grid far more visibly than an empty panel. */
+.pc-img { width:19mm; flex:none; background:var(--cream);
+          border-left:.3mm solid var(--rule-2);
+          display:flex; align-items:center; justify-content:center; padding:2mm; }
+.pc-img img { max-height:19mm; width:auto; max-width:100%; object-fit:contain; }
+.pc-img--none { background:var(--cream-2); }
+
+/* ---- Closing note ----------------------------------------------------- */
+.pnote { margin-top:2mm; background:var(--cream);
+         border:.3mm solid var(--rule); border-top:.9mm solid var(--gold);
+         padding:4.4mm 5mm; }
+.pnote .h { font:700 7pt/1 var(--sans); letter-spacing:.14em; text-transform:uppercase;
+            color:var(--blue-deep); margin-bottom:2.8mm; }
+.pnote p { font:400 7.2pt/1.5 var(--sans); color:var(--ink-2); }
+.pnote p + p { margin-top:1.9mm; }
+.pnote b { color:var(--ink); font-weight:600; }
+
+/* ---- Signature bar, every page ---------------------------------------- */
+/* One line, both halves, on every page. Nowrap because a second line here
+   would be clipped by the frame rather than pushing anything down. */
+.psig { height:11mm; flex:none; background:var(--blue-deep); color:#fff;
+        padding:0 9mm; display:flex; align-items:center;
+        justify-content:space-between; gap:6mm;
+        font:500 6.6pt/1.3 var(--sans); letter-spacing:.04em; white-space:nowrap; }
+.psig .r { color:var(--gold); }
 `;
 
-function priceCards() {
+function priceCards(d) {
   // Build every card once, tagged with the group it belongs to.
   return PRICE_GROUPS.map(g => {
     const rows = g.slugs.map(slug => {
@@ -1261,15 +1319,20 @@ function priceCards() {
       const table = PRICES[slug] || {};
       // Only sizes the product actually stocks, in the catalogue's order.
       const sizes = (p.sizes || []).filter(s => s in table);
-      return { p, sizes, table };
+      return { p, sizes, table, src: thumbImage(p, d) };
     }).filter(Boolean);
-    return { title: g.title, rows };
+    /* Photographed tins first, the rest at the foot of their own section.
+       Scattered through the grid, an empty picture panel reads as artwork
+       that failed to load; collected at the bottom it reads as a deliberate
+       sub-list. Two passes rather than a comparator, so the order written
+       in prices.js survives inside each block. */
+    return { title: g.title,
+             rows: [...rows.filter(r => r.src), ...rows.filter(r => !r.src)] };
   }).filter(g => g.rows.length);
 }
 
-function priceCardHTML(entry, n, d) {
-  const { p, sizes, table } = entry;
-  const src = thumbImage(p, d);
+function priceCardHTML(entry, n) {
+  const { p, sizes, table, src } = entry;
   const cell = s => {
     const v = table[s];
     if (v === null || v === undefined)
@@ -1282,37 +1345,50 @@ function priceCardHTML(entry, n, d) {
   return `
   <div class="pc" style="${accentVars(p.primary)}">
     <div class="pc-b">
-      <div class="pc-h"><span class="n">${String(n).padStart(2, '0')}</span>${esc(p.name.toUpperCase())}</div>
+      <div class="pc-h"><span class="n">${String(n).padStart(2, '0')}</span><span class="nm">${esc(p.name.toUpperCase())}</span></div>
       <div class="pc-sizes">${sizes.map(cell).join('')}</div>
     </div>
-    ${src ? `<div class="pc-img"><img src="${src}" alt=""></div>` : ''}
+    ${src ? `<div class="pc-img"><img src="${src}" alt=""></div>`
+          : `<div class="pc-img pc-img--none"></div>`}
   </div>`;
 }
 
 function priceList() {
   const d = 1;
   const a = assets(d);
-  const groups = priceCards();
+  const groups = priceCards(d);
 
   /* --- pagination -------------------------------------------------------
-     Measured from a proof rather than guessed: a card is 23mm and sits in a
-     4mm gutter, a group heading with its margins costs 9mm, and a group is
-     followed by 7mm. Page 1 gives up 63mm to the masthead; later pages give
-     up 27mm to the running head. The closing note needs 34mm wherever it
-     lands. Packing here rather than letting the browser flow it is what
-     stops a group heading stranding at the foot of a page. */
-  const ROW = 27, HEAD = 9, GAP = 7, NOTE = 34;
-  const cap = i => (i === 0 ? 224 : 260);
+     Measured from the CSS above rather than guessed. Inside the 8mm frame
+     there is 281mm of height; the masthead takes 44 and the running head 18,
+     the signature bar takes 11 on every page, and the body opens with 6mm of
+     air — so a first page has 220mm to fill and every page after it 246mm.
+     A card is 24mm and sits in a 4mm gutter, a section heading with its
+     margin costs 9mm, and one section is separated from the next by 8mm.
+     The closing note needs 40mm wherever it lands.
 
-  const cost = g => HEAD + Math.ceil(g.rows.length / 2) * ROW + GAP;
+     The gap is charged between sections rather than after each one, because
+     the last section on a page has its bottom margin collapsed away — count
+     it and the page loses a card row it had room for.
+
+     Packing here rather than letting the browser flow it is what stops a
+     section heading stranding at the foot of a page, and render.mjs measures
+     every .pbody afterwards, so if these numbers ever drift the build says
+     so rather than clipping in silence. */
+  const ROW = 29, HEAD = 9, GAP = 8, NOTE = 40;
+  const cap = i => (i === 0 ? 220 : 246);
+
+  const cost = g => HEAD + Math.ceil(g.rows.length / 2) * ROW;
 
   const pages = [];
   let page = [], used = 0;
   for (const g of groups) {
-    if (used + cost(g) > cap(pages.length) && page.length) {
-      pages.push(page); page = []; used = 0;
+    const add = cost(g) + (page.length ? GAP : 0);
+    if (page.length && used + add > cap(pages.length)) {
+      pages.push(page); page = [g]; used = cost(g);
+    } else {
+      page.push(g); used += add;
     }
-    page.push(g); used += cost(g);
   }
   if (page.length) pages.push(page);
 
@@ -1323,49 +1399,58 @@ function priceList() {
   const sheets = pages.map((groupsOnPage, i) => {
     const isFirst = i === 0;
     const isLast  = i === pages.length - 1;
+
+    /* No effective date and no page numbers, by request. The list is
+       reprinted whenever the numbers move, so a date only ages it on the
+       counter, and "page 2 of 2" is furniture on a document nobody files. */
     const header = isFirst ? `
       <div class="ph">
         <div>
-          <span class="eyebrow" style="color:var(--gold)">${esc(CO.legal)} · Nairobi</span>
-          <h1 class="mt-1">Price List</h1>
-          <div class="eff">With effect from ${EFFECTIVE_FROM
-            ? esc(EFFECTIVE_FROM) : '<span class="rule-in"></span>'}
-            &nbsp;·&nbsp; ${pages.length} pages</div>
+          <span class="eyebrow">${esc(CO.legal)} · Nairobi</span>
+          <h1>Price List</h1>
+          <div class="cur">All prices in Kenya Shillings</div>
         </div>
-        <img src="${a}/img/brand/logo.png" alt="Cloud Paints">
+        <div class="ph-mark">
+          <img class="kb" src="${a}/img/brand/kebs.png" alt="KEBS Standardisation Mark">
+          <img class="lg" src="${a}/img/brand/logo.png" alt="Cloud Paints">
+        </div>
       </div>` : `
       <div class="prh">
-        <span class="b">Cloud Paints price list · ${EFFECTIVE_FROM ? esc(EFFECTIVE_FROM) : 'with effect from ____________'}
-          &nbsp;·&nbsp; Page ${i + 1} of ${pages.length}</span>
+        <span class="b">Cloud Paints · Price list · Recommended retail</span>
         <img src="${a}/img/brand/logo.png" alt="Cloud Paints">
       </div>`;
 
     const body = groupsOnPage.map(g => `
       <div class="grp">
-        <div class="gh"><span class="t">${esc(g.title)}</span><span class="ln"></span></div>
-        <div class="cards">${g.rows.map(r => priceCardHTML(r, ++n, d)).join('')}</div>
+        <div class="gh"><span class="sq"></span><span class="t">${esc(g.title)}</span><span class="ln"></span></div>
+        <div class="cards">${g.rows.map(r => priceCardHTML(r, ++n)).join('')}</div>
       </div>`).join('');
 
-    const tail_ = isLast ? `
-      <div class="pfoot">
-        <div class="note">
-          <div class="fine" style="font-size:7.2pt;line-height:1.5">
-            ${esc(TRADE_NOTE)}<br>
-            <b>Colour tinting</b> is available at the Industrial Area counter on all
-            emulsions, enamels and textured finishes. Tinted shades may carry a surcharge
-            depending on the colourant used.<br>
-            <b>${esc(CO.legal)}</b> · ${esc(CO.street)}, ${esc(CO.area)} ·
-            ${esc(CO.phones[0])} · ${esc(CO.email)} · ${esc(CO.web)}
-          </div>
-        </div>
+    const note = isLast ? `
+      <div class="pnote">
+        <div class="h">Terms and the counter</div>
+        <p>${esc(TRADE_NOTE)}</p>
+        <p><b>Colour tinting</b> is available at the Industrial Area counter on all
+           emulsions and enamels. Tinted shades may carry a surcharge depending on
+           the colourant used.</p>
+        <p><b>Textured and decorative finishes</b> are quoted separately. They are
+           sold by weight and applied by hand, so the figure depends on the wall —
+           bring your measurements and ask for the decorative desk.</p>
+        <p><b>${esc(CO.legal)}</b> · ${esc(CO.street)}, ${esc(CO.area)} ·
+           ${esc(CO.box)} · ${esc(CO.phones[0])} · ${esc(CO.phones[1])} ·
+           ${esc(CO.email)}</p>
       </div>` : '';
 
     return `
 <div class="sheet">
-  ${header}
-  <div class="pbody">${body}</div>
-  ${tail_}
-  <div class="band-foot" style="background:var(--blue)"></div>
+  <div class="pinner">
+    ${header}
+    <div class="pbody">${body}${note}</div>
+    <div class="psig">
+      <span>${esc(CO.legal)} · ${esc(CO.area)}</span>
+      <span class="r">${esc(CO.phones[0])} · ${esc(CO.email)} · ${esc(CO.web)}</span>
+    </div>
+  </div>
 </div>`;
   }).join('\n');
 
