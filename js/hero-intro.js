@@ -53,6 +53,11 @@
     var hero = document.querySelector('.lp-hero');
     if (hero) hero.classList.add('intro-running');
 
+    // A replay can arrive while the previous layer is still falling away;
+    // never leave two line-ups stacked on the stage.
+    var stale = pour.querySelector('.lp-intro');
+    if (stale && stale.parentNode) stale.parentNode.removeChild(stale);
+
     var layer = document.createElement('div');
     layer.className = 'lp-intro';
     layer.setAttribute('aria-hidden', 'true');
@@ -165,6 +170,16 @@
           if (hero) hero.classList.remove('intro-running');
           if (layer && layer.parentNode) layer.parentNode.removeChild(layer);
         }, still ? 300 : 420 + n * 34 + 60);
+      },
+
+      /* Run the whole line-up again. The rotation calls this each time it
+         comes back round to the Cloud Paints stage, so every lap opens the
+         way the first one did. The tins are decoded by now, so this is
+         instant — no second wait. */
+      replay: function () {
+        if (!cleared) return;    // still on screen; nothing to replay
+        cleared = false;
+        run();
       }
     };
     window.CloudHeroIntro = exposed;

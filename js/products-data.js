@@ -416,7 +416,7 @@ window.CLOUD_PRODUCTS = [
     image: 'images/buckets/ROCKETEX 30KG.jpg',
     sizes: ['30kg', '5kg'],
     short: 'Super-premium 100% acrylic textured coating. Trowel or roller applied for multi-directional textures and designer finishes. 15-year all-weather protection warranty. Over 5,000 colour shades.',
-    full: 'Cloud RockTEX Texture is a super-premium Acrylic Emulsion based on an acrylic resin for a textured finish with guaranteed high performance, formulated to provide multi-directional textures (creation of designer texture and designs). It comes in more than 5,000 exuberant colours on any exterior & interior cementitious surface. A flexible acrylic texture applied directly from the bucket. Formulated with special materials such as tough stone crystals that give it unparalleled toughness and durability, making it a perfect choice for exterior painting and also interiors.',
+    full: 'Cloud Paints Rocketex Wallmaster is a super-premium Acrylic Emulsion based on an acrylic resin for a textured finish with guaranteed high performance, formulated to provide multi-directional textures (creation of designer texture and designs). It comes in more than 5,000 exuberant colours on any exterior & interior cementitious surface. A flexible acrylic texture applied directly from the bucket. Formulated with special materials such as tough stone crystals that give it unparalleled toughness and durability, making it a perfect choice for exterior painting and also interiors.',
     features: [
       'Stylish multiple textured effects',
       'Light rock finish',
@@ -450,7 +450,7 @@ window.CLOUD_PRODUCTS = [
     surfaces: ['Plaster', 'Cement rendering', 'Block work', 'Cement', 'Stone', 'Bag-washed concrete', 'Fair-faced concrete', 'Timber', 'Glass', 'Aluminium'],
     application: {
       prep: 'All surfaces must be thoroughly cleaned and free of all dirt, loose and flaking paint. Efflorescence or mould must be treated before application. New concrete, mortar or cement render must be allowed to cure for 4 to 8 weeks depending on concrete thickness and drying conditions. Fill holes with grouting cement. Wash down with water using a stiff brush to remove all loose material.',
-      new_surface: 'On porous surfaces, apply a priming coat thinned with water (4 parts RockTEX Texture : 1 part water) to condition the surface and aid application of additional coats.',
+      new_surface: 'On porous surfaces, apply a priming coat thinned with water (4 parts Rocketex Wallmaster : 1 part water) to condition the surface and aid application of additional coats.',
       previously_painted: 'Remove all loose and flaking paint. Clean thoroughly. Treat any efflorescence or mould before re-coating.',
       method: 'Apply using a stainless-steel trowel. For finishing and texturing, a special finishing tool (stainless-steel trowel, plastic trowel or comb) is required depending upon the textured finish (circular, horizontal, vertical). STIR THOROUGHLY BEFORE USE. Best applied when wet.',
       cleanup: 'Clean tools with water immediately after use.',

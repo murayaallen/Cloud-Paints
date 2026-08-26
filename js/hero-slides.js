@@ -190,6 +190,7 @@
   var current = 0;
   var busy    = false;
   var busyGuard = null;
+  var switchToken = 0;
   var timer   = null;
 
   var pour, bucketA, bucketB, bgA, bgB, brandStage;
@@ -247,6 +248,11 @@
   function switchTo(index) {
     if (busy) return;
     busy = true;
+    /* Every switch gets a token. The two <img> elements are reused slide
+       after slide, so a load event can arrive for a switch that has already
+       been superseded; done() checks it is still the current one before
+       touching the stage. */
+    var myToken = ++switchToken;
     clearTimeout(busyGuard);
     busyGuard = setTimeout(function () { busy = false; }, FADE_MS + 2500);
     var slide = SLIDES[index];
@@ -259,6 +265,8 @@
     // and one pointed at '' re-requests the page itself.
     var nextBg = bgFor(slide);
     if (inactiveBg) {
+      inactiveBg.onload = null;
+      inactiveBg.onerror = null;
       if (nextBg) {
         inactiveBg.style.display = '';
         inactiveBg.src = nextBg;
@@ -272,19 +280,30 @@
     if (slide.type === 'bucket') {
       inactiveBucket = bucketA.classList.contains('hs-active') ? bucketB : bucketA;
       activeBucket   = bucketA.classList.contains('hs-active') ? bucketA : bucketB;
+      inactiveBucket.onload = null;
+      inactiveBucket.onerror = null;
       inactiveBucket.src = slide.src;
     }
 
     var pending = 0;
     function done() {
+      if (myToken !== switchToken) return;   // superseded by a later switch
       pending--;
       if (pending > 0) return;
+      if (inactiveBg) { inactiveBg.onload = null; inactiveBg.onerror = null; }
+      if (inactiveBucket) { inactiveBucket.onload = null; inactiveBucket.onerror = null; }
       applyColor(slide.color);
       applyLabel(slide);
 
       if (slide.type === 'brand') {
         var vn = document.querySelector('.lp-velvet .vnext');
         if (vn) vn.classList.remove('warm');
+        // Coming back round to the brand stage: play the range in again.
+        // The stage is the line-up — arriving at it empty is what made the
+        // second lap feel like a different page from the first.
+        if (window.CloudHeroIntro && window.CloudHeroIntro.replay) {
+          window.CloudHeroIntro.replay();
+        }
       }
 
       // Switch foreground: brand stage vs bucket image
