@@ -50,8 +50,15 @@ DirectoryIndex index.html
   # answered 200. To a crawler that says the page exists, which is
   # the soft-404 Google penalises, and it happened on every dead or
   # mistyped URL on the site.
+  # The exclusion is a condition, not a lookahead in the pattern.
+  # LiteSpeed would not honour (?!404\.html$) — it failed the whole
+  # rule silently, so no .html URL redirected at all and /products
+  # and /products.html both answered 200: two addresses for one page,
+  # which is the thing clean URLs exist to prevent. A negative
+  # RewriteCond is understood by every server that reads this file.
   RewriteCond %{ENV:REDIRECT_STATUS} ^$
-  RewriteRule ^(?!404\.html$)(.+)\.html$ /$1 [R=301,L]
+  RewriteCond %{REQUEST_URI} !^/404\.html$
+  RewriteRule ^(.+)\.html$ /$1 [R=301,L]
 
   # ---- 4. Serve the clean URLs -----------------------------
   # /products -> products.html, /paints/silk-vinyl -> paints/silk-vinyl.html
