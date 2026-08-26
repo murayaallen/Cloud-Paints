@@ -1332,10 +1332,11 @@ function rangeFlier(size) {
           making the paint ourselves — customer after customer asked where we sourced it,
           and whether they could buy the same quality for their own projects.</p>
         ${z.aboutParas > 1 ? `<p class="about">So we built the plant. Everything is manufactured at Industrial
-          Area, Nairobi, to the Kenya Bureau of Standards Standardisation Mark, and we
-          know what Kenyan sun, rain and dust do to a wall because we have spent years
-          repainting them. Bring a photograph, a fabric or a paint chip to the counter
-          and we will match it, mix it, and tell you honestly how much you need.</p>` : ''}
+          Area, Nairobi, to KEBS standards. All products are tested and awarded a Quality
+          Standardisation Mark, and we know what Kenyan sun, rain and dust do to a wall
+          because we have spent years repainting them. Bring a colour of your choice from
+          our charts, or any colour chart or paint sample, to the company and we will
+          match it, mix it, and tell you honestly the quantity of paint you need.</p>` : ''}
 
         <div class="bc-h mt-4">Also in the range</div>
         <div class="also2">
