@@ -189,6 +189,7 @@
 
   var current = 0;
   var busy    = false;
+  var busyGuard = null;
   var timer   = null;
 
   var pour, bucketA, bucketB, bgA, bgB, brandStage;
@@ -246,16 +247,18 @@
   function switchTo(index) {
     if (busy) return;
     busy = true;
+    clearTimeout(busyGuard);
+    busyGuard = setTimeout(function () { busy = false; }, FADE_MS + 2500);
     var slide = SLIDES[index];
 
     var inactiveBg = (bgA && bgB) ? (bgA.classList.contains('hs-active') ? bgB : bgA) : null;
     var activeBg   = (bgA && bgB) ? (bgA.classList.contains('hs-active') ? bgA : bgB) : null;
+    // A slide with no backdrop (the brand stage) shows the velvet bed
+    // instead. Clear the element rather than pointing it at nothing — an
+    // img left holding the previous slide's photo would flash it back on,
+    // and one pointed at '' re-requests the page itself.
+    var nextBg = bgFor(slide);
     if (inactiveBg) {
-      // A slide with no backdrop (the brand stage) shows the velvet bed
-      // instead. Clear the element rather than pointing it at nothing —
-      // an img left holding the previous slide's photo would flash it
-      // back on, and one pointed at '' re-requests the page itself.
-      var nextBg = bgFor(slide);
       if (nextBg) {
         inactiveBg.style.display = '';
         inactiveBg.src = nextBg;
@@ -310,11 +313,12 @@
         activeBg.classList.remove('hs-active');
       }
 
+      clearTimeout(busyGuard);
       setTimeout(function () { busy = false; }, FADE_MS + 50);
     }
 
     // Preload checks
-    if (inactiveBg) {
+    if (inactiveBg && nextBg) {
       var bgReady = inactiveBg.complete && inactiveBg.naturalWidth > 0;
       if (!bgReady) { pending++; inactiveBg.onload = done; inactiveBg.onerror = done; }
     }
