@@ -1706,31 +1706,68 @@ const COLLECTION_CSS = `
                  border:.2mm solid var(--gold); pointer-events:none; }
 
 /* ---- Cover ------------------------------------------------------------
-   The band is the cover. Seventeen columns, one per family, each showing
-   four shades from pale to deep — 68 colours, which says what the document
-   is faster than a photograph of a tin could. */
-.cov { flex:1; display:flex; flex-direction:column; padding:13mm 11mm 9mm; min-height:0; }
-.cov-top { flex:none; display:flex; justify-content:space-between; align-items:flex-start; }
-.cov-top .lg { width:46mm; }
-.cov-top .kb { width:17mm; }
-.cov-ttl { flex:none; margin-top:12mm; }
-.cov-ttl .eyebrow { color:var(--red); }
-.cov-ttl h1 { font:400 50pt/0.95 var(--serif); letter-spacing:-.02em;
-              color:var(--blue-deep); margin-top:3mm; }
-.cov-ttl h1 em { font-style:italic; color:var(--red); }
-.cov-ttl .sub { font:400 11.5pt/1.45 var(--serif); color:var(--ink-2);
-                margin-top:5mm; max-width:124mm; }
-.cov-band { flex:1; min-height:0; display:grid; grid-template-columns:repeat(17,1fr);
-            margin-top:10mm; border:.2mm solid rgba(0,0,0,.12); }
+   The ground is the range flier's, which is the website's opening hero
+   flattened for print: a dark plum base with a crimson pool top-left, a
+   deep blue top-right and an amber low centre, rebuilt as four stacked
+   radial gradients because blend modes and 74px blurs are not things to
+   hand a press. Same hues, same positions, same feel — so the shade card
+   and the flier read as two pieces from one house rather than two designs.
+
+   The brand blue and red do not survive being put on it: #1E3A8A on a
+   #0B0610 ground is one dark on another. The strapline takes the lifted
+   pair the flier already uses for this — the brand colours as they read
+   on dark, rather than an approximation of them that cannot be seen.
+
+   The band is still the cover. Seventeen columns, one per family, four
+   shades each from pale to deep. Sixty-eight colours say what the document
+   is faster than a photograph of a tin could, and on this ground they
+   carry far more than they did on white.
+
+   The inside pages stay white, and they have to. A patch is judged against
+   the paper around it, so 544 of them on a coloured ground would every one
+   of them read wrong. The dark treatment is the cover's alone. */
+.pinner--dark { border-color:rgba(255,255,255,.30); color:#fff;
+  background:
+    radial-gradient(58% 46% at 14% 6%,  rgba(150,20,52,.85),  transparent 68%),
+    radial-gradient(56% 44% at 88% 4%,  rgba(30,40,132,.82),  transparent 68%),
+    radial-gradient(70% 40% at 56% 96%, rgba(150,100,18,.55), transparent 70%),
+    radial-gradient(140% 110% at 62% 46%, #241030, #0b0610 72%); }
+.pinner--dark::after { border-color:rgba(232,163,23,.42); }
+
+.cov { flex:1; min-height:0; display:flex; flex-direction:column;
+       align-items:center; text-align:center; padding:12mm 12mm 9mm; }
+/* The logo keeps its white chip. The mark is drawn in the brand blue and
+   red, and neither of them holds on this ground. */
+.cov .chip { flex:none; background:#fff; border-radius:2mm; padding:3.4mm 5.2mm;
+             display:inline-flex; align-items:center; }
+.cov .chip img { width:40mm; display:block; }
+.cov .rule-g { flex:none; height:.8mm; width:30mm; background:var(--gold); margin:7mm 0 4.5mm; }
+.cov .eyebrow { flex:none; color:#ffc93d; }
+.cov h1 { flex:none; font:400 45pt/0.97 var(--serif); letter-spacing:-.02em;
+          color:#fff; margin-top:3mm; }
+.cov h1 em { font-style:italic; color:#ffc93d; }
+.cov .sub { flex:none; font:400 10.4pt/1.5 var(--sans);
+            color:rgba(255,255,255,.86); margin-top:4.5mm; max-width:132mm; }
+.cov .strap { flex:none; font:400 italic 14pt/1.3 var(--serif); margin-top:5.5mm; }
+.cov .strap .s-blue { color:#8fb0ff; }
+.cov .strap .s-red  { color:#ff5f70; }
+.cov .strap .s-dot  { color:rgba(255,255,255,.42); margin:0 .5em; font-style:normal; }
+.cov-band { width:100%; flex:1; min-height:0; display:grid;
+            grid-template-columns:repeat(17,1fr); margin-top:7mm;
+            border:.3mm solid rgba(255,255,255,.30); }
 .cov-band .cb { display:grid; grid-template-rows:repeat(4,1fr); }
 .cov-band i { display:block; }
-.cov-foot { flex:none; margin-top:8mm; display:flex; align-items:flex-end;
-            justify-content:space-between; gap:8mm; }
-.cov-strap { font:400 italic 15pt/1.2 var(--serif); }
-.cov-strap .b { color:#1e3a8a; }
-.cov-strap .r { color:#e11f29; }
-.cov-meta { flex:none; text-align:right; font:600 7pt/1.7 var(--sans);
-            letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3); }
+.cov-mark { flex:none; display:flex; align-items:center; gap:3.2mm; margin-top:6.5mm; }
+.cov-mark img { height:14mm; width:auto; background:#fff; padding:.9mm; border-radius:1mm; }
+.cov-mark span { font:500 7pt/1.25 var(--sans); text-align:left; color:rgba(255,255,255,.86); }
+.cov-mark b { display:block; font:700 6.4pt/1.4 var(--sans); letter-spacing:.12em;
+              text-transform:uppercase; color:var(--gold); }
+.cov-foot { width:100%; flex:none; margin-top:6.5mm; display:flex;
+            align-items:flex-end; justify-content:space-between; gap:8mm;
+            text-align:left; font:400 7pt/1.45 var(--sans); color:rgba(255,255,255,.8); }
+.cov-foot .r { text-align:right; }
+.cov-foot b { display:block; font:600 6.4pt/1 var(--sans); letter-spacing:.11em;
+              text-transform:uppercase; color:var(--gold); margin-bottom:1.4mm; }
 
 /* ---- Running head and signature bar ----------------------------------- */
 .crh { height:16mm; flex:none; display:flex; justify-content:space-between;
@@ -1857,7 +1894,8 @@ function colourCollection() {
       <span class="r">${esc(CO.phones[0])} · ${esc(CO.email)} · ${esc(CO.web)}</span>
     </div>`;
 
-  const sheet = inner => `<div class="sheet"><div class="pinner">${inner}</div></div>`;
+  const sheet = (inner, cls = '') =>
+    `<div class="sheet"><div class="pinner${cls ? ' ' + cls : ''}">${inner}</div></div>`;
 
   /* ---- 1. Cover -------------------------------------------------------- */
   const band = C.families.map(f => {
@@ -1869,23 +1907,24 @@ function colourCollection() {
 
   const cover = sheet(`
     <div class="cov">
-      <div class="cov-top">
-        <img class="lg" src="${a}/img/brand/logo.png" alt="Cloud Paints">
-        <img class="kb" src="${a}/img/brand/kebs.png" alt="KEBS Standardisation Mark">
-      </div>
-      <div class="cov-ttl">
-        <span class="eyebrow">${esc(C.edition)} Edition · Interior &amp; Exterior</span>
-        <h1>The Colour<br><em>Collection</em></h1>
-        <p class="sub">${C.shades.length} shades in ${C.families.length} families, tinted to
-           order at our Industrial Area counter on emulsions and enamels alike.</p>
-      </div>
+      <span class="chip"><img src="${a}/img/brand/logo.png" alt="Cloud Paints"></span>
+      <div class="rule-g"></div>
+      <span class="eyebrow">${esc(C.edition)} Edition · Interior &amp; Exterior</span>
+      <h1>The Colour <em>Collection</em></h1>
+      <p class="sub">${C.shades.length} shades in ${C.families.length} families, tinted to order
+         at our Industrial Area counter on emulsions and enamels alike.</p>
+      <div class="strap"><span class="s-blue">Buy it</span><span class="s-dot">·</span><span
+        class="s-red">Paint it</span><span class="s-dot">·</span><span class="s-blue">Love it..!</span></div>
       <div class="cov-band">${band}</div>
-      <div class="cov-foot">
-        <div class="cov-strap"><span class="b">Buy it</span>… <span class="r">Paint it</span>…
-             <span class="b">Love it</span>..!</div>
-        <div class="cov-meta">${C.shades.length} shades<br>${C.families.length} families<br>${esc(CO.web)}</div>
+      <div class="cov-mark">
+        <img src="${a}/img/brand/kebs.png" alt="KEBS Standardisation Mark">
+        <span><b>KEBS</b>Standardisation Mark</span>
       </div>
-    </div>`);
+      <div class="cov-foot">
+        <div><b>Manufactured by</b>${esc(CO.legal)}<br>${esc(CO.street)}, ${esc(CO.area)}</div>
+        <div class="r"><b>Find us</b>${esc(CO.web)}<br>${esc(CO.phones[0])}</div>
+      </div>
+    </div>`, 'pinner--dark');
 
   /* ---- 2. How to read it, and what is in it ---------------------------- */
   /* Four families spread across the spectrum, each as a full 32-step strip.
