@@ -40,8 +40,18 @@ DirectoryIndex index.html
   # clean URL. REDIRECT_STATUS is empty only on a real client
   # request, so this never fires on the internal rewrite in rule 4
   # (which would be an infinite loop).
+  #
+  # 404.html is excluded, and that exclusion is load-bearing. It is
+  # the ErrorDocument below, which the server fetches internally
+  # when a page is missing. Apache sets REDIRECT_STATUS on that
+  # internal fetch so the condition above catches it; LiteSpeed does
+  # not, so without this exclusion the error document was itself
+  # redirected — a missing page answered 301 to /404, and /404
+  # answered 200. To a crawler that says the page exists, which is
+  # the soft-404 Google penalises, and it happened on every dead or
+  # mistyped URL on the site.
   RewriteCond %{ENV:REDIRECT_STATUS} ^$
-  RewriteRule ^(.+)\.html$ /$1 [R=301,L]
+  RewriteRule ^(?!404\.html$)(.+)\.html$ /$1 [R=301,L]
 
   # ---- 4. Serve the clean URLs -----------------------------
   # /products -> products.html, /paints/silk-vinyl -> paints/silk-vinyl.html
@@ -52,7 +62,10 @@ DirectoryIndex index.html
   RewriteRule ^(.+?)/?$ /$1.html [L]
 </IfModule>
 
-# Branded 404
+# Branded 404. Names the file, not the clean URL: an ErrorDocument
+# pointing at /404 would be rewritten to 404.html by rule 4 anyway,
+# and naming the file directly keeps the 404 status on the response
+# instead of turning it into a redirect to a page that answers 200.
 ErrorDocument 404 /404.html
 
 # ============================================================
