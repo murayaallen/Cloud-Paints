@@ -1346,18 +1346,32 @@ const PRICE_CSS = `
                  border:.2mm solid var(--gold); pointer-events:none; }
 
 /* ---- Masthead, page one ---------------------------------------------- */
-.ph { height:44mm; flex:none; background:var(--blue-deep); color:#fff;
+/* The name is set in the company's own two colours, which is only possible
+   on a light ground: the masthead used to be a full-bleed navy block, and
+   #1e3a8a on #0f1f5c is the same colour twice. Lightening the type instead
+   would have given an approximation of the brand rather than the brand.
+
+   It suits the document as well as the request. This is the one piece in the
+   package that gets written on at a counter, and it was carrying the heaviest
+   ink coverage of anything here — a 44mm full-bleed navy band on 100gsm bond,
+   which cockles the sheet and shows every fingerprint. A navy rule under the
+   masthead keeps the structure the block was providing. */
+.ph { height:44mm; flex:none; background:var(--paper); color:var(--ink);
       padding:0 9mm; display:flex; justify-content:space-between;
-      align-items:center; gap:8mm; }
-.ph .eyebrow { color:var(--gold); }
-.ph h1 { font:400 33pt/1 var(--serif); letter-spacing:-.015em; color:#fff; margin-top:2.6mm; }
+      align-items:center; gap:8mm; border-bottom:1.2mm solid var(--blue-deep); }
+.ph .eyebrow { color:var(--red); }
+.ph h1 { font:400 33pt/1 var(--serif); letter-spacing:-.015em; margin-top:2.6mm; }
+.ph h1 .c-blue { color:#1e3a8a; }
+.ph h1 .c-red  { color:#e11f29; font-style:italic; }
 .ph .cur { display:flex; align-items:center; gap:3mm; margin-top:3.6mm;
            font:600 6.8pt/1 var(--sans); letter-spacing:.14em;
-           text-transform:uppercase; color:#c8d0e6; }
+           text-transform:uppercase; color:var(--ink-3); }
 .ph .cur::before { content:''; width:12mm; height:.35mm; background:var(--gold); flex:none; }
+/* The logo and the standards mark are already artwork on white, so on a
+   white ground they need no chip behind them. */
 .ph-mark { display:flex; align-items:center; gap:4.5mm; flex:none; }
-.ph-mark .lg { width:33mm; background:#fff; padding:2.4mm; border-radius:1.2mm; }
-.ph-mark .kb { width:12.5mm; background:#fff; padding:1.2mm; border-radius:1mm; }
+.ph-mark .lg { width:33mm; }
+.ph-mark .kb { width:12.5mm; }
 
 /* ---- Running head, every page after the first ------------------------- */
 .prh { height:18mm; flex:none; display:flex; justify-content:space-between;
@@ -1532,7 +1546,7 @@ function priceList() {
       <div class="ph">
         <div>
           <span class="eyebrow">Price list · Recommended retail</span>
-          <h1>${esc(CO.brand.toUpperCase())}</h1>
+          <h1><span class="c-blue">Cloud</span> <span class="c-red">Paints</span></h1>
           <div class="cur">All prices in Kenya Shillings${
             EFFECTIVE_FROM ? ' · Effective ' + esc(EFFECTIVE_FROM) : ''}</div>
         </div>
