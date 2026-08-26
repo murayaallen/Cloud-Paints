@@ -11,18 +11,23 @@
 //        '20L': null       ->  prints  —
 //   3. Leave it as 0 if the pack exists but the price is not yet set.
 //        '20L': 0          ->  prints  a blank rule to write on
-//   4. Re-run:  node build/build.mjs  &&  node build/render.mjs
+//   4. Set EFFECTIVE_FROM to the date the list takes effect.
+//   5. Re-run:  node build/build.mjs  &&  node build/render.mjs
 //
 // Sizes must match the product's own size list in js/products-data.js.
 // Anything listed here that the product does not stock is ignored.
 //
-// The list carries no effective date and no page numbers, by request: it is
-// reprinted whenever the numbers move, so a date only ages it on the counter.
+// The list carries no page numbers, by request. It does carry an effective
+// date: a price list without one cannot be told apart from the last one on
+// the counter, and the trade desk needs to know which sheet a customer is
+// holding. Set it blank to print no date at all.
 //
 // Textured and decorative finishes are NOT in this list. They are sold by
 // weight, applied by hand and quoted per wall, so they are handled on the
 // decorative-finishes brochure and by the trade desk instead.
 // ============================================================
+
+export const EFFECTIVE_FROM = '01.08.2026';   // blank string prints no date
 
 export const CURRENCY = 'KSHS';
 

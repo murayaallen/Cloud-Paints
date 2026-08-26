@@ -16,7 +16,7 @@ import {
   assets, heroImage, thumbImage, appliedImage, isTexture,
   head, tail, mast, foot, footCompact, footLine, accentVars, write, tint, readable,
 } from './lib.mjs';
-import { PRICES, PRICE_GROUPS, CURRENCY, TRADE_NOTE } from './prices.js';
+import { PRICES, PRICE_GROUPS, CURRENCY, TRADE_NOTE, EFFECTIVE_FROM } from './prices.js';
 
 const P = loadProducts();
 const bySlug = Object.fromEntries(P.map(p => [p.slug, p]));
@@ -900,6 +900,7 @@ const RANGE_SIZES = {
         frame: '8mm', pad: '17mm',
         logo: '46mm', kebs: '20mm', h1: '48pt', kick: '12.2pt', strap: '15pt',
         sw: '7mm', lineH: '78mm', tinH: '46mm', tinGap: '3mm', rowIn: '4mm', rowUp: '26mm',
+        lineup: ['silk-vinyl', 'weatherguard', 'vinyl-matt', 'supermatt', 'rocketex'],
         footFs: '8.4pt',
         ipH2: '22pt', gridGap: '6mm 6mm', cellImg: '42mm',
         nm: '12.6pt', tx: '8.4pt', sz: '7.8pt', txLen: 185,
@@ -908,7 +909,8 @@ const RANGE_SIZES = {
   A5: { sheet: '297mm 210mm', w: '297mm', h: '210mm', panel: '148.5mm', k: 0.707,
         frame: '5.5mm', pad: '12mm',
         logo: '33mm', kebs: '14mm', h1: '31pt', kick: '8.8pt', strap: '10.6pt',
-        sw: '5mm', lineH: '55mm', tinH: '30mm', tinGap: '2mm', rowIn: '3mm', rowUp: '22mm',
+        sw: '5mm', lineH: '55mm', tinH: '26mm', tinGap: '2mm', rowIn: '7mm', rowUp: '22mm',
+        lineup: ['silk-vinyl', 'weatherguard', 'vinyl-matt', 'iris-economy', 'supermatt', 'rocketex'],
         footFs: '6.9pt',
         ipH2: '15.5pt', gridGap: '4mm 4mm', cellImg: '27mm',
         nm: '10pt', tx: '7.2pt', sz: '6.8pt', txLen: 88,
@@ -1199,8 +1201,8 @@ function rangeFlier(size) {
 
       <div class="cover-line">
         <div class="row">
-          ${['silk-vinyl', 'weatherguard', 'vinyl-matt', 'supermatt', 'rocketex']
-            .map(s => `<img src="${heroImage(bySlug[s], d)}" alt="">`).join('')}
+          ${z.lineup
+            .map(s => `<img src="${heroImage(bySlug[s], d)}" alt="${esc(bySlug[s].name)}">`).join('')}
         </div>
       </div>
 
@@ -1497,9 +1499,10 @@ function priceList() {
     const header = isFirst ? `
       <div class="ph">
         <div>
-          <span class="eyebrow">${esc(CO.legal)} · Nairobi</span>
-          <h1>Price List</h1>
-          <div class="cur">All prices in Kenya Shillings</div>
+          <span class="eyebrow">Price list · Recommended retail</span>
+          <h1>${esc(CO.brand.toUpperCase())}</h1>
+          <div class="cur">All prices in Kenya Shillings${
+            EFFECTIVE_FROM ? ' · Effective ' + esc(EFFECTIVE_FROM) : ''}</div>
         </div>
         <div class="ph-mark">
           <img class="kb" src="${a}/img/brand/kebs.png" alt="KEBS Standardisation Mark">
@@ -1507,7 +1510,8 @@ function priceList() {
         </div>
       </div>` : `
       <div class="prh">
-        <span class="b">Cloud Paints · Price list · Recommended retail</span>
+        <span class="b">Cloud Paints · Price list${
+          EFFECTIVE_FROM ? ' · Effective ' + esc(EFFECTIVE_FROM) : ''}</span>
         <img src="${a}/img/brand/logo.png" alt="Cloud Paints">
       </div>`;
 
@@ -1527,9 +1531,9 @@ function priceList() {
         <p><b>Textured and decorative finishes</b> are quoted separately. They are
            sold by weight and applied by hand, so the figure depends on the wall —
            bring your measurements and ask for the decorative desk.</p>
-        <p><b>${esc(CO.legal)}</b> · ${esc(CO.street)}, ${esc(CO.area)} ·
-           ${esc(CO.box)} · ${esc(CO.phones[0])} · ${esc(CO.phones[1])} ·
-           ${esc(CO.email)}</p>
+        <p><b>Manufactured by ${esc(CO.legal)}</b> · ${esc(CO.street)},
+           ${esc(CO.area)} · ${esc(CO.box)} · ${esc(CO.phones[0])} ·
+           ${esc(CO.phones[1])} · ${esc(CO.email)}</p>
       </div>` : '';
 
     return `
@@ -1538,7 +1542,7 @@ function priceList() {
     ${header}
     <div class="pbody">${body}${note}</div>
     <div class="psig">
-      <span>${esc(CO.legal)} · ${esc(CO.area)}</span>
+      <span>Manufactured by ${esc(CO.legal)} · ${esc(CO.area)}</span>
       <span class="r">${esc(CO.phones[0])} · ${esc(CO.email)} · ${esc(CO.web)}</span>
     </div>
   </div>
