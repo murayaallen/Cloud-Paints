@@ -520,7 +520,11 @@ const POSTER_CSS = `
 .sec-h .n { font:600 7pt/1 var(--sans); letter-spacing:.15em; text-transform:uppercase; color:var(--ink-3); }
 .sec-h .ln { flex:1; height:.25mm; background:var(--rule); }
 
-.grid  { display:grid; grid-template-columns:repeat(4,1fr); gap:5mm; }
+/* Five across, because the paint range is fifteen photographed lines and
+   fifteen divides by five. At four it was three full rows plus a row of
+   three, which ran the sheet past its own trim. The textures below already
+   sit five across, so the two grids now share a rhythm. */
+.grid  { display:grid; grid-template-columns:repeat(5,1fr); gap:4mm; }
 .tgrid { display:grid; grid-template-columns:repeat(5,1fr); gap:4mm; }
 
 .tcard { border:.3mm solid var(--rule-2); border-radius:1.6mm; overflow:hidden; background:var(--paper); }
@@ -544,7 +548,7 @@ function rangePoster(size) {
   const zoom = { A2: 1.41421, A3: 1, A4: 0.70711 }[size];
 
   const card = p => `
-    <div class="pcard pcard-top" style="${accentVars(p.primary)}--pcard-img-h:26mm;">
+    <div class="pcard pcard-top" style="${accentVars(p.primary)}--pcard-img-h:22mm;">
       <div class="pcard-img"><img src="${thumbImage(p, d)}" alt="${esc(p.name)}"></div>
       <div class="pcard-cat">${esc(p.cat_label)}</div>
       <div class="pcard-name">${esc(p.name)}</div>
@@ -762,7 +766,13 @@ function brochure(cfg) {
   // Only products we can show go in the picture rows; the rest are listed.
   const items = all.filter(p => heroImage(p, d));
   const noArt = all.filter(p => !heroImage(p, d));
-  const roomy = items.length <= 8;
+  /* Does each product get the long treatment — a full description, its
+     feature list and a spec line — or the short one? The threshold was set
+     when Wood & Metal had five photographed products. It has eight now that
+     Varnish Stain, Metal Primer and Universal Undercoat have been shot, and
+     eight long entries do not fit three panels. Six is the real boundary:
+     Interior and Exterior stay long at five each, Wood & Metal goes short. */
+  const roomy = items.length <= 6;
 
   const calcPanel = noArt.length > 3 ? 1 : 2;
   const sizes = allot(items.length, [150, 188, Math.max(40, 100 - noArt.length * 8)]);
@@ -902,8 +912,8 @@ const RANGE_SIZES = {
         sw: '7mm', lineH: '78mm', tinH: '46mm', tinGap: '3mm', rowIn: '4mm', rowUp: '26mm',
         lineup: ['silk-vinyl', 'weatherguard', 'vinyl-matt', 'supermatt', 'rocketex'],
         footFs: '8.4pt',
-        ipH2: '22pt', gridGap: '6mm 6mm', cellImg: '42mm',
-        nm: '12.6pt', tx: '8.4pt', sz: '7.8pt', txLen: 185,
+        ipH2: '22pt', cols: 3, gridGap: '7mm 5mm', cellImg: '38mm', cellImgShort: '58mm',
+        nm: '11.4pt', tx: '7.8pt', sz: '7.2pt', txLen: 110,
         bcH3: '19.5pt', bcV: '8.8pt', restB: '9.2pt', restS: '7.6pt', aboutFs: '9.4pt',
         secGap: '8mm', calc: true, aboutParas: 2, ticks: 5, noteLen: 240 },
   A5: { sheet: '297mm 210mm', w: '297mm', h: '210mm', panel: '148.5mm', k: 0.707,
@@ -912,8 +922,8 @@ const RANGE_SIZES = {
         sw: '5mm', lineH: '55mm', tinH: '26mm', tinGap: '2mm', rowIn: '7mm', rowUp: '22mm',
         lineup: ['silk-vinyl', 'weatherguard', 'vinyl-matt', 'iris-economy', 'supermatt', 'rocketex'],
         footFs: '6.9pt',
-        ipH2: '15.5pt', gridGap: '4mm 4mm', cellImg: '27mm',
-        nm: '10pt', tx: '7.2pt', sz: '6.8pt', txLen: 88,
+        ipH2: '15.5pt', cols: 3, gridGap: '5mm 3.5mm', cellImg: '24mm', cellImgShort: '38mm',
+        nm: '8.8pt', tx: '6.6pt', sz: '6.2pt', txLen: 56,
         bcH3: '13.8pt', bcV: '7.2pt', restB: '7.6pt', restS: '6.5pt', aboutFs: '7.4pt',
         secGap: '4mm', calc: false, aboutParas: 2, ticks: 5, noteLen: 135, cellImg2: '29mm' },
 };
@@ -1050,13 +1060,18 @@ const rangeCss = z => `
               color:var(--ink-3); margin-left:auto; }
 .ip-note { font:400 ${z.tx}/1.5 var(--sans); color:var(--ink-2); margin-bottom:5mm; }
 
-.pgrid { display:grid; grid-template-columns:1fr 1fr; gap:${z.gridGap}; flex:1; }
+.pgrid { display:grid; grid-template-columns:repeat(${z.cols}, 1fr);
+         gap:${z.gridGap}; flex:1; align-content:start; }
 .pcell { display:flex; flex-direction:column; }
-.pcell-img { height:${z.cellImg}; display:flex; align-items:flex-end; justify-content:center;
-             margin-bottom:3mm; }
+.pcell-img { height:var(--cell-img, ${z.cellImg}); display:flex; align-items:flex-end;
+             justify-content:center; margin-bottom:3mm; }
 .pcell-img img { max-height:100%; width:auto; }
+/* Two lines' worth of room whether the category needs one or two. Several
+   run long — "Interior & Exterior Wall Paint", "Gloss Enamel - Wood & Metal" —
+   and a wrapping label pushed its product name a line lower than the one
+   beside it, so nothing across a row lined up. */
 .pcell .cat { font:600 5.8pt/1.25 var(--sans); letter-spacing:.11em; text-transform:uppercase;
-              color:var(--pc); }
+              color:var(--pc); min-height:calc(5.8pt * 1.25 * 2); }
 .pcell .nm  { font:400 ${z.nm}/1.1 var(--serif); color:var(--ink); margin:1mm 0 1.6mm; }
 .pcell .tx  { font:400 ${z.tx}/1.42 var(--sans); color:var(--ink-2); flex:1; }
 .pcell .sz  { font:500 ${z.sz}/1 var(--sans); color:var(--ink-3); letter-spacing:.05em;
@@ -1132,8 +1147,15 @@ function rangeFlier(size) {
   const z = RANGE_SIZES[size];
 
   // The twelve studio tins, split so each inner panel holds one clear idea.
+  /* Metal Primer, Universal Undercoat and Varnish Stain have photographs now,
+     so they move out of the "Also in the range" list on the back and into the
+     spread. All three are primers and wood finishes, so they belong with the
+     trade panel — which takes it to nine, and the grid to three columns. The
+     wall panel keeps its six and uses the same three columns, so both sides
+     of the spread share one rhythm and only the row count differs. */
   const WALLS = ['silk-vinyl', 'vinyl-matt', 'iris-economy', 'supermatt', 'weatherguard', 'rocketex'];
-  const TRADE = ['super-gloss', 'gloss-enamel', 'clear-varnish', 'roof-paint', 'road-marking', 'turpentine'];
+  const TRADE = ['super-gloss', 'gloss-enamel', 'clear-varnish', 'varnish-stain',
+                 'metal-primer', 'universal-undercoat', 'roof-paint', 'road-marking', 'turpentine'];
   const shown = new Set([...WALLS, ...TRADE]);
 
   // Everything tinned that has no studio photograph, listed rather than shown.
@@ -1151,8 +1173,17 @@ function rangeFlier(size) {
     </div>`;
   };
 
-  const innerPanel = (title, note, slugs, accent) => `
-    <div class="pnl" style="${accentVars(accent)}">
+  /* Six products in three columns is two rows; nine is three. Left at one
+     fixed tin height the shorter panel finished a third of the way up the
+     page with a hole under it. So the panel works out its own row count and
+     sizes the tin to fill the height it actually has — the two sides of the
+     spread end level, and the wall tins get to be larger, which they can
+     carry: they are the high-resolution photographs in the set. */
+  const innerPanel = (title, note, slugs, accent) => {
+    const rows = Math.ceil(slugs.length / z.cols);
+    const img = rows <= 2 ? z.cellImgShort : z.cellImg;
+    return `
+    <div class="pnl" style="${accentVars(accent)};--cell-img:${img}">
       <div class="frame"></div>
       <div class="ip">
         <div class="ip-head">
@@ -1163,6 +1194,7 @@ function rangeFlier(size) {
         <div class="pgrid">${slugs.map(cell).join('')}</div>
       </div>
     </div>`;
+  };
 
   const frontCover = `
     <div class="pnl cover">

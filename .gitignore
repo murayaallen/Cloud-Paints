@@ -32,3 +32,8 @@ client-package/pdf/
 # The flash-drive working copy, brought back and merged. A folder copy of
 # this repo is not a submodule; it must never be committed as one.
 /Cloud Paints today*/
+
+# A folder copy pasted back inside the repo. It happens when the flash-drive
+# copy is dropped in here rather than beside it, and `git add -A` then tries
+# to commit it as an embedded repository.
+/Cloud Paints/
