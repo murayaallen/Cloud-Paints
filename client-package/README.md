@@ -20,8 +20,9 @@ whole package follows.
 | `pdf/3-product-fliers-A5/` | The hand-out version — same product, the essentials | A5 | 1 | 22 |
 | `pdf/4-brochures/` | Tri-fold brochures, printed both sides | A4 landscape | 2 | 5 |
 | `pdf/5-price-list/` | Trade and retail price list | A4 | 2 | 1 |
+| `pdf/7-colour-collection/` | **The full shade card** — 544 shades in 17 families, one family per page | A4 | 21 | 1 |
 
-**56 documents, 64 pages, 75 MB.** All RGB. Every glyph is embedded as a
+**63 documents, 91 pages, 90 MB.** All RGB. Every glyph is embedded as a
 vector outline, so nothing depends on a font being installed at the printer.
 Median document is 1.1 MB — small enough to send on WhatsApp or email.
 
@@ -80,6 +81,26 @@ same device the price list masthead uses. And on the A5, step 2 of *How to apply
 ends in an ellipsis — the source sentence runs to 176 characters with no clause
 break in it, so the alternative would be shortening the label copy itself.
 
+### The colour collection
+
+`pdf/7-colour-collection/` is the full shade card: **544 shades in 17 families,
+one family to a page**, generated from `js/colours-data.js` — the same list the
+website's colour pages read, so a shade renamed on the site is renamed here at
+the next build.
+
+Twenty-one A4 pages: a cover, a page explaining the numbering, seventeen family
+pages, a finishes and textures page, and a back page with a write-on selection
+table.
+
+Each family page holds thirty-two patches in a four-wide grid, read left to
+right, palest first. The code carries the depth — `CP·RD010` is the lightest red
+and `CP·RD320` the deepest, in steps of ten — so the same position in any two
+families is roughly the same depth. The name and code are printed **under** each
+patch rather than over it, which keeps the whole patch available to judge.
+
+**Print this one properly.** It is the piece where colour accuracy is the
+product, not a nicety — see *Colour* below.
+
 ### The five brochures
 
 | File | Covers |
@@ -104,6 +125,7 @@ break in it, so the alternative would be shortening the label copy itself.
 | Tri-fold brochure | 297 × 210 mm folded to 99 × 210 mm | 150 gsm silk | Matt lamination, then fold |
 | Range flier | A3 420 × 297 mm → folds to A4 · **A4 297 × 210 mm → folds to A5** | 150 gsm silk | Matt lamination, then fold |
 | Price list | 210 × 297 mm | 100–120 gsm bond | None — it gets written on |
+| Colour collection | 210 × 297 mm | 200 gsm silk or matt art | Matt lamination — it is handled constantly |
 
 ### Duplex and folding — the brochures
 
@@ -150,6 +172,22 @@ goes to offset litho the printer will convert to CMYK — ask them to use
 
 The deep blue is the one to check on press — it goes muddy if the black plate
 is over-inked.
+
+**The colour collection is the exception to all of the above.** On every other
+document colour is decoration; on the shade card it is the content, and a
+customer will hold a patch against a wall and expect the paint to match it.
+
+- Print it on a **colour-managed press**, on one stock, in one run. Do not let
+  it be reprinted piecemeal — two batches on different paper will not agree, and
+  a customer comparing an old card with a new one will be looking at two
+  different colours with the same name.
+- Ask for a **wet proof** of two or three family pages before the full run, and
+  check the pale families (Whites, Greys) and the strong ones (Reds, Oranges).
+  Those drift the most.
+- The patches are printed ink and the product is paint: they will never match
+  exactly. The card says so on the inside front page and the counter should say
+  so too — the chart is for finding and naming a shade, and a **brush-out of the
+  mixed paint** is what a customer should approve before a wall is committed.
 
 ---
 

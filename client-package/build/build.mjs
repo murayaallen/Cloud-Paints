@@ -12,7 +12,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import {
-  ROOT, CO, loadProducts, esc, clean, trim, firstSentence, sentences,
+  ROOT, CO, loadProducts, loadColours, esc, clean, trim, firstSentence, sentences,
   assets, heroImage, thumbImage, appliedImage, isTexture,
   head, tail, mast, foot, footCompact, footLine, accentVars, write, tint, readable,
 } from './lib.mjs';
@@ -1676,6 +1676,421 @@ function priceList() {
 }
 
 /* ============================================================
+   5b. The Colour Collection — the full shade card
+   ============================================================
+   544 shades in 17 families, generated from js/colours-data.js the
+   same way everything else here is generated from the product
+   catalogue: rename a colour on the website and the chart follows.
+
+   One family to a page. Thirty-two shades in a four-wide grid read
+   left to right, palest first, which is the order the codes are in
+   — CP·RD010 is the palest red and CP·RD320 the deepest, in steps of
+   ten. Someone comparing two shades in the same family should find
+   them next to each other, and someone reading a code off a tin
+   should be able to find it without an index.
+
+   The name and code sit UNDER the patch on white rather than over the
+   colour. Text on top of a swatch costs you the part of the swatch
+   you are trying to judge, and on the pale families it needs a dark
+   ink that changes how the colour reads.
+   ============================================================ */
+const COLLECTION_CSS = `
+@page { size: 210mm 297mm; margin: 0; }
+.sheet { --sheet-w:210mm; --sheet-h:297mm; }
+
+/* The same double keyline as the price list — a navy rule with a gold
+   hairline inside it. Both colours are already on the sheet. */
+.pinner { position:absolute; inset:8mm; border:.5mm solid var(--blue-deep);
+          display:flex; flex-direction:column; overflow:hidden; }
+.pinner::after { content:''; position:absolute; inset:1.3mm; z-index:3;
+                 border:.2mm solid var(--gold); pointer-events:none; }
+
+/* ---- Cover ------------------------------------------------------------
+   The band is the cover. Seventeen columns, one per family, each showing
+   four shades from pale to deep — 68 colours, which says what the document
+   is faster than a photograph of a tin could. */
+.cov { flex:1; display:flex; flex-direction:column; padding:13mm 11mm 9mm; min-height:0; }
+.cov-top { flex:none; display:flex; justify-content:space-between; align-items:flex-start; }
+.cov-top .lg { width:46mm; }
+.cov-top .kb { width:17mm; }
+.cov-ttl { flex:none; margin-top:12mm; }
+.cov-ttl .eyebrow { color:var(--red); }
+.cov-ttl h1 { font:400 50pt/0.95 var(--serif); letter-spacing:-.02em;
+              color:var(--blue-deep); margin-top:3mm; }
+.cov-ttl h1 em { font-style:italic; color:var(--red); }
+.cov-ttl .sub { font:400 11.5pt/1.45 var(--serif); color:var(--ink-2);
+                margin-top:5mm; max-width:124mm; }
+.cov-band { flex:1; min-height:0; display:grid; grid-template-columns:repeat(17,1fr);
+            margin-top:10mm; border:.2mm solid rgba(0,0,0,.12); }
+.cov-band .cb { display:grid; grid-template-rows:repeat(4,1fr); }
+.cov-band i { display:block; }
+.cov-foot { flex:none; margin-top:8mm; display:flex; align-items:flex-end;
+            justify-content:space-between; gap:8mm; }
+.cov-strap { font:400 italic 15pt/1.2 var(--serif); }
+.cov-strap .b { color:#1e3a8a; }
+.cov-strap .r { color:#e11f29; }
+.cov-meta { flex:none; text-align:right; font:600 7pt/1.7 var(--sans);
+            letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3); }
+
+/* ---- Running head and signature bar ----------------------------------- */
+.crh { height:16mm; flex:none; display:flex; justify-content:space-between;
+       align-items:center; padding:0 9mm; border-bottom:.3mm solid var(--rule); }
+.crh .b, .crh .r { font:600 7pt/1 var(--sans); letter-spacing:.15em;
+                   text-transform:uppercase; color:var(--ink-3); }
+.crh .r { display:flex; align-items:center; gap:4.5mm; }
+.crh img { height:10.5mm; width:auto; }
+.pbody { flex:1; min-height:0; padding:6mm 9mm 4mm; display:flex; flex-direction:column; }
+.psig { height:11mm; flex:none; display:flex; align-items:center;
+        justify-content:space-between; padding:0 9mm; border-top:.3mm solid var(--rule);
+        font:400 6.2pt/1 var(--sans); color:var(--ink-3); }
+
+/* ---- A family page ----------------------------------------------------- */
+.fh { flex:none; display:flex; justify-content:space-between; align-items:flex-start; gap:8mm; }
+.fcode { display:inline-block; font:700 7pt/1 var(--sans); letter-spacing:.16em;
+         color:#fff; background:var(--accent); padding:1.9mm 2.8mm; border-radius:.8mm; }
+.fh h2 { font:400 24pt/1 var(--serif); letter-spacing:-.015em; color:var(--ink); margin:2.4mm 0 0; }
+.fh .sub { font:400 8.4pt/1.4 var(--sans); color:var(--ink-2); margin-top:2.2mm; max-width:120mm; }
+.fh .cnt { flex:none; text-align:right; font:600 6.8pt/1.6 var(--sans);
+           letter-spacing:.12em; text-transform:uppercase; color:var(--ink-3); }
+.crule { flex:none; height:.9mm; background:var(--accent); margin:4mm 0 5mm; }
+.cgrid { flex:1; min-height:0; display:grid; grid-template-columns:repeat(4,1fr);
+         gap:3.2mm 4mm; align-content:start; }
+.chip .sw { height:16mm; border:.18mm solid rgba(0,0,0,.16); border-radius:.7mm; }
+.chip .nm { font:500 7.2pt/1.15 var(--sans); color:var(--ink); margin-top:1.7mm; }
+.chip .cd { font:600 5.7pt/1 var(--sans); letter-spacing:.09em;
+            color:var(--ink-3); margin-top:.9mm; }
+
+/* ---- The guide and contents page --------------------------------------- */
+.ptitle { flex:none; margin-bottom:5mm; }
+.ptitle h2 { font:400 26pt/1 var(--serif); letter-spacing:-.015em; color:var(--ink); }
+.ptitle .k { font:400 9.6pt/1.5 var(--serif); color:var(--ink-2); margin-top:2.5mm; max-width:150mm; }
+.gcols { flex:1; min-height:0; display:grid; grid-template-columns:1fr 1.05fr; gap:10mm; }
+.gsec h3 { font:600 6.8pt/1 var(--sans); letter-spacing:.15em; text-transform:uppercase;
+           color:var(--red); margin-bottom:3mm; }
+.gsec p { font:400 8pt/1.5 var(--sans); color:var(--ink-2); margin-bottom:3.4mm; }
+.gsec p b { color:var(--ink); font-weight:600; }
+.gsec + .gsec { margin-top:7mm; }
+.ctab { width:100%; border-collapse:collapse; }
+.ctab td { padding:1.45mm 0; border-bottom:.2mm solid var(--rule-2);
+           font:400 7.6pt/1.3 var(--sans); color:var(--ink-2); vertical-align:middle; }
+.ctab td.d { width:7mm; }
+.ctab td.n { color:var(--ink); font-weight:500; }
+.ctab td.r { text-align:right; font:600 6.3pt/1 var(--sans);
+             letter-spacing:.08em; color:var(--ink-3); white-space:nowrap; }
+.dot { display:block; width:5mm; height:5mm; border-radius:50%;
+       border:.18mm solid rgba(0,0,0,.16); }
+.note { flex:none; margin-top:5mm; padding:4mm 5mm; background:var(--cream);
+        border-left:.9mm solid var(--gold); }
+.note b { color:var(--ink); font-weight:600; }
+.note p { font:400 7.6pt/1.45 var(--sans); color:var(--ink-2); }
+
+/* ---- Finishes and textures --------------------------------------------- */
+.ftab { width:100%; border-collapse:collapse; }
+.ftab th { text-align:left; font:600 6.4pt/1 var(--sans); letter-spacing:.14em;
+           text-transform:uppercase; color:var(--ink-3);
+           padding:0 0 2.2mm; border-bottom:.3mm solid var(--rule); }
+.ftab td { padding:2.8mm 0; border-bottom:.2mm solid var(--rule-2);
+           font:400 8pt/1.42 var(--sans); color:var(--ink-2); vertical-align:top; }
+.ftab td.n { font:400 10pt/1.2 var(--serif); color:var(--ink); width:36mm; }
+.ftab td.s { width:27mm; font:600 7.4pt/1.3 var(--sans); color:var(--accent); }
+.fsec { flex:none; }
+.fsec + .fsec { margin-top:9mm; }
+.fsec h3 { font:400 17pt/1 var(--serif); color:var(--ink); margin-bottom:1.6mm; }
+.fsec .k { font:400 7.8pt/1.45 var(--sans); color:var(--ink-2); margin-bottom:4mm; max-width:150mm; }
+
+/* ---- Back page ---------------------------------------------------------- */
+.bk { flex:1; min-height:0; display:flex; flex-direction:column; }
+.bk-grid { display:grid; grid-template-columns:1fr 1fr; gap:9mm; margin-top:6mm; }
+.bcard { padding:5mm 5.5mm; background:var(--cream); }
+.bcard h4 { font:600 6.6pt/1 var(--sans); letter-spacing:.15em; text-transform:uppercase;
+            color:var(--red); margin-bottom:2.6mm; }
+.bcard p { font:400 7.8pt/1.5 var(--sans); color:var(--ink-2); }
+.bk-contact { margin-top:auto; padding-top:7mm; border-top:.5mm solid var(--blue-deep);
+              display:flex; justify-content:space-between; align-items:flex-end; gap:8mm; }
+.bk-contact .l { font:400 8pt/1.6 var(--sans); color:var(--ink-2); }
+.bk-contact .l b { display:block; font:600 6.6pt/1 var(--sans); letter-spacing:.15em;
+                   text-transform:uppercase; color:var(--ink-3); margin-bottom:2mm; }
+.bk-contact .lg { width:40mm; }
+.sel { flex:none; margin-top:9mm; }
+.sel h3 { font:600 6.6pt/1 var(--sans); letter-spacing:.15em; text-transform:uppercase;
+          color:var(--red); margin-bottom:3mm; }
+.stab { width:100%; border-collapse:collapse; }
+.stab th { text-align:left; font:600 6.2pt/1 var(--sans); letter-spacing:.14em;
+           text-transform:uppercase; color:var(--ink-3);
+           padding:0 0 2.2mm; border-bottom:.3mm solid var(--rule); }
+.stab td { height:8.6mm; border-bottom:.2mm solid var(--rule); }
+
+/* The depth ladders on the guide page. Thirty-two bars to a strip, which is
+   the whole family at a glance and the clearest way to show that the number
+   in a code is a depth rather than a serial. */
+.lads { margin-top:1mm; }
+.lad + .lad { margin-top:3.4mm; }
+.lbars { display:grid; grid-template-columns:repeat(32,1fr); height:6.6mm;
+         border:.18mm solid rgba(0,0,0,.16); }
+.lbars i { display:block; }
+.llab { display:flex; justify-content:space-between; margin-top:1.1mm;
+        font:600 5.6pt/1 var(--sans); letter-spacing:.07em; color:var(--ink-3); }
+.llab .n { color:var(--ink-2); }
+`;
+
+function colourCollection() {
+  const d = 1;
+  const a = assets(d);
+  const C = loadColours();
+
+  /* Shades arrive as one flat list. Group them by family and sort by the
+     position in the code, so each column runs pale to deep in the order the
+     numbering already implies. */
+  const byFamily = Object.fromEntries(C.families.map(f => [f.code, []]));
+  for (const s of C.shades) if (byFamily[s.family]) byFamily[s.family].push(s);
+  for (const k of Object.keys(byFamily)) byFamily[k].sort((x, y) => x.pos - y.pos);
+
+  const runHead = right => `
+    <div class="crh">
+      <span class="b">Cloud Paints · The Colour Collection · ${esc(C.edition)}</span>
+      <span class="r">${esc(right)}<img src="${a}/img/brand/logo.png" alt="Cloud Paints"></span>
+    </div>`;
+
+  const sig = `
+    <div class="psig">
+      <span>Manufactured by ${esc(CO.legal)} · ${esc(CO.area)}</span>
+      <span class="r">${esc(CO.phones[0])} · ${esc(CO.email)} · ${esc(CO.web)}</span>
+    </div>`;
+
+  const sheet = inner => `<div class="sheet"><div class="pinner">${inner}</div></div>`;
+
+  /* ---- 1. Cover -------------------------------------------------------- */
+  const band = C.families.map(f => {
+    const fam = byFamily[f.code];
+    const pick = [40, 130, 220, 310].map(pos => fam.find(s => s.pos === pos) || fam[0]);
+    return `<div class="cb">${pick.map(s =>
+      `<i style="background:${esc(s.hex)}"></i>`).join('')}</div>`;
+  }).join('');
+
+  const cover = sheet(`
+    <div class="cov">
+      <div class="cov-top">
+        <img class="lg" src="${a}/img/brand/logo.png" alt="Cloud Paints">
+        <img class="kb" src="${a}/img/brand/kebs.png" alt="KEBS Standardisation Mark">
+      </div>
+      <div class="cov-ttl">
+        <span class="eyebrow">${esc(C.edition)} Edition · Interior &amp; Exterior</span>
+        <h1>The Colour<br><em>Collection</em></h1>
+        <p class="sub">${C.shades.length} shades in ${C.families.length} families, tinted to
+           order at our Industrial Area counter on emulsions and enamels alike.</p>
+      </div>
+      <div class="cov-band">${band}</div>
+      <div class="cov-foot">
+        <div class="cov-strap"><span class="b">Buy it</span>… <span class="r">Paint it</span>…
+             <span class="b">Love it</span>..!</div>
+        <div class="cov-meta">${C.shades.length} shades<br>${C.families.length} families<br>${esc(CO.web)}</div>
+      </div>
+    </div>`);
+
+  /* ---- 2. How to read it, and what is in it ---------------------------- */
+  /* Four families spread across the spectrum, each as a full 32-step strip.
+     Data only — it is the card explaining its own numbering. */
+  const LADDERS = ['RD', 'GN', 'BL', 'BR'].map(code => {
+    const f = C.families.find(x => x.code === code);
+    if (!f) return '';
+    return `
+      <div class="lad">
+        <div class="lbars">${byFamily[code].map(s =>
+          `<i style="background:${esc(s.hex)}"></i>`).join('')}</div>
+        <div class="llab"><span class="n">${esc(f.name)}</span>
+          <span>CP·${esc(code)}010 → ${esc(code)}320</span></div>
+      </div>`;
+  }).join('');
+
+  const contents = C.families.map(f => `
+    <tr>
+      <td class="d"><span class="dot" style="background:${esc(f.accent)}"></span></td>
+      <td class="n">${esc(f.name)}</td>
+      <td class="r">CP·${esc(f.code)}010–${esc(f.code)}320 · ${byFamily[f.code].length}</td>
+    </tr>`).join('');
+
+  const guide = sheet(runHead('How to read it') + `
+    <div class="pbody">
+      <div class="ptitle">
+        <h2>Reading the chart</h2>
+        <p class="k">Every shade carries a code, and the code is the thing to quote at the
+           counter. Names are easy to mishear, and more than one family has a shade
+           people will call &ldquo;the dusty rose&rdquo;.</p>
+      </div>
+      <div class="gcols">
+        <div>
+          <div class="gsec">
+            <h3>The code</h3>
+            <p><b>CP·RD010</b> breaks into three parts. <b>CP</b> is Cloud Paints.
+               <b>RD</b> is the family — Reds &amp; Crimsons. <b>010</b> is the position
+               within that family.</p>
+            <p>Positions run <b>010 to 320 in steps of ten</b>, palest to deepest. So
+               CP·RD010 is the lightest red on the card and CP·RD320 the darkest, with
+               thirty-two steps between. The same holds in all ${C.families.length}
+               families, which is why two shades the same distance down two different
+               pages sit at about the same depth.</p>
+          </div>
+          <div class="gsec">
+            <h3>Getting it mixed</h3>
+            <p>Any shade here can be tinted onto our emulsions and enamels at the
+               Industrial Area counter. Bring the code, the finish you want and the tin
+               size. Tinted shades may carry a surcharge depending on the colourant.</p>
+            <p>Ready-mixed whites and standard colours are on the shelf and need no
+               tinting — those are in the price list.</p>
+          </div>
+          <div class="gsec">
+            <h3>The same ladder in every family</h3>
+            <p>Each strip is one family, all thirty-two steps in order. Position in
+               the code is position on the strip, so CP·GN160 and CP·BL160 sit at
+               the same depth as each other.</p>
+            <div class="lads">${LADDERS}</div>
+          </div>
+        </div>
+        <div>
+          <div class="gsec">
+            <h3>The ${C.families.length} families</h3>
+            <table class="ctab">${contents}</table>
+          </div>
+          <div class="gsec">
+            <h3>Choosing on site</h3>
+            <p>Colour changes with the light it is under and with the sheen it is mixed
+               into: the same code reads deeper in matt than in silk, and a north-facing
+               room will cool it. Look at a shade on the wall it is destined for, at the
+               hour you will most often see it.</p>
+          </div>
+        </div>
+      </div>
+      <div class="note">
+        <p><b>These patches are printed ink, not paint.</b> Press and paper get a colour
+           close but never exactly — pale neutrals and strong reds drift the most. Use
+           the chart to find and name a shade, then ask for a brush-out of the actual
+           mixed paint before committing it to a wall.</p>
+      </div>
+    </div>` + sig);
+
+  /* ---- 3. One page per family ------------------------------------------ */
+  const familyPages = C.families.map(f => {
+    const fam = byFamily[f.code];
+    const chips = fam.map(s => `
+      <div class="chip">
+        <div class="sw" style="background:${esc(s.hex)}"></div>
+        <div class="nm">${esc(s.name)}</div>
+        <div class="cd">${esc(s.code)}</div>
+      </div>`).join('');
+
+    return sheet(runHead(f.name) + `
+      <div class="pbody" style="${accentVars(f.accent)}">
+        <div class="fh">
+          <div>
+            <span class="fcode">${esc(f.code)}</span>
+            <h2>${esc(f.name)}</h2>
+            <p class="sub">${esc(f.subtitle)}</p>
+          </div>
+          <div class="cnt">${fam.length} shades<br>CP·${esc(f.code)}010–${esc(f.code)}320</div>
+        </div>
+        <div class="crule"></div>
+        <div class="cgrid">${chips}</div>
+      </div>` + sig);
+  }).join('\n');
+
+  /* ---- 4. Finishes and textures ---------------------------------------- */
+  const finishRows = C.finishes.map(x => `
+    <tr><td class="n">${esc(x.name)}</td><td class="s">${esc(x.sheen)}</td>
+        <td>${esc(x.use)}</td></tr>`).join('');
+  const textureRows = C.textures.map(x => `
+    <tr><td class="n">${esc(x.name)}</td><td>${esc(x.use)}</td></tr>`).join('');
+
+  const finishes = sheet(runHead('Finishes & textures') + `
+    <div class="pbody" style="${accentVars('#1e3a8a')}">
+      <div class="ptitle">
+        <h2>Finish and texture</h2>
+        <p class="k">A colour is only half the decision. The same shade in matt and in
+           high-gloss will not look like the same colour, and it will not wear the same
+           way either.</p>
+      </div>
+      <div class="fsec">
+        <h3>Sheen levels</h3>
+        <p class="k">Sheen is how much light the dry film throws back. Low sheen hides an
+           uneven wall; high sheen takes scrubbing.</p>
+        <table class="ftab">
+          <tr><th>Finish</th><th>Sheen</th><th>Where it belongs</th></tr>
+          ${finishRows}
+        </table>
+      </div>
+      <div class="fsec">
+        <h3>Textured finishes</h3>
+        <p class="k">Applied by hand with a trowel, roller or sponge, so no two walls come
+           out quite alike. Quoted separately from the tinted ranges.</p>
+        <table class="ftab">
+          <tr><th>Texture</th><th>Effect</th></tr>
+          ${textureRows}
+        </table>
+      </div>
+      <div class="note">
+        <p><b>Sheen comes from the product, not from the tint.</b> Silk Vinyl gives a
+           silk finish, Vinyl Matt and SuperMatt a matt one, and Super Gloss or Gloss
+           Enamel the high-sheen end. Pick the line for the finish the surface needs,
+           then have it tinted to the code you chose here — the range flier sets out
+           what each line is for.</p>
+      </div>
+    </div>` + sig);
+
+  /* ---- 5. Back --------------------------------------------------------- */
+  const back = sheet(runHead('Ordering') + `
+    <div class="pbody">
+      <div class="bk">
+        <div class="ptitle">
+          <h2>From the card to the wall</h2>
+          <p class="k">Four things get a shade mixed correctly the first time.</p>
+        </div>
+        <div class="bk-grid">
+          <div class="bcard">
+            <h4>1 · Quote the code</h4>
+            <p>Read it off the chart — <b>CP·BL180</b>, not &ldquo;the mid blue&rdquo;. The
+               code is unambiguous, and it is what the tinting machine takes.</p>
+          </div>
+          <div class="bcard">
+            <h4>2 · Name the finish</h4>
+            <p>Matt, eggshell, satin, silk, semi-gloss or high-gloss. Sheen changes how
+               deep the colour reads, so settle it with the shade rather than after it.</p>
+          </div>
+          <div class="bcard">
+            <h4>3 · Bring your measurements</h4>
+            <p>Wall area, number of coats and the surface underneath. We work the quantity
+               out with you rather than selling you a round number.</p>
+          </div>
+          <div class="bcard">
+            <h4>4 · Ask for a brush-out</h4>
+            <p>A sample of the mixed paint on a card, to take home and look at in your own
+               light before the full batch is made up.</p>
+          </div>
+        </div>
+        <div class="sel">
+          <h3>Your selection</h3>
+          <table class="stab">
+            <tr><th>Room or surface</th><th>Shade code</th><th>Finish</th><th>Product and size</th></tr>
+            ${'<tr><td></td><td></td><td></td><td></td></tr>'.repeat(8)}
+          </table>
+        </div>
+        <div class="bk-contact">
+          <div class="l">
+            <b>Cloud Paints · ${esc(CO.legal)}</b>
+            ${esc(CO.street)}, ${esc(CO.area)}<br>
+            ${esc(CO.box)}<br>
+            ${esc(CO.phones[0])} · ${esc(CO.phones[1])} · ${esc(CO.phones[2])}<br>
+            ${esc(CO.email)} · ${esc(CO.web)}<br>
+            ${esc(CO.hours)}
+          </div>
+          <img class="lg" src="${a}/img/brand/logo.png" alt="Cloud Paints">
+        </div>
+      </div>
+    </div>` + sig);
+
+  return head('Cloud Paints — The Colour Collection', d, COLLECTION_CSS)
+       + [cover, guide, familyPages, finishes, back].join('\n') + tail;
+}
+
+/* ============================================================
    6. Build
    ============================================================ */
 console.log('Cloud Paints — building print masters\n');
@@ -1767,6 +2182,12 @@ console.log(`  brochures     ${BROCHURES.length} tri-folds, 2 sides each`);
 
 made.push(write('html/price-list.html', priceList()));
 console.log(`  price list    1 document`);
+
+made.push(write('html/colour-collection.html', colourCollection()));
+{
+  const C = loadColours();
+  console.log(`  colour card   ${C.shades.length} shades · ${C.families.length} families`);
+}
 
 const skipped = P.filter(p => !heroImage(p, 0)).map(p => p.name);
 console.log(`\n  ${made.length} HTML masters written to client-package/html/`);

@@ -42,6 +42,18 @@ export function loadProducts() {
   return ctx.window.CLOUD_PRODUCTS;
 }
 
+/* The colour collection is a second browser script beside the product
+   catalogue, loaded the same way. 17 families of 32 shades, each with a
+   Cloud Paints code, a name and a hex value. The shade card is generated
+   from it, so a colour renamed on the website is renamed on the chart. */
+export function loadColours() {
+  const src = fs.readFileSync(path.join(SITE, 'js', 'colours-data.js'), 'utf8');
+  const ctx = { window: {} };
+  vm.createContext(ctx);
+  vm.runInContext(src, ctx, { filename: 'colours-data.js' });
+  return ctx.window.CLOUD_COLOURS;
+}
+
 /* ---------- 3. Text ------------------------------------------------------ */
 export function esc(s) {
   return String(s == null ? '' : s)
