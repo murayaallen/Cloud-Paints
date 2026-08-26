@@ -19,7 +19,12 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+/* Normally the project itself. CP_ROOT points it somewhere else — which is
+   how the assembled deliverable gets served and checked as a standalone
+   site, rather than assumed to be complete because the files were copied. */
+const ROOT = process.env.CP_ROOT
+  ? path.resolve(process.env.CP_ROOT)
+  : path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const PORT = Number(process.argv[2]) || 8322;
 
 /* Serve the site from a subdirectory, the way a GitHub Pages project site
