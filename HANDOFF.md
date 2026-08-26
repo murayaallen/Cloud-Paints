@@ -1,7 +1,8 @@
-# Where things stand — 25 August 2026, end of day
+# Where things stand — 26 August 2026, end of day
 
 Everything is committed **and pushed** on branch `v2`.
-Last commit: `36878fe` — the range flier rework and the pack-size correction.
+Last commit: the handoff below; the work before it ends at `8fc1642` —
+the price list masthead and Iris on the A5 cover.
 
     https://github.com/murayaallen/Cloud-Paints  ·  branch v2
 
@@ -200,6 +201,75 @@ Accessibility › Visual effects › Animation effects is the toggle.
 - Five inline prose links are under the 24px tap-target minimum
   ("Try it now →" and friends). WCAG exempts links inline in a sentence. The
   "← Discover" back link is the one that is arguably not prose.
+
+---
+
+## 1b. The evening pass — 26 August 2026
+
+**Three faults in the hero, one cause behind two of them.**
+
+The rotation stopped at Roof Paint. Roof Paint is the last slide, so the freeze
+was the wrap failing, not that slide. `switchTo()` guards re-entry with a
+`busy` flag cleared in `done()`, and `done()` waits on the backdrop image's
+load or error. The brand stage has no backdrop, so the code clears the img's
+`src` — and an img with no src reports `complete` true with `naturalWidth` 0,
+which reads as "not ready". A handler went onto an element that had never been
+asked to fetch anything, where neither event can fire; `busy` stayed true for
+the session. It had only ever worked because the brand backdrop used to point
+at a file that 404'd, and `onerror` carried it through. Removing that request
+to stop the 404 removed the thing carrying the rotation through its own wrap.
+
+Then a Weatherguard tin appeared labelled Gloss Enamel with no backdrop. Same
+root: `onload`/`onerror` were never detached from the two `<img>` elements the
+crossfade reuses. A handler is only attached when the image is *not* already
+complete, and the rotation now preloads one slide ahead — so the next image
+usually **is** complete, no new handler is attached, and the stale one from two
+slides back fires on the cached load. An old `done()` ran, wrote its own label,
+and swapped the backdrop layers a second time, which is why the brand stage's
+empty backdrop stayed on screen through the slide after it. The same fault was
+already mislabelling the middle of the lap — slide 12 drawing road-marking
+under a Clear Varnish label — which nobody had reported. Handlers are detached
+before reuse and again on completion, and every switch carries a token that
+`done()` checks.
+
+The opening line-up replays on every lap now. It *is* the brand stage — it
+replaced the old logo lockup — so returning there without it made every lap
+after the first open on an empty hero.
+
+**Twenty-one product pages fired a 404 on every visit.** `product-page.js`
+requested `images/products/applied/<slug>-applied.jpg` on spec and deleted the
+figure again in an `onerror` handler. Only seven products own that photograph.
+`build/site.mjs` resolves it into `window.CLOUD_APPLIED` now, the same way the
+tin art already was.
+
+**Section order on a phone.** `js/mobile-order.js` hoists the product range and
+Real Walls of Kenya to sit under the hero, in that order, and restores them
+above 900px. A DOM move, not CSS `order`: these are direct children of `<body>`
+and making body a flex container would disturb the injected header, footer and
+cart drawer.
+
+**The splash waits for the tins.** `hero-intro.js` decodes the five line-up
+tins as soon as it parses and publishes the promise; `loader.js` holds the
+curtain on it, capped at 1200ms. `decode()` not `onload` — onload only means
+the bytes arrived. Measured: nothing added on a fast connection, about two
+seconds more on throttled 3G, no blank tin either way.
+
+**Naming.** Rocketex Wallmaster is the name everywhere. The body copy had been
+transcribed off the 2020 label, which reads `RockTEX` — a third spelling in the
+one place a customer reads a full sentence about the product. Note the physical
+tin is still printed ROCKTEX; that is pack artwork, not something the repo can
+change.
+
+**Print package.** The price list is led by CLOUD PAINTS rather than the
+company name, carries `Effective 01.08.2026`, and puts "Manufactured by
+Cloudsent Decor Ltd" at the foot. The A5 range flier cover carries six tins,
+Iris Plastic Emulsion fourth; the A4 fold still carries five.
+
+**New: `build/check-site.mjs`.** Loads every canonical URL in `sitemap.xml` in a
+real browser under the production CSP and reports console errors, failed
+requests, broken images, overflow at three viewports, metadata, and every
+internal link actually requested. It is what found the 404s. A clean run reads
+42 pages, 59 links, seven categories clean.
 
 ---
 
