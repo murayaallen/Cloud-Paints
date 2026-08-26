@@ -905,6 +905,83 @@ function brochure(cfg) {
    site it was small. The character budgets (txLen, noteLen) come DOWN by
    roughly the same proportion — bigger type in the same box means fewer
    words, and the alternative is copy that overflows and is silently cut. */
+/* ============================================================
+   What each product is FOR — one complete sentence
+   ============================================================
+   The catalogue's `short` is written for the website, where a
+   product card has room for two or three sentences. Dropped into a
+   flier cell 39mm wide it did not fit, so it was cut to a character
+   budget and the cut was marked with an ellipsis: "Superior
+   alkyd-based high gloss with excellent flow…". Fifteen products,
+   most of them trailing off mid-thought. A price list may abbreviate;
+   a range flier is the thing a customer reads to find out what a
+   product does, and half a sentence does not tell them.
+   
+   So the flier gets its own line per product: one sentence, saying
+   what the product is for, written to the width it has to live in.
+   Every one is drawn from that product's own `short`, `cat_label`
+   and `uses` in js/products-data.js — this is the same information
+   set tighter, not new claims about the paint. Facts that can go out
+   of date (sizes, coverage, prices) are still read from the
+   catalogue at build time and are not repeated here.
+   
+   Keep them under ~100 characters and ending in a full stop. Both
+   folds check it: see the assertion in flierLine below. */
+const FLIER_LINE = {
+  'silk-vinyl':          'A silky low-sheen finish for interior walls, easy to wipe clean in busy homes and offices.',
+  'vinyl-matt':          'A brilliant long-lasting white with a smooth non-reflective matt finish, inside and out.',
+  'iris-economy':        'An economy emulsion for interior walls and ceilings, with good hiding power over large areas.',
+  'supermatt':           'The smooth matt base coat under Cloud Paints decorative top coats, with excellent coverage.',
+  'weatherguard':        'An exterior wall finish with silicone that repels water and holds colour through harsh weather.',
+  'rocketex':            'A super-premium acrylic textured coating that hides surface imperfections on walls and façades.',
+  'super-gloss':         'A quick-drying high gloss for interior and exterior wood and metal, tough and hard-wearing.',
+  'gloss-enamel':        'An oil-based gloss enamel for wood, metal and plaster, inside and out.',
+  'clear-varnish':       'A quick-drying multipurpose clear varnish for doors, trim, furniture and interior joinery.',
+  'varnish-stain':       'A tinted polyurethane varnish that stains and protects timber in a single coat.',
+  'metal-primer':        'An anti-corrosive primer for gates, grilles and other ferrous metal before top coating.',
+  'universal-undercoat': 'An all-purpose undercoat giving wood, metal and primed masonry a smooth base for any top coat.',
+  'roof-paint':          'A durable flexible coating for galvanised roofing sheets and exposed steelwork.',
+  'road-marking':        'A fast-drying high-opacity paint for road, car park and warehouse floor markings.',
+  'turpentine':          'A professional pine-derived thinner for oil-based paints, enamels and varnishes.',
+};
+
+/* Resolve a product to its flier line. The table above is the answer for
+   everything the flier shows today. The fallback exists so that adding a
+   product to a panel renders something COMPLETE rather than something cut:
+   whole sentences that fit, else the shortest single sentence, else the
+   clause before an em-dash, else the tagline. Each of those ends where a
+   thought ends. Nothing here can emit an ellipsis, and the assertion says so
+   out loud if a hand-written line is ever edited past the width it has. */
+function flierLine(p, max) {
+  const written = FLIER_LINE[p.slug];
+  if (written) {
+    if (written.length > max) {
+      console.warn('  ! flier line for ' + p.slug + ' is ' + written.length
+        + ' chars, budget ' + max + ' — it will wrap further than the cell allows');
+    }
+    return written;
+  }
+
+  const t = String(p.short || p.full || '').replace(/\s+/g, ' ').trim();
+  const parts = t.match(/[^.!?]+[.!?]+(\s|$)/g) || (t ? [t] : []);
+
+  let run = '';
+  for (const s of parts) { if ((run + s).trim().length > max) break; run += s; }
+  if (run.trim()) return run.trim();
+
+  const shortest = parts.map(s => s.trim()).filter(s => s.length <= max)
+    .sort((a, b) => a.length - b.length)[0];
+  if (shortest) return shortest;
+
+  const clause = t.split(/\s+—\s+/)[0].trim().replace(/[,;:]$/, '');
+  if (clause && clause.length <= max) return clause + '.';
+
+  const tag = String(p.tagline || '').replace(/\s+/g, ' ').trim();
+  if (tag) return tag.replace(/[.\s]+$/, '') + '.';
+
+  return t.slice(0, max);
+}
+
 const RANGE_SIZES = {
   A4: { sheet: '420mm 297mm', w: '420mm', h: '297mm', panel: '210mm', k: 1,
         frame: '8mm', pad: '17mm',
@@ -912,7 +989,7 @@ const RANGE_SIZES = {
         sw: '7mm', lineH: '78mm', tinH: '46mm', tinGap: '3mm', rowIn: '4mm', rowUp: '26mm',
         lineup: ['silk-vinyl', 'weatherguard', 'vinyl-matt', 'supermatt', 'rocketex'],
         footFs: '8.4pt',
-        ipH2: '22pt', cols: 3, gridGap: '7mm 5mm', cellImg: '38mm', cellImgShort: '58mm',
+        ipH2: '22pt', cols: 3, gridGap: '7mm 5mm', cellImg: '38mm', cellImgShort: '74mm',
         nm: '11.4pt', tx: '7.8pt', sz: '7.2pt', txLen: 110,
         bcH3: '19.5pt', bcV: '8.8pt', restB: '9.2pt', restS: '7.6pt', aboutFs: '9.4pt',
         secGap: '8mm', calc: true, aboutParas: 2, ticks: 5, noteLen: 240 },
@@ -922,8 +999,8 @@ const RANGE_SIZES = {
         sw: '5mm', lineH: '55mm', tinH: '26mm', tinGap: '2mm', rowIn: '7mm', rowUp: '22mm',
         lineup: ['silk-vinyl', 'weatherguard', 'vinyl-matt', 'iris-economy', 'supermatt', 'rocketex'],
         footFs: '6.9pt',
-        ipH2: '15.5pt', cols: 3, gridGap: '5mm 3.5mm', cellImg: '24mm', cellImgShort: '38mm',
-        nm: '8.8pt', tx: '6.6pt', sz: '6.2pt', txLen: 56,
+        ipH2: '15.5pt', cols: 3, gridGap: '5mm 3.5mm', cellImg: '19mm', cellImgShort: '46mm',
+        nm: '8.8pt', tx: '6.6pt', sz: '6.2pt', txLen: 110,
         bcH3: '13.8pt', bcV: '7.2pt', restB: '7.6pt', restS: '6.5pt', aboutFs: '7.4pt',
         secGap: '4mm', calc: false, aboutParas: 2, ticks: 5, noteLen: 135, cellImg2: '29mm' },
 };
@@ -1168,7 +1245,7 @@ function rangeFlier(size) {
       <div class="pcell-img"><img src="${heroImage(p, d)}" alt="${esc(p.name)}"></div>
       <div class="cat">${esc(p.cat_label)}</div>
       <div class="nm">${esc(p.name)}</div>
-      <div class="tx">${esc(sentences(p.short, z.txLen))}</div>
+      <div class="tx">${esc(flierLine(p, z.txLen))}</div>
       <div class="sz">${esc((p.sizes || []).join(' · '))}</div>
     </div>`;
   };
