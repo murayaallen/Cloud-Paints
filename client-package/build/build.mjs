@@ -524,7 +524,14 @@ const POSTER_CSS = `
    fifteen divides by five. At four it was three full rows plus a row of
    three, which ran the sheet past its own trim. The textures below already
    sit five across, so the two grids now share a rhythm. */
-.grid  { display:grid; grid-template-columns:repeat(5,1fr); gap:4mm; }
+/* Six across, not five. The paint range was fifteen tins for as long as
+   Floor Paint had no photograph, and fifteen is exactly three rows of five.
+   Giving it one took the range to sixteen, which is four rows — the extra
+   row pushed the texture grid off the bottom of the sheet and the standards
+   line off the page entirely, with a lone turpentine tin sitting in a row of
+   its own. Six columns puts sixteen back into three rows and leaves the
+   height where it was. */
+.grid  { display:grid; grid-template-columns:repeat(6,1fr); gap:4mm; }
 .tgrid { display:grid; grid-template-columns:repeat(5,1fr); gap:4mm; }
 
 .tcard { border:.3mm solid var(--rule-2); border-radius:1.6mm; overflow:hidden; background:var(--paper); }
