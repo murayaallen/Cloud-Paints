@@ -1428,18 +1428,21 @@ const PRICE_CSS = `
 .sheet { --sheet-w:210mm; --sheet-h:297mm; }
 
 /* ---- The frame -------------------------------------------------------
-   A double keyline — a half-millimetre navy rule with a gold hairline set
-   just inside it — is the cheapest mark of quality available on a press:
-   both colours are already on the sheet, and it needs no lamination, no
-   die and no second pass. Everything on the page lives inside it, so a
-   trim that wanders half a millimetre never makes the layout look
-   crooked. The masthead and the signature bar run the full width of the
-   frame and the gold hairline crosses both, which ties the three together
-   instead of stacking three separate boxes. */
-.pinner { position:absolute; inset:8mm; border:.5mm solid var(--blue-deep);
+   Was a double keyline: a navy rule with a gold hairline set just inside
+   it. That is the vocabulary of a certificate, and on a sheet that now
+   carries fourteen ruled sections it was a third system of lines arguing
+   with the other two — the eye had to sort the frame from the section
+   rules from the cell rules.
+
+   One weighted edge instead. A navy bar across the head of the sheet, a
+   hairline in the warm rule colour around the other three sides, and the
+   navy signature bar already at the foot: the page is bracketed top and
+   bottom and merely bounded at the sides, so the frame sits behind the
+   content rather than competing with it. The gold has not been lost —
+   it still opens the terms block and marks the masthead rule. */
+.pinner { position:absolute; inset:8mm;
+          border:.35mm solid var(--rule); border-top:2.4mm solid var(--blue-deep);
           display:flex; flex-direction:column; overflow:hidden; }
-.pinner::after { content:''; position:absolute; inset:1.3mm; z-index:3;
-                 border:.2mm solid var(--gold); pointer-events:none; }
 
 /* ---- Masthead, page one ---------------------------------------------- */
 /* The name is set in the company's own two colours, which is only possible
@@ -1454,7 +1457,7 @@ const PRICE_CSS = `
    masthead keeps the structure the block was providing. */
 .ph { height:38mm; flex:none; background:var(--paper); color:var(--ink);
       padding:0 9mm; display:flex; justify-content:space-between;
-      align-items:center; gap:8mm; border-bottom:1.2mm solid var(--blue-deep); }
+      align-items:center; gap:8mm; border-bottom:.5mm solid var(--gold); }
 .ph .eyebrow { color:var(--red); }
 .ph h1 { font:400 37pt/1 var(--serif); letter-spacing:-.015em; margin-top:1.8mm; }
 .ph h1 .c-blue { color:#1e3a8a; }
@@ -1481,23 +1484,27 @@ const PRICE_CSS = `
 .pbody { flex:1; min-height:0; overflow:hidden; padding:4mm 9mm 0; }
 
 /* ---- Section heading -------------------------------------------------- */
-.grp { margin-bottom:5.5mm; }
+.grp { margin-bottom:4.5mm; }
 .grp:last-child { margin-bottom:0; }
-/* A section heading has to be findable at arm's length on a counter. A gold
-   pip, small caps and a hairline running off to the right was a caption: it
-   sat at the same weight as everything else on the sheet and the fourteen
-   sections all looked alike. It is now a tinted band with a navy bar down its
-   left edge — the same double-keyline vocabulary as the frame — which reads
-   as a division of the document rather than a line of text in it. */
-.gh { display:flex; align-items:center; gap:3mm; margin:0 0 2.4mm;
-      background:var(--cream); border-left:1.6mm solid var(--blue-deep);
-      border-bottom:.25mm solid var(--rule); padding:1.9mm 3mm 1.8mm; }
+/* A section heading has to be findable at arm's length. Small caps and a
+   hairline was a caption — fourteen of them all looked alike. A tinted band
+   fixed that and cost 4mm a section, which is a page over fourteen.
+
+   The type does the work instead. Fraunces at 12pt, navy, in sentence case,
+   over a heavy navy rule: it is the only serif on the sheet apart from the
+   masthead, so a section title cannot be mistaken for anything else on the
+   page, and it is 2mm shorter than the band it replaces. Sentence case
+   rather than caps because the names are long — INTERIOR / EXTERNAL
+   APPLICATION set in tracked capitals is a slower read than the same words
+   set as words. */
+.gh { display:flex; align-items:baseline; gap:3mm; margin:0 0 2mm;
+      padding:0 0 1.2mm; border-bottom:.6mm solid var(--blue-deep); }
 .gh .sq { display:none; }
-.gh .t { font:700 10pt/1 var(--sans); letter-spacing:.13em; text-transform:uppercase;
-         color:var(--blue-deep); white-space:nowrap; }
+.gh .t { font:400 12pt/1 var(--serif); letter-spacing:-.005em;
+         text-transform:none; color:var(--blue-deep); white-space:nowrap; }
 .gh .ln { flex:1; }
 
-.cards { display:grid; grid-template-columns:1fr 1fr; gap:2.5mm 4mm; }
+.cards { display:grid; grid-template-columns:1fr 1fr; gap:2.2mm 4mm; }
 
 /* ---- One product ------------------------------------------------------
    Ruled on all four sides and divided between pack sizes. The list ships
@@ -1506,29 +1513,38 @@ const PRICE_CSS = `
    open, borderless cell with a blank in it looks like. The writing rule
    runs the full width of its cell for the same reason: a short rule
    floating in a wide cell reads as decoration, a full one as a field. */
-.pc { border:.3mm solid var(--rule); border-radius:1.2mm; overflow:hidden;
-      display:flex; min-height:20.5mm; }
+.pc { border:.35mm solid #b3ab98; border-radius:1.2mm; overflow:hidden;
+      display:flex; min-height:19mm; }
 .pc-b { flex:1; min-width:0; display:flex; flex-direction:column; }
-.pc-h { background:var(--label); color:var(--label-ink); padding:2.4mm 3mm 2.2mm;
-        font:600 9.6pt/1.15 var(--sans); letter-spacing:.005em;
+/* The name in Fraunces, as the range flier sets its product names. A
+   coloured box with a serif name in it reads as a label on a tin; the same
+   box with a semibold sans name in it reads as a table header. */
+.pc-h { background:var(--label); color:var(--label-ink); padding:2mm 3mm 1.8mm;
+        font:400 11pt/1.1 var(--serif); letter-spacing:-.002em;
         display:flex; align-items:baseline; gap:2.4mm; }
 /* The index number sat in gold on every card. Gold on Road Marking's yellow
    is invisible, so it now takes the same ink as the name and steps back
    with opacity instead of with a second colour. */
-.pc-h .n { font:600 7pt/1 var(--sans); color:var(--label-ink); opacity:.62; flex:none;
+.pc-h .n { font:600 6.6pt/1 var(--sans); color:var(--label-ink); opacity:.6; flex:none;
            letter-spacing:.06em; font-variant-numeric:tabular-nums; }
 .pc-h .nm { min-width:0; }
 .pc-sizes { display:flex; flex:1; }
+/* The divider between packs was --rule, #d9d4c6, which is a hairline meant
+   for white ground. Across the tinted quantity strip it all but vanished, so
+   the strip read as one continuous band and the columns it was supposed to
+   separate did not look separated at all. It is darker and heavier now, and
+   the same weight over both the strip and the white below it, so one rule
+   runs the full height of the cell and the pairs are plainly divided. */
 .pc-sz { flex:1; min-width:0; display:flex; flex-direction:column;
-         border-right:.25mm solid var(--rule); }
+         border-right:.35mm solid #b3ab98; }
 .pc-sz:last-child { border-right:0; }
 /* The quantity is a column heading, not a caption. Tinted and ruled off, so
    the figure below it is unmistakably ITS figure. */
-.pc-sz .q { background:var(--cream-2); border-bottom:.25mm solid var(--rule);
-            padding:1.5mm 2mm; font:700 6.8pt/1 var(--sans); letter-spacing:.12em;
+.pc-sz .q { background:var(--cream-2); border-bottom:.35mm solid #b3ab98;
+            padding:1.2mm 2mm; font:700 6.8pt/1 var(--sans); letter-spacing:.12em;
             text-transform:uppercase; color:var(--ink-2);
             font-variant-numeric:tabular-nums; }
-.pc-sz .p { flex:1; display:flex; align-items:center; padding:1.9mm 2mm;
+.pc-sz .p { flex:1; display:flex; align-items:center; padding:1.5mm 2mm;
             font:600 10.5pt/1 var(--sans); color:var(--ink); white-space:nowrap;
             font-variant-numeric:tabular-nums; }
 /* Tight to the figure — Kshs.15,300 reads as one thing, Kshs. 15,300 as
@@ -1548,8 +1564,8 @@ const PRICE_CSS = `
 
 /* ---- Closing note ----------------------------------------------------- */
 .pnote { margin-top:1.5mm; background:var(--cream);
-         border:.3mm solid var(--rule); border-top:.9mm solid var(--gold);
-         padding:3.4mm 4.6mm; }
+         border:.35mm solid #b3ab98; border-top:.9mm solid var(--gold);
+         padding:3mm 4.4mm; }
 .pnote .h { font:700 8pt/1 var(--sans); letter-spacing:.14em; text-transform:uppercase;
             color:var(--blue-deep); margin-bottom:2.8mm; }
 .pnote p { font:400 8.2pt/1.5 var(--sans); color:var(--ink-2); }
@@ -1737,18 +1753,22 @@ function priceList() {
      section heading stranding at the foot of a page, and render.mjs measures
      every .pbody afterwards, so if these numbers ever drift the build says
      so rather than clipping in silence. */
-/* HEAD is 10 now, not 6. The section heading stopped being a line of text
-     and became a banded division of the document — a navy bar, a tinted
-     ground and 10pt caps — which is 7.2mm before its margin. That is the
-     cost of being able to find a section on a counter, and it is worth it:
-     fourteen sections that all looked alike were the complaint.
+/* Re-derived after the compaction pass, not adjusted. The frame's head bar
+     is 2.4mm and its other sides .35mm, so the usable height inside is
+     278.25mm rather than 280: a first page spends 38 on the masthead, 11 on
+     the signature bar and 4 on the body's opening air, and every page after
+     it spends 15 on the running head instead of 38.
 
-     ROW stays 24. The card is the same height it was — the quantity strip
-     and the price cell together come to what the old size line and price
-     line came to — it just reads as a column with a heading now instead of
-     two rows that happened to be stacked. */
-  const ROW = 24, HEAD = 10, GAP = 6, NOTE = 80;
-  const cap = i => (i === 0 ? 228 : 251);
+     HEAD 10 -> 8   the serif heading over a rule, in place of the band
+     ROW  24 -> 22  padding out of the name box, the quantity strip and the
+                    price cell, and .3mm off the card gutter. No type moved.
+     GAP   6 -> 5   between sections
+     NOTE 80 -> 76  padding out of the terms block
+
+     That is 573mm of sections against 721mm on three sheets, so the list is
+     back to three pages with the terms block on the last. */
+  const ROW = 22, HEAD = 8, GAP = 5, NOTE = 76;
+  const cap = i => (i === 0 ? 225 : 248);
 
   const cost = g => HEAD + Math.ceil(g.rows.length / 2) * ROW;
 
