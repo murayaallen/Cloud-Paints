@@ -38,24 +38,46 @@ os.chdir(ROOT)
 # place and committed — the sources are working files, not part of the
 # project, and a stale name here reports NOT FOUND on every run.
 INCOMING = {
-    'Floor Paint Red Oxide.png': 'floor-paint',
+    'thinner.png':              'standard-thinner',
+    'white-spirit-300x300.png': 'white-spirit',
 }
 
 SITE_OUT = os.path.join('images', 'buckets', 'hero')
 PRINT_OUT = os.path.join('client-package', 'assets', 'img', 'buckets')
 
 
-def key_white(im, cutoff=236):
-    """Transparent background without touching whites inside the artwork.
-    Only white reachable from the border is removed."""
+def key_background(im, cutoff=236, tol=70):
+    """Transparent background without touching the artwork.
+
+    Only background REACHABLE FROM THE BORDER is removed, so a white tin
+    body on white paper survives and so does a dark label on a dark ground.
+
+    Two kinds of ground turn up. Most tins are shot on white, and there the
+    test is simply "brighter than cutoff" — a fixed threshold, because a
+    white sweep is even and the risk is eating the tin's own highlights.
+    The Super High Gloss Thinner arrived on a dark grey sweep instead,
+    running 54 to 71 across the frame, and a brightness threshold cannot
+    express that. So when the border is dark the test becomes distance from
+    the border's median colour, which absorbs the gradient in one number and
+    stays far away from a white jerrican.
+    """
     a = np.array(im.convert('RGBA'))
     h, w, _ = a.shape
-    white = (a[:, :, 0] > cutoff) & (a[:, :, 1] > cutoff) & (a[:, :, 2] > cutoff)
+    rgb = a[:, :, :3].astype(np.int16)
+
+    edge = np.concatenate([rgb[0], rgb[h - 1], rgb[:, 0], rgb[:, w - 1]])
+    ground = np.median(edge, axis=0)
+
+    if ground.mean() > 200:
+        bg = (rgb[:, :, 0] > cutoff) & (rgb[:, :, 1] > cutoff) & (rgb[:, :, 2] > cutoff)
+    else:
+        bg = np.abs(rgb - ground).max(axis=2) <= tol
+
     seen = np.zeros((h, w), bool)
     q = deque()
 
     def push(y, x):
-        if white[y, x] and not seen[y, x]:
+        if bg[y, x] and not seen[y, x]:
             seen[y, x] = True
             q.append((y, x))
 
@@ -96,8 +118,23 @@ for src, slug in INCOMING.items():
     im = Image.open(src)
     before = '%dx%d %s' % (im.size[0], im.size[1], im.mode)
 
-    cut = feather(key_white(im))
-    box = cut.getbbox()          # trim the now-transparent margin away
+    # Some sources arrive already cut out. White Spirit did: RGBA, 72% of
+    # it transparent. Re-keying that would key against a border of pure
+    # black — the colour Pillow reports under a transparent pixel — and take
+    # the tin's own shadows with it. If the alpha is already doing work,
+    # trust it and only soften the edge.
+    supplied_alpha = (im.mode == 'RGBA'
+                      and (np.array(im.getchannel('A')) < 8).mean() > 0.05)
+    cut = feather(im.convert('RGBA') if supplied_alpha else key_background(im))
+    how = 'supplied alpha' if supplied_alpha else 'keyed'
+    # Trim on the ALPHA channel, not the image. getbbox() on an RGBA image
+    # counts any non-zero channel, and a supplied cut-out often keeps colour
+    # under its transparent pixels — White Spirit did, which made the bbox
+    # the whole 300x300 frame and trimmed nothing.
+    # Threshold first: getbbox() counts any alpha above zero, and a supplied
+    # cut-out carries a haze of 1-7 values across the whole frame that is
+    # invisible but bounds the box at the full 300x300.
+    box = cut.getchannel('A').point(lambda v: 255 if v > 8 else 0).getbbox()
     if box:
         cut = cut.crop(box)
 
@@ -113,6 +150,7 @@ for src, slug in INCOMING.items():
         cut.save(webp, 'WEBP', quality=90, method=6)
         cut.save(png, 'PNG', optimize=True)
 
+    after = '%s · %s' % (after, how)
     rows.append((src, slug, before, after,
                  '%.0fKB webp / %.0fKB png' % (
                      os.path.getsize(webp) / 1024 if os.path.exists(webp) else 0,

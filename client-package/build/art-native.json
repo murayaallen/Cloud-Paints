@@ -35,6 +35,10 @@
   672,
   844
  ],
+ "standard-thinner.png": [
+  200,
+  295
+ ],
  "super-gloss.png": [
   218,
   286
@@ -62,5 +66,9 @@
  "weatherguard.png": [
   650,
   844
+ ],
+ "white-spirit.png": [
+  145,
+  194
  ]
 }
