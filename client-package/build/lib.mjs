@@ -26,6 +26,12 @@ export const CO = {
   box:     'P.O. Box 44192–00100',
   phones:  ['+254 741 405 481', '+254 788 866 620', '+254 727 779 085'],
   whatsapp:'+254 741 405 481',
+  /* Both lines take WhatsApp. Kept separate from `phones` because the
+     order differs — the second WhatsApp line is the third phone. */
+  whatsapps:['0741 405 481', '0727 779 085'],
+  /* One handle on all three networks, which is worth saying once
+     rather than printing three times. */
+  social:  { handle:'cloudpaintskenya', on:['Instagram', 'Facebook', 'X'] },
   email:   'info@cloudpaints.co.ke',
   web:     'www.cloudpaints.co.ke',
   hours:   'Mon–Fri 08:00–18:00 · Sat 09:00–16:00',
@@ -267,6 +273,20 @@ export function footCompact() {
 export function footLine() {
   return `<div class="fine">${esc(CO.legal)} · ${esc(CO.street)}, ${esc(CO.area)} · `
        + `${esc(CO.phones[0])} · ${esc(CO.email)} · ${esc(CO.web)}</div>`;
+}
+
+/** Black or white, whichever is legible on the given ground.
+ *  readable() solves the same problem the other way round — it darkens a
+ *  colour until white type holds on it. That is right for an accent whose
+ *  exact value does not matter, and wrong for a tin's own label colour:
+ *  darkening Road Marking's yellow until white type passes turns it olive,
+ *  which is the one thing the label box must not do. So the colour stays
+ *  put and the type moves instead. */
+export function inkOn(hex) {
+  const L = lum(hex2rgb(hex));
+  const onWhite = 1.05 / (L + 0.05);
+  const onInk = (L + 0.05) / (lum(hex2rgb('#12142b')) + 0.05);
+  return onWhite >= onInk ? '#ffffff' : '#12142b';
 }
 
 /** Accent custom properties for a product or category colour. */

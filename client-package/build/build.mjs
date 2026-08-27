@@ -14,7 +14,7 @@ import path from 'node:path';
 import {
   ROOT, CO, loadProducts, loadColours, esc, clean, trim, firstSentence, sentences,
   assets, heroImage, thumbImage, appliedImage, isTexture,
-  head, tail, mast, foot, footCompact, footLine, accentVars, write, tint, readable,
+  head, tail, mast, foot, footCompact, footLine, accentVars, write, tint, readable, inkOn,
 } from './lib.mjs';
 import { PRICES, PRICE_GROUPS, CURRENCY, TRADE_NOTE, EFFECTIVE_FROM } from './prices.js';
 
@@ -1405,6 +1405,17 @@ function rangeFlier(size) {
    left to the browser: that keeps a group heading from stranding
    at the foot of a page with no rows under it.
    ============================================================ */
+/* Drawn here rather than linked, because the package has no icon set and a
+   three-icon dependency is not worth one. Stroked shapes, no fills to trap,
+   and they scale to whatever the row asks for. */
+const ICON = {
+  instagram: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1">
+    <rect x="3" y="3" width="18" height="18" rx="5.2"/><circle cx="12" cy="12" r="4.2"/>
+    <circle cx="17.3" cy="6.7" r="1.25" fill="currentColor" stroke="none"/></svg>`,
+  facebook: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-8h2.71l.4-3.13H13.5V7.88c0-.9.25-1.52 1.55-1.52h1.66V3.56c-.29-.04-1.28-.12-2.43-.12-2.4 0-4.05 1.47-4.05 4.17v2.26H7.5V13h2.73v8h3.27Z"/></svg>`,
+  x: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.53 3h3.05l-6.66 7.61L21.75 21h-6.13l-4.8-6.28L5.3 21H2.25l7.13-8.15L2.25 3h6.29l4.34 5.74L17.53 3Zm-1.07 16.2h1.69L7.62 4.71H5.8L16.46 19.2Z"/></svg>`,
+};
+
 const PRICE_CSS = `
 @page { size: 210mm 297mm; margin: 0; }
 .sheet { --sheet-w:210mm; --sheet-h:297mm; }
@@ -1438,23 +1449,25 @@ const PRICE_CSS = `
       padding:0 9mm; display:flex; justify-content:space-between;
       align-items:center; gap:8mm; border-bottom:1.2mm solid var(--blue-deep); }
 .ph .eyebrow { color:var(--red); }
-.ph h1 { font:400 33pt/1 var(--serif); letter-spacing:-.015em; margin-top:2.6mm; }
+.ph h1 { font:400 37pt/1 var(--serif); letter-spacing:-.015em; margin-top:2.6mm; }
 .ph h1 .c-blue { color:#1e3a8a; }
 .ph h1 .c-red  { color:#e11f29; font-style:italic; }
 .ph .cur { display:flex; align-items:center; gap:3mm; margin-top:3.6mm;
-           font:600 6.8pt/1 var(--sans); letter-spacing:.14em;
+           font:600 7.6pt/1 var(--sans); letter-spacing:.14em;
            text-transform:uppercase; color:var(--ink-3); }
 .ph .cur::before { content:''; width:12mm; height:.35mm; background:var(--gold); flex:none; }
 /* The logo and the standards mark are already artwork on white, so on a
    white ground they need no chip behind them. */
-.ph-mark { display:flex; align-items:center; gap:4.5mm; flex:none; }
-.ph-mark .lg { width:33mm; }
-.ph-mark .kb { width:12.5mm; }
+/* The standards mark used to sit beside the logo here, which read as part
+   of the brand lockup rather than as a certification. It has moved to the
+   terms block on the last page, next to the line that says what it is. */
+.ph-mark { display:flex; align-items:center; flex:none; }
+.ph-mark .lg { width:38mm; }
 
 /* ---- Running head, every page after the first ------------------------- */
 .prh { height:18mm; flex:none; display:flex; justify-content:space-between;
        align-items:center; padding:0 9mm; border-bottom:.3mm solid var(--rule); }
-.prh .b { font:600 7.2pt/1 var(--sans); letter-spacing:.16em;
+.prh .b { font:600 8pt/1 var(--sans); letter-spacing:.16em;
           text-transform:uppercase; color:var(--ink-3); }
 .prh img { height:12mm; width:auto; }   /* by height — the 18mm head clips a logo set by width */
 
@@ -1465,7 +1478,7 @@ const PRICE_CSS = `
 .grp:last-child { margin-bottom:0; }
 .gh { display:flex; align-items:center; gap:2.8mm; margin:0 0 5.5mm; }
 .gh .sq { width:1.9mm; height:1.9mm; background:var(--gold); flex:none; }
-.gh .t { font:700 8.4pt/1 var(--sans); letter-spacing:.14em; text-transform:uppercase;
+.gh .t { font:700 9.6pt/1 var(--sans); letter-spacing:.14em; text-transform:uppercase;
          color:var(--blue-deep); white-space:nowrap; }
 .gh .ln { flex:1; height:.25mm; background:var(--rule); }
 
@@ -1481,20 +1494,23 @@ const PRICE_CSS = `
 .pc { border:.3mm solid var(--rule); border-radius:1.2mm; overflow:hidden;
       display:flex; min-height:24mm; }
 .pc-b { flex:1; min-width:0; display:flex; flex-direction:column; }
-.pc-h { background:var(--accent); color:#fff; padding:2.9mm 3mm 2.7mm;
-        font:600 8.4pt/1.15 var(--sans); letter-spacing:.005em;
-        display:flex; align-items:baseline; gap:2.2mm; }
-.pc-h .n { font:600 6.2pt/1 var(--sans); color:var(--gold); flex:none;
+.pc-h { background:var(--label); color:var(--label-ink); padding:3.1mm 3.2mm 2.9mm;
+        font:600 9.6pt/1.15 var(--sans); letter-spacing:.005em;
+        display:flex; align-items:baseline; gap:2.4mm; }
+/* The index number sat in gold on every card. Gold on Road Marking's yellow
+   is invisible, so it now takes the same ink as the name and steps back
+   with opacity instead of with a second colour. */
+.pc-h .n { font:600 7pt/1 var(--sans); color:var(--label-ink); opacity:.62; flex:none;
            letter-spacing:.06em; font-variant-numeric:tabular-nums; }
 .pc-h .nm { min-width:0; }
 .pc-sizes { display:flex; flex:1; }
 .pc-sz { flex:1; min-width:0; padding:3mm 3mm 2.8mm; border-right:.25mm solid var(--rule-2); }
 .pc-sz:last-child { border-right:0; }
-.pc-sz .s { font:600 6.6pt/1 var(--sans); letter-spacing:.1em; text-transform:uppercase;
+.pc-sz .s { font:600 7.4pt/1 var(--sans); letter-spacing:.1em; text-transform:uppercase;
             color:var(--ink-2); font-variant-numeric:tabular-nums; }
-.pc-sz .p { font:600 9.5pt/1 var(--sans); color:var(--ink); margin-top:2.3mm;
+.pc-sz .p { font:600 11pt/1 var(--sans); color:var(--ink); margin-top:2.3mm;
             font-variant-numeric:tabular-nums; white-space:nowrap; }
-.pc-sz .p small { font-weight:500; font-size:6pt; color:var(--ink-3); letter-spacing:.06em; }
+.pc-sz .p small { font-weight:500; font-size:6.8pt; color:var(--ink-3); letter-spacing:.06em; }
 .pc-sz .p.na { color:var(--ink-3); font-weight:500; }
 .pc-sz .p.tbc { display:block; height:4mm; border-bottom:.3mm solid var(--ink-3); }
 
@@ -1511,21 +1527,87 @@ const PRICE_CSS = `
 .pnote { margin-top:2mm; background:var(--cream);
          border:.3mm solid var(--rule); border-top:.9mm solid var(--gold);
          padding:4.4mm 5mm; }
-.pnote .h { font:700 7pt/1 var(--sans); letter-spacing:.14em; text-transform:uppercase;
+.pnote .h { font:700 8pt/1 var(--sans); letter-spacing:.14em; text-transform:uppercase;
             color:var(--blue-deep); margin-bottom:2.8mm; }
-.pnote p { font:400 7.2pt/1.5 var(--sans); color:var(--ink-2); }
+.pnote p { font:400 8.2pt/1.5 var(--sans); color:var(--ink-2); }
 .pnote p + p { margin-top:1.9mm; }
 .pnote b { color:var(--ink); font-weight:600; }
+
+/* ---- The foot of the terms block -------------------------------------- */
+/* The standards mark, and every way of reaching the company, in one place
+   on the page a customer keeps. */
+.pn-foot { display:flex; align-items:flex-start; gap:6mm; margin-top:4.2mm;
+           padding-top:4mm; border-top:.3mm solid var(--rule); }
+.pn-mark { flex:none; display:flex; align-items:center; gap:2.6mm; }
+.pn-mark img { width:15mm; }
+.pn-mark span { font:500 6.8pt/1.35 var(--sans); color:var(--ink-2); }
+.pn-mark b { display:block; font:700 6.6pt/1.5 var(--sans); letter-spacing:.12em;
+             text-transform:uppercase; color:var(--blue-deep); }
+.pn-contact { flex:1; min-width:0; }
+.pn-contact p { font:400 7.8pt/1.5 var(--sans); color:var(--ink-2); }
+.pn-contact p + p { margin-top:.9mm; }
+.pn-contact b { color:var(--ink); font-weight:600; }
+.pn-social { display:flex; flex-wrap:wrap; gap:1.5mm 5.5mm; margin-top:2.8mm; }
+.pn-social span { display:inline-flex; align-items:center; gap:1.7mm;
+                  font:500 7.6pt/1 var(--sans); color:var(--ink-2); }
+.pn-social svg { width:4mm; height:4mm; flex:none; color:var(--blue-deep); }
 
 /* ---- Signature bar, every page ---------------------------------------- */
 /* One line, both halves, on every page. Nowrap because a second line here
    would be clipped by the frame rather than pushing anything down. */
+/* nowrap is deliberate — a second line here is clipped by the frame rather
+   than pushing anything down. That makes the width a hard budget, and the
+   type going up to 7.2pt spent more than there was: the web address lost its
+   last three characters. Back to 6.9pt with tighter tracking and narrower
+   side padding, which fits the line with room to spare. */
 .psig { height:11mm; flex:none; background:var(--blue-deep); color:#fff;
-        padding:0 9mm; display:flex; align-items:center;
-        justify-content:space-between; gap:6mm;
-        font:500 6.6pt/1.3 var(--sans); letter-spacing:.04em; white-space:nowrap; }
+        padding:0 7mm; display:flex; align-items:center;
+        justify-content:space-between; gap:5mm;
+        font:500 6.9pt/1.3 var(--sans); letter-spacing:.02em; white-space:nowrap; }
 .psig .r { color:var(--gold); }
 `;
+
+/* ============================================================
+   The colour on the tin
+   ============================================================
+   The name box on each price card used to take readable(p.primary) — the
+   catalogue's accent, darkened until white type held on it. That is a
+   sensible default and it was wrong here often enough to notice: SuperMatt
+   came out red when the tin is green, Roof Paint red when the tin is grey,
+   Road Marking near-black when the tin is yellow.
+
+   These are sampled from the product photographs in assets/img/buckets —
+   the middle band of the tin, ignoring the white body, the black type and
+   the greys, then the most common remaining hue. Four were corrected by eye
+   afterwards, because the largest area of colour and the colour a person
+   would name are not always the same thing:
+
+     iris-economy   the yellow frame, not the blue band inside it
+     roof-paint     the grey roof in the photograph
+     super-gloss    the violet frame, not the gold door in the photograph
+     clear-varnish  the wood tone, on a label that is mostly silver
+
+   Three products have no photograph, so there is nothing to sample and
+   they keep the catalogue colour. */
+const TIN_LABEL = {
+  'silk-vinyl':          '#8f236e',
+  'vinyl-matt':          '#252879',
+  'iris-economy':        '#f0c000',
+  'supermatt':           '#0f6b53',
+  'weatherguard':        '#c91c24',
+  'rocketex':            '#c81219',
+  'roof-paint':          '#5b6165',
+  'super-gloss':         '#7b3f98',
+  'gloss-enamel':        '#335e83',
+  'clear-varnish':       '#7a5c33',
+  'varnish-stain':       '#c8841e',
+  'metal-primer':        '#e7f03a',
+  'universal-undercoat': '#1a4486',
+  'road-marking':        '#edcb59',
+  'turpentine':          '#b3181c',
+};
+
+const labelColour = p => TIN_LABEL[p.slug] || readable(p.primary);
 
 function priceCards(d) {
   // Build every card once, tagged with the group it belongs to.
@@ -1559,10 +1641,15 @@ function priceCardHTML(entry, n) {
     return `<div class="pc-sz"><div class="s">${esc(s)}</div>`
          + `<div class="p">${v.toLocaleString('en-KE')} <small>${esc(CURRENCY)}</small></div></div>`;
   };
+  /* The name is set as the catalogue writes it, not upper-cased. Capitals
+     flatten the names that carry a capital of their own — SuperMatt,
+     RockShield, Rocketex — into SUPERMATT and ROCKSHIELD, which is the
+     brand spelled wrong in the one place a customer reads it. */
+  const bg = labelColour(p);
   return `
-  <div class="pc" style="${accentVars(p.primary)}">
+  <div class="pc" style="${accentVars(p.primary)};--label:${bg};--label-ink:${inkOn(bg)}">
     <div class="pc-b">
-      <div class="pc-h"><span class="n">${String(n).padStart(2, '0')}</span><span class="nm">${esc(p.name.toUpperCase())}</span></div>
+      <div class="pc-h"><span class="n">${String(n).padStart(2, '0')}</span><span class="nm">${esc(p.name)}</span></div>
       <div class="pc-sizes">${sizes.map(cell).join('')}</div>
     </div>
     ${src ? `<div class="pc-img"><img src="${src}" alt=""></div>`
@@ -1591,26 +1678,65 @@ function priceList() {
      Packing here rather than letting the browser flow it is what stops a
      section heading stranding at the foot of a page, and render.mjs measures
      every .pbody afterwards, so if these numbers ever drift the build says
-     so rather than clipping in silence. */
-  const ROW = 29, HEAD = 9, GAP = 8, NOTE = 40;
+     so rather than clipping in silence. It did exactly that when the type
+     went up and the terms block grew — page 2 reported 86px of spill, which
+     is where the numbers below come from rather than from a fresh guess:
+
+       ROW  29 -> 29   unchanged. The first guess raised it, on the
+                       assumption that bigger pack sizes and prices make a
+                       taller card. They do not: .pc has min-height:24mm and
+                       the larger type still fits inside it, so the row pitch
+                       measures 28.7mm exactly as before. Raising it cost
+                       page one a whole section for nothing.
+       HEAD  9 -> 10   section headings up from 8.4pt to 9.6pt
+       NOTE 40 -> 86   the standards mark, three phone lines, WhatsApp, the
+                       web address and the social row all landed here. 86mm
+                       is the block measured on the sheet, not an allowance.
+
+     With these, page one holds three sections in exactly its 220mm. */
+  const ROW = 29, HEAD = 10, GAP = 8, NOTE = 86;
   const cap = i => (i === 0 ? 220 : 246);
 
   const cost = g => HEAD + Math.ceil(g.rows.length / 2) * ROW;
 
-  const pages = [];
-  let page = [], used = 0;
-  for (const g of groups) {
-    const add = cost(g) + (page.length ? GAP : 0);
-    if (page.length && used + add > cap(pages.length)) {
-      pages.push(page); page = [g]; used = cost(g);
-    } else {
-      page.push(g); used += add;
+  /* Pack to a ceiling, and report where everything landed. A `soft` ceiling
+     below the real one is what lets the sections be spread rather than
+     stacked; the real cap is still honoured, so a soft value can never
+     overfill a sheet. */
+  const layout = soft => {
+    const pages = [];
+    let page = [], used = 0;
+    for (const g of groups) {
+      const add = cost(g) + (page.length ? GAP : 0);
+      const limit = Math.min(soft, cap(pages.length));
+      if (page.length && used + add > limit) {
+        pages.push(page); page = [g]; used = cost(g);
+      } else {
+        page.push(g); used += add;
+      }
     }
-  }
-  if (page.length) pages.push(page);
+    if (page.length) pages.push(page);
+    // The note rides on the last page if it fits, otherwise it takes its own.
+    if (used + NOTE > cap(pages.length - 1)) pages.push([]);
+    return pages;
+  };
 
-  // The note goes on the last page only if it fits; otherwise it gets its own.
-  if (used + NOTE > cap(pages.length - 1)) pages.push([]);
+  /* Filling each sheet to the brim before starting the next is the fewest
+     pages the content can occupy, and it looked it: three sections packed
+     onto page one, two on page two with a hand's depth of white under them,
+     and the terms block alone on page three.
+
+     The page count is not negotiable — 505mm of content will not go on two
+     sheets. How it is distributed across them is. So take the greedy count
+     as the target, then find the TIGHTEST ceiling that still meets it.
+     Squeezing the ceiling forces sections down onto the later sheets until
+     they are evenly loaded, and the first value that still fits the target
+     is the most even one available. Here it turns 220/191/86 into roughly
+     144/144/201, with the terms block back on the last sheet of paint. */
+  const target = layout(Infinity).length;
+  let soft = 60;
+  while (soft < 300 && layout(soft).length > target) soft += 2;
+  const pages = layout(soft);
 
   let n = 0;
   const sheets = pages.map((groupsOnPage, i) => {
@@ -1629,7 +1755,6 @@ function priceList() {
             EFFECTIVE_FROM ? ' · Effective ' + esc(EFFECTIVE_FROM) : ''}</div>
         </div>
         <div class="ph-mark">
-          <img class="kb" src="${a}/img/brand/kebs.png" alt="KEBS Standardisation Mark">
           <img class="lg" src="${a}/img/brand/logo.png" alt="Cloud Paints">
         </div>
       </div>` : `
@@ -1655,9 +1780,24 @@ function priceList() {
         <p><b>Textured and decorative finishes</b> are quoted separately. They are
            sold by weight and applied by hand, so the figure depends on the wall —
            bring your measurements and ask for the decorative desk.</p>
-        <p><b>Manufactured by ${esc(CO.legal)}</b> · ${esc(CO.street)},
-           ${esc(CO.area)} · ${esc(CO.box)} · ${esc(CO.phones[0])} ·
-           ${esc(CO.phones[1])} · ${esc(CO.email)}</p>
+        <div class="pn-foot">
+          <div class="pn-mark">
+            <img src="${a}/img/brand/kebs.png" alt="KEBS Standardisation Mark">
+            <span><b>KEBS</b>Standardisation<br>Mark</span>
+          </div>
+          <div class="pn-contact">
+            <p><b>Manufactured by ${esc(CO.legal)}</b> · ${esc(CO.street)},
+               ${esc(CO.area)} · ${esc(CO.box)}</p>
+            <p><b>Call</b> ${CO.phones.map(esc).join(' · ')}</p>
+            <p><b>WhatsApp</b> ${esc(CO.whatsapps.join(' or '))}</p>
+            <p><b>Email</b> ${esc(CO.email)} &nbsp;·&nbsp; <b>Web</b> ${esc(CO.web)}</p>
+            <div class="pn-social">
+              <span>${ICON.instagram}${esc(CO.social.handle)}</span>
+              <span>${ICON.facebook}${esc(CO.social.handle)}</span>
+              <span>${ICON.x}${esc(CO.social.handle)}</span>
+            </div>
+          </div>
+        </div>
       </div>` : '';
 
     return `
