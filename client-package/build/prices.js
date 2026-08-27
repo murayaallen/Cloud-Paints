@@ -65,10 +65,8 @@ export const PRICE_LIST = [
   {
     title: 'Interior Application',
     rows: [
-      // The client's document says 13,950 for the 20L; corrected to 11,950
-      // on their instruction.
       { name: 'Silk Vinyl', art: 'silk-vinyl',
-        prices: { '20L': 11950, '4L': 2750, '1L': 780 } },
+        prices: { '20L': 13950, '4L': 2750, '1L': 780 } },
       { name: 'Vinyl Matt', art: 'vinyl-matt',
         prices: { '20L': 11950, '4L': 2350, '1L': 650 } },
       { name: 'SuperMatt Premium Grade', art: 'supermatt',
@@ -87,8 +85,11 @@ export const PRICE_LIST = [
   {
     title: 'Interior / External Application',
     rows: [
+      // The document prices this 20L at 11,900 and the Interior one at
+      // 11,950. Confirmed the same tin at the same price, so both read
+      // 11,950 and the two Vinyl Matt rows no longer disagree.
       { name: 'Vinyl Matt', art: 'vinyl-matt',
-        prices: { '20L': 11900, '4L': 2350, '1L': 650 } },
+        prices: { '20L': 11950, '4L': 2350, '1L': 650 } },
       { name: 'Transil-Stone Guard', art: null, colour: '#5b7080',
         prices: { '20L': 10400, '4L': 2050, '1L': 575 } },
     ],
