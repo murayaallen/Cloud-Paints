@@ -65,8 +65,10 @@ export const PRICE_LIST = [
   {
     title: 'Interior Application',
     rows: [
+      // The client's document says 13,950 for the 20L; corrected to 11,950
+      // on their instruction.
       { name: 'Silk Vinyl', art: 'silk-vinyl',
-        prices: { '20L': 13950, '4L': 2750, '1L': 780 } },
+        prices: { '20L': 11950, '4L': 2750, '1L': 780 } },
       { name: 'Vinyl Matt', art: 'vinyl-matt',
         prices: { '20L': 11950, '4L': 2350, '1L': 650 } },
       { name: 'SuperMatt Premium Grade', art: 'supermatt',
