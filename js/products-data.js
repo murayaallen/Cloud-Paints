@@ -266,7 +266,7 @@ window.CLOUD_PRODUCTS = [
     primary: '#b8243a',
     accent: '#d92843',
     image: 'images/buckets/SUPERMATT REV 4L.jpg',
-    sizes: ['30kg', '10kg'],
+    sizes: ['20L', '4L', '1L'],
     short: 'Trade-quality water-based emulsion undercoat with excellent coverage, filling properties and a long-lasting bright matt finish. The smooth base for every decorative top coat.',
     full: 'Cloud Paints SuperMatt is a trade quality emulsion paint used for both interior and exterior. A water-based undercoat that has an excellent coverage, finish and application properties. It also provides a smooth base for the top coat application of all decorative products. Its high-quality filling properties has made it ideal for use on all types of interior, exterior and masonry surfaces. Cloud Paints SuperMatt is a high quality, acrylic-based paint, fast drying with a long lasting bright matt finish.',
     features: [
@@ -553,7 +553,7 @@ window.CLOUD_PRODUCTS = [
     primary: '#1e3a8a',
     accent: '#3b5bdb',
     image: 'images/buckets/SUPER GLOSS 4L.jpg',
-    sizes: ['20L', '4L', '1L'],
+    sizes: ['4L', '1L'],
     short: 'Superior alkyd-based high gloss with excellent flow, giving surfaces a tough, durable high-gloss finish. Touch-dry in 1 hour. Formulated for tropical coastal weather conditions.',
     full: 'Cloud Super High Gloss is an alkyd-based superior Solvent-based formulation which offers excellent flow, giving surfaces a tough, durable high gloss finish. Cloud Super Gloss is formulated to offer maximum durability in extreme tropical coastal weather conditions. Self-undercoating, wipeable, non-yellowing. Suitable for use on plaster, wallboards, brickwork and stonework etc., over the appropriate primer and undercoat.',
     features: [
@@ -686,7 +686,7 @@ window.CLOUD_PRODUCTS = [
     primary: '#1a202c',
     accent: '#4a5568',
     image: 'images/buckets/ROAD MARKING 4L.jpg',
-    sizes: ['20L', '4L', '1L'],
+    sizes: ['4L', '1L'],
     short: 'Single-pack fast-drying road marking paint on a durable alkyd-modified chlorinated rubber resin. Clean high-visibility lines on concrete and bitumen. White, yellow and black.',
     full: 'Cloud Road Marking Paint is a single pack fast drying coating based on a durable alkyd-modified chlorinated rubber resin. It is most suitable for concrete and bitumen surfaces without bleeding or discolouration, providing clean lines of high visibility. Manufactured from high-quality pigments and a mixture of high-quality resins for added durability. Advantages: good flexibility, excellent adhesion and quick drying.',
     features: [
@@ -753,7 +753,7 @@ window.CLOUD_PRODUCTS = [
     primary: '#4a5568',
     accent: '#718096',
     image: 'images/buckets/metal-primer.jpg',
-    sizes: ['5L', '1L'],
+    sizes: ['4L', '1L'],
     short: 'Alkyd-based anti-corrosive primer for ferrous metal surfaces. Creates a tight, durable bond with the substrate and acts as the perfect foundation for Cloud Paints gloss enamel top coats.',
     full: 'Cloud Paints Metal Primer is an alkyd-based anti-corrosive primer formulated specifically for ferrous metal surfaces. Creates a tight, durable bond with the substrate and acts as the perfect undercoat foundation for any of our gloss enamel or industrial top coats. Inhibits rust and extends the service life of exposed steelwork.',
     features: [
@@ -882,7 +882,7 @@ window.CLOUD_PRODUCTS = [
     primary: '#92400e',
     accent: '#d69e2e',
     image: 'images/buckets/CLEAR VARNISH 4L.jpg',
-    sizes: ['20L', '4L', '1L'],
+    sizes: ['4L', '1L'],
     short: 'Quick-drying multipurpose clear varnish for interior woodwork. Blend of modified polyurethane alkyd resin and hardening agent that preserves the natural beauty of timber.',
     full: 'Cloud Multipurpose Clear Varnish is a quick-drying clear varnish formulated to produce a tough, gloss finish on interior woodwork. Recommended for use as a furniture finish and for general application on new or sanded door panels and frames, counters, timber pelmets, skirting boards, wall partitions etc. Manufactured from a blend of high-quality oil-modified polyurethane alkyd resin and a special hardening resin that maintains the natural beauty of the timber. Retains the natural beauty of timber · High spreading capacity and quick drying · Tough, hard-wearing abrasion-resistant clear gloss finish.',
     features: [
@@ -946,7 +946,7 @@ window.CLOUD_PRODUCTS = [
     brandClass: 'brand-varnish',
     primary: '#7c2d12',
     accent: '#c2410c',
-    sizes: ['5L', '1L'],
+    sizes: ['4L', '1L'],
     short: 'Tinted polyurethane alkyd varnish that stains and protects in a single coat. Deepens the natural look of wood with rich classic tones.',
     full: 'Cloud Paints Varnish Stain combines colour and protection in a single coat — adding rich, classic wood tones while sealing and protecting the surface. Built on the same polyurethane alkyd platform as Cloud Clear Varnish for hard-wearing, abrasion-resistant performance. Perfect for furniture, doors and trim where you want to deepen the natural look of wood without painting over the grain.',
     features: [

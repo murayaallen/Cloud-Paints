@@ -32,24 +32,27 @@ const SIZES = {
   'vinyl-matt':          ['20L', '4L', '1L'],
   'iris-economy':        ['20L', '4L', '1L'],
   'weatherguard':        ['20L', '4L', '1L'],
-  'super-gloss':         ['20L', '4L', '1L'],
-  'road-marking':        ['20L', '4L', '1L'],
-  'clear-varnish':       ['20L', '4L', '1L'],
 
-  // Sold by weight, not volume — a bagged masonry coating and a powder.
-  'supermatt':           ['30kg', '10kg'],
+  // SuperMatt is a liquid emulsion sold in tins, not a bagged powder. It
+  // was listed at 30kg/10kg with Rocketex, which is bagged; only Rocketex
+  // belongs there.
+  'supermatt':           ['20L', '4L', '1L'],
   'rocketex':            ['30kg', '5kg'],
 
-  // Four and one only.
+  // Four and one only. Super Gloss, Clear Varnish and Road Marking used to
+  // carry a 20L; Metal Primer and Varnish Stain a 5L. Neither is stocked.
   'gloss-enamel':        ['4L', '1L'],
   'universal-undercoat': ['4L', '1L'],
   'floor-paint':         ['4L', '1L'],
   'roof-paint':          ['4L', '1L'],
+  'super-gloss':         ['4L', '1L'],
+  'clear-varnish':       ['4L', '1L'],
+  'road-marking':        ['4L', '1L'],
+  'metal-primer':        ['4L', '1L'],
+  'varnish-stain':       ['4L', '1L'],
 
-  // Solvents and primers: five and one.
+  // Solvents: five and one.
   'turpentine':          ['5L', '1L'],
-  'metal-primer':        ['5L', '1L'],
-  'varnish-stain':       ['5L', '1L'],
   'white-spirit':        ['5L', '1L'],
   'standard-thinner':    ['5L', '1L'],
 };

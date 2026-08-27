@@ -17,6 +17,7 @@ window.CLOUD_ART = {
  "universal-undercoat": "images/buckets/hero/universal-undercoat.webp",
  "clear-varnish": "images/buckets/hero/clear-varnish.webp",
  "varnish-stain": "images/buckets/hero/varnish-stain.webp",
+ "floor-paint": "images/buckets/hero/floor-paint.webp",
  "turpentine": "images/buckets/hero/turpentine.webp",
  "cloud-stone-texture": "images/textures/cloud-stone-texture.jpg",
  "cloud-concrete-finish": "images/textures/cloud-concrete-finish.jpg",

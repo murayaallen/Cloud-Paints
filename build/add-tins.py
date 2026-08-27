@@ -34,10 +34,11 @@ WRITE = '--write' in sys.argv
 os.chdir(ROOT)
 
 # What arrived, and which product it is.
+# The current batch. Entries are removed once the prepared files are in
+# place and committed — the sources are working files, not part of the
+# project, and a stale name here reports NOT FOUND on every run.
 INCOMING = {
-    'metal primer tin.png':        'metal-primer',
-    'universal Undercoat Tin.png': 'universal-undercoat',
-    'varnish stain tin.png':       'varnish-stain',
+    'Floor Paint Red Oxide.png': 'floor-paint',
 }
 
 SITE_OUT = os.path.join('images', 'buckets', 'hero')

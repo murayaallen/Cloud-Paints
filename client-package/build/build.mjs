@@ -1445,14 +1445,14 @@ const PRICE_CSS = `
    ink coverage of anything here — a 44mm full-bleed navy band on 100gsm bond,
    which cockles the sheet and shows every fingerprint. A navy rule under the
    masthead keeps the structure the block was providing. */
-.ph { height:44mm; flex:none; background:var(--paper); color:var(--ink);
+.ph { height:38mm; flex:none; background:var(--paper); color:var(--ink);
       padding:0 9mm; display:flex; justify-content:space-between;
       align-items:center; gap:8mm; border-bottom:1.2mm solid var(--blue-deep); }
 .ph .eyebrow { color:var(--red); }
-.ph h1 { font:400 37pt/1 var(--serif); letter-spacing:-.015em; margin-top:2.6mm; }
+.ph h1 { font:400 37pt/1 var(--serif); letter-spacing:-.015em; margin-top:1.8mm; }
 .ph h1 .c-blue { color:#1e3a8a; }
 .ph h1 .c-red  { color:#e11f29; font-style:italic; }
-.ph .cur { display:flex; align-items:center; gap:3mm; margin-top:3.6mm;
+.ph .cur { display:flex; align-items:center; gap:3mm; margin-top:2.4mm;
            font:600 7.6pt/1 var(--sans); letter-spacing:.14em;
            text-transform:uppercase; color:var(--ink-3); }
 .ph .cur::before { content:''; width:12mm; height:.35mm; background:var(--gold); flex:none; }
@@ -1465,24 +1465,24 @@ const PRICE_CSS = `
 .ph-mark .lg { width:38mm; }
 
 /* ---- Running head, every page after the first ------------------------- */
-.prh { height:18mm; flex:none; display:flex; justify-content:space-between;
+.prh { height:15mm; flex:none; display:flex; justify-content:space-between;
        align-items:center; padding:0 9mm; border-bottom:.3mm solid var(--rule); }
 .prh .b { font:600 8pt/1 var(--sans); letter-spacing:.16em;
           text-transform:uppercase; color:var(--ink-3); }
 .prh img { height:12mm; width:auto; }   /* by height — the 18mm head clips a logo set by width */
 
-.pbody { flex:1; min-height:0; overflow:hidden; padding:6mm 9mm 0; }
+.pbody { flex:1; min-height:0; overflow:hidden; padding:4mm 9mm 0; }
 
 /* ---- Section heading -------------------------------------------------- */
-.grp { margin-bottom:8mm; }
+.grp { margin-bottom:5.5mm; }
 .grp:last-child { margin-bottom:0; }
-.gh { display:flex; align-items:center; gap:2.8mm; margin:0 0 5.5mm; }
+.gh { display:flex; align-items:center; gap:2.8mm; margin:0 0 3.6mm; }
 .gh .sq { width:1.9mm; height:1.9mm; background:var(--gold); flex:none; }
 .gh .t { font:700 9.6pt/1 var(--sans); letter-spacing:.14em; text-transform:uppercase;
          color:var(--blue-deep); white-space:nowrap; }
 .gh .ln { flex:1; height:.25mm; background:var(--rule); }
 
-.cards { display:grid; grid-template-columns:1fr 1fr; gap:4mm 5mm; }
+.cards { display:grid; grid-template-columns:1fr 1fr; gap:3mm 4mm; }
 
 /* ---- One product ------------------------------------------------------
    Ruled on all four sides and divided between pack sizes. The list ships
@@ -1492,9 +1492,9 @@ const PRICE_CSS = `
    runs the full width of its cell for the same reason: a short rule
    floating in a wide cell reads as decoration, a full one as a field. */
 .pc { border:.3mm solid var(--rule); border-radius:1.2mm; overflow:hidden;
-      display:flex; min-height:24mm; }
+      display:flex; min-height:20.5mm; }
 .pc-b { flex:1; min-width:0; display:flex; flex-direction:column; }
-.pc-h { background:var(--label); color:var(--label-ink); padding:3.1mm 3.2mm 2.9mm;
+.pc-h { background:var(--label); color:var(--label-ink); padding:2.4mm 3mm 2.2mm;
         font:600 9.6pt/1.15 var(--sans); letter-spacing:.005em;
         display:flex; align-items:baseline; gap:2.4mm; }
 /* The index number sat in gold on every card. Gold on Road Marking's yellow
@@ -1504,11 +1504,11 @@ const PRICE_CSS = `
            letter-spacing:.06em; font-variant-numeric:tabular-nums; }
 .pc-h .nm { min-width:0; }
 .pc-sizes { display:flex; flex:1; }
-.pc-sz { flex:1; min-width:0; padding:3mm 3mm 2.8mm; border-right:.25mm solid var(--rule-2); }
+.pc-sz { flex:1; min-width:0; padding:2.4mm 3mm 2.2mm; border-right:.25mm solid var(--rule-2); }
 .pc-sz:last-child { border-right:0; }
 .pc-sz .s { font:600 7.4pt/1 var(--sans); letter-spacing:.1em; text-transform:uppercase;
             color:var(--ink-2); font-variant-numeric:tabular-nums; }
-.pc-sz .p { font:600 11pt/1 var(--sans); color:var(--ink); margin-top:2.3mm;
+.pc-sz .p { font:600 11pt/1 var(--sans); color:var(--ink); margin-top:1.8mm;
             font-variant-numeric:tabular-nums; white-space:nowrap; }
 .pc-sz .p small { font-weight:500; font-size:6.8pt; color:var(--ink-3); letter-spacing:.06em; }
 .pc-sz .p.na { color:var(--ink-3); font-weight:500; }
@@ -1524,20 +1524,20 @@ const PRICE_CSS = `
 .pc-img--none { background:var(--cream-2); }
 
 /* ---- Closing note ----------------------------------------------------- */
-.pnote { margin-top:2mm; background:var(--cream);
+.pnote { margin-top:1.5mm; background:var(--cream);
          border:.3mm solid var(--rule); border-top:.9mm solid var(--gold);
-         padding:4.4mm 5mm; }
+         padding:3.4mm 4.6mm; }
 .pnote .h { font:700 8pt/1 var(--sans); letter-spacing:.14em; text-transform:uppercase;
             color:var(--blue-deep); margin-bottom:2.8mm; }
 .pnote p { font:400 8.2pt/1.5 var(--sans); color:var(--ink-2); }
-.pnote p + p { margin-top:1.9mm; }
+.pnote p + p { margin-top:1.4mm; }
 .pnote b { color:var(--ink); font-weight:600; }
 
 /* ---- The foot of the terms block -------------------------------------- */
 /* The standards mark, and every way of reaching the company, in one place
    on the page a customer keeps. */
-.pn-foot { display:flex; align-items:flex-start; gap:6mm; margin-top:4.2mm;
-           padding-top:4mm; border-top:.3mm solid var(--rule); }
+.pn-foot { display:flex; align-items:flex-start; gap:5mm; margin-top:3.2mm;
+           padding-top:3mm; border-top:.3mm solid var(--rule); }
 .pn-mark { flex:none; display:flex; align-items:center; gap:2.6mm; }
 .pn-mark img { width:15mm; }
 .pn-mark span { font:500 6.8pt/1.35 var(--sans); color:var(--ink-2); }
@@ -1547,7 +1547,7 @@ const PRICE_CSS = `
 .pn-contact p { font:400 7.8pt/1.5 var(--sans); color:var(--ink-2); }
 .pn-contact p + p { margin-top:.9mm; }
 .pn-contact b { color:var(--ink); font-weight:600; }
-.pn-social { display:flex; flex-wrap:wrap; gap:1.5mm 5.5mm; margin-top:2.8mm; }
+.pn-social { display:flex; flex-wrap:wrap; gap:1.5mm 5.5mm; margin-top:2.2mm; }
 .pn-social span { display:inline-flex; align-items:center; gap:1.7mm;
                   font:500 7.6pt/1 var(--sans); color:var(--ink-2); }
 .pn-social svg { width:4mm; height:4mm; flex:none; color:var(--blue-deep); }
@@ -1663,39 +1663,33 @@ function priceList() {
   const groups = priceCards(d);
 
   /* --- pagination -------------------------------------------------------
-     Measured from the CSS above rather than guessed. Inside the 8mm frame
-     there is 281mm of height; the masthead takes 44 and the running head 18,
-     the signature bar takes 11 on every page, and the body opens with 6mm of
-     air — so a first page has 220mm to fill and every page after it 246mm.
-     A card is 24mm and sits in a 4mm gutter, a section heading with its
-     margin costs 9mm, and one section is separated from the next by 8mm.
-     The closing note needs 40mm wherever it lands.
+     Measured off the sheet, not estimated. Inside the 8mm frame there is
+     281mm of height. A first page spends 38 on the masthead, 11 on the
+     signature bar and 4 on the body's opening air, leaving 228; every page
+     after it spends 15 on the running head instead of 38, leaving 251.
+
+     A card is 21.4mm over a 3mm gutter, a section heading with its margin
+     costs 7, one section is separated from the next by 5.5, and the terms
+     block needs 80 wherever it lands.
 
      The gap is charged between sections rather than after each one, because
      the last section on a page has its bottom margin collapsed away — count
      it and the page loses a card row it had room for.
 
+     These numbers came down across the board in the compaction pass. The
+     type did not move — it was raised on request and stays raised. Every
+     millimetre came out of spacing: the masthead lost 6, the running head
+     3, the card 3.5 off its minimum height, and the rest off padding,
+     gutters and margins. That is 347mm of sections against 479mm on two
+     sheets, so the list is back to two pages with the terms block on the
+     second, where it was before the contact details were added to it.
+
      Packing here rather than letting the browser flow it is what stops a
      section heading stranding at the foot of a page, and render.mjs measures
      every .pbody afterwards, so if these numbers ever drift the build says
-     so rather than clipping in silence. It did exactly that when the type
-     went up and the terms block grew — page 2 reported 86px of spill, which
-     is where the numbers below come from rather than from a fresh guess:
-
-       ROW  29 -> 29   unchanged. The first guess raised it, on the
-                       assumption that bigger pack sizes and prices make a
-                       taller card. They do not: .pc has min-height:24mm and
-                       the larger type still fits inside it, so the row pitch
-                       measures 28.7mm exactly as before. Raising it cost
-                       page one a whole section for nothing.
-       HEAD  9 -> 10   section headings up from 8.4pt to 9.6pt
-       NOTE 40 -> 86   the standards mark, three phone lines, WhatsApp, the
-                       web address and the social row all landed here. 86mm
-                       is the block measured on the sheet, not an allowance.
-
-     With these, page one holds three sections in exactly its 220mm. */
-  const ROW = 29, HEAD = 10, GAP = 8, NOTE = 86;
-  const cap = i => (i === 0 ? 220 : 246);
+     so rather than clipping in silence. */
+  const ROW = 25, HEAD = 7, GAP = 6, NOTE = 80;
+  const cap = i => (i === 0 ? 228 : 251);
 
   const cost = g => HEAD + Math.ceil(g.rows.length / 2) * ROW;
 
@@ -1779,7 +1773,7 @@ function priceList() {
            the colourant used.</p>
         <p><b>Textured and decorative finishes</b> are quoted separately. They are
            sold by weight and applied by hand, so the figure depends on the wall —
-           bring your measurements and ask for the decorative desk.</p>
+           bring your measurements and ask for the decorative deck.</p>
         <div class="pn-foot">
           <div class="pn-mark">
             <img src="${a}/img/brand/kebs.png" alt="KEBS Standardisation Mark">

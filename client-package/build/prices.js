@@ -44,9 +44,9 @@ export const PRICES = {
   'iris-economy':        { '20L': 0, '4L': 0, '1L': 0 },
 
   /* ---- Primers, sealers & undercoats ---- */
-  'supermatt':           { '30kg': 0, '10kg': 0 },
+  'supermatt':           { '20L': 0, '4L': 0, '1L': 0 },
   'universal-undercoat': { '4L': 0, '1L': 0 },
-  'metal-primer':        { '5L': 0, '1L': 0 },
+  'metal-primer':        { '4L': 0, '1L': 0 },
 
   /* ---- Exterior & roof ---- */
   'weatherguard':        { '20L': 0, '4L': 0, '1L': 0 },
@@ -55,13 +55,13 @@ export const PRICES = {
 
   /* ---- Wood & metal ---- */
   'gloss-enamel':        { '4L': 0, '1L': 0 },
-  'super-gloss':         { '20L': 0, '4L': 0, '1L': 0 },
-  'clear-varnish':       { '20L': 0, '4L': 0, '1L': 0 },
-  'varnish-stain':       { '5L': 0, '1L': 0 },
+  'super-gloss':         { '4L': 0, '1L': 0 },
+  'clear-varnish':       { '4L': 0, '1L': 0 },
+  'varnish-stain':       { '4L': 0, '1L': 0 },
 
   /* ---- Floor & road ---- */
   'floor-paint':         { '4L': 0, '1L': 0 },
-  'road-marking':        { '20L': 0, '4L': 0, '1L': 0 },
+  'road-marking':        { '4L': 0, '1L': 0 },
 
   /* ---- Solvents & thinners ---- */
   'white-spirit':        { '5L': 0, '1L': 0 },
