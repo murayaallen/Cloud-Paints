@@ -43,7 +43,9 @@
 
 export const EFFECTIVE_FROM = '01.08.2026';   // blank string prints no date
 
-export const CURRENCY = 'KSHS';
+// Printed as a prefix against every figure — Kshs.15,300 — so it is set
+// the way it reads, not in caps.
+export const CURRENCY = 'Kshs';
 
 // Trade/dealer note printed at the foot of the last page. Blank to omit.
 export const TRADE_NOTE =
@@ -103,9 +105,8 @@ export const PRICE_LIST = [
     rows: [
       { name: 'Roof Paint', art: 'roof-paint',
         prices: { '4L': 3200, '1L': 880 } },
-      // Priced blank in the client's list, so it prints a rule to write on.
       { name: 'Roof Paint Water Based', art: 'roof-paint',
-        prices: { '4L': 0, '1L': 0 } },
+        prices: { '4L': 3045, '1L': 850 } },
     ],
   },
   {
@@ -170,8 +171,9 @@ export const PRICE_LIST = [
         prices: { '5L': 1550, '1L': 330 } },
       { name: 'Turpentine', art: 'turpentine',
         prices: { '5L': 1400, '1L': 290 } },
-      // No photograph of its own; takes the unlabelled jerrican.
-      { name: 'Road Marking Thinner', art: 'generic-jerrican', colour: '#46566b',
+      // No photograph, and no stand-in: an unlabelled jerrican said nothing
+      // about the product that its own name did not already say.
+      { name: 'Road Marking Thinner', art: null, colour: '#46566b',
         prices: { '5L': 2280, '1L': 490 } },
     ],
   },

@@ -1483,11 +1483,19 @@ const PRICE_CSS = `
 /* ---- Section heading -------------------------------------------------- */
 .grp { margin-bottom:5.5mm; }
 .grp:last-child { margin-bottom:0; }
-.gh { display:flex; align-items:center; gap:2.8mm; margin:0 0 2.6mm; }
-.gh .sq { width:1.9mm; height:1.9mm; background:var(--gold); flex:none; }
-.gh .t { font:700 9.6pt/1 var(--sans); letter-spacing:.14em; text-transform:uppercase;
+/* A section heading has to be findable at arm's length on a counter. A gold
+   pip, small caps and a hairline running off to the right was a caption: it
+   sat at the same weight as everything else on the sheet and the fourteen
+   sections all looked alike. It is now a tinted band with a navy bar down its
+   left edge — the same double-keyline vocabulary as the frame — which reads
+   as a division of the document rather than a line of text in it. */
+.gh { display:flex; align-items:center; gap:3mm; margin:0 0 2.4mm;
+      background:var(--cream); border-left:1.6mm solid var(--blue-deep);
+      border-bottom:.25mm solid var(--rule); padding:1.9mm 3mm 1.8mm; }
+.gh .sq { display:none; }
+.gh .t { font:700 10pt/1 var(--sans); letter-spacing:.13em; text-transform:uppercase;
          color:var(--blue-deep); white-space:nowrap; }
-.gh .ln { flex:1; height:.25mm; background:var(--rule); }
+.gh .ln { flex:1; }
 
 .cards { display:grid; grid-template-columns:1fr 1fr; gap:2.5mm 4mm; }
 
@@ -1511,26 +1519,32 @@ const PRICE_CSS = `
            letter-spacing:.06em; font-variant-numeric:tabular-nums; }
 .pc-h .nm { min-width:0; }
 .pc-sizes { display:flex; flex:1; }
-.pc-sz { flex:1; min-width:0; padding:2.4mm 3mm 2.2mm; border-right:.25mm solid var(--rule-2); }
+.pc-sz { flex:1; min-width:0; display:flex; flex-direction:column;
+         border-right:.25mm solid var(--rule); }
 .pc-sz:last-child { border-right:0; }
-.pc-sz .s { display:flex; align-items:baseline; justify-content:space-between; gap:1.5mm;
-            font:600 7.4pt/1 var(--sans); letter-spacing:.1em; text-transform:uppercase;
-            color:var(--ink-2); font-variant-numeric:tabular-nums; }
-/* Lighter than the pack size beside it: the unit is what a customer is
-   looking for on this line, the currency is a reminder. */
-.pc-sz .s b { font:500 6pt/1 var(--sans); letter-spacing:.08em;
-              color:var(--ink-3); flex:none; }
-.pc-sz .p { font:600 11pt/1 var(--sans); color:var(--ink); margin-top:1.8mm;
-            font-variant-numeric:tabular-nums; white-space:nowrap; }
+/* The quantity is a column heading, not a caption. Tinted and ruled off, so
+   the figure below it is unmistakably ITS figure. */
+.pc-sz .q { background:var(--cream-2); border-bottom:.25mm solid var(--rule);
+            padding:1.5mm 2mm; font:700 6.8pt/1 var(--sans); letter-spacing:.12em;
+            text-transform:uppercase; color:var(--ink-2);
+            font-variant-numeric:tabular-nums; }
+.pc-sz .p { flex:1; display:flex; align-items:center; padding:1.9mm 2mm;
+            font:600 10.5pt/1 var(--sans); color:var(--ink); white-space:nowrap;
+            font-variant-numeric:tabular-nums; }
+/* Tight to the figure — Kshs.15,300 reads as one thing, Kshs. 15,300 as
+   two. Slightly smaller and lighter so the number still leads. */
+.pc-sz .p .cur { font:600 7pt/1 var(--sans); color:var(--ink-3);
+                 letter-spacing:0; margin-right:0; }
 .pc-sz .p.na { color:var(--ink-3); font-weight:500; }
-.pc-sz .p.tbc { display:block; height:4mm; border-bottom:.3mm solid var(--ink-3); }
+.pc-sz .p.tbc::after { content:''; display:block; width:100%;
+                       border-bottom:.3mm solid var(--ink-3); }
 
 /* Drawn only where there is a photograph. A row without one gives its
    width back to the prices instead of holding an empty panel open. */
-.pc-img { width:19mm; flex:none; background:var(--cream);
+.pc-img { width:15mm; flex:none; background:var(--cream);
           border-left:.3mm solid var(--rule-2);
           display:flex; align-items:center; justify-content:center; padding:2mm; }
-.pc-img img { max-height:19mm; width:auto; max-width:100%; object-fit:contain; }
+.pc-img img { max-height:17mm; width:auto; max-width:100%; object-fit:contain; }
 
 /* ---- Closing note ----------------------------------------------------- */
 .pnote { margin-top:1.5mm; background:var(--cream);
@@ -1653,23 +1667,24 @@ function priceCards(d) {
 
 function priceCardHTML(entry, n) {
   const { row, sizes, table, src } = entry;
-  /* The currency rides on the SIZE line, not the price line.
-     Set beside the figure it was unreadable: a cell in a three-size card is
-     22mm wide, "13,950" at 11pt spends most of that, and "KSHS" after it ran
-     into the next column. Set under the figure it cost every card 3mm of
-     height, which is a fourth page.
-     The size line has the room — "20L" leaves two thirds of the width
-     empty — so the unit line carries both the pack and the currency, and the
-     figure below it keeps its full width. */
-  const unit = s => `<div class="s"><span>${esc(s)}</span><b>${esc(CURRENCY)}</b></div>`;
+  /* Each pack size is a column with its own heading: the quantity sits in a
+     tinted strip and its price directly beneath, inside a ruled cell. It used
+     to be a row of sizes with a row of figures under it, which is the same
+     information and reads as two unrelated lines — nothing tied 4L to the
+     number below it except being roughly above it.
+
+     The currency prefixes the figure, as the client asked: Kshs.15,300. It
+     was tried after the number and would not fit, so the room came from the
+     picture column instead, which is 15mm rather than 19mm now. */
+  const money = v => `<span class="cur">${esc(CURRENCY)}.</span>${v.toLocaleString('en-KE')}`;
   const cell = s => {
     const v = table[s];
-    // Not offered in this pack: no size, no currency, just a dash.
+    const q = `<div class="q">${esc(s)}</div>`;
     if (v === null || v === undefined)
-      return `<div class="pc-sz"><div class="s"><span>${esc(s)}</span></div><div class="p na">—</div></div>`;
+      return `<div class="pc-sz">${q}<div class="p na">—</div></div>`;
     if (!v)
-      return `<div class="pc-sz">${unit(s)}<div class="p tbc"></div></div>`;
-    return `<div class="pc-sz">${unit(s)}<div class="p">${v.toLocaleString('en-KE')}</div></div>`;
+      return `<div class="pc-sz">${q}<div class="p tbc"></div></div>`;
+    return `<div class="pc-sz">${q}<div class="p">${money(v)}</div></div>`;
   };
   /* The name is the price list's own, not upper-cased. Capitals flatten the
      names that carry a capital of their own — SuperMatt, Rocktex — into
@@ -1722,13 +1737,17 @@ function priceList() {
      section heading stranding at the foot of a page, and render.mjs measures
      every .pbody afterwards, so if these numbers ever drift the build says
      so rather than clipping in silence. */
-/* 24 and 6, not 25 and 7. The client's list has fourteen sections and half
-     of them hold a single product, so the per-section overhead is what sets
-     the page count rather than the number of products: at 32mm a section the
-     seven middle sections came to 260mm and would not go on one sheet, which
-     forced a fourth page carrying 58%. At 30mm they come to 246mm and fit.
-     The 2mm came off the heading margin and the row gutter. */
-  const ROW = 24, HEAD = 6, GAP = 6, NOTE = 80;
+/* HEAD is 10 now, not 6. The section heading stopped being a line of text
+     and became a banded division of the document — a navy bar, a tinted
+     ground and 10pt caps — which is 7.2mm before its margin. That is the
+     cost of being able to find a section on a counter, and it is worth it:
+     fourteen sections that all looked alike were the complaint.
+
+     ROW stays 24. The card is the same height it was — the quantity strip
+     and the price cell together come to what the old size line and price
+     line came to — it just reads as a column with a heading now instead of
+     two rows that happened to be stacked. */
+  const ROW = 24, HEAD = 10, GAP = 6, NOTE = 80;
   const cap = i => (i === 0 ? 228 : 251);
 
   const cost = g => HEAD + Math.ceil(g.rows.length / 2) * ROW;
