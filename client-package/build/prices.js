@@ -180,8 +180,11 @@ export const PRICE_LIST = [
     rows: [
       { name: 'Metal Primer Red Oxide', art: 'metal-primer',
         prices: { '4L': 1140, '1L': 315 } },
+      // The client's document says 5L here; confirmed a slip — Gloss Enamel
+      // is a 4L tin, as the catalogue and every other document have it. The
+      // price is unchanged, only the pack it is against.
       { name: 'Gloss Enamel', art: 'gloss-enamel',
-        prices: { '5L': 1150, '1L': 314 } },
+        prices: { '4L': 1150, '1L': 314 } },
       { name: 'Iris Plastic Emulsion', art: 'iris-economy',
         prices: { '20L': 2150, '4L': 440, '1L': 150 } },
       { name: 'Roof Paint Economy', art: 'roof-paint',

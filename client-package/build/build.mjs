@@ -1513,8 +1513,13 @@ const PRICE_CSS = `
 .pc-sizes { display:flex; flex:1; }
 .pc-sz { flex:1; min-width:0; padding:2.4mm 3mm 2.2mm; border-right:.25mm solid var(--rule-2); }
 .pc-sz:last-child { border-right:0; }
-.pc-sz .s { font:600 7.4pt/1 var(--sans); letter-spacing:.1em; text-transform:uppercase;
+.pc-sz .s { display:flex; align-items:baseline; justify-content:space-between; gap:1.5mm;
+            font:600 7.4pt/1 var(--sans); letter-spacing:.1em; text-transform:uppercase;
             color:var(--ink-2); font-variant-numeric:tabular-nums; }
+/* Lighter than the pack size beside it: the unit is what a customer is
+   looking for on this line, the currency is a reminder. */
+.pc-sz .s b { font:500 6pt/1 var(--sans); letter-spacing:.08em;
+              color:var(--ink-3); flex:none; }
 .pc-sz .p { font:600 11pt/1 var(--sans); color:var(--ink); margin-top:1.8mm;
             font-variant-numeric:tabular-nums; white-space:nowrap; }
 .pc-sz .p.na { color:var(--ink-3); font-weight:500; }
@@ -1648,18 +1653,23 @@ function priceCards(d) {
 
 function priceCardHTML(entry, n) {
   const { row, sizes, table, src } = entry;
+  /* The currency rides on the SIZE line, not the price line.
+     Set beside the figure it was unreadable: a cell in a three-size card is
+     22mm wide, "13,950" at 11pt spends most of that, and "KSHS" after it ran
+     into the next column. Set under the figure it cost every card 3mm of
+     height, which is a fourth page.
+     The size line has the room — "20L" leaves two thirds of the width
+     empty — so the unit line carries both the pack and the currency, and the
+     figure below it keeps its full width. */
+  const unit = s => `<div class="s"><span>${esc(s)}</span><b>${esc(CURRENCY)}</b></div>`;
   const cell = s => {
     const v = table[s];
+    // Not offered in this pack: no size, no currency, just a dash.
     if (v === null || v === undefined)
-      return `<div class="pc-sz"><div class="s">${esc(s)}</div><div class="p na">—</div></div>`;
+      return `<div class="pc-sz"><div class="s"><span>${esc(s)}</span></div><div class="p na">—</div></div>`;
     if (!v)
-      return `<div class="pc-sz"><div class="s">${esc(s)}</div><div class="p tbc"></div></div>`;
-    /* No per-cell currency. The masthead already says ALL PRICES IN KENYA
-       SHILLINGS, and repeating KSHS against all sixty-odd figures cost each
-       one about a third of its cell — with real prices in place rather than
-       blank rules, "13,950 KSHS" ran straight into the next column. */
-    return `<div class="pc-sz"><div class="s">${esc(s)}</div>`
-         + `<div class="p">${v.toLocaleString('en-KE')}</div></div>`;
+      return `<div class="pc-sz">${unit(s)}<div class="p tbc"></div></div>`;
+    return `<div class="pc-sz">${unit(s)}<div class="p">${v.toLocaleString('en-KE')}</div></div>`;
   };
   /* The name is the price list's own, not upper-cased. Capitals flatten the
      names that carry a capital of their own — SuperMatt, Rocktex — into
