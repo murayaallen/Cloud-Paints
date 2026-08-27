@@ -38,8 +38,7 @@ os.chdir(ROOT)
 # place and committed — the sources are working files, not part of the
 # project, and a stale name here reports NOT FOUND on every run.
 INCOMING = {
-    'thinner.png':              'standard-thinner',
-    'white-spirit-300x300.png': 'white-spirit',
+    'new thinner.png': 'standard-thinner',
 }
 
 SITE_OUT = os.path.join('images', 'buckets', 'hero')

@@ -16,7 +16,7 @@ import {
   assets, heroImage, thumbImage, appliedImage, isTexture,
   head, tail, mast, foot, footCompact, footLine, accentVars, write, tint, readable, inkOn,
 } from './lib.mjs';
-import { PRICES, PRICE_GROUPS, CURRENCY, TRADE_NOTE, EFFECTIVE_FROM } from './prices.js';
+import { PRICE_LIST, CURRENCY, TRADE_NOTE, EFFECTIVE_FROM } from './prices.js';
 
 const P = loadProducts();
 const bySlug = Object.fromEntries(P.map(p => [p.slug, p]));
@@ -1483,13 +1483,13 @@ const PRICE_CSS = `
 /* ---- Section heading -------------------------------------------------- */
 .grp { margin-bottom:5.5mm; }
 .grp:last-child { margin-bottom:0; }
-.gh { display:flex; align-items:center; gap:2.8mm; margin:0 0 3.6mm; }
+.gh { display:flex; align-items:center; gap:2.8mm; margin:0 0 2.6mm; }
 .gh .sq { width:1.9mm; height:1.9mm; background:var(--gold); flex:none; }
 .gh .t { font:700 9.6pt/1 var(--sans); letter-spacing:.14em; text-transform:uppercase;
          color:var(--blue-deep); white-space:nowrap; }
 .gh .ln { flex:1; height:.25mm; background:var(--rule); }
 
-.cards { display:grid; grid-template-columns:1fr 1fr; gap:3mm 4mm; }
+.cards { display:grid; grid-template-columns:1fr 1fr; gap:2.5mm 4mm; }
 
 /* ---- One product ------------------------------------------------------
    Ruled on all four sides and divided between pack sizes. The list ships
@@ -1517,18 +1517,15 @@ const PRICE_CSS = `
             color:var(--ink-2); font-variant-numeric:tabular-nums; }
 .pc-sz .p { font:600 11pt/1 var(--sans); color:var(--ink); margin-top:1.8mm;
             font-variant-numeric:tabular-nums; white-space:nowrap; }
-.pc-sz .p small { font-weight:500; font-size:6.8pt; color:var(--ink-3); letter-spacing:.06em; }
 .pc-sz .p.na { color:var(--ink-3); font-weight:500; }
 .pc-sz .p.tbc { display:block; height:4mm; border-bottom:.3mm solid var(--ink-3); }
 
-/* The picture column is drawn whether or not there is a photograph to put
-   in it. Six lines have none, and a card that simply stops 19mm short of
-   its neighbour breaks the grid far more visibly than an empty panel. */
+/* Drawn only where there is a photograph. A row without one gives its
+   width back to the prices instead of holding an empty panel open. */
 .pc-img { width:19mm; flex:none; background:var(--cream);
           border-left:.3mm solid var(--rule-2);
           display:flex; align-items:center; justify-content:center; padding:2mm; }
 .pc-img img { max-height:19mm; width:auto; max-width:100%; object-fit:contain; }
-.pc-img--none { background:var(--cream-2); }
 
 /* ---- Closing note ----------------------------------------------------- */
 .pnote { margin-top:1.5mm; background:var(--cream);
@@ -1614,53 +1611,73 @@ const TIN_LABEL = {
   'turpentine':          '#b3181c',
 };
 
-const labelColour = p => TIN_LABEL[p.slug] || readable(p.primary);
+/* A price-list row, not a product. Most rows borrow a catalogue product's
+   photograph and take that tin's colour with it; a row with no photograph
+   states its own. Two rows sharing one tin share its colour, which is
+   right — Road Marking Yellow and Road Marking White/Black come out of the
+   same yellow-labelled tin. */
+const labelColour = row =>
+  row.colour
+  || TIN_LABEL[row.art]
+  || (bySlug[row.art] ? readable(bySlug[row.art].primary) : '#4a5568');
 
 function priceCards(d) {
-  // Build every card once, tagged with the group it belongs to.
-  return PRICE_GROUPS.map(g => {
-    const rows = g.slugs.map(slug => {
-      const p = bySlug[slug];
-      if (!p) return null;
-      const table = PRICES[slug] || {};
-      // Only sizes the product actually stocks, in the catalogue's order.
-      const sizes = (p.sizes || []).filter(s => s in table);
-      return { p, sizes, table, src: thumbImage(p, d) };
-    }).filter(Boolean);
-    /* Photographed tins first, the rest at the foot of their own section.
-       Scattered through the grid, an empty picture panel reads as artwork
-       that failed to load; collected at the bottom it reads as a deliberate
-       sub-list. Two passes rather than a comparator, so the order written
-       in prices.js survives inside each block. */
-    return { title: g.title,
-             rows: [...rows.filter(r => r.src), ...rows.filter(r => !r.src)] };
-  }).filter(g => g.rows.length);
+  /* Sections and rows exactly as prices.js states them. Rows are no longer
+     sorted to float the photographed ones up: that existed because an empty
+     picture panel scattered through the grid read as artwork that failed to
+     load. A row without a photograph now has no panel at all, so there is
+     nothing to collect at the foot, and the client's own order — which is
+     the order a customer will read at the counter — survives intact.
+
+     Sizes come from the row's price table, in the order written there.
+     They are deliberately not checked against js/products-data.js: a
+     variant's pack sizes are a fact about the variant, and several of these
+     rows have no catalogue product behind them at all. */
+  return PRICE_LIST
+    .map(g => ({
+      title: g.title,
+      rows: g.rows.map(row => ({
+        row,
+        sizes: Object.keys(row.prices),
+        table: row.prices,
+        src: row.art ? thumbImage({ slug: row.art }, d) : null,
+      })),
+    }))
+    .filter(g => g.rows.length);
 }
 
 function priceCardHTML(entry, n) {
-  const { p, sizes, table, src } = entry;
+  const { row, sizes, table, src } = entry;
   const cell = s => {
     const v = table[s];
     if (v === null || v === undefined)
       return `<div class="pc-sz"><div class="s">${esc(s)}</div><div class="p na">—</div></div>`;
     if (!v)
       return `<div class="pc-sz"><div class="s">${esc(s)}</div><div class="p tbc"></div></div>`;
+    /* No per-cell currency. The masthead already says ALL PRICES IN KENYA
+       SHILLINGS, and repeating KSHS against all sixty-odd figures cost each
+       one about a third of its cell — with real prices in place rather than
+       blank rules, "13,950 KSHS" ran straight into the next column. */
     return `<div class="pc-sz"><div class="s">${esc(s)}</div>`
-         + `<div class="p">${v.toLocaleString('en-KE')} <small>${esc(CURRENCY)}</small></div></div>`;
+         + `<div class="p">${v.toLocaleString('en-KE')}</div></div>`;
   };
-  /* The name is set as the catalogue writes it, not upper-cased. Capitals
-     flatten the names that carry a capital of their own — SuperMatt,
-     RockShield, Rocketex — into SUPERMATT and ROCKSHIELD, which is the
-     brand spelled wrong in the one place a customer reads it. */
-  const bg = labelColour(p);
+  /* The name is the price list's own, not upper-cased. Capitals flatten the
+     names that carry a capital of their own — SuperMatt, Rocktex — into
+     SUPERMATT and ROCKTEX, which is the brand spelled wrong in the one
+     place a customer reads it.
+
+     A row we hold no photograph of prints the prices alone. The panel used
+     to be drawn empty to keep the grid even; an empty cream rectangle beside
+     a priced line reads as a picture that failed to load, and now that whole
+     sections have no artwork it would have read that way repeatedly. */
+  const bg = labelColour(row);
   return `
-  <div class="pc" style="${accentVars(p.primary)};--label:${bg};--label-ink:${inkOn(bg)}">
+  <div class="pc" style="--label:${bg};--label-ink:${inkOn(bg)}">
     <div class="pc-b">
-      <div class="pc-h"><span class="n">${String(n).padStart(2, '0')}</span><span class="nm">${esc(p.name)}</span></div>
+      <div class="pc-h"><span class="n">${String(n).padStart(2, '0')}</span><span class="nm">${esc(row.name)}</span></div>
       <div class="pc-sizes">${sizes.map(cell).join('')}</div>
     </div>
-    ${src ? `<div class="pc-img"><img src="${src}" alt=""></div>`
-          : `<div class="pc-img pc-img--none"></div>`}
+    ${src ? `<div class="pc-img"><img src="${src}" alt=""></div>` : ''}
   </div>`;
 }
 
@@ -1695,7 +1712,13 @@ function priceList() {
      section heading stranding at the foot of a page, and render.mjs measures
      every .pbody afterwards, so if these numbers ever drift the build says
      so rather than clipping in silence. */
-  const ROW = 25, HEAD = 7, GAP = 6, NOTE = 80;
+/* 24 and 6, not 25 and 7. The client's list has fourteen sections and half
+     of them hold a single product, so the per-section overhead is what sets
+     the page count rather than the number of products: at 32mm a section the
+     seven middle sections came to 260mm and would not go on one sheet, which
+     forced a fourth page carrying 58%. At 30mm they come to 246mm and fit.
+     The 2mm came off the heading margin and the row gutter. */
+  const ROW = 24, HEAD = 6, GAP = 6, NOTE = 80;
   const cap = i => (i === 0 ? 228 : 251);
 
   const cost = g => HEAD + Math.ceil(g.rows.length / 2) * ROW;
@@ -1778,9 +1801,11 @@ function priceList() {
         <p><b>Colour tinting</b> is available at the Industrial Area counter on all
            emulsions and enamels. Tinted shades may carry a surcharge depending on
            the colourant used.</p>
-        <p><b>Textured and decorative finishes</b> are quoted separately. They are
-           sold by weight and applied by hand, so the figure depends on the wall —
-           bring your measurements and ask for the decorative deck.</p>
+        <p><b>Hand-applied decorative finishes</b> — Venetian Marble, Stone, Stucco
+           and the rest — are quoted separately. They are sold by weight and laid on
+           with a trowel, so the figure depends on the wall: bring your measurements
+           and ask for the decorative deck. The textured wall coatings priced above
+           are sold by the pail.</p>
         <div class="pn-foot">
           <div class="pn-mark">
             <img src="${a}/img/brand/kebs.png" alt="KEBS Standardisation Mark">
