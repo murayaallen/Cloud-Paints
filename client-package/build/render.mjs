@@ -43,6 +43,7 @@ const ROUTES = [
   { dir:  'html/fliers/a5', to: '3-product-fliers-A5' },
   { from: 'html/range-flier-a4.html', to: '6-range-flier/cloud-paints-range-flier-folds-to-A4.pdf' },
   { from: 'html/range-flier-a5.html', to: '6-range-flier/cloud-paints-range-flier-folds-to-A5.pdf' },
+  { from: 'html/range-sheet-a4.html', to: '6-range-flier/cloud-paints-range-A4-2page.pdf' },
   { dir:  'html/brochures', to: '4-brochures' },
   { from: 'html/price-list.html', to: '5-price-list/cloud-paints-price-list.pdf' },
   { from: 'html/colour-collection.html', to: '7-colour-collection/cloud-paints-colour-collection.pdf' },

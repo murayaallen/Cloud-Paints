@@ -14,7 +14,8 @@ whole package follows.
 | Folder | What it is | Size | Pages | Count |
 |---|---|---|---|---|
 | `pdf/0-colour-flier/` | **Colour treatment sample** — one product, complete, on a field of its own colour | A4, A5 | 1 | 2 |
-| `pdf/6-range-flier/` | **The whole range in one folded piece** — cover, two inner pages, back | folds to A4 / A5 | 2 | 2 |
+| `pdf/6-range-flier/` | **The whole range in one folded piece** — cover, then the range across the inside spread and the back | folds to A4 / A5 | 2 | 2 |
+| `pdf/6-range-flier/` | The same range **flat on A4, two sides** — for email, photocopying and stapling to a quotation | A4 | 2 | 1 |
 | `pdf/1-range-poster/` | The whole range on one sheet — wall poster for the showroom, dealer counters, trade stands | A2, A3 | 1 | 2 |
 | `pdf/2-product-fliers-A4/` | One product per sheet, full technical detail | A4 | 1 | 22 |
 | `pdf/3-product-fliers-A5/` | The hand-out version — same product, the essentials | A5 | 1 | 22 |
@@ -22,7 +23,7 @@ whole package follows.
 | `pdf/5-price-list/` | Trade and retail price list | A4 | 2 | 1 |
 | `pdf/7-colour-collection/` | **The full shade card** — 544 shades in 17 families, one family per page | A4 | 21 | 1 |
 
-**63 documents, 91 pages, 90 MB.** All RGB. Every glyph is embedded as a
+**70 documents, 100 pages, 98 MB.** All RGB. Every glyph is embedded as a
 vector outline, so nothing depends on a font being installed at the printer.
 Median document is 1.1 MB — small enough to send on WhatsApp or email.
 

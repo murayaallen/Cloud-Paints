@@ -998,6 +998,10 @@ const RANGE_SIZES = {
         footFs: '8.4pt',
         ipH2: '22pt', cols: 3, gridGap: '7mm 5mm', cellImg: '38mm', cellImgShort: '74mm',
         nm: '11.4pt', tx: '7.8pt', sz: '7.2pt', txLen: 110,
+        // The range panels: three across, and room for the tins on the cover.
+        rcols: 3, rowh: 23, chH: 10, catGap: 5, panelH: 263, contactH: 54,
+        rgap: '4mm 5mm', rcImg: '19mm', rcNm: '10pt', rcTx: '7.2pt', rcSz: '7pt',
+        chFs: '13pt', aboutW: '152mm', coverTins: true,
         bcH3: '19.5pt', bcV: '8.8pt', restB: '9.2pt', restS: '7.6pt', aboutFs: '9.4pt',
         secGap: '8mm', calc: true, aboutParas: 2, ticks: 5, noteLen: 240 },
   A5: { sheet: '297mm 210mm', w: '297mm', h: '210mm', panel: '148.5mm', k: 0.707,
@@ -1008,6 +1012,13 @@ const RANGE_SIZES = {
         footFs: '6.9pt',
         ipH2: '15.5pt', cols: 3, gridGap: '5mm 3.5mm', cellImg: '19mm', cellImgShort: '46mm',
         nm: '8.8pt', tx: '6.6pt', sz: '6.2pt', txLen: 110,
+        /* Two across on the small fold — three would leave 38mm a line, which
+           is not enough for a name, a description and the pack sizes. The
+           cover gives up its tin line-up here: the company's account of
+           itself is 950 characters and an A5 panel will not carry both. */
+        rcols: 2, rowh: 17, chH: 8, catGap: 4, panelH: 186, contactH: 46,
+        rgap: '3mm 3.5mm', rcImg: '13.5mm', rcNm: '7.7pt', rcTx: '5.9pt', rcSz: '5.8pt',
+        chFs: '9.5pt', aboutW: '114mm', coverTins: false,
         bcH3: '13.8pt', bcV: '7.2pt', restB: '7.6pt', restS: '6.5pt', aboutFs: '7.4pt',
         secGap: '4mm', calc: false, aboutParas: 2, ticks: 5, noteLen: 135, cellImg2: '29mm' },
 };
@@ -1032,7 +1043,43 @@ function strapColoured() {
     .join('<span class="s-dot">·</span>');
 }
 
-const rangeCss = z => `
+/* The range rows, shared by the folded flier and the flat A4 sheet. Kept
+   out of both templates so the two documents cannot drift apart in how a
+   line of the range is drawn. */
+const rangePanelCss = z => `/* ---- The range, by category -------------------------------------------
+   A line is its tin, what it is for, and the packs it comes in, set as a
+   row rather than a card: the picture is small and the words beside it are
+   what a customer reads. The pack sizes take the tin's own colour, which
+   ties the row to the photograph next to it without a second rule. */
+.cgrp + .cgrp { margin-top:${z.catGap}mm; }
+.ch { display:flex; align-items:baseline; gap:2.5mm; margin-bottom:2.4mm;
+      padding-bottom:1.2mm; border-bottom:.5mm solid var(--accent); }
+.ch h3 { font:400 ${z.chFs}/1 var(--serif); color:var(--accent); }
+.ch .ln { flex:1; }
+.ch .n { font:600 calc(${z.rcSz} * .95)/1 var(--sans); letter-spacing:.14em;
+         color:var(--ink-3); flex:none; }
+.rgrid { display:grid; grid-template-columns:repeat(${z.rcols},1fr); gap:${z.rgap}; }
+.rcell { display:flex; gap:2mm; align-items:flex-start; break-inside:avoid; }
+.rc-img { width:${z.rcImg}; flex:none; display:flex; align-items:flex-start;
+          justify-content:center; }
+.rc-img img { max-width:100%; max-height:${z.rcImg}; width:auto; }
+.rc-t { flex:1; min-width:0; }
+.rc-t .nm { font:400 ${z.rcNm}/1.1 var(--serif); color:var(--ink); }
+.rc-t .tx { font:400 ${z.rcTx}/1.32 var(--sans); color:var(--ink-2); margin-top:.7mm; }
+.rc-t .sz { font:600 ${z.rcSz}/1 var(--sans); letter-spacing:.06em; color:var(--pc);
+            margin-top:1.1mm; }
+`;
+
+const rangeCss = z => {
+/* With no tin line-up the cover's text column and its standards mark both
+   drop toward the foot; with one they stop above it. */
+const inBottom = z.coverTins
+  ? `calc(${z.rowUp} + ${z.tinH} + ${z.kebs} + 9mm)`
+  : `calc(${z.kebs} + 19mm)`;
+const markBottom = z.coverTins
+  ? `calc(${z.rowUp} + ${z.tinH} + 4mm)`
+  : `calc(${z.frame} + 11mm)`;
+return `
 @page { size: ${z.sheet}; margin: 0; }
 .sheet { --sheet-w:${z.w}; --sheet-h:${z.h}; --k:${z.k}; }
 .fold { display:flex; width:${z.w}; height:${z.h}; }
@@ -1085,7 +1132,7 @@ const rangeCss = z => `
    the tins and the standards mark was drawn straight over it. */
 .cover-in { position:absolute; z-index:2;
             top:${z.pad}; left:${z.pad}; right:${z.pad};
-            bottom:calc(${z.rowUp} + ${z.tinH} + ${z.kebs} + 9mm);
+            bottom:${inBottom};
             display:flex; flex-direction:column; align-items:center;
             justify-content:center; text-align:center; }
 .cover-in .swatch { justify-content:center; }
@@ -1113,7 +1160,7 @@ const rangeCss = z => `
 /* Directly above the line-up, so the mark reads as certifying what is
    underneath it. Positioned against the panel, clear of the tins. */
 .cover-mark { position:absolute; left:${z.frame}; right:${z.frame};
-              bottom:calc(${z.rowUp} + ${z.tinH} + 4mm);
+              bottom:${markBottom};
               display:flex; align-items:center; justify-content:center;
               gap:2.4mm; z-index:3; }
 .cover .cover-mark img { height:${z.kebs}; width:auto; background:#fff;
@@ -1159,8 +1206,26 @@ const rangeCss = z => `
 .pcell .nm  { font:400 ${z.nm}/1.1 var(--serif); color:var(--ink); margin:1mm 0 1.6mm; }
 .pcell .tx  { font:400 ${z.tx}/1.42 var(--sans); color:var(--ink-2); flex:1; }
 .pcell .sz  { font:500 ${z.sz}/1 var(--sans); color:var(--ink-3); letter-spacing:.05em;
+
               margin-top:2.4mm; padding-top:2mm; border-top:.25mm solid var(--rule-2);
               font-variant-numeric:tabular-nums; }
+
+${rangePanelCss(z)}
+
+/* ---- Contact, at the foot of the back panel --------------------------- */
+.rc-contact { margin-top:5mm; padding-top:3.6mm; border-top:.5mm solid var(--accent); }
+.rc-contact h3 { font:400 ${z.bcH3}/1 var(--serif); color:var(--ink); margin-bottom:3mm; }
+.rc-contact h3 em { font-style:italic; color:var(--accent); }
+.rc-grid { display:grid; grid-template-columns:1fr 1fr; gap:3mm 4mm; }
+.rc-grid .k { font:700 ${z.restS}/1 var(--sans); letter-spacing:.13em;
+              text-transform:uppercase; color:var(--accent); margin-bottom:1.2mm; }
+.rc-grid .v { font:400 ${z.bcV}/1.4 var(--sans); color:var(--ink-2); }
+
+/* ---- The company's account of itself, on the cover -------------------- */
+.cover-about { text-align:left; max-width:${z.aboutW}; }
+.cover-about p { font:400 ${z.aboutFs}/1.45 var(--sans); color:rgba(255,255,255,.88); }
+.cover-about p + p { margin-top:1.5mm; }
+.cover-about b { color:#fff; font-weight:600; }
 
 /* ---- back cover ---- */
 
@@ -1224,6 +1289,72 @@ const rangeCss = z => `
 .bc-grid .v { font:400 ${z.bcV}/1.45 var(--sans); color:rgba(255,255,255,.88); }
 .bc-grid .v b { color:#fff; font-weight:600; }
 `;
+};
+
+/* ---- Drawing one line of the range ------------------------------------
+   Shared by the folded flier and the flat A4 sheet. Both show the same range
+   from the same definition in prices.js; only the paper differs, so the row
+   itself must not.
+
+   A line is its tin, what it is for, and the packs it comes in. Lines we hold
+   no photograph of give the picture column back to the text rather than
+   holding an empty panel open beside them. */
+const rangeRowColour = row =>
+  row.colour
+  || TIN_LABEL[row.art]
+  || (bySlug[row.art] ? readable(bySlug[row.art].primary) : '#4a5568');
+
+function rangeRowCell(row, d) {
+  const src = row.art ? thumbImage({ slug: row.art }, d) : null;
+  return `
+    <div class="rcell" style="--pc:${rangeRowColour(row)}">
+      ${src ? `<div class="rc-img"><img src="${src}" alt="${esc(row.name)}"></div>` : ''}
+      <div class="rc-t">
+        <div class="nm">${esc(row.name)}</div>
+        <div class="tx">${esc(row.desc)}</div>
+        <div class="sz">${esc(Object.keys(row.prices).join(' · '))}</div>
+      </div>
+    </div>`;
+}
+
+/* The count that used to sit at the right of each heading is gone. On a price
+   list "9 lines" earns its place; here it printed a bare 1 beside half the
+   categories, which reads as a stray digit rather than a tally. */
+function rangeCatBlock(g, d) {
+  return `
+    <div class="cgrp">
+      <div class="ch"><h3>${esc(g.title)}</h3><span class="ln"></span></div>
+      <div class="rgrid">${g.rows.map(r => rangeRowCell(r, d)).join('')}</div>
+    </div>`;
+}
+
+/* Fill `slots` columns of the given budgets without ever dropping a category:
+   greedy first for the fewest, then the tightest ceiling that still meets it,
+   which spreads the categories instead of stacking them at the front. */
+function packRange(z, budgets) {
+  const cost = g => z.chH + Math.ceil(g.rows.length / z.rcols) * z.rowh;
+  const run = soft => {
+    const out = [];
+    let cur = [], used = 0;
+    for (const g of PRICE_LIST) {
+      const add = cost(g) + (cur.length ? z.catGap : 0);
+      const limit = Math.min(soft, budgets[Math.min(out.length, budgets.length - 1)]);
+      if (cur.length && used + add > limit) { out.push(cur); cur = [g]; used = cost(g); }
+      else { cur.push(g); used += add; }
+    }
+    if (cur.length) out.push(cur);
+    return out;
+  };
+  const want = budgets.length;
+  let soft = 60;
+  while (soft < 600 && run(soft).length > want) soft += 4;
+  let packed = run(soft);
+  if (packed.length > want) {
+    packed = [...packed.slice(0, want - 1), packed.slice(want - 1).flat()];
+  }
+  while (packed.length < want) packed.push([]);
+  return packed;
+}
 
 function rangeFlier(size) {
   const d = 1;
@@ -1231,54 +1362,58 @@ function rangeFlier(size) {
   const z = RANGE_SIZES[size];
 
   // The twelve studio tins, split so each inner panel holds one clear idea.
-  /* Metal Primer, Universal Undercoat and Varnish Stain have photographs now,
-     so they move out of the "Also in the range" list on the back and into the
-     spread. All three are primers and wood finishes, so they belong with the
-     trade panel — which takes it to nine, and the grid to three columns. The
-     wall panel keeps its six and uses the same three columns, so both sides
-     of the spread share one rhythm and only the row count differs. */
-  const WALLS = ['silk-vinyl', 'vinyl-matt', 'iris-economy', 'supermatt', 'weatherguard', 'rocketex'];
-  const TRADE = ['super-gloss', 'gloss-enamel', 'clear-varnish', 'varnish-stain',
-                 'metal-primer', 'universal-undercoat', 'roof-paint', 'road-marking', 'turpentine'];
-  const shown = new Set([...WALLS, ...TRADE]);
+  /* ---- The range, as the price list defines it ------------------------
+     The flier used to show fifteen products in two hand-written panels —
+     WALLS and TRADE — with Floor Paint, White Spirit and Standard Thinner
+     demoted to a text list because there were no photographs of them. There
+     are photographs of all of them now, and the price list has since grown
+     variants the flier had never carried: Weatherguard plain beside
+     Weatherguard with Silicone, Rocktex Tinted beside Plain, Road Marking
+     in yellow and in white/black, Roof Paint water-based and economy, and
+     four lines the catalogue has never held at all.
 
-  // Everything tinned that has no studio photograph, listed rather than shown.
-  const rest = P.filter(p => !isTexture(p) && !shown.has(p.slug));
+     So it reads the same PRICE_LIST the price list does. One definition of
+     the range, in its categories and its pack sizes, for both documents —
+     which is the only way the flier a customer takes home and the sheet on
+     the counter can agree about what is sold and in what tins. */
+  const RANGE = PRICE_LIST;
 
-  const cell = slug => {
-    const p = bySlug[slug];
-    return `
-    <div class="pcell" style="--pc:${readable(p.primary)}">
-      <div class="pcell-img"><img src="${heroImage(p, d)}" alt="${esc(p.name)}"></div>
-      <div class="cat">${esc(p.cat_label)}</div>
-      <div class="nm">${esc(p.name)}</div>
-      <div class="tx">${esc(flierLine(p, z.txLen))}</div>
-      <div class="sz">${esc((p.sizes || []).join(' · '))}</div>
-    </div>`;
-  };
+  const rowCell = row => rangeRowCell(row, d);
+  const catBlock = g => rangeCatBlock(g, d);
 
-  /* Six products in three columns is two rows; nine is three. Left at one
-     fixed tin height the shorter panel finished a third of the way up the
-     page with a hole under it. So the panel works out its own row count and
-     sizes the tin to fill the height it actually has — the two sides of the
-     spread end level, and the wall tins get to be larger, which they can
-     carry: they are the high-resolution photographs in the set. */
-  const innerPanel = (title, note, slugs, accent) => {
-    const rows = Math.ceil(slugs.length / z.cols);
-    const img = rows <= 2 ? z.cellImgShort : z.cellImg;
-    return `
-    <div class="pnl" style="${accentVars(accent)};--cell-img:${img}">
+  /* Fourteen categories over three panels — the inside spread and the back.
+     Same approach as the price list: filling each panel before starting the
+     next stacks everything at the front and leaves the last one bare, so
+     take the fewest panels greedy can manage and then find the tightest
+     ceiling that still meets it. The back panel's budget is short by the
+     contact block, which sits under the products there. */
+  /* Three product panels in a four-panel fold — the cover takes the fourth.
+     The last one is short by the contact block, which sits under its rows. */
+  const packed = packRange(z, [z.panelH, z.panelH, z.panelH - z.contactH]);
+
+  const productPanel = (groups, accent, last) => `
+    <div class="pnl" style="${accentVars(accent)}">
       <div class="frame"></div>
       <div class="ip">
-        <div class="ip-head">
-          <h2>${title}</h2>
-          <span class="n">${slugs.length} lines</span>
-        </div>
-        <p class="ip-note">${esc(sentences(note, z.noteLen))}</p>
-        <div class="pgrid">${slugs.map(cell).join('')}</div>
+        ${groups.map(catBlock).join('')}
+        ${last ? contactBlock : ''}
       </div>
     </div>`;
-  };
+
+  const contactBlock = `
+    <div class="rc-contact">
+      <h3>Come and see the <em>colour.</em></h3>
+      <div class="rc-grid">
+        <div><div class="k">Call or WhatsApp</div>
+          <div class="v"><b>${esc(CO.phones[0])}</b><br>${esc(CO.phones[1])}<br>${esc(CO.phones[2])}</div></div>
+        <div><div class="k">Visit the counter</div>
+          <div class="v"><b>${esc(CO.street)}</b><br>${esc(CO.area)}<br>${esc(CO.box)}</div></div>
+        <div><div class="k">Email &amp; web</div>
+          <div class="v">${esc(CO.email)}<br>${esc(CO.web)}</div></div>
+        <div><div class="k">Opening hours</div>
+          <div class="v">${esc(CO.hours)}<br>Sunday &amp; public holidays closed</div></div>
+      </div>
+    </div>`;
 
   const frontCover = `
     <div class="pnl cover">
@@ -1292,35 +1427,45 @@ function rangeFlier(size) {
         <span class="chip">
           <img src="${a}/img/brand/logo.png" alt="Cloud Paints">
         </span>
-        <div class="rule-g mt-3"></div>
+        <div class="rule-g mt-2"></div>
         <h1 class="mt-2">The complete<br><em>Cloud Paints</em> range</h1>
         <div class="swatch mt-2">
           ${SWATCHES.map(c => `<i style="background:${c}"></i>`).join('')}
         </div>
-        <p class="kick mt-2">Paints, coatings and decorative finishes manufactured in
-          Industrial Area, Nairobi — made for Kenyan walls, Kenyan weather and Kenyan
-          light, from the primer that goes on first to the topcoat everybody sees.</p>
-        <p class="kick mt-1">Every tin is mixed and tinted to your colour at our factory,
-          carries the KEBS Standardisation Mark, and comes with a technical datasheet.</p>
+
+        <!-- The company's own account of itself, moved here from the back
+             panel. It was the last thing a reader reached; it is the first
+             thing they should. The back panel took its place in the range. -->
+        <div class="cover-about mt-2">
+          <p><b>Cloud Paints&reg;</b> is the flagship Brand of Cloudsent D&eacute;cor Ltd,
+            a Nairobi manufacturer of Decorative Paints, Coatings and Solvents. We spent a
+            decade in home D&eacute;cor, Interior planning and Gypsum fittings before we
+            started making the Paint ourselves. Customer after customer asked where we
+            sourced it, and whether they could buy the same quality for their own projects.</p>
+          <p>Therefore, Cloud Paints Brand was born, which is a Trade Mark Brand in Kenya.
+            Everything is manufactured at Industrial Area, Nairobi to KEBS Standards. All
+            products are tested and awarded a Standard Mark of Quality (S/Mark). We know
+            what Kenyan Sun, Rain and Dust do to Walls because we have spent years
+            repainting them.</p>
+          <p>Bring Colour of your choice from our charts or from any Colour chart or paint
+            Sample to the company and we will <b>MATCH IT, MIX IT</b> and tell you honestly
+            the quantity of Paint you need for your project&hellip;<b>BIG or SMALL!</b></p>
+        </div>
+
         <p class="strap mt-2">${strapColoured()}</p>
       </div>
 
-      <!-- The standards mark sits with the product it certifies, not tucked
-           into the logo lockup where it reads as part of the brand. Kept a
-           sibling of .cover-line rather than a child: inside it, the rule
-           that sizes the tins to 30mm matched this image too and blew the
-           mark up to tin height, straight over the tagline. -->
       <div class="cover-mark">
         <img src="${a}/img/brand/kebs.png" alt="KEBS Standardisation Mark">
         <span><b>KEBS</b>Standardisation Mark</span>
       </div>
 
-      <div class="cover-line">
+      ${z.coverTins ? `<div class="cover-line">
         <div class="row">
           ${z.lineup
             .map(s => `<img src="${heroImage(bySlug[s], d)}" alt="${esc(bySlug[s].name)}">`).join('')}
         </div>
-      </div>
+      </div>` : ''}
 
       <div class="cover-foot">
         <span><b>Manufactured by</b><br>${esc(CO.legal)} · ${esc(CO.area)}</span>
@@ -1328,81 +1473,165 @@ function rangeFlier(size) {
       </div>
     </div>`;
 
-  const backCover = `
-    <div class="pnl" style="${accentVars('#1e3a8a')}">
-      <div class="frame"></div>
-      <div class="bc">
-        <div class="bc-h">About Cloud Paints</div>
-        <p class="about"><b>Cloud Paints is the flagship brand of Cloudsent Decor Ltd</b>,
-          a Nairobi Manufacturer of Decorative Paints, Coatings and Solvents. We spent a
-          decade in home décor, interior planning and gypsum fitting before we started
-          making the paint ourselves — customer after customer asked where we sourced it,
-          and whether they could buy the same quality for their own projects.</p>
-        ${z.aboutParas > 1 ? `<p class="about">So we built the plant. Everything is manufactured at Industrial
-          Area, Nairobi, to KEBS standards. All products are tested and awarded a Quality
-          Standardisation Mark, and we know what Kenyan sun, rain and dust do to a wall
-          because we have spent years repainting them. Bring a colour of your choice from
-          our charts, or any colour chart or paint sample, to the company and we will
-          match it, mix it, and tell you honestly the quantity of paint you need.</p>` : ''}
-
-        <div class="bc-h mt-4">Also in the range</div>
-        <div class="also2">
-          ${rest.map(p => {
-            const cat = p.cat_label && p.cat_label.toLowerCase() !== p.name.toLowerCase()
-              ? esc(p.cat_label) + ' · ' : '';
-            return `<div class="r"><b>${esc(p.name)}</b>
-            <span>${cat}${esc((p.sizes || []).join(' · '))}</span></div>`;
-          }).join('')}
-        </div>
-
-        <div class="bc-h mt-4">What you get at the counter</div>
-        <ul class="ticks ticks--tight bc-ticks">
-          <li>Mixed and tinted to your colour while you wait</li>
-          <li>Trade and contractor rates for stockists and painters</li>
-          <li>A technical datasheet for every line in the range</li>
-          ${z.ticks > 3 ? `<li>Delivery across Nairobi and upcountry</li>
-          <li>Colour matching from a photograph, a fabric or a chip</li>` : ''}
-        </ul>
-
-        ${z.calc ? `<div class="bc-calc">${coverageBlock()}</div>` : ''}
-
-        <div class="bc-contact">
-          <h3>Come and see the <em>colour.</em></h3>
-          <div class="bc-grid">
-            <div>
-              <div class="k">Call or WhatsApp</div>
-              <div class="v"><b>${esc(CO.phones[0])}</b><br>${esc(CO.phones[1])}<br>${esc(CO.phones[2])}</div>
-            </div>
-            <div>
-              <div class="k">Visit the counter</div>
-              <div class="v"><b>${esc(CO.street)}</b><br>${esc(CO.area)}<br>${esc(CO.box)}</div>
-            </div>
-            <div>
-              <div class="k">Email</div>
-              <div class="v">${esc(CO.email)}<br>${esc(CO.web)}</div>
-            </div>
-            <div>
-              <div class="k">Opening hours</div>
-              <div class="v">${esc(CO.hours)}<br>Sunday &amp; public holidays closed</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>`;
-
   return head(`Cloud Paints — the complete range (folds to ${size})`, d, rangeCss(z)) + `
-<!-- PAGE 1 · OUTSIDE — left to right: back cover | front cover -->
-<div class="sheet"><div class="fold">${backCover}${frontCover}</div></div>
+<!-- PAGE 1 · OUTSIDE — left to right: back panel | front cover -->
+<div class="sheet"><div class="fold">
+  ${productPanel(packed[2], '#7a5c33', true)}
+  ${frontCover}
+</div></div>
 
 <!-- PAGE 2 · INSIDE — left to right: inner left | inner right -->
 <div class="sheet"><div class="fold">
-  ${innerPanel('Walls, Inside and Out',
-    'Sheen is the decision most people get wrong. Silk lifts colour and wipes clean; matt hides an uneven wall and calms a bright room. Weatherguard and Rocketex take the weather outside, and SuperMatt is the base that makes any of them last.',
-    WALLS, '#1e3a8a')}
-  ${innerPanel('Wood, Metal, Roofs &amp; Road',
-    'Doors, Frames, Grills, Gates, Balustrades, Roofs and Car Parks all take a beating. These are the hard-drying finishes for them — and the thinner that keeps the brushes usable afterwards.',
-    TRADE, '#8b1e2c')}
+  ${productPanel(packed[0], '#1e3a8a', false)}
+  ${productPanel(packed[1], '#8b1e2c', false)}
 </div></div>` + tail;
+}
+
+/* ============================================================
+   4b. RANGE SHEET — flat A4, two pages
+   ============================================================
+   The same range as the folded flier, on paper that needs no folding:
+   two A4 sides to print, email or hand across a counter. The fold is the
+   better object to give away; this is the one that survives a photocopier
+   and an email attachment, and it is the only form of the range that fits
+   on a stapled quotation.
+
+   Two pages is the brief, and it is tight: fourteen categories and
+   twenty-nine lines against roughly 430mm of column. Three columns rather
+   than the fold's two, and the company's account of itself is set as a
+   band across the head of page one rather than given a panel of its own.
+   ============================================================ */
+const SHEET_Z = {
+  rcols: 3, rowh: 17, chH: 8, catGap: 4,
+  rgap: '3.5mm 5mm', rcImg: '14mm',
+  rcNm: '8.4pt', rcTx: '6.3pt', rcSz: '6.1pt', chFs: '11pt',
+};
+
+const SHEET_CSS = `
+@page { size: 210mm 297mm; margin: 0; }
+.sheet { --sheet-w:210mm; --sheet-h:297mm; }
+
+/* One weighted edge, as the price list has: a navy bar across the head, a
+   hairline on the other three sides, and the navy foot bar. */
+.rs { position:absolute; inset:8mm;
+      border:.35mm solid var(--rule); border-top:2.4mm solid var(--blue-deep);
+      display:flex; flex-direction:column; overflow:hidden; }
+
+.rs-head { flex:none; padding:5mm 8mm 4.5mm; border-bottom:.5mm solid var(--gold);
+           display:flex; gap:7mm; align-items:flex-start; }
+.rs-head .lg { width:34mm; flex:none; }
+.rs-head .kb { width:13mm; flex:none; }
+.rs-head h1 { font:400 25pt/1 var(--serif); letter-spacing:-.018em; color:var(--blue-deep); }
+.rs-head h1 em { font-style:italic; color:var(--red); }
+.rs-head .eyebrow { color:var(--red); }
+.rs-about { margin-top:2.6mm; column-count:2; column-gap:6mm; }
+.rs-about p { font:400 6.9pt/1.42 var(--sans); color:var(--ink-2); }
+.rs-about p + p { margin-top:1.4mm; }
+.rs-about b { color:var(--ink); font-weight:600; }
+
+.rs-run { flex:none; height:14mm; padding:0 8mm; display:flex; align-items:center;
+          justify-content:space-between; border-bottom:.5mm solid var(--gold); }
+.rs-run .b { font:600 7.4pt/1 var(--sans); letter-spacing:.15em;
+             text-transform:uppercase; color:var(--ink-3); }
+.rs-run img { width:26mm; }
+
+.rs-body { flex:1; min-height:0; overflow:hidden; padding:4.5mm 8mm 0; }
+
+.rs-foot { height:11mm; flex:none; background:var(--blue-deep); color:#fff;
+           padding:0 8mm; display:flex; align-items:center;
+           justify-content:space-between; gap:5mm;
+           font:500 6.9pt/1.3 var(--sans); letter-spacing:.02em; white-space:nowrap; }
+.rs-foot .r { color:var(--gold); }
+
+/* Contact, under the last of the range on page two. */
+.rc-contact { margin-top:5mm; padding-top:3.6mm; border-top:.5mm solid var(--accent); }
+.rc-contact h3 { font:400 15pt/1 var(--serif); color:var(--ink); margin-bottom:3mm; }
+.rc-contact h3 em { font-style:italic; color:var(--accent); }
+.rc-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:3mm 5mm; }
+.rc-grid .k { font:700 6.2pt/1 var(--sans); letter-spacing:.13em;
+              text-transform:uppercase; color:var(--accent); margin-bottom:1.2mm; }
+.rc-grid .v { font:400 7.2pt/1.4 var(--sans); color:var(--ink-2); }
+`;
+
+function rangeSheet() {
+  const d = 1;
+  const a = assets(d);
+  const z = SHEET_Z;
+
+  /* Inside the frame there is 281mm. Page one spends 46 on the masthead
+     band, page two 14 on the running head; both spend 11 on the foot bar
+     and 4.5 on the body's opening air. The contact block takes 46 off the
+     foot of page two. */
+  const packed = packRange(z, [281 - 46 - 11 - 4.5, 281 - 14 - 11 - 4.5 - 46]);
+
+  const contact = `
+    <div class="rc-contact" style="${accentVars('#1e3a8a')}">
+      <h3>Come and see the <em>colour.</em></h3>
+      <div class="rc-grid">
+        <div><div class="k">Call or WhatsApp</div>
+          <div class="v"><b>${esc(CO.phones[0])}</b><br>${esc(CO.phones[1])}<br>${esc(CO.phones[2])}</div></div>
+        <div><div class="k">Visit the counter</div>
+          <div class="v"><b>${esc(CO.street)}</b><br>${esc(CO.area)}<br>${esc(CO.box)}</div></div>
+        <div><div class="k">Email &amp; web</div>
+          <div class="v">${esc(CO.email)}<br>${esc(CO.web)}</div></div>
+        <div><div class="k">Opening hours</div>
+          <div class="v">${esc(CO.hours)}<br>Sunday &amp; public holidays closed</div></div>
+      </div>
+    </div>`;
+
+  const foot = `
+    <div class="rs-foot">
+      <span>Manufactured by ${esc(CO.legal)} · ${esc(CO.area)}</span>
+      <span class="r">${esc(CO.phones[0])} · ${esc(CO.email)} · ${esc(CO.web)}</span>
+    </div>`;
+
+  const head1 = `
+    <div class="rs-head">
+      <img class="lg" src="${a}/img/brand/logo.png" alt="Cloud Paints">
+      <div style="flex:1;min-width:0">
+        <span class="eyebrow">The complete range · ${PRICE_LIST.length} categories</span>
+        <h1>The complete <em>Cloud Paints</em> range</h1>
+        <div class="rs-about">
+          <p><b>Cloud Paints&reg;</b> is the flagship Brand of Cloudsent D&eacute;cor Ltd, a
+            Nairobi manufacturer of Decorative Paints, Coatings and Solvents. We spent a
+            decade in home D&eacute;cor, Interior planning and Gypsum fittings before we
+            started making the Paint ourselves. Customer after customer asked where we
+            sourced it, and whether they could buy the same quality for their own projects.</p>
+          <p>Therefore, Cloud Paints Brand was born, which is a Trade Mark Brand in Kenya.
+            Everything is manufactured at Industrial Area, Nairobi to KEBS Standards. All
+            products are tested and awarded a Standard Mark of Quality (S/Mark). We know what
+            Kenyan Sun, Rain and Dust do to Walls because we have spent years repainting them.</p>
+          <p>Bring Colour of your choice from our charts or from any Colour chart or paint
+            Sample to the company and we will <b>MATCH IT, MIX IT</b> and tell you honestly the
+            quantity of Paint you need for your project&hellip;<b>BIG or SMALL!</b></p>
+        </div>
+      </div>
+      <img class="kb" src="${a}/img/brand/kebs.png" alt="KEBS Standardisation Mark">
+    </div>`;
+
+  const head2 = `
+    <div class="rs-run">
+      <span class="b">Cloud Paints · The complete range</span>
+      <img src="${a}/img/brand/logo.png" alt="Cloud Paints">
+    </div>`;
+
+  const page = (header, groups, accent, last) => `
+<div class="sheet">
+  <div class="rs" style="${accentVars(accent)}">
+    ${header}
+    <div class="rs-body">
+      ${groups.map(g => rangeCatBlock(g, d)).join('')}
+      ${last ? contact : ''}
+    </div>
+    ${foot}
+  </div>
+</div>`;
+
+  return head('Cloud Paints — the complete range (A4)', d,
+              SHEET_CSS + rangePanelCss(z))
+       + page(head1, packed[0], '#1e3a8a', false)
+       + page(head2, packed[1], '#8b1e2c', true)
+       + tail;
 }
 
 /* ============================================================
@@ -2366,6 +2595,9 @@ console.log(`  colour flier  ${cs.name} — A4 + A5`);
 
 for (const s of ['A4', 'A5']) made.push(write(`html/range-flier-${s.toLowerCase()}.html`, rangeFlier(s)));
 console.log(`  range flier   folds to A4 · folds to A5`);
+
+made.push(write('html/range-sheet-a4.html', rangeSheet()));
+console.log(`  range sheet   flat A4, 2 pages`);
 
 for (const s of ['A2', 'A3']) made.push(write(`html/poster-range-${s.toLowerCase()}.html`, rangePoster(s)));
 console.log(`  range poster  A2 · A3`);
