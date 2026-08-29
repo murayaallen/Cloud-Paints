@@ -1759,14 +1759,20 @@ const PRICE_CSS = `
    Weight matters as much as colour here. The first pass drew them at .3mm
    and 24% black, which is a hairline for a diagram, not a rule for a table
    read at arm's length on a counter — at that weight the bands still looked
-   like blocks of tint with faint creases in them. They are .45mm at 55%
-   now, which is a line you can see rather than one you can find. */
+   like blocks of tint with faint creases in them.
+
+   The horizontals are heavier than the verticals, deliberately. At matched
+   weight they read as the fainter of the two: a vertical rule is 6mm long
+   between two cells and the eye takes all of it at once, while a horizontal
+   runs the whole 60mm of the card and already has a value change either
+   side of it, so the same line does less work. Verticals .45mm at 55%,
+   horizontals .7mm at 82%. */
 .pc { border-radius:1.6mm; overflow:hidden; display:flex; min-height:20mm;
       background:#fff; border:.5mm solid rgba(0,0,0,.62);
       box-shadow:0 .5mm 1.4mm rgba(0,0,0,.22); }
 .pc-b { flex:1; min-width:0; display:flex; flex-direction:column; }
 .pc-h { background:var(--label); color:var(--label-ink); padding:2.1mm 3.2mm 1.9mm;
-        border-bottom:.45mm solid rgba(0,0,0,.55);
+        border-bottom:.7mm solid rgba(0,0,0,.82);
         font:700 10.6pt/1.12 var(--sans); letter-spacing:.03em; text-transform:uppercase;
         display:flex; align-items:baseline; gap:2.6mm; }
 .pc-h .n { font:600 7.4pt/1 var(--sans); color:var(--label-ink); opacity:.62; flex:none;
@@ -1777,7 +1783,7 @@ const PRICE_CSS = `
          border-right:.45mm solid rgba(0,0,0,.55); }
 .pc-sz:last-child { border-right:0; }
 .pc-sz .q { background:var(--qty); color:var(--qty-ink);
-            border-bottom:.45mm solid rgba(0,0,0,.55);
+            border-bottom:.7mm solid rgba(0,0,0,.82);
             padding:1.3mm 2.2mm; font:700 8pt/1 var(--sans); letter-spacing:.1em;
             text-transform:uppercase; font-variant-numeric:tabular-nums; }
 /* The figure is set as large as its cell allows, not one size for all.
