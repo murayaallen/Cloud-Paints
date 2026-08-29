@@ -20,7 +20,8 @@ whole package follows.
 | `pdf/2-product-fliers-A4/` | One product per sheet, full technical detail | A4 | 1 | 22 |
 | `pdf/3-product-fliers-A5/` | The hand-out version — same product, the essentials | A5 | 1 | 22 |
 | `pdf/4-brochures/` | Tri-fold brochures, printed both sides | A4 landscape | 2 | 5 |
-| `pdf/5-price-list/` | Trade and retail price list | A4 | 2 | 1 |
+| `pdf/5-price-list/` | Trade and retail price list | A4 | 4 | 1 |
+| `pdf/5-price-list/` | The same list **as an editable Word file** — for counter edits and quotations | A4 (.docx) | — | 1 |
 | `pdf/7-colour-collection/` | **The full shade card** — 544 shades in 17 families, one family per page | A4 | 21 | 1 |
 
 **70 documents, 100 pages, 98 MB.** All RGB. Every glyph is embedded as a

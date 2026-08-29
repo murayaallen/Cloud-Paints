@@ -67,6 +67,46 @@ export const TRADE_NOTE =
  *           catalogue has never had.
  *   prices  size -> price. 0 prints a rule to write on; null prints a dash
  */
+/* ============================================================
+   The colour on the tin
+   ============================================================
+   The name box on each price card used to take readable(p.primary) — the
+   catalogue's accent, darkened until white type held on it. That is a
+   sensible default and it was wrong here often enough to notice: SuperMatt
+   came out red when the tin is green, Roof Paint red when the tin is grey,
+   Road Marking near-black when the tin is yellow.
+
+   These are sampled from the product photographs in assets/img/buckets —
+   the middle band of the tin, ignoring the white body, the black type and
+   the greys, then the most common remaining hue. Four were corrected by eye
+   afterwards, because the largest area of colour and the colour a person
+   would name are not always the same thing:
+
+     iris-economy   the yellow frame, not the blue band inside it
+     roof-paint     the grey roof in the photograph
+     super-gloss    the violet frame, not the gold door in the photograph
+     clear-varnish  the wood tone, on a label that is mostly silver
+
+   Three products have no photograph, so there is nothing to sample and
+   they keep the catalogue colour. */
+export const TIN_LABEL = {
+  'silk-vinyl':          '#8f236e',
+  'vinyl-matt':          '#252879',
+  'iris-economy':        '#f0c000',
+  'supermatt':           '#0f6b53',
+  'weatherguard':        '#c91c24',
+  'rocketex':            '#c81219',
+  'roof-paint':          '#5b6165',
+  'super-gloss':         '#7b3f98',
+  'gloss-enamel':        '#335e83',
+  'clear-varnish':       '#7a5c33',
+  'varnish-stain':       '#c8841e',
+  'metal-primer':        '#e7f03a',
+  'universal-undercoat': '#1a4486',
+  'road-marking':        '#edcb59',
+  'turpentine':          '#b3181c',
+};
+
 export const PRICE_LIST = [
   {
     title: 'Interior Application',
