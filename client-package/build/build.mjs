@@ -1742,10 +1742,25 @@ const PRICE_CSS = `
    tint of Road Marking's yellow takes dark type, a light tint of Gloss
    Enamel's navy still takes dark type, and the name box on either takes
    whichever of black or white actually passes. */
+/* ---- Ruling the card --------------------------------------------------
+   The three colour bands told you which pack a price belonged to, but only
+   by shade: nothing actually divided one pack from the next, or the
+   quantity from the figure under it, so the card read as blocks of tint
+   rather than as a table. It is ruled now — a line down between packs, a
+   line across between quantity and price, a line under the name and one
+   before the picture.
+
+   The rules are neutral black at low opacity, not a tint of the product
+   colour. A tint works on the blues and browns and disappears on the
+   yellows: Road Marking's price band is already 90% of the way to white,
+   and a rule tinted from the same yellow is invisible against it. One
+   neutral hairline reads on all twenty-nine. */
 .pc { border-radius:1.6mm; overflow:hidden; display:flex; min-height:20mm;
-      background:#fff; box-shadow:0 .5mm 1.4mm rgba(0,0,0,.22); }
+      background:#fff; border:.3mm solid rgba(0,0,0,.30);
+      box-shadow:0 .5mm 1.4mm rgba(0,0,0,.22); }
 .pc-b { flex:1; min-width:0; display:flex; flex-direction:column; }
 .pc-h { background:var(--label); color:var(--label-ink); padding:2.1mm 3.2mm 1.9mm;
+        border-bottom:.3mm solid rgba(0,0,0,.28);
         font:700 10.6pt/1.12 var(--sans); letter-spacing:.03em; text-transform:uppercase;
         display:flex; align-items:baseline; gap:2.6mm; }
 .pc-h .n { font:600 7.4pt/1 var(--sans); color:var(--label-ink); opacity:.62; flex:none;
@@ -1753,9 +1768,10 @@ const PRICE_CSS = `
 .pc-h .nm { min-width:0; }
 .pc-sizes { display:flex; flex:1; }
 .pc-sz { flex:1; min-width:0; display:flex; flex-direction:column;
-         border-right:.3mm solid rgba(255,255,255,.85); }
+         border-right:.3mm solid rgba(0,0,0,.24); }
 .pc-sz:last-child { border-right:0; }
 .pc-sz .q { background:var(--qty); color:var(--qty-ink);
+            border-bottom:.3mm solid rgba(0,0,0,.24);
             padding:1.3mm 2.2mm; font:700 8pt/1 var(--sans); letter-spacing:.1em;
             text-transform:uppercase; font-variant-numeric:tabular-nums; }
 /* The figure is set as large as its cell allows, not one size for all.
@@ -1775,7 +1791,7 @@ const PRICE_CSS = `
                        border-bottom:.3mm solid currentColor; opacity:.5; }
 
 .pc-img { width:21mm; flex:none; background:#fff;
-          border-left:.3mm solid var(--rule-2);
+          border-left:.3mm solid rgba(0,0,0,.24);
           display:flex; align-items:center; justify-content:center; padding:2mm; }
 .pc-img img { max-height:21mm; width:auto; max-width:100%; object-fit:contain; }
 
