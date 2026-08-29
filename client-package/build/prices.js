@@ -49,8 +49,9 @@ export const CURRENCY = 'Kshs';
 
 // Trade/dealer note printed at the foot of the last page. Blank to omit.
 export const TRADE_NOTE =
-  'Prices are recommended retail, inclusive of VAT, and exclude delivery. ' +
-  'Dealer, contractor and bulk rates are available on application — ask for the trade desk.';
+  'Prices are at recommended retail, inclusive of VAT and exclude delivery. ' +
+  'Dealer, Contractor and Bulk Rates are available on application/Request. ' +
+  'Contact our Customer Service for more information.';
 
 /* Sections, rows and prices exactly as the client's price list states them.
  *

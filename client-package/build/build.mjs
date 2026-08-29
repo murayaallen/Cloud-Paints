@@ -1654,184 +1654,168 @@ const ICON = {
 
 const PRICE_CSS = `
 @page { size: 210mm 297mm; margin: 0; }
-.sheet { --sheet-w:210mm; --sheet-h:297mm; }
 
-/* ---- The frame -------------------------------------------------------
-   Was a double keyline: a navy rule with a gold hairline set just inside
-   it. That is the vocabulary of a certificate, and on a sheet that now
-   carries fourteen ruled sections it was a third system of lines arguing
-   with the other two — the eye had to sort the frame from the section
-   rules from the cell rules.
+/* ---- The sheet -------------------------------------------------------
+   Deep blue ground with red in it, as asked. The three brand colours do
+   different jobs here rather than sitting side by side: blue is the
+   ground, red is the warmth low on the page and under the masthead rule,
+   white is every surface that carries a number. Nothing a customer has to
+   read sits on the blue — the masthead, the product cards and the terms
+   block are all white or cream panels floating on it, which is what keeps
+   a fully-inked sheet legible.
 
-   One weighted edge instead. A navy bar across the head of the sheet, a
-   hairline in the warm rule colour around the other three sides, and the
-   navy signature bar already at the foot: the page is bracketed top and
-   bottom and merely bounded at the sides, so the frame sits behind the
-   content rather than competing with it. The gold has not been lost —
-   it still opens the terms block and marks the masthead rule. */
-.pinner { position:absolute; inset:8mm;
-          border:.35mm solid var(--rule); border-top:2.4mm solid var(--blue-deep);
+   Worth knowing before this goes to press: a full-bleed navy A4 is heavy
+   coverage. On a digital press ask for the heavier stock and expect it to
+   show handling; see the press note in README. */
+.sheet { --sheet-w:210mm; --sheet-h:297mm;
+  background:
+    radial-gradient(120% 70% at 12% 0%, rgba(139,30,44,.55), transparent 62%),
+    radial-gradient(100% 60% at 92% 100%, rgba(139,30,44,.38), transparent 66%),
+    linear-gradient(168deg, #14265e 0%, #0f1f5c 46%, #0b1642 100%); }
+
+.pinner { position:absolute; inset:7mm;
+          border:.3mm solid rgba(255,255,255,.30);
           display:flex; flex-direction:column; overflow:hidden; }
 
-/* ---- Masthead, page one ---------------------------------------------- */
-/* The name is set in the company's own two colours, which is only possible
-   on a light ground: the masthead used to be a full-bleed navy block, and
-   #1e3a8a on #0f1f5c is the same colour twice. Lightening the type instead
-   would have given an approximation of the brand rather than the brand.
-
-   It suits the document as well as the request. This is the one piece in the
-   package that gets written on at a counter, and it was carrying the heaviest
-   ink coverage of anything here — a 44mm full-bleed navy band on 100gsm bond,
-   which cockles the sheet and shows every fingerprint. A navy rule under the
-   masthead keeps the structure the block was providing. */
-.ph { height:38mm; flex:none; background:var(--paper); color:var(--ink);
-      padding:0 9mm; display:flex; justify-content:space-between;
-      align-items:center; gap:8mm; border-bottom:.5mm solid var(--gold); }
-.ph .eyebrow { color:var(--red); }
-.ph h1 { font:400 37pt/1 var(--serif); letter-spacing:-.015em; margin-top:1.8mm; }
-.ph h1 .c-blue { color:#1e3a8a; }
-.ph h1 .c-red  { color:#e11f29; font-style:italic; }
-.ph .cur { display:flex; align-items:center; gap:3mm; margin-top:2.4mm;
-           font:600 7.6pt/1 var(--sans); letter-spacing:.14em;
-           text-transform:uppercase; color:var(--ink-3); }
-.ph .cur::before { content:''; width:12mm; height:.35mm; background:var(--gold); flex:none; }
-/* The logo and the standards mark are already artwork on white, so on a
-   white ground they need no chip behind them. */
-/* The standards mark used to sit beside the logo here, which read as part
-   of the brand lockup rather than as a certification. It has moved to the
-   terms block on the last page, next to the line that says what it is. */
-.ph-mark { display:flex; align-items:center; flex:none; }
-.ph-mark .lg { width:38mm; }
+/* ---- Masthead, page one ----------------------------------------------
+   The company name is gone from the head of the sheet: the logo says it,
+   and saying it twice cost the line that tells a customer what they are
+   holding. "PRICE LIST — RECOMMENDED RETAIL PRICES" is that line, and it
+   now has the room to be set at a size that reads across a counter. */
+.ph { flex:none; padding:6mm 8mm 5.5mm; color:#fff;
+      display:flex; justify-content:space-between; align-items:center; gap:7mm;
+      border-bottom:.9mm solid var(--red-glow); }
+.ph .eyebrow { color:var(--gold); letter-spacing:.2em; }
+.ph h1 { font:700 25pt/1.06 var(--sans); letter-spacing:.02em;
+         text-transform:uppercase; color:#fff; margin-top:2.6mm; }
+.ph h1 .c-red { color:#ff8b95; }
+.ph .cur { display:flex; align-items:center; gap:3mm; margin-top:3.2mm;
+           font:600 8.2pt/1 var(--sans); letter-spacing:.14em;
+           text-transform:uppercase; color:rgba(255,255,255,.82); }
+.ph .cur::before { content:''; width:14mm; height:.45mm; background:var(--gold); flex:none; }
+/* The logo needs a white chip on this ground — the mark is drawn in the
+   brand blue and red and neither holds on navy. */
+.ph-mark { display:flex; align-items:center; flex:none;
+           background:#fff; border-radius:2mm; padding:3.4mm 4.6mm; }
+.ph-mark .lg { width:52mm; display:block; }
 
 /* ---- Running head, every page after the first ------------------------- */
-.prh { height:15mm; flex:none; display:flex; justify-content:space-between;
-       align-items:center; padding:0 9mm; border-bottom:.3mm solid var(--rule); }
-.prh .b { font:600 8pt/1 var(--sans); letter-spacing:.16em;
-          text-transform:uppercase; color:var(--ink-3); }
-.prh img { height:12mm; width:auto; }   /* by height — the 18mm head clips a logo set by width */
+.prh { height:17mm; flex:none; display:flex; justify-content:space-between;
+       align-items:center; padding:0 8mm; border-bottom:.5mm solid rgba(255,255,255,.28); }
+.prh .b { font:700 8.4pt/1 var(--sans); letter-spacing:.17em;
+          text-transform:uppercase; color:rgba(255,255,255,.9); }
+.prh img { width:30mm; background:#fff; border-radius:1.4mm; padding:1.6mm 2.2mm; }
 
-.pbody { flex:1; min-height:0; overflow:hidden; padding:4mm 9mm 0; }
+.pbody { flex:1; min-height:0; overflow:hidden; padding:4.5mm 8mm 0; }
 
-/* ---- Section heading -------------------------------------------------- */
-.grp { margin-bottom:4.5mm; }
+/* ---- Section heading --------------------------------------------------
+   A box with colour in it, as asked, and the colour is the section's own:
+   each category takes the tin colour of its first line, so Wood Varnishes
+   is the varnish brown and Road Paint the marking yellow. That makes the
+   box do two jobs — it divides the document, and it announces the colour
+   the cards under it are about to repeat.
+
+   Built as a solid bar with a deeper spine down the left edge and a gold
+   hairline under, so it reads as a plate rather than a filled rectangle. */
+.grp { margin-bottom:4mm; }
 .grp:last-child { margin-bottom:0; }
-/* A section heading has to be findable at arm's length. Small caps and a
-   hairline was a caption — fourteen of them all looked alike. A tinted band
-   fixed that and cost 4mm a section, which is a page over fourteen.
-
-   The type does the work instead. Fraunces at 12pt, navy, in sentence case,
-   over a heavy navy rule: it is the only serif on the sheet apart from the
-   masthead, so a section title cannot be mistaken for anything else on the
-   page, and it is 2mm shorter than the band it replaces. Sentence case
-   rather than caps because the names are long — INTERIOR / EXTERNAL
-   APPLICATION set in tracked capitals is a slower read than the same words
-   set as words. */
-.gh { display:flex; align-items:baseline; gap:3mm; margin:0 0 2mm;
-      padding:0 0 1.2mm; border-bottom:.6mm solid var(--blue-deep); }
+.gh { display:flex; align-items:center; gap:3.4mm; margin:0 0 2.2mm;
+      background:var(--cat); border-left:2.2mm solid var(--cat-deep);
+      border-bottom:.5mm solid var(--gold);
+      border-radius:1.4mm; padding:2mm 3.4mm 1.8mm;
+      box-shadow:0 .4mm 0 rgba(0,0,0,.18); }
 .gh .sq { display:none; }
-.gh .t { font:400 12pt/1 var(--serif); letter-spacing:-.005em;
-         text-transform:none; color:var(--blue-deep); white-space:nowrap; }
+.gh .t { font:700 14pt/1 var(--sans); letter-spacing:.06em; text-transform:uppercase;
+         color:var(--cat-ink); }
 .gh .ln { flex:1; }
 
-.cards { display:grid; grid-template-columns:1fr 1fr; gap:2.2mm 4mm; }
+.cards { display:grid; grid-template-columns:1fr 1fr; gap:2.5mm 4mm; }
 
 /* ---- One product ------------------------------------------------------
-   Ruled on all four sides and divided between pack sizes. The list ships
-   unpriced, so every cell has to read as a field waiting for a number
-   rather than as something the printer dropped — which is exactly what an
-   open, borderless cell with a blank in it looks like. The writing rule
-   runs the full width of its cell for the same reason: a short rule
-   floating in a wide cell reads as decoration, a full one as a field. */
-.pc { border:.35mm solid #b3ab98; border-radius:1.2mm; overflow:hidden;
-      display:flex; min-height:19mm; }
+   Three shades of one colour, top to bottom. The name box is the tin's own
+   colour; the quantity strip is that colour lifted toward white; the price
+   cell lighter again. A customer reading down a card is reading down one
+   hue, which ties the pack to its price without a rule doing the work, and
+   ties the whole card to the section plate above it.
+
+   The ink on each band is chosen against that band, not assumed: a light
+   tint of Road Marking's yellow takes dark type, a light tint of Gloss
+   Enamel's navy still takes dark type, and the name box on either takes
+   whichever of black or white actually passes. */
+.pc { border-radius:1.6mm; overflow:hidden; display:flex; min-height:20mm;
+      background:#fff; box-shadow:0 .5mm 1.4mm rgba(0,0,0,.22); }
 .pc-b { flex:1; min-width:0; display:flex; flex-direction:column; }
-/* The name in Fraunces, as the range flier sets its product names. A
-   coloured box with a serif name in it reads as a label on a tin; the same
-   box with a semibold sans name in it reads as a table header. */
-.pc-h { background:var(--label); color:var(--label-ink); padding:2mm 3mm 1.8mm;
-        font:400 11pt/1.1 var(--serif); letter-spacing:-.002em;
-        display:flex; align-items:baseline; gap:2.4mm; }
-/* The index number sat in gold on every card. Gold on Road Marking's yellow
-   is invisible, so it now takes the same ink as the name and steps back
-   with opacity instead of with a second colour. */
-.pc-h .n { font:600 6.6pt/1 var(--sans); color:var(--label-ink); opacity:.6; flex:none;
+.pc-h { background:var(--label); color:var(--label-ink); padding:2.1mm 3.2mm 1.9mm;
+        font:700 10.6pt/1.12 var(--sans); letter-spacing:.03em; text-transform:uppercase;
+        display:flex; align-items:baseline; gap:2.6mm; }
+.pc-h .n { font:600 7.4pt/1 var(--sans); color:var(--label-ink); opacity:.62; flex:none;
            letter-spacing:.06em; font-variant-numeric:tabular-nums; }
 .pc-h .nm { min-width:0; }
 .pc-sizes { display:flex; flex:1; }
-/* The divider between packs was --rule, #d9d4c6, which is a hairline meant
-   for white ground. Across the tinted quantity strip it all but vanished, so
-   the strip read as one continuous band and the columns it was supposed to
-   separate did not look separated at all. It is darker and heavier now, and
-   the same weight over both the strip and the white below it, so one rule
-   runs the full height of the cell and the pairs are plainly divided. */
 .pc-sz { flex:1; min-width:0; display:flex; flex-direction:column;
-         border-right:.35mm solid #b3ab98; }
+         border-right:.3mm solid rgba(255,255,255,.85); }
 .pc-sz:last-child { border-right:0; }
-/* The quantity is a column heading, not a caption. Tinted and ruled off, so
-   the figure below it is unmistakably ITS figure. */
-.pc-sz .q { background:var(--cream-2); border-bottom:.35mm solid #b3ab98;
-            padding:1.2mm 2mm; font:700 6.8pt/1 var(--sans); letter-spacing:.12em;
-            text-transform:uppercase; color:var(--ink-2);
-            font-variant-numeric:tabular-nums; }
+.pc-sz .q { background:var(--qty); color:var(--qty-ink);
+            padding:1.3mm 2.2mm; font:700 8pt/1 var(--sans); letter-spacing:.1em;
+            text-transform:uppercase; font-variant-numeric:tabular-nums; }
+/* The figure is set as large as its cell allows, not one size for all.
+   A two-pack card has 31mm a cell and carries 13pt comfortably; a
+   three-pack card has 20mm, and 13pt turned Kshs.13,950 into Kshs.13,95 —
+   nowrap in a clipped box loses the end of the number silently, which on a
+   price list is the worst thing it could lose. So the size is a custom
+   property the card sets from how many packs it has. */
 .pc-sz .p { flex:1; display:flex; align-items:center; padding:1.5mm 2mm;
-            font:600 10.5pt/1 var(--sans); color:var(--ink); white-space:nowrap;
+            background:var(--pri); color:var(--pri-ink);
+            font:700 var(--pfs)/1 var(--sans); white-space:nowrap;
             font-variant-numeric:tabular-nums; }
-/* Tight to the figure — Kshs.15,300 reads as one thing, Kshs. 15,300 as
-   two. Slightly smaller and lighter so the number still leads. */
-.pc-sz .p .cur { font:600 7pt/1 var(--sans); color:var(--ink-3);
+.pc-sz .p .cur { font:600 var(--cfs)/1 var(--sans); opacity:.62;
                  letter-spacing:0; margin-right:0; }
-.pc-sz .p.na { color:var(--ink-3); font-weight:500; }
+.pc-sz .p.na { opacity:.55; font-weight:500; }
 .pc-sz .p.tbc::after { content:''; display:block; width:100%;
-                       border-bottom:.3mm solid var(--ink-3); }
+                       border-bottom:.3mm solid currentColor; opacity:.5; }
 
-/* Drawn only where there is a photograph. A row without one gives its
-   width back to the prices instead of holding an empty panel open. */
-.pc-img { width:15mm; flex:none; background:var(--cream);
+.pc-img { width:21mm; flex:none; background:#fff;
           border-left:.3mm solid var(--rule-2);
           display:flex; align-items:center; justify-content:center; padding:2mm; }
-.pc-img img { max-height:17mm; width:auto; max-width:100%; object-fit:contain; }
+.pc-img img { max-height:21mm; width:auto; max-width:100%; object-fit:contain; }
 
-/* ---- Closing note ----------------------------------------------------- */
-.pnote { margin-top:1.5mm; background:var(--cream);
-         border:.35mm solid #b3ab98; border-top:.9mm solid var(--gold);
-         padding:3mm 4.4mm; }
-.pnote .h { font:700 8pt/1 var(--sans); letter-spacing:.14em; text-transform:uppercase;
-            color:var(--blue-deep); margin-bottom:2.8mm; }
-.pnote p { font:400 8.2pt/1.5 var(--sans); color:var(--ink-2); }
-.pnote p + p { margin-top:1.4mm; }
+/* ---- Terms and conditions --------------------------------------------- */
+.pnote { margin-top:2mm; background:var(--paper);
+         border-radius:1.6mm; border-top:1.1mm solid var(--gold);
+         padding:3.4mm 4.6mm; box-shadow:0 .5mm 1.4mm rgba(0,0,0,.22); }
+.pnote .h { font:700 9pt/1 var(--sans); letter-spacing:.15em; text-transform:uppercase;
+            color:var(--blue-deep); margin-bottom:3mm; }
+.pnote p { font:400 8.6pt/1.5 var(--sans); color:var(--ink-2); }
+.pnote p + p { margin-top:1.8mm; }
 .pnote b { color:var(--ink); font-weight:600; }
 
 /* ---- The foot of the terms block -------------------------------------- */
-/* The standards mark, and every way of reaching the company, in one place
-   on the page a customer keeps. */
-.pn-foot { display:flex; align-items:flex-start; gap:5mm; margin-top:3.2mm;
-           padding-top:3mm; border-top:.3mm solid var(--rule); }
+.pn-foot { display:flex; align-items:flex-start; gap:5mm; margin-top:3.4mm;
+           padding-top:3.2mm; border-top:.3mm solid var(--rule); }
 .pn-mark { flex:none; display:flex; align-items:center; gap:2.6mm; }
-.pn-mark img { width:15mm; }
-.pn-mark span { font:500 6.8pt/1.35 var(--sans); color:var(--ink-2); }
-.pn-mark b { display:block; font:700 6.6pt/1.5 var(--sans); letter-spacing:.12em;
+.pn-mark img { width:17mm; }
+.pn-mark span { font:500 7.4pt/1.35 var(--sans); color:var(--ink-2); }
+.pn-mark b { display:block; font:700 7.2pt/1.5 var(--sans); letter-spacing:.12em;
              text-transform:uppercase; color:var(--blue-deep); }
 .pn-contact { flex:1; min-width:0; }
-.pn-contact p { font:400 7.8pt/1.5 var(--sans); color:var(--ink-2); }
-.pn-contact p + p { margin-top:.9mm; }
+.pn-contact p { font:400 8.4pt/1.5 var(--sans); color:var(--ink-2); }
+.pn-contact p + p { margin-top:1mm; }
 .pn-contact b { color:var(--ink); font-weight:600; }
-.pn-social { display:flex; flex-wrap:wrap; gap:1.5mm 5.5mm; margin-top:2.2mm; }
-.pn-social span { display:inline-flex; align-items:center; gap:1.7mm;
-                  font:500 7.6pt/1 var(--sans); color:var(--ink-2); }
-.pn-social svg { width:4mm; height:4mm; flex:none; color:var(--blue-deep); }
+.pn-social { display:flex; flex-wrap:wrap; gap:1.5mm 6mm; margin-top:2.4mm; }
+.pn-social span { display:inline-flex; align-items:center; gap:1.8mm;
+                  font:500 8.2pt/1 var(--sans); color:var(--ink-2); }
+.pn-social svg { width:4.4mm; height:4.4mm; flex:none; color:var(--blue-deep); }
 
 /* ---- Signature bar, every page ---------------------------------------- */
-/* One line, both halves, on every page. Nowrap because a second line here
-   would be clipped by the frame rather than pushing anything down. */
 /* nowrap is deliberate — a second line here is clipped by the frame rather
-   than pushing anything down. That makes the width a hard budget, and the
-   type going up to 7.2pt spent more than there was: the web address lost its
-   last three characters. Back to 6.9pt with tighter tracking and narrower
-   side padding, which fits the line with room to spare. */
-.psig { height:11mm; flex:none; background:var(--blue-deep); color:#fff;
-        padding:0 7mm; display:flex; align-items:center;
-        justify-content:space-between; gap:5mm;
-        font:500 6.9pt/1.3 var(--sans); letter-spacing:.02em; white-space:nowrap; }
+   than pushing anything down, so the width is a hard budget. */
+/* nowrap makes the width a hard budget: 8pt overspent it and the web
+   address lost its last six characters. 7.3pt with the padding pulled in
+   fits the line, and is still up on the 6.9pt it was before. */
+.psig { height:12mm; flex:none; padding:0 6mm; display:flex; align-items:center;
+        justify-content:space-between; gap:4mm; color:#fff;
+        border-top:.5mm solid rgba(255,255,255,.28);
+        font:600 7.3pt/1.3 var(--sans); letter-spacing:.01em; white-space:nowrap; }
 .psig .r { color:var(--gold); }
 `;
 
@@ -1880,6 +1864,17 @@ const TIN_LABEL = {
    states its own. Two rows sharing one tin share its colour, which is
    right — Road Marking Yellow and Road Marking White/Black come out of the
    same yellow-labelled tin. */
+/* A category's plate takes the tin colour of its first line, so the box
+   announces the colour the cards under it are about to repeat. */
+const catVars = g => {
+  /* priceCards wraps each row as { row, sizes, table, src }, so the raw row
+     is one level in. Reading the wrapper meant labelColour found no colour on
+     it and fell back to slate — every one of the fourteen plates came out the
+     same grey, which is the one thing a coloured plate must not do. */
+  const c = labelColour(g.rows[0].row);
+  return `--cat:${c};--cat-deep:${readable(c)};--cat-ink:${inkOn(c)}`;
+};
+
 const labelColour = row =>
   row.colour
   || TIN_LABEL[row.art]
@@ -1940,9 +1935,19 @@ function priceCardHTML(entry, n) {
      to be drawn empty to keep the grid even; an empty cream rectangle beside
      a priced line reads as a picture that failed to load, and now that whole
      sections have no artwork it would have read that way repeatedly. */
+  /* One hue, three weights. The name box is the tin's colour, the quantity
+     strip that colour lifted toward white, the price cell lighter again —
+     so reading down a card is reading down one colour, and the pack is tied
+     to its price without a rule doing the work. Each band's ink is measured
+     against that band rather than assumed. */
   const bg = labelColour(row);
+  const qty = tint(bg, 0.74);
+  const pri = tint(bg, 0.90);
+  const tight = sizes.length > 2;
   return `
-  <div class="pc" style="--label:${bg};--label-ink:${inkOn(bg)}">
+  <div class="pc" style="--label:${bg};--label-ink:${inkOn(bg)}
+    ;--qty:${qty};--qty-ink:${inkOn(qty)};--pri:${pri};--pri-ink:${inkOn(pri)}
+    ;--pfs:${tight ? '10.6pt' : '13pt'};--cfs:${tight ? '6.8pt' : '8pt'}">
     <div class="pc-b">
       <div class="pc-h"><span class="n">${String(n).padStart(2, '0')}</span><span class="nm">${esc(row.name)}</span></div>
       <div class="pc-sizes">${sizes.map(cell).join('')}</div>
@@ -1982,22 +1987,35 @@ function priceList() {
      section heading stranding at the foot of a page, and render.mjs measures
      every .pbody afterwards, so if these numbers ever drift the build says
      so rather than clipping in silence. */
-/* Re-derived after the compaction pass, not adjusted. The frame's head bar
-     is 2.4mm and its other sides .35mm, so the usable height inside is
-     278.25mm rather than 280: a first page spends 38 on the masthead, 11 on
-     the signature bar and 4 on the body's opening air, and every page after
-     it spends 15 on the running head instead of 38.
+/* Re-derived for the enlarged sheet. The frame is inset 7mm all round, so
+     there is 283mm inside it. Page one spends about 44 on the masthead, 12
+     on the signature bar and 4.5 on the body's opening air; every page after
+     it spends 17 on the running head instead of 44.
 
-     HEAD 10 -> 8   the serif heading over a rule, in place of the band
-     ROW  24 -> 22  padding out of the name box, the quantity strip and the
-                    price cell, and .3mm off the card gutter. No type moved.
-     GAP   6 -> 5   between sections
-     NOTE 80 -> 76  padding out of the terms block
+     Everything grew, on request — section plates 14pt, product names 10.6pt
+     in caps, quantities 8pt, prices 12pt, tins 24mm — so the card is 23.4mm
+     and its row 26, and the section plate with its margin is 13.
 
-     That is 573mm of sections against 721mm on three sheets, so the list is
-     back to three pages with the terms block on the last. */
-  const ROW = 22, HEAD = 8, GAP = 5, NOTE = 76;
-  const cap = i => (i === 0 ? 225 : 248);
+     That is 715mm of sections and a 92mm terms block against 720mm on three
+     sheets, which does not go. Four sheets carry it at about 83% each, which
+     is fuller than the three-page version ever was: the compaction asked for
+     is in the packing, not in the page count. */
+  /* 27 and 14. The first pass had 26 and 13 and page one reported 26px of
+     spill — about 4% under on 180mm of content, which is a card and a
+     plate each being a millimetre taller than the arithmetic said. */
+/* After the compaction pass. Nothing shrank that a reader looks at — the
+     plates, names, quantities and figures are all the size they were asked
+     to be. The millimetres came out of padding, gutters and margins. */
+  const ROW = 25, HEAD = 12, GAP = 4, NOTE = 95;
+  /* 204 for page one, probed rather than derived: the masthead has no fixed
+     height any more and the logo chip sets it, so the arithmetic that used to
+     give the number no longer has one to work from. 204 clears; 211 spills
+     26px, and that spill was constant under every ROW and HEAD I tried
+     because the ceiling, not the packing, was what bound it. Later pages are
+     243 for the same reason: 249 spilled 21px on the last sheet, constant
+     under every NOTE, because the ceiling bound there too. When a spill does
+     not move as the estimates move, it is the cap that is wrong. */
+  const cap = i => (i === 0 ? 204 : 243);
 
   const cost = g => HEAD + Math.ceil(g.rows.length / 2) * ROW;
 
@@ -2051,8 +2069,8 @@ function priceList() {
     const header = isFirst ? `
       <div class="ph">
         <div>
-          <span class="eyebrow">Price list · Recommended retail</span>
-          <h1><span class="c-blue">Cloud</span> <span class="c-red">Paints</span></h1>
+          <span class="eyebrow">Cloudsent Decor Ltd · Nairobi</span>
+          <h1>Price List<br><span class="c-red">Recommended Retail Prices</span></h1>
           <div class="cur">All prices in Kenya Shillings${
             EFFECTIVE_FROM ? ' · Effective ' + esc(EFFECTIVE_FROM) : ''}</div>
         </div>
@@ -2067,23 +2085,24 @@ function priceList() {
       </div>`;
 
     const body = groupsOnPage.map(g => `
-      <div class="grp">
+      <div class="grp" style="${catVars(g)}">
         <div class="gh"><span class="sq"></span><span class="t">${esc(g.title)}</span><span class="ln"></span></div>
         <div class="cards">${g.rows.map(r => priceCardHTML(r, ++n)).join('')}</div>
       </div>`).join('');
 
     const note = isLast ? `
       <div class="pnote">
-        <div class="h">Terms and the counter</div>
+        <div class="h">Terms and Conditions</div>
         <p>${esc(TRADE_NOTE)}</p>
-        <p><b>Colour tinting</b> is available at the Industrial Area counter on all
-           emulsions and enamels. Tinted shades may carry a surcharge depending on
-           the colourant used.</p>
-        <p><b>Hand-applied decorative finishes</b> — Venetian Marble, Stone, Stucco
-           and the rest — are quoted separately. They are sold by weight and laid on
-           with a trowel, so the figure depends on the wall: bring your measurements
-           and ask for the decorative deck. The textured wall coatings priced above
-           are sold by the pail.</p>
+        <p><b>Colour Tinting</b> is available at the Industrial Area Factory on all
+           Emulsions and Enamels. Tinted shades may carry a surcharge depending on the
+           colourant used.</p>
+        <p><b>Hand applied decorative finishes</b> — Venetian Marble, Stone Texture,
+           Luxury Stucco, Concrete Finish, Velvet Texture, Metallic Illusion, Rustic
+           Texture, Sand Finish, Desert Stone and RockShield Exterior Texture — are
+           quoted separately. They are sold by weight and are dependent on wall
+           measurements. The decorative palette is available at our factory and is
+           priced per quantity ordered.</p>
         <div class="pn-foot">
           <div class="pn-mark">
             <img src="${a}/img/brand/kebs.png" alt="KEBS Standardisation Mark">
