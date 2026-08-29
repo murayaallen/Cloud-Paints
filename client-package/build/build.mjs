@@ -2095,14 +2095,14 @@ function priceList() {
         <div class="h">Terms and Conditions</div>
         <p>${esc(TRADE_NOTE)}</p>
         <p><b>Colour Tinting</b> is available at the Industrial Area Factory on all
-           Emulsions and Enamels. Tinted shades may carry a surcharge depending on the
-           colourant used.</p>
-        <p><b>Hand applied decorative finishes</b> — Venetian Marble, Stone Texture,
+           Emulsions and Enamels. Tinted Shades may carry a Surcharge depending on the
+           Colourant used.</p>
+        <p><b>Hand applied Decorative Finishes</b> — Venetian Marble, Stone Texture,
            Luxury Stucco, Concrete Finish, Velvet Texture, Metallic Illusion, Rustic
            Texture, Sand Finish, Desert Stone and RockShield Exterior Texture — are
-           quoted separately. They are sold by weight and are dependent on wall
-           measurements. The decorative palette is available at our factory and is
-           priced per quantity ordered.</p>
+           quoted separately. They are sold by Weight and are dependent on Wall
+           Measurements. The Decorative Palette is available at our Factory and is
+           priced per Quantity ordered.</p>
         <div class="pn-foot">
           <div class="pn-mark">
             <img src="${a}/img/brand/kebs.png" alt="KEBS Standardisation Mark">
