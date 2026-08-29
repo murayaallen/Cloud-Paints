@@ -1668,14 +1668,19 @@ const PRICE_CSS = `
    coverage. On a digital press ask for the heavier stock and expect it to
    show handling; see the press note in README. */
 .sheet { --sheet-w:210mm; --sheet-h:297mm;
-  background:
-    radial-gradient(135% 85% at 8% 0%,    rgba(168,26,48,.94), transparent 70%),
-    radial-gradient(125% 80% at 96% 22%,  rgba(150,26,46,.80), transparent 66%),
-    radial-gradient(140% 85% at 78% 100%, rgba(168,26,48,.88), transparent 72%),
-    linear-gradient(170deg, #7d1330 0%, #5a1636 30%, #1c2a63 74%, #0f1f5c 100%); }
+  /* ONE OPAQUE SWEEP. This was four layers — three red pools fading out
+     to nothing over a navy base. Every fade to transparent is an alpha
+     channel, so each page carried soft masks and shading patterns the RIP
+     has to flatten before it can put ink down, and the sheet would not
+     print. A single radial with opaque stops gives the same red-led ground
+     with navy in the far corner, and asks for one shading pattern and no
+     transparency at all. */
+  background: radial-gradient(155% 110% at 6% -6%,
+    #b81c34 0%, #a01830 22%, #7a1432 42%, #4a1a4a 62%,
+    #242a60 82%, #0f1f5c 100%); }
 
 .pinner { position:absolute; inset:7mm;
-          border:.3mm solid rgba(255,255,255,.30);
+          border:.3mm solid #8f7f9c;
           display:flex; flex-direction:column; overflow:hidden; }
 
 /* ---- Masthead, page one ----------------------------------------------
@@ -1692,7 +1697,7 @@ const PRICE_CSS = `
 .ph h1 .c-red { color:#ff8b95; }
 .ph .cur { display:flex; align-items:center; gap:3mm; margin-top:3.2mm;
            font:600 8.2pt/1 var(--sans); letter-spacing:.14em;
-           text-transform:uppercase; color:rgba(255,255,255,.82); }
+           text-transform:uppercase; color:#e4dce8; }
 .ph .cur::before { content:''; width:14mm; height:.45mm; background:var(--gold); flex:none; }
 /* The logo needs a white chip on this ground — the mark is drawn in the
    brand blue and red and neither holds on navy. */
@@ -1702,9 +1707,9 @@ const PRICE_CSS = `
 
 /* ---- Running head, every page after the first ------------------------- */
 .prh { height:17mm; flex:none; display:flex; justify-content:space-between;
-       align-items:center; padding:0 8mm; border-bottom:.5mm solid rgba(255,255,255,.28); }
+       align-items:center; padding:0 8mm; border-bottom:.5mm solid #8f7f9c; }
 .prh .b { font:700 8.4pt/1 var(--sans); letter-spacing:.17em;
-          text-transform:uppercase; color:rgba(255,255,255,.9); }
+          text-transform:uppercase; color:#f0eaf2; }
 /* 20mm, not 30. The band is 17mm and the mark is about 0.7 as tall as it
    is wide, so a 30mm logo plus its chip padding came to 24mm — it hung out
    of the running head on pages two, three and four. At 20mm the chip is
@@ -1727,8 +1732,7 @@ const PRICE_CSS = `
 .gh { display:flex; align-items:center; gap:3.4mm; margin:0 0 2.2mm;
       background:var(--cat); border-left:2.2mm solid var(--cat-deep);
       border-bottom:.5mm solid var(--gold);
-      border-radius:1.4mm; padding:2mm 3.4mm 1.8mm;
-      box-shadow:0 .4mm 0 rgba(0,0,0,.18); }
+      border-radius:1.4mm; padding:2mm 3.4mm 1.8mm; }
 .gh .sq { display:none; }
 .gh .t { font:700 14pt/1 var(--sans); letter-spacing:.06em; text-transform:uppercase;
          color:var(--cat-ink); }
@@ -1772,23 +1776,26 @@ const PRICE_CSS = `
    runs the whole 60mm of the card and already has a value change either
    side of it, so the same line does less work. Verticals .45mm at 55%,
    horizontals .7mm at 82%. */
+/* Solid rule colours, and no drop shadow. A shadow is a soft mask per
+   card; twenty-nine of them plus the terms block were most of the 336
+   transparency groups in the file, and the card is ruled well enough now
+   that the shadow was doing nothing the border was not already doing. */
 .pc { border-radius:1.6mm; overflow:hidden; display:flex; min-height:20mm;
-      background:#fff; border:.5mm solid rgba(0,0,0,.62);
-      box-shadow:0 .5mm 1.4mm rgba(0,0,0,.22); }
+      background:#fff; border:.5mm solid #616161; }
 .pc-b { flex:1; min-width:0; display:flex; flex-direction:column; }
 .pc-h { background:var(--label); color:var(--label-ink); padding:2.1mm 3.2mm 1.9mm;
-        border-bottom:.7mm solid rgba(0,0,0,.82);
+        border-bottom:.7mm solid #2b2b2b;
         font:700 10.6pt/1.12 var(--sans); letter-spacing:.03em; text-transform:uppercase;
         display:flex; align-items:baseline; gap:2.6mm; }
-.pc-h .n { font:600 7.4pt/1 var(--sans); color:var(--label-ink); opacity:.62; flex:none;
+.pc-h .n { font:600 7.4pt/1 var(--sans); color:var(--label-ink); flex:none;
            letter-spacing:.06em; font-variant-numeric:tabular-nums; }
 .pc-h .nm { min-width:0; }
 .pc-sizes { display:flex; flex:1; }
 .pc-sz { flex:1; min-width:0; display:flex; flex-direction:column;
-         border-right:.45mm solid rgba(0,0,0,.55); }
+         border-right:.45mm solid #737373; }
 .pc-sz:last-child { border-right:0; }
 .pc-sz .q { background:var(--qty); color:var(--qty-ink);
-            border-bottom:.7mm solid rgba(0,0,0,.82);
+            border-bottom:.7mm solid #2b2b2b;
             padding:1.3mm 2.2mm; font:700 8pt/1 var(--sans); letter-spacing:.1em;
             text-transform:uppercase; font-variant-numeric:tabular-nums; }
 /* The figure is set as large as its cell allows, not one size for all.
@@ -1801,21 +1808,21 @@ const PRICE_CSS = `
             background:var(--pri); color:var(--pri-ink);
             font:700 var(--pfs)/1 var(--sans); white-space:nowrap;
             font-variant-numeric:tabular-nums; }
-.pc-sz .p .cur { font:600 var(--cfs)/1 var(--sans); opacity:.62;
+.pc-sz .p .cur { font:600 var(--cfs)/1 var(--sans); color:#5b5b5b;
                  letter-spacing:0; margin-right:0; }
-.pc-sz .p.na { opacity:.55; font-weight:500; }
+.pc-sz .p.na { color:#7a7a7a; font-weight:500; }
 .pc-sz .p.tbc::after { content:''; display:block; width:100%;
-                       border-bottom:.3mm solid currentColor; opacity:.5; }
+                       border-bottom:.3mm solid #8a8a8a; }
 
 .pc-img { width:21mm; flex:none; background:#fff;
-          border-left:.45mm solid rgba(0,0,0,.55);
+          border-left:.45mm solid #737373;
           display:flex; align-items:center; justify-content:center; padding:2mm; }
 .pc-img img { max-height:21mm; width:auto; max-width:100%; object-fit:contain; }
 
 /* ---- Terms and conditions --------------------------------------------- */
 .pnote { margin-top:2mm; background:var(--paper);
          border-radius:1.6mm; border-top:1.1mm solid var(--gold);
-         padding:3.4mm 4.6mm; box-shadow:0 .5mm 1.4mm rgba(0,0,0,.22); }
+         padding:3.4mm 4.6mm; border:.3mm solid #b3ab98; }
 .pnote .h { font:700 9pt/1 var(--sans); letter-spacing:.15em; text-transform:uppercase;
             color:var(--blue-deep); margin-bottom:3mm; }
 .pnote p { font:400 8.6pt/1.5 var(--sans); color:var(--ink-2); }
@@ -1847,7 +1854,7 @@ const PRICE_CSS = `
    fits the line, and is still up on the 6.9pt it was before. */
 .psig { height:12mm; flex:none; padding:0 6mm; display:flex; align-items:center;
         justify-content:space-between; gap:4mm; color:#fff;
-        border-top:.5mm solid rgba(255,255,255,.28);
+        border-top:.5mm solid #8f7f9c;
         font:600 7.3pt/1.3 var(--sans); letter-spacing:.01em; white-space:nowrap; }
 .psig .r { color:var(--gold); }
 `;
