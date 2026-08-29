@@ -1656,22 +1656,23 @@ const PRICE_CSS = `
 @page { size: 210mm 297mm; margin: 0; }
 
 /* ---- The sheet -------------------------------------------------------
-   Deep blue ground with red in it, as asked. The three brand colours do
-   different jobs here rather than sitting side by side: blue is the
-   ground, red is the warmth low on the page and under the masthead rule,
+   Red-dominant now, with the blue holding the corners it is strongest in.
+   The three brand colours still do different jobs rather than sitting side
+   by side: red carries the sheet, blue anchors the head and the deep foot,
    white is every surface that carries a number. Nothing a customer has to
-   read sits on the blue — the masthead, the product cards and the terms
-   block are all white or cream panels floating on it, which is what keeps
-   a fully-inked sheet legible.
+   read sits on either — the masthead, the product cards and the terms block
+   are all white or cream panels floating on the ground, which is what keeps
+   a fully-inked sheet legible whichever colour leads.
 
    Worth knowing before this goes to press: a full-bleed navy A4 is heavy
    coverage. On a digital press ask for the heavier stock and expect it to
    show handling; see the press note in README. */
 .sheet { --sheet-w:210mm; --sheet-h:297mm;
   background:
-    radial-gradient(120% 70% at 12% 0%, rgba(139,30,44,.55), transparent 62%),
-    radial-gradient(100% 60% at 92% 100%, rgba(139,30,44,.38), transparent 66%),
-    linear-gradient(168deg, #14265e 0%, #0f1f5c 46%, #0b1642 100%); }
+    radial-gradient(135% 85% at 8% 0%,    rgba(168,26,48,.94), transparent 70%),
+    radial-gradient(125% 80% at 96% 22%,  rgba(150,26,46,.80), transparent 66%),
+    radial-gradient(140% 85% at 78% 100%, rgba(168,26,48,.88), transparent 72%),
+    linear-gradient(170deg, #7d1330 0%, #5a1636 30%, #1c2a63 74%, #0f1f5c 100%); }
 
 .pinner { position:absolute; inset:7mm;
           border:.3mm solid rgba(255,255,255,.30);
@@ -1704,7 +1705,11 @@ const PRICE_CSS = `
        align-items:center; padding:0 8mm; border-bottom:.5mm solid rgba(255,255,255,.28); }
 .prh .b { font:700 8.4pt/1 var(--sans); letter-spacing:.17em;
           text-transform:uppercase; color:rgba(255,255,255,.9); }
-.prh img { width:30mm; background:#fff; border-radius:1.4mm; padding:1.6mm 2.2mm; }
+/* 20mm, not 30. The band is 17mm and the mark is about 0.7 as tall as it
+   is wide, so a 30mm logo plus its chip padding came to 24mm — it hung out
+   of the running head on pages two, three and four. At 20mm the chip is
+   16mm and sits inside the band with room to spare. */
+.prh img { width:20mm; background:#fff; border-radius:1.2mm; padding:1.2mm 1.8mm; }
 
 .pbody { flex:1; min-height:0; overflow:hidden; padding:4.5mm 8mm 0; }
 
