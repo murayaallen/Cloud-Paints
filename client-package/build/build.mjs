@@ -587,10 +587,10 @@ function rangePoster(size) {
       <img src="${a}/img/brand/logo.png" style="width:30mm" alt="Cloud Paints">
     </header>
 
-    <div class="sec-h"><h2>The paint range</h2><span class="n">${paints.length} lines</span><span class="ln"></span></div>
+    <div class="sec-h"><h2>The paint range</h2><span class="ln"></span></div>
     <div class="grid">${paints.map(card).join('')}</div>
 
-    <div class="sec-h"><h2>Decorative &amp; textured finishes</h2><span class="n">${textures.length} finishes</span><span class="ln"></span></div>
+    <div class="sec-h"><h2>Decorative &amp; textured finishes</h2><span class="ln"></span></div>
     <div class="tgrid">${textures.map(tcard).join('')}</div>
 
     <div class="p-note">
@@ -995,13 +995,13 @@ const RANGE_SIZES = {
         logo: '46mm', kebs: '20mm', h1: '48pt', kick: '12.2pt', strap: '15pt',
         sw: '7mm', lineH: '78mm', tinH: '46mm', tinGap: '3mm', rowIn: '4mm', rowUp: '26mm',
         lineup: ['silk-vinyl', 'weatherguard', 'vinyl-matt', 'supermatt', 'rocketex'],
-        footFs: '8.4pt',
+        footFs: '9.6pt',
         ipH2: '22pt', cols: 3, gridGap: '7mm 5mm', cellImg: '38mm', cellImgShort: '74mm',
         nm: '11.4pt', tx: '7.8pt', sz: '7.2pt', txLen: 110,
         // The range panels: three across, and room for the tins on the cover.
-        rcols: 3, rowh: 23, chH: 10, catGap: 5, panelH: 263, contactH: 54,
-        rgap: '4mm 5mm', rcImg: '19mm', rcNm: '10pt', rcTx: '7.2pt', rcSz: '7pt',
-        chFs: '13pt', aboutW: '152mm', coverTins: true,
+        rcols: 3, rowh: 26, chH: 12, catGap: 4, panelH: 263, contactH: 84,
+        rgap: '4mm 5mm', rcImg: '22mm', rcNm: '11pt', rcTx: '8pt', rcSz: '7.8pt',
+        chFs: '15pt', aboutW: '152mm', coverTins: true,
         bcH3: '19.5pt', bcV: '8.8pt', restB: '9.2pt', restS: '7.6pt', aboutFs: '9.4pt',
         secGap: '8mm', calc: true, aboutParas: 2, ticks: 5, noteLen: 240 },
   A5: { sheet: '297mm 210mm', w: '297mm', h: '210mm', panel: '148.5mm', k: 0.707,
@@ -1009,16 +1009,16 @@ const RANGE_SIZES = {
         logo: '33mm', kebs: '14mm', h1: '31pt', kick: '8.8pt', strap: '10.6pt',
         sw: '5mm', lineH: '55mm', tinH: '26mm', tinGap: '2mm', rowIn: '7mm', rowUp: '22mm',
         lineup: ['silk-vinyl', 'weatherguard', 'vinyl-matt', 'iris-economy', 'supermatt', 'rocketex'],
-        footFs: '6.9pt',
+        footFs: '8pt',
         ipH2: '15.5pt', cols: 3, gridGap: '5mm 3.5mm', cellImg: '19mm', cellImgShort: '46mm',
         nm: '8.8pt', tx: '6.6pt', sz: '6.2pt', txLen: 110,
         /* Two across on the small fold — three would leave 38mm a line, which
            is not enough for a name, a description and the pack sizes. The
            cover gives up its tin line-up here: the company's account of
            itself is 950 characters and an A5 panel will not carry both. */
-        rcols: 2, rowh: 17, chH: 8, catGap: 4, panelH: 186, contactH: 46,
-        rgap: '3mm 3.5mm', rcImg: '13.5mm', rcNm: '7.7pt', rcTx: '5.9pt', rcSz: '5.8pt',
-        chFs: '9.5pt', aboutW: '114mm', coverTins: false,
+        rcols: 2, rowh: 18, chH: 8, catGap: 3, panelH: 186, contactH: 80,
+        rgap: '2.6mm 3.5mm', rcImg: '15mm', rcNm: '8.4pt', rcTx: '6.5pt', rcSz: '6.5pt',
+        chFs: '10.5pt', aboutW: '114mm', coverTins: false,
         bcH3: '13.8pt', bcV: '7.2pt', restB: '7.6pt', restS: '6.5pt', aboutFs: '7.4pt',
         secGap: '4mm', calc: false, aboutParas: 2, ticks: 5, noteLen: 135, cellImg2: '29mm' },
 };
@@ -1052,9 +1052,16 @@ const rangePanelCss = z => `/* ---- The range, by category ---------------------
    what a customer reads. The pack sizes take the tin's own colour, which
    ties the row to the photograph next to it without a second rule. */
 .cgrp + .cgrp { margin-top:${z.catGap}mm; }
-.ch { display:flex; align-items:baseline; gap:2.5mm; margin-bottom:2.4mm;
-      padding-bottom:1.2mm; border-bottom:.5mm solid var(--accent); }
-.ch h3 { font:400 ${z.chFs}/1 var(--serif); color:var(--accent); }
+/* The price list's section plate, in the flier. A box with the category's
+   own colour in it, a deeper spine down the left and a gold hairline under:
+   the same object in both documents, so a customer who has seen one can
+   read the other. */
+.ch { display:flex; align-items:center; gap:3mm; margin-bottom:2.4mm;
+      background:var(--cat); border-left:1.8mm solid var(--cat-deep);
+      border-bottom:.4mm solid var(--gold); border-radius:1.2mm;
+      padding:1.6mm 2.8mm 1.4mm; }
+.ch h3 { font:700 ${z.chFs}/1 var(--sans); letter-spacing:.05em;
+         text-transform:uppercase; color:var(--cat-ink); }
 .ch .ln { flex:1; }
 .ch .n { font:600 calc(${z.rcSz} * .95)/1 var(--sans); letter-spacing:.14em;
          color:var(--ink-3); flex:none; }
@@ -1064,10 +1071,14 @@ const rangePanelCss = z => `/* ---- The range, by category ---------------------
           justify-content:center; }
 .rc-img img { max-width:100%; max-height:${z.rcImg}; width:auto; }
 .rc-t { flex:1; min-width:0; }
-.rc-t .nm { font:400 ${z.rcNm}/1.1 var(--serif); color:var(--ink); }
-.rc-t .tx { font:400 ${z.rcTx}/1.32 var(--sans); color:var(--ink-2); margin-top:.7mm; }
-.rc-t .sz { font:600 ${z.rcSz}/1 var(--sans); letter-spacing:.06em; color:var(--pc);
-            margin-top:1.1mm; }
+/* Light type, because the ground is dark now. The pack sizes keep the
+   tin's colour but lifted toward white first — Gloss Enamel's navy and
+   Vinyl Matt's indigo are invisible against this ground at full strength. */
+.rc-t .nm { font:700 ${z.rcNm}/1.14 var(--sans); letter-spacing:.03em;
+            text-transform:uppercase; color:#fff; }
+.rc-t .tx { font:400 ${z.rcTx}/1.34 var(--sans); color:#e6dfe9; margin-top:.9mm; }
+.rc-t .sz { font:700 ${z.rcSz}/1 var(--sans); letter-spacing:.07em; color:var(--pc-lift);
+            margin-top:1.2mm; }
 `;
 
 const rangeCss = z => {
@@ -1083,13 +1094,22 @@ return `
 @page { size: ${z.sheet}; margin: 0; }
 .sheet { --sheet-w:${z.w}; --sheet-h:${z.h}; --k:${z.k}; }
 .fold { display:flex; width:${z.w}; height:${z.h}; }
-.pnl  { position:relative; width:${z.panel}; height:${z.h}; overflow:hidden; }
+/* Every panel now carries the price list's ground, so the two documents
+   look like one family: one opaque radial, red at the near corner and navy
+   at the far one. Opaque on purpose — the price list would not print until
+   its fades to transparent were taken out, and there is no reason to put
+   the same fault back into the flier. */
+.pnl  { position:relative; width:${z.panel}; height:${z.h}; overflow:hidden;
+        color:#fff;
+        background: radial-gradient(155% 110% at 6% -6%,
+          #b81c34 0%, #a01830 22%, #7a1432 42%, #4a1a4a 62%,
+          #242a60 82%, #0f1f5c 100%); }
 @media screen { .pnl + .pnl { border-left:.15mm dashed rgba(0,0,0,.25); } }
 
 /* A hairline frame on every panel, inset from the trim. It gives the piece a
    held edge when it is folded, and it is what stops four full-bleed panels
    reading as four unrelated sheets. */
-.frame { position:absolute; inset:${z.frame}; border:.3mm solid var(--fr, var(--rule));
+.frame { position:absolute; inset:${z.frame}; border:.3mm solid var(--fr, #8f7f9c);
          z-index:4; pointer-events:none; }
 
 /* ---- cover ----
@@ -1213,13 +1233,25 @@ return `
 ${rangePanelCss(z)}
 
 /* ---- Contact, at the foot of the back panel --------------------------- */
-.rc-contact { margin-top:5mm; padding-top:3.6mm; border-top:.5mm solid var(--accent); }
-.rc-contact h3 { font:400 ${z.bcH3}/1 var(--serif); color:var(--ink); margin-bottom:3mm; }
-.rc-contact h3 em { font-style:italic; color:var(--accent); }
-.rc-grid { display:grid; grid-template-columns:1fr 1fr; gap:3mm 4mm; }
-.rc-grid .k { font:700 ${z.restS}/1 var(--sans); letter-spacing:.13em;
-              text-transform:uppercase; color:var(--accent); margin-bottom:1.2mm; }
-.rc-grid .v { font:400 ${z.bcV}/1.4 var(--sans); color:var(--ink-2); }
+.rc-contact { margin-top:3mm; padding-top:2.4mm; border-top:.5mm solid var(--gold); }
+.rc-contact h3 { font:400 ${z.bcH3}/1 var(--serif); color:#fff; margin-bottom:1.8mm; }
+.rc-contact h3 em { font-style:italic; color:var(--gold); }
+.rc-contact .v { font:400 ${z.bcV}/1.5 var(--sans); color:#e6dfe9; }
+
+/* ---- The standards mark, and the terms, at the end -------------------- */
+/* The mark has come off the cover. It certifies the products, so it belongs
+   with them and with the sentence that says what it means — on the cover it
+   sat in the brand lockup and read as decoration. */
+.rc-cert { display:flex; align-items:center; gap:2.6mm; margin-top:3mm;
+           padding-top:2.4mm; border-top:.5mm solid var(--gold); }
+.rc-cert img { height:${z.kebs}; width:auto; background:#fff;
+               padding:1mm; border-radius:1mm; flex:none; }
+.rc-cert p { font:400 ${z.rcTx}/1.38 var(--sans); color:#e6dfe9; }
+.rc-cert b { color:var(--gold); font-weight:700; }
+.rc-terms { margin-top:2.4mm; }
+.rc-terms p { font:400 calc(${z.rcTx} * .96)/1.38 var(--sans); color:#ddd4e2; }
+.rc-terms p + p { margin-top:1.1mm; }
+.rc-terms b { color:#fff; font-weight:600; }
 
 /* ---- The company's account of itself, on the cover -------------------- */
 .cover-about { text-align:left; max-width:${z.aboutW}; }
@@ -1307,7 +1339,7 @@ const rangeRowColour = row =>
 function rangeRowCell(row, d) {
   const src = row.art ? thumbImage({ slug: row.art }, d) : null;
   return `
-    <div class="rcell" style="--pc:${rangeRowColour(row)}">
+    <div class="rcell" style="--pc-lift:${tint(rangeRowColour(row), 0.55)}">
       ${src ? `<div class="rc-img"><img src="${src}" alt="${esc(row.name)}"></div>` : ''}
       <div class="rc-t">
         <div class="nm">${esc(row.name)}</div>
@@ -1321,8 +1353,9 @@ function rangeRowCell(row, d) {
    list "9 lines" earns its place; here it printed a bare 1 beside half the
    categories, which reads as a stray digit rather than a tally. */
 function rangeCatBlock(g, d) {
+  const c = rangeRowColour(g.rows[0]);
   return `
-    <div class="cgrp">
+    <div class="cgrp" style="--cat:${c};--cat-deep:${readable(c)};--cat-ink:${inkOn(c)}">
       <div class="ch"><h3>${esc(g.title)}</h3><span class="ln"></span></div>
       <div class="rgrid">${g.rows.map(r => rangeRowCell(r, d)).join('')}</div>
     </div>`;
@@ -1401,18 +1434,32 @@ function rangeFlier(size) {
     </div>`;
 
   const contactBlock = `
+    <div class="rc-cert">
+      <img src="${a}/img/brand/kebs.png" alt="KEBS Standardisation Mark">
+      <p><b>Certified.</b> Every Product in this Range is manufactured at our
+         Industrial Area Factory to KEBS Standards, tested and awarded the
+         Standardisation Mark of Quality (S/Mark).</p>
+    </div>
+    <div class="rc-terms">
+      <p>${esc(TRADE_NOTE)}</p>
+      <p><b>Colour Tinting</b> is available at the Industrial Area Factory on all
+         Emulsions and Enamels. Tinted Shades may carry a Surcharge depending on
+         the Colourant used.</p>
+      <p><b>Hand applied Decorative Finishes</b> are quoted separately. They are
+         sold by Weight and are dependent on Wall Measurements. The Decorative
+         Palette is available at our Factory.</p>
+    </div>
+    <!-- One line, not a four-cell grid. The cover foot already carries
+         "Manufactured by" and "Find us", and the panel foot carries the
+         phone, the email and the web address on every panel — a third full
+         contact block was 40mm of the panel spent saying it a third time,
+         and 40mm is what the certification and the terms needed. -->
     <div class="rc-contact">
-      <h3>Come and see the <em>colour.</em></h3>
-      <div class="rc-grid">
-        <div><div class="k">Call or WhatsApp</div>
-          <div class="v"><b>${esc(CO.phones[0])}</b><br>${esc(CO.phones[1])}<br>${esc(CO.phones[2])}</div></div>
-        <div><div class="k">Visit the counter</div>
-          <div class="v"><b>${esc(CO.street)}</b><br>${esc(CO.area)}<br>${esc(CO.box)}</div></div>
-        <div><div class="k">Email &amp; web</div>
-          <div class="v">${esc(CO.email)}<br>${esc(CO.web)}</div></div>
-        <div><div class="k">Opening hours</div>
-          <div class="v">${esc(CO.hours)}<br>Sunday &amp; public holidays closed</div></div>
-      </div>
+      <h3>Come and see the <em>Colour.</em></h3>
+      <div class="v">${esc(CO.street)}, ${esc(CO.area)} &nbsp;·&nbsp;
+        ${esc(CO.phones[0])} &nbsp;·&nbsp; ${esc(CO.phones[1])} &nbsp;·&nbsp;
+        ${esc(CO.phones[2])}<br>${esc(CO.email)} &nbsp;·&nbsp; ${esc(CO.web)}
+        &nbsp;·&nbsp; ${esc(CO.hours)}</div>
     </div>`;
 
   const frontCover = `
@@ -1453,11 +1500,6 @@ function rangeFlier(size) {
         </div>
 
         <p class="strap mt-2">${strapColoured()}</p>
-      </div>
-
-      <div class="cover-mark">
-        <img src="${a}/img/brand/kebs.png" alt="KEBS Standardisation Mark">
-        <span><b>KEBS</b>Standardisation Mark</span>
       </div>
 
       ${z.coverTins ? `<div class="cover-line">
@@ -1502,7 +1544,10 @@ function rangeFlier(size) {
    band across the head of page one rather than given a panel of its own.
    ============================================================ */
 const SHEET_Z = {
-  rcols: 3, rowh: 17, chH: 8, catGap: 4,
+  /* Up from rowh 17 / chH 8: product names are set in capitals now, which
+     wraps more of them to a second line, and the category heading became a
+     plate rather than a rule. */
+  rcols: 3, rowh: 17, chH: 10, catGap: 3,
   rgap: '3.5mm 5mm', rcImg: '14mm',
   rcNm: '8.4pt', rcTx: '6.3pt', rcSz: '6.1pt', chFs: '11pt',
 };
@@ -1543,14 +1588,22 @@ const SHEET_CSS = `
            font:500 6.9pt/1.3 var(--sans); letter-spacing:.02em; white-space:nowrap; }
 .rs-foot .r { color:var(--gold); }
 
+/* ---- Back to ink on white --------------------------------------------
+   The shared range rules set light type for the fold's dark ground. On this
+   sheet that would be white on white. */
+/* Sentence case here, not the fold's capitals. Two A4 sides is the brief
+   for this sheet and capitals wrap a third of the names to a second line,
+   which is a page. The fold has the room; this does not. */
+.rc-t .nm { color:var(--ink); text-transform:none; letter-spacing:0; }
+.rc-t .tx { color:var(--ink-2); }
+.rc-t .sz { color:var(--pc-ink, #4a4d68); }
+.ch { border-bottom-color:var(--gold); }
+
 /* Contact, under the last of the range on page two. */
 .rc-contact { margin-top:5mm; padding-top:3.6mm; border-top:.5mm solid var(--accent); }
 .rc-contact h3 { font:400 15pt/1 var(--serif); color:var(--ink); margin-bottom:3mm; }
 .rc-contact h3 em { font-style:italic; color:var(--accent); }
-.rc-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:3mm 5mm; }
-.rc-grid .k { font:700 6.2pt/1 var(--sans); letter-spacing:.13em;
-              text-transform:uppercase; color:var(--accent); margin-bottom:1.2mm; }
-.rc-grid .v { font:400 7.2pt/1.4 var(--sans); color:var(--ink-2); }
+.rc-contact .v { font:400 7.6pt/1.5 var(--sans); color:var(--ink-2); }
 `;
 
 function rangeSheet() {
@@ -1562,21 +1615,14 @@ function rangeSheet() {
      band, page two 14 on the running head; both spend 11 on the foot bar
      and 4.5 on the body's opening air. The contact block takes 46 off the
      foot of page two. */
-  const packed = packRange(z, [281 - 46 - 11 - 4.5, 281 - 14 - 11 - 4.5 - 46]);
+  const packed = packRange(z, [281 - 46 - 11 - 4.5, 281 - 14 - 11 - 4.5 - 26]);
 
   const contact = `
     <div class="rc-contact" style="${accentVars('#1e3a8a')}">
-      <h3>Come and see the <em>colour.</em></h3>
-      <div class="rc-grid">
-        <div><div class="k">Call or WhatsApp</div>
-          <div class="v"><b>${esc(CO.phones[0])}</b><br>${esc(CO.phones[1])}<br>${esc(CO.phones[2])}</div></div>
-        <div><div class="k">Visit the counter</div>
-          <div class="v"><b>${esc(CO.street)}</b><br>${esc(CO.area)}<br>${esc(CO.box)}</div></div>
-        <div><div class="k">Email &amp; web</div>
-          <div class="v">${esc(CO.email)}<br>${esc(CO.web)}</div></div>
-        <div><div class="k">Opening hours</div>
-          <div class="v">${esc(CO.hours)}<br>Sunday &amp; public holidays closed</div></div>
-      </div>
+      <h3>Come and see the <em>Colour.</em></h3>
+      <div class="v">${esc(CO.street)}, ${esc(CO.area)} &nbsp;·&nbsp; ${esc(CO.box)}<br>
+        ${esc(CO.phones[0])} &nbsp;·&nbsp; ${esc(CO.phones[1])} &nbsp;·&nbsp; ${esc(CO.phones[2])}
+        &nbsp;·&nbsp; ${esc(CO.email)} &nbsp;·&nbsp; ${esc(CO.web)}<br>${esc(CO.hours)}</div>
     </div>`;
 
   const foot = `
@@ -1627,8 +1673,12 @@ function rangeSheet() {
   </div>
 </div>`;
 
+  /* rangePanelCss first, SHEET_CSS second. The shared rules are written for
+     the fold, which is now a dark ground — white names, light descriptions,
+     lifted pack colours. This sheet is white, so its own rules have to come
+     after and put the ink back. */
   return head('Cloud Paints — the complete range (A4)', d,
-              SHEET_CSS + rangePanelCss(z))
+              rangePanelCss(z) + SHEET_CSS)
        + page(head1, packed[0], '#1e3a8a', false)
        + page(head2, packed[1], '#8b1e2c', true)
        + tail;
