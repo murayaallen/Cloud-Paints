@@ -1016,7 +1016,7 @@ const RANGE_SIZES = {
            is not enough for a name, a description and the pack sizes. The
            cover gives up its tin line-up here: the company's account of
            itself is 950 characters and an A5 panel will not carry both. */
-        rcols: 2, rowh: 18, chH: 8, catGap: 3, panelH: 186, contactH: 80,
+        rcols: 2, rowh: 18, chH: 8, catGap: 3, panelH: 186, contactH: 70,
         rgap: '2.6mm 3.5mm', rcImg: '15mm', rcNm: '8.4pt', rcTx: '6.5pt', rcSz: '6.5pt',
         chFs: '10.5pt', aboutW: '114mm', coverTins: false,
         bcH3: '13.8pt', bcV: '7.2pt', restB: '7.6pt', restS: '6.5pt', aboutFs: '7.4pt',
@@ -1203,7 +1203,12 @@ return `
                 text-transform:uppercase; font-size:calc(${z.footFs} * .88); }
 
 /* ---- inner panels ---- */
-.ip { position:absolute; inset:${z.pad}; display:flex; flex-direction:column; }
+/* padding-bottom, not just the inset. The tail — certification, terms and
+   contact — had grown past the frame and the last contact line was printing
+   below it. A floor inside the panel keeps anything that overruns visible to
+   the overset check instead of quietly crossing the rule. */
+.ip { position:absolute; inset:${z.pad}; display:flex; flex-direction:column;
+      padding-bottom:2mm; }
 .ip-head { display:flex; align-items:baseline; gap:4mm; padding-bottom:3mm;
            border-bottom:.8mm solid var(--accent); margin-bottom:5mm; }
 .ip-head h2 { font:400 ${z.ipH2}/1 var(--serif); color:var(--ink); letter-spacing:-.01em; }
@@ -1234,7 +1239,8 @@ ${rangePanelCss(z)}
 
 /* ---- Contact, at the foot of the back panel --------------------------- */
 .rc-contact { margin-top:3mm; padding-top:2.4mm; border-top:.5mm solid var(--gold); }
-.rc-contact h3 { font:400 ${z.bcH3}/1 var(--serif); color:#fff; margin-bottom:1.8mm; }
+.rc-contact h3 { font:400 calc(${z.bcH3} * .82)/1 var(--serif); color:#fff;
+                 margin-bottom:1.4mm; }
 .rc-contact h3 em { font-style:italic; color:var(--gold); }
 .rc-contact .v { font:400 ${z.bcV}/1.5 var(--sans); color:#e6dfe9; }
 
@@ -1445,9 +1451,6 @@ function rangeFlier(size) {
       <p><b>Colour Tinting</b> is available at the Industrial Area Factory on all
          Emulsions and Enamels. Tinted Shades may carry a Surcharge depending on
          the Colourant used.</p>
-      <p><b>Hand applied Decorative Finishes</b> are quoted separately. They are
-         sold by Weight and are dependent on Wall Measurements. The Decorative
-         Palette is available at our Factory.</p>
     </div>
     <!-- One line, not a four-cell grid. The cover foot already carries
          "Manufactured by" and "Find us", and the panel foot carries the
@@ -1455,11 +1458,10 @@ function rangeFlier(size) {
          contact block was 40mm of the panel spent saying it a third time,
          and 40mm is what the certification and the terms needed. -->
     <div class="rc-contact">
-      <h3>Come and see the <em>Colour.</em></h3>
-      <div class="v">${esc(CO.street)}, ${esc(CO.area)} &nbsp;·&nbsp;
+      <h3>Come and See the <em>Colour.</em></h3>
+      <div class="v">${esc(CO.street)}, ${esc(CO.area)}<br>
         ${esc(CO.phones[0])} &nbsp;·&nbsp; ${esc(CO.phones[1])} &nbsp;·&nbsp;
-        ${esc(CO.phones[2])}<br>${esc(CO.email)} &nbsp;·&nbsp; ${esc(CO.web)}
-        &nbsp;·&nbsp; ${esc(CO.hours)}</div>
+        ${esc(CO.email)} &nbsp;·&nbsp; ${esc(CO.web)}</div>
     </div>`;
 
   const frontCover = `
