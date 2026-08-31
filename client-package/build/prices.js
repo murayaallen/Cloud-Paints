@@ -112,13 +112,13 @@ export const PRICE_LIST = [
     title: 'Interior Application',
     rows: [
       { name: 'Silk Vinyl', art: 'silk-vinyl',
-        desc: 'Silky low-sheen emulsion for interior walls, easy to wipe clean.',
+        desc: 'A silky low-sheen emulsion for interior walls that lifts colour and wipes clean.',
         prices: { '20L': 13950, '4L': 2750, '1L': 780 } },
       { name: 'Vinyl Matt', art: 'vinyl-matt',
-        desc: 'Brilliant long-lasting white with a smooth non-reflective matt finish.',
+        desc: 'A brilliant long-lasting white with a smooth non-reflective matt finish, inside and out.',
         prices: { '20L': 11950, '4L': 2350, '1L': 650 } },
       { name: 'SuperMatt Premium Grade', art: 'supermatt',
-        desc: 'The smooth matt base coat under decorative top coats, high coverage.',
+        desc: 'The smooth matt base coat under decorative top coats, with high coverage and hiding power.',
         prices: { '20L': 4500, '4L': 1000, '1L': 300 } },
     ],
   },
@@ -126,10 +126,10 @@ export const PRICE_LIST = [
     title: 'Exterior Application',
     rows: [
       { name: 'Weatherguard with Silicone', art: 'weatherguard',
-        desc: 'Silicone-fortified exterior finish that repels water and holds colour.',
+        desc: 'Silicone-fortified exterior finish that repels water and holds colour through hard weather.',
         prices: { '20L': 16200, '4L': 3100, '1L': 1000 } },
       { name: 'Weatherguard', art: 'weatherguard',
-        desc: 'Premium acrylic exterior wall paint built for sun, rain and dust.',
+        desc: 'Premium acrylic exterior wall paint built for Kenyan sun, rain and dust.',
         prices: { '20L': 15300, '4L': 3050, '1L': 850 } },
     ],
   },
@@ -140,10 +140,10 @@ export const PRICE_LIST = [
       // 11,950. Confirmed the same tin at the same price, so both read
       // 11,950 and the two Vinyl Matt rows no longer disagree.
       { name: 'Vinyl Matt', art: 'vinyl-matt',
-        desc: 'Brilliant long-lasting white with a smooth non-reflective matt finish.',
+        desc: 'A brilliant long-lasting white with a smooth non-reflective matt finish, inside and out.',
         prices: { '20L': 11950, '4L': 2350, '1L': 650 } },
       { name: 'Transil-Stone Guard', art: null, colour: '#5b7080',
-        desc: 'Protective coating for stone and rendered walls, inside or out.',
+        desc: 'Protective coating for stone and rendered walls, indoors or out, new or previously painted.',
         prices: { '20L': 10400, '4L': 2050, '1L': 575 } },
     ],
   },
@@ -151,10 +151,10 @@ export const PRICE_LIST = [
     title: 'Textured Finish',
     rows: [
       { name: 'Rocktex Wallmaster Tinted', art: 'rocketex',
-        desc: 'Super-premium acrylic textured coating, tinted to your colour.',
+        desc: 'Super-premium acrylic textured coating, tinted to your colour and laid on by hand.',
         prices: { '30kg': 5000, '10kg': 1300 } },
       { name: 'Rocktex Wallmaster Plain', art: 'rocketex',
-        desc: 'The same textured coating supplied plain, for tinting or over-painting.',
+        desc: 'The same textured coating supplied plain, ready for tinting or over-painting.',
         prices: { '30kg': 4600, '10kg': 1200 } },
     ],
   },
@@ -162,10 +162,10 @@ export const PRICE_LIST = [
     title: 'Roof Paint Premium',
     rows: [
       { name: 'Roof Paint', art: 'roof-paint',
-        desc: 'Durable flexible coating for galvanised roofing sheets and steelwork.',
+        desc: 'Durable flexible coating for galvanised roofing sheets, gutters and exposed steelwork.',
         prices: { '4L': 3200, '1L': 880 } },
       { name: 'Roof Paint Water Based', art: 'roof-paint',
-        desc: 'The same roof protection in a low-odour water-based formulation.',
+        desc: 'The same roof protection in a low-odour water-based formulation for occupied buildings.',
         prices: { '4L': 3045, '1L': 850 } },
     ],
   },
@@ -173,10 +173,10 @@ export const PRICE_LIST = [
     title: 'Wood Varnishes',
     rows: [
       { name: 'Varnish Stain', art: 'varnish-stain',
-        desc: 'Tinted polyurethane varnish that stains and protects timber in one coat.',
+        desc: 'Tinted polyurethane varnish that stains and protects timber in a single coat.',
         prices: { '4L': 2400, '1L': 650 } },
       { name: 'Clear Varnish', art: 'clear-varnish',
-        desc: 'Quick-drying clear varnish for doors, trim, furniture and joinery.',
+        desc: 'Quick-drying clear varnish for doors, trim, furniture and interior joinery.',
         prices: { '4L': 2650, '1L': 740 } },
     ],
   },
@@ -184,7 +184,7 @@ export const PRICE_LIST = [
     title: 'Road Paint',
     rows: [
       { name: 'Road Marking Yellow', art: 'road-marking',
-        desc: 'Fast-drying high-opacity yellow for road, car park and floor markings.',
+        desc: 'Fast-drying high-opacity yellow for roads, car parks and warehouse floor markings.',
         prices: { '4L': 3500, '1L': 960 } },
       { name: 'Road Marking White / Black', art: 'road-marking',
         desc: 'The same fast-drying marking paint, supplied in white and in black.',
@@ -195,7 +195,7 @@ export const PRICE_LIST = [
     title: 'Gloss Paints Finish',
     rows: [
       { name: 'Super Gloss Premium', art: 'super-gloss',
-        desc: 'Quick-drying high gloss for interior and exterior wood and metal.',
+        desc: 'Quick-drying high gloss for interior and exterior wood and metal, tough and hard-wearing.',
         prices: { '4L': 3000, '1L': 950 } },
     ],
   },
@@ -203,7 +203,7 @@ export const PRICE_LIST = [
     title: 'Floor Paint Premium',
     rows: [
       { name: 'Floor Paint', art: 'floor-paint',
-        desc: 'Heavy-duty coating for industrial and residential concrete floors.',
+        desc: 'Heavy-duty coating for industrial and residential concrete floors and walkways.',
         prices: { '4L': 2800, '1L': 780 } },
     ],
   },
@@ -211,7 +211,7 @@ export const PRICE_LIST = [
     title: 'Undercoats',
     rows: [
       { name: 'Universal Undercoat', art: 'universal-undercoat',
-        desc: 'All-purpose undercoat giving wood, metal and masonry a smooth base.',
+        desc: 'All-purpose undercoat giving wood, metal and primed masonry a smooth base for any top coat.',
         prices: { '20L': 10290, '4L': 2040, '1L': 550 } },
     ],
   },
@@ -219,7 +219,7 @@ export const PRICE_LIST = [
     title: 'Wood Finish',
     rows: [
       { name: 'NC Sanding Sealer', art: null, colour: '#7a5c33',
-        desc: 'Nitrocellulose sealer that fills wood grain and sands back smooth.',
+        desc: 'Nitrocellulose sealer that fills wood grain and sands back smooth before the finish.',
         prices: { '20L': 10300, '4L': 2050, '1L': 560 } },
     ],
   },
@@ -227,7 +227,7 @@ export const PRICE_LIST = [
     title: 'Bituminous Paints',
     rows: [
       { name: 'Black Bituminous', art: null, colour: '#1f2124',
-        desc: 'Bitumen-based black coating for waterproofing and metal protection.',
+        desc: 'Bitumen-based black coating for waterproofing, metal protection and below-ground work.',
         prices: { '4L': 2030, '1L': 600 } },
     ],
   },
@@ -235,10 +235,10 @@ export const PRICE_LIST = [
     title: 'Thinners',
     rows: [
       { name: 'White Spirit', art: 'white-spirit',
-        desc: 'High-purity thinner for oil-based paints and for cleaning equipment.',
+        desc: 'High-purity thinner for oil-based paints and varnishes, and for cleaning equipment.',
         prices: { '5L': 1500, '1L': 300 } },
       { name: 'Standard Thinner', art: 'standard-thinner',
-        desc: 'All-round hydrocarbon thinner for enamels and undercoats.',
+        desc: 'All-round hydrocarbon thinner for Cloud Paints enamels and undercoats.',
         prices: { '5L': 1550, '1L': 330 } },
       { name: 'Turpentine', art: 'turpentine',
         desc: 'Pine-derived thinner for oil-based paints, enamels and varnishes.',
@@ -246,7 +246,7 @@ export const PRICE_LIST = [
       // No photograph, and no stand-in: an unlabelled jerrican said nothing
       // about the product that its own name did not already say.
       { name: 'Road Marking Thinner', art: null, colour: '#46566b',
-        desc: 'Thinner blended for road marking paint and its spray equipment.',
+        desc: 'Thinner blended for road marking paint and the equipment that sprays it.',
         prices: { '5L': 2280, '1L': 490 } },
     ],
   },
@@ -254,7 +254,7 @@ export const PRICE_LIST = [
     title: 'Budget Paints',
     rows: [
       { name: 'Metal Primer Red Oxide', art: 'metal-primer',
-        desc: 'Anti-corrosive red oxide primer for gates, grilles and ferrous metal.',
+        desc: 'Anti-corrosive red oxide primer for gates, grilles, railings and ferrous metal.',
         prices: { '4L': 1140, '1L': 315 } },
       // The client's document says 5L here; confirmed a slip — Gloss Enamel
       // is a 4L tin, as the catalogue and every other document have it. The
@@ -263,7 +263,7 @@ export const PRICE_LIST = [
         desc: 'Oil-based gloss enamel for wood, metal and plaster, inside and out.',
         prices: { '4L': 1150, '1L': 314 } },
       { name: 'Iris Plastic Emulsion', art: 'iris-economy',
-        desc: 'Economy emulsion for interior walls and ceilings, good hiding power.',
+        desc: 'Economy emulsion for interior walls and ceilings with good hiding power over large areas.',
         prices: { '20L': 2150, '4L': 440, '1L': 150 } },
       { name: 'Roof Paint Economy', art: 'roof-paint',
         desc: 'Economy roof coating for galvanised sheets and exposed steelwork.',

@@ -1549,9 +1549,18 @@ const SHEET_Z = {
   /* Up from rowh 17 / chH 8: product names are set in capitals now, which
      wraps more of them to a second line, and the category heading became a
      plate rather than a rule. */
-  rcols: 3, rowh: 17, chH: 10, catGap: 3,
-  rgap: '3.5mm 5mm', rcImg: '14mm',
-  rcNm: '8.4pt', rcTx: '6.3pt', rcSz: '6.1pt', chFs: '11pt',
+  /* Three columns means a 43mm line, and the longer descriptions wrap to a
+     third line in it. Two A4 sides is this sheet's brief, so the description
+     drops a fraction of a point and the tin a couple of millimetres — the
+     folds, which have wider columns, keep both at full size. */
+  /* rowh 19, not 16. Measured off the rendered sheet rather than derived:
+     a one-row category occupies 26.7mm from plate to plate, so with an 8mm
+     plate the row is 19. Every earlier value here was arithmetic that did
+     not match the page, which is why the spill kept moving without ever
+     clearing. */
+  rcols: 3, rowh: 19, chH: 8, catGap: 2,
+  rgap: '3mm 5mm', rcImg: '11.5mm',
+  rcNm: '7.8pt', rcTx: '5.7pt', rcSz: '5.8pt', chFs: '10pt',
 };
 
 const SHEET_CSS = `
@@ -1597,6 +1606,7 @@ const SHEET_CSS = `
    for this sheet and capitals wrap a third of the names to a second line,
    which is a page. The fold has the room; this does not. */
 .rc-t .nm { color:var(--ink); text-transform:none; letter-spacing:0; }
+.rc-t .tx { line-height:1.28; }
 .rc-t .tx { color:var(--ink-2); }
 .rc-t .sz { color:var(--pc-ink, #4a4d68); }
 .ch { border-bottom-color:var(--gold); }
