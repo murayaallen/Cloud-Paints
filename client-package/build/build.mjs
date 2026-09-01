@@ -999,8 +999,10 @@ const RANGE_SIZES = {
         ipH2: '22pt', cols: 3, gridGap: '7mm 5mm', cellImg: '38mm', cellImgShort: '74mm',
         nm: '11.4pt', tx: '7.8pt', sz: '7.2pt', txLen: 110,
         // The range panels: three across, and room for the tins on the cover.
-        rcols: 3, rowh: 28, chH: 13, catGap: 4, panelH: 275, contactH: 92,
-        rgap: '4mm 5mm', rcImg: '24mm', rcNm: '12pt', rcTx: '8.6pt', rcSz: '8.4pt',
+        /* rowh 31, measured: a one-row category occupies 42.8mm plate to plate on
+           the big fold, so with a 12mm plate the row is 31. */
+        rcols: 3, rowh: 29, chH: 12, catGap: 4, panelH: 275, contactH: 108,
+        rgap: '2mm 5mm', rcImg: '22mm', rcNm: '11.5pt', rcTx: '8.2pt', rcSz: '8pt',
         chFs: '16pt', aboutW: '164mm', coverTins: true,
         bcH3: '19.5pt', bcV: '8.8pt', restB: '9.2pt', restS: '7.6pt', aboutFs: '9.4pt',
         secGap: '8mm', calc: true, aboutParas: 2, ticks: 5, noteLen: 240 },
@@ -1021,7 +1023,7 @@ const RANGE_SIZES = {
            wider column is worth as much as the height — a 47mm line instead
            of 43mm wraps fewer descriptions to a third line. */
         rcols: 2, rowh: 19, chH: 9, catGap: 3, panelH: 194, contactH: 74,
-        rgap: '2.8mm 3.5mm', rcImg: '16mm', rcNm: '9pt', rcTx: '7pt', rcSz: '6.8pt',
+        rgap: '1mm 3.5mm', rcImg: '16mm', rcNm: '9pt', rcTx: '7pt', rcSz: '6.8pt',
         chFs: '11.5pt', aboutW: '124mm', coverTins: false,
         bcH3: '13.8pt', bcV: '7.2pt', restB: '7.6pt', restS: '6.5pt', aboutFs: '7.4pt',
         secGap: '4mm', calc: false, aboutParas: 2, ticks: 5, noteLen: 135, cellImg2: '29mm' },
@@ -1069,7 +1071,14 @@ const rangePanelCss = z => `/* ---- The range, by category ---------------------
 .ch .ln { flex:1; }
 .ch .n { font:600 calc(${z.rcSz} * .95)/1 var(--sans); letter-spacing:.14em;
          color:var(--ink-3); flex:none; }
-.rgrid { display:grid; grid-template-columns:repeat(${z.rcols},1fr); gap:${z.rgap}; }
+.rgrid { display:grid; grid-template-columns:repeat(${z.rcols},1fr);
+         gap:${z.rgap}; column-gap:0; }
+/* The column divider is drawn as a left border on the cells that start a
+   second or third column, with the gap turned into padding either side of
+   it — a grid gap cannot carry a rule. */
+.rgrid > .rcell:not(:nth-child(${z.rcols}n+1)) {
+  border-left:.2mm solid #8b7d95; padding-left:3.5mm; }
+.rgrid > .rcell:nth-child(${z.rcols}n+1) { padding-right:3.5mm; }
 .rcell { display:flex; gap:2mm; align-items:flex-start; break-inside:avoid; }
 .rc-img { width:${z.rcImg}; flex:none; display:flex; align-items:flex-start;
           justify-content:center; }
@@ -1129,11 +1138,25 @@ return `
 /* A hairline frame on every panel, inset from the trim. It gives the piece a
    held edge when it is folded, and it is what stops four full-bleed panels
    reading as four unrelated sheets. */
-/* The inset keyline is gone. It drew a box a few millimetres in from every
-   panel edge, which is exactly the border the piece was asked not to have —
-   and on a folded sheet it also fought the fold, since the reader sees two
-   panels at once and got four vertical rules across them. */
+/* No keyline around the outside — the ink runs off the sheet. The rules
+   are inside instead, where they do work: one down each fold so the piece
+   tells you where to crease it, one between the two columns of a panel, and
+   one under every line of the range so a product is bounded rather than just
+   spaced. Solid colours, not alpha, so none of them costs a transparency
+   group. */
 .frame { display:none; }
+
+/* The fold. .pnl is a flex item, so a right border on all but the last one
+   lands exactly on each crease. */
+.fold .pnl + .pnl { border-left:.25mm solid #a08fa8; }
+
+/* Between the two columns of rows, and under each row. The under-rule stops
+   short of the tin so it reads as a rule under the words rather than a line
+   drawn through the picture. */
+.rgrid { position:relative; }
+.rcell { padding-bottom:1.2mm; border-bottom:.2mm solid #8b7d95; }
+.cgrp .rgrid > .rcell:nth-last-child(-n+1):nth-child(odd) { }
+.rc-t { border-left:0; }
 
 /* ---- cover ----
    The ground is the website's opening hero, flattened for print. On screen
