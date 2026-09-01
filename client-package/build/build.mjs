@@ -990,9 +990,8 @@ function flierLine(p, max) {
 }
 
 const RANGE_SIZES = {
-  A4: { sheet: '436mm 313mm', w: '420mm', h: '297mm', panel: '210mm', k: 1,
-        bw: '426mm', bh: '303mm',
-        frame: '8mm', pad: '17mm',
+  A4: { sheet: '426mm 303mm', w: '420mm', h: '297mm', panel: '210mm', k: 1,
+        frame: '8mm', pad: '11mm',
         logo: '46mm', kebs: '20mm', h1: '48pt', kick: '12.2pt', strap: '15pt',
         sw: '7mm', lineH: '78mm', tinH: '46mm', tinGap: '3mm', rowIn: '4mm', rowUp: '26mm',
         lineup: ['silk-vinyl', 'weatherguard', 'vinyl-matt', 'supermatt', 'rocketex'],
@@ -1000,27 +999,30 @@ const RANGE_SIZES = {
         ipH2: '22pt', cols: 3, gridGap: '7mm 5mm', cellImg: '38mm', cellImgShort: '74mm',
         nm: '11.4pt', tx: '7.8pt', sz: '7.2pt', txLen: 110,
         // The range panels: three across, and room for the tins on the cover.
-        rcols: 3, rowh: 26, chH: 12, catGap: 4, panelH: 263, contactH: 84,
-        rgap: '4mm 5mm', rcImg: '22mm', rcNm: '11pt', rcTx: '8pt', rcSz: '7.8pt',
-        chFs: '15pt', aboutW: '152mm', coverTins: true,
+        rcols: 3, rowh: 28, chH: 13, catGap: 4, panelH: 275, contactH: 92,
+        rgap: '4mm 5mm', rcImg: '24mm', rcNm: '12pt', rcTx: '8.6pt', rcSz: '8.4pt',
+        chFs: '16pt', aboutW: '164mm', coverTins: true,
         bcH3: '19.5pt', bcV: '8.8pt', restB: '9.2pt', restS: '7.6pt', aboutFs: '9.4pt',
         secGap: '8mm', calc: true, aboutParas: 2, ticks: 5, noteLen: 240 },
-  A5: { sheet: '313mm 226mm', w: '297mm', h: '210mm', panel: '148.5mm', k: 0.707,
-        bw: '303mm', bh: '216mm',
-        frame: '5.5mm', pad: '12mm',
+  A5: { sheet: '303mm 216mm', w: '297mm', h: '210mm', panel: '148.5mm', k: 0.707,
+        frame: '5.5mm', pad: '8mm',
         logo: '33mm', kebs: '14mm', h1: '31pt', kick: '8.8pt', strap: '10.6pt',
         sw: '5mm', lineH: '55mm', tinH: '26mm', tinGap: '2mm', rowIn: '7mm', rowUp: '22mm',
         lineup: ['silk-vinyl', 'weatherguard', 'vinyl-matt', 'iris-economy', 'supermatt', 'rocketex'],
-        footFs: '8pt',
+        footFs: '8.6pt',
         ipH2: '15.5pt', cols: 3, gridGap: '5mm 3.5mm', cellImg: '19mm', cellImgShort: '46mm',
         nm: '8.8pt', tx: '6.6pt', sz: '6.2pt', txLen: 110,
         /* Two across on the small fold — three would leave 38mm a line, which
            is not enough for a name, a description and the pack sizes. The
            cover gives up its tin line-up here: the company's account of
            itself is 950 characters and an A5 panel will not carry both. */
-        rcols: 2, rowh: 18, chH: 8, catGap: 3, panelH: 186, contactH: 70,
-        rgap: '2.6mm 3.5mm', rcImg: '15mm', rcNm: '8.4pt', rcTx: '6.5pt', rcSz: '6.5pt',
-        chFs: '10.5pt', aboutW: '114mm', coverTins: false,
+        /* panelH is 194 now, not 186: the padding came in from 12mm to 8mm,
+           which gives every panel 8mm more height and 8mm more width. The
+           wider column is worth as much as the height — a 47mm line instead
+           of 43mm wraps fewer descriptions to a third line. */
+        rcols: 2, rowh: 19, chH: 9, catGap: 3, panelH: 194, contactH: 74,
+        rgap: '2.8mm 3.5mm', rcImg: '16mm', rcNm: '9pt', rcTx: '7pt', rcSz: '6.8pt',
+        chFs: '11.5pt', aboutW: '124mm', coverTins: false,
         bcH3: '13.8pt', bcV: '7.2pt', restB: '7.6pt', restS: '6.5pt', aboutFs: '7.4pt',
         secGap: '4mm', calc: false, aboutParas: 2, ticks: 5, noteLen: 135, cellImg2: '29mm' },
 };
@@ -1098,34 +1100,24 @@ const markBottom = z.coverTins
   : `calc(${z.frame} + 11mm)`;
 return `
 @page { size: ${z.sheet}; margin: 0; }
-/* ---- Print-ready geometry ---------------------------------------------
-   The artwork used to be exactly trim size with the ink running to all four
-   corners. That prints, but any trim variance — and there always is some —
-   leaves a white sliver along the edge of a dark sheet, which is the most
-   visible way this job could go wrong.
+/* ---- Sheet geometry ----------------------------------------------------
+   Trim plus 3mm of bleed on every side, and nothing else: the ink covers
+   the whole sheet corner to corner with no white anywhere on it. The crop
+   marks and the 5mm margin they sat in are gone — a printer imposing this
+   adds its own marks, and the white band they needed was the one thing on
+   the sheet that was not the piece.
 
-   The sheet is now trim + 16mm: 3mm of bleed on every side for the ink to
-   run into, and 5mm beyond that for the crop marks to sit in. The fold is
-   centred in it at exact trim size, so nothing in the design moved.
-
-   The ground moved from the panels to .bleed, which is the trim plus its
-   3mm. One gradient across the whole sheet rather than one per panel — that
-   fills the bleed, and it also removes a seam: each panel used to run red to
-   navy on its own, so at the centre fold navy met red with a visible step. */
+   The ground is on .sheet, not on the panels. A panel painting its own box
+   stops at the trim by definition, which is what leaves the bleed unprinted;
+   one gradient across the whole sheet fills it, and it also removes the seam
+   the per-panel version had at the centre fold, where one panel's navy met
+   the next one's red. */
 .sheet { --sheet-w:${z.sheetW}; --sheet-h:${z.sheetH}; --k:${z.k};
-         background:#fff; }
-.bleed { position:absolute; left:5mm; top:5mm; width:${z.bw}; height:${z.bh};
          background: radial-gradient(155% 110% at 6% -6%,
            #b81c34 0%, #a01830 22%, #7a1432 42%, #4a1a4a 62%,
            #242a60 82%, #0f1f5c 100%); }
 .fold { position:absolute; left:3mm; top:3mm;
         display:flex; width:${z.w}; height:${z.h}; }
-
-/* Crop marks: hairlines at the four trim corners, sitting in the 5mm
-   outside the bleed so no mark ever prints on the piece itself. */
-.marks i { position:absolute; background:#111; }
-.marks .h { height:.2mm; width:4mm; }
-.marks .v { width:.2mm; height:4mm; }
 /* The ground is on .bleed now, one gradient for the whole sheet, so the
    panels only carry their content. Opaque on purpose — the price list would
    not print until its fades to transparent were taken out, and there is no
@@ -1137,8 +1129,11 @@ return `
 /* A hairline frame on every panel, inset from the trim. It gives the piece a
    held edge when it is folded, and it is what stops four full-bleed panels
    reading as four unrelated sheets. */
-.frame { position:absolute; inset:${z.frame}; border:.3mm solid var(--fr, #8f7f9c);
-         z-index:4; pointer-events:none; }
+/* The inset keyline is gone. It drew a box a few millimetres in from every
+   panel edge, which is exactly the border the piece was asked not to have —
+   and on a folded sheet it also fought the fold, since the reader sees two
+   panels at once and got four vertical rules across them. */
+.frame { display:none; }
 
 /* ---- cover ----
    The ground is the website's opening hero, flattened for print. On screen
@@ -1492,23 +1487,6 @@ function rangeFlier(size) {
         ${esc(CO.email)} &nbsp;·&nbsp; ${esc(CO.web)}</div>
     </div>`;
 
-  /* Eight hairlines, two at each trim corner, drawn in the 5mm margin
-     outside the bleed. Trim is at 8mm from the sheet edge on every side. */
-  const MARKS = (() => {
-    const T = 8, W = parseFloat(z.w), H = parseFloat(z.h);
-    const px = [T, T + W], py = [T, T + H];
-    const out = [];
-    for (const x of px) {
-      out.push(`<i class="v" style="left:${x}mm;top:0"></i>`);
-      out.push(`<i class="v" style="left:${x}mm;top:${T + H + 4}mm"></i>`);
-    }
-    for (const y of py) {
-      out.push(`<i class="h" style="top:${y}mm;left:0"></i>`);
-      out.push(`<i class="h" style="top:${y}mm;left:${T + W + 4}mm"></i>`);
-    }
-    return `<div class="marks">${out.join('')}</div>`;
-  })();
-
   const frontCover = `
     <div class="pnl cover">
       <i class="sh-ring"></i>
@@ -1564,16 +1542,16 @@ function rangeFlier(size) {
 
   return head(`Cloud Paints — the complete range (folds to ${size})`, d, rangeCss(z)) + `
 <!-- PAGE 1 · OUTSIDE — left to right: back panel | front cover -->
-<div class="sheet">${MARKS}<div class="bleed"><div class="fold">
+<div class="sheet"><div class="fold">
   ${productPanel(packed[2], '#7a5c33', true)}
   ${frontCover}
-</div></div></div>
+</div></div>
 
 <!-- PAGE 2 · INSIDE — left to right: inner left | inner right -->
-<div class="sheet">${MARKS}<div class="bleed"><div class="fold">
+<div class="sheet"><div class="fold">
   ${productPanel(packed[0], '#1e3a8a', false)}
   ${productPanel(packed[1], '#8b1e2c', false)}
-</div></div></div>` + tail;
+</div></div>` + tail;
 }
 
 /* ============================================================
