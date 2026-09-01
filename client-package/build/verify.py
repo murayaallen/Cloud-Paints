@@ -6,7 +6,9 @@
 # Run after build + render. Three checks, all end-to-end on the
 # finished PDFs rather than on the HTML behind them:
 #
-# 1. Page geometry — every page is exactly its nominal trim size.
+# 1. Page geometry — every page is exactly the size it should be. For most
+#    documents that is the trim size; for anything shipping with bleed it is
+#    the sheet size, and EXPECT records whichever applies.
 # 2. Fonts — every document carries its own glyphs.
 # 3. Words — everything the page said in the browser actually
 #    reached the PDF.
@@ -40,8 +42,11 @@ EXPECT = {
     '0-colour-flier/weatherguard-a5': (148, 210),
     '1-range-poster/cloud-paints-range-A2': (420, 594),
     '1-range-poster/cloud-paints-range-A3': (297, 420),
-    '6-range-flier/cloud-paints-range-flier-folds-to-A4': (420, 297),
-    '6-range-flier/cloud-paints-range-flier-folds-to-A5': (297, 210),
+    # The two folds ship press-ready: trim + 3mm bleed on every side + 5mm
+    # for the crop marks, so the SHEET is 16mm larger than the trim in both
+    # directions. The trim itself is unchanged and the marks say where it is.
+    '6-range-flier/cloud-paints-range-flier-folds-to-A4': (436, 313),
+    '6-range-flier/cloud-paints-range-flier-folds-to-A5': (313, 226),
     '2-product-fliers-A4': (210, 297),
     '3-product-fliers-A5': (148, 210),
     '4-brochures': (297, 210),
@@ -129,7 +134,7 @@ def main():
 
     ok = True
     for label, problems, good in (
-            ('page geometry', geo, 'all %d pages exactly on trim size' % pages),
+            ('page geometry', geo, 'all %d pages exactly on size' % pages),
             ('font embedding', fonts, 'every document embeds its glyphs'),
             ('text integrity', missing, 'every word on every page reached the PDF')):
         if problems:

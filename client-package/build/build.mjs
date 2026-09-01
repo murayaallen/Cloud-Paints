@@ -990,7 +990,8 @@ function flierLine(p, max) {
 }
 
 const RANGE_SIZES = {
-  A4: { sheet: '420mm 297mm', w: '420mm', h: '297mm', panel: '210mm', k: 1,
+  A4: { sheet: '436mm 313mm', w: '420mm', h: '297mm', panel: '210mm', k: 1,
+        bw: '426mm', bh: '303mm',
         frame: '8mm', pad: '17mm',
         logo: '46mm', kebs: '20mm', h1: '48pt', kick: '12.2pt', strap: '15pt',
         sw: '7mm', lineH: '78mm', tinH: '46mm', tinGap: '3mm', rowIn: '4mm', rowUp: '26mm',
@@ -1004,7 +1005,8 @@ const RANGE_SIZES = {
         chFs: '15pt', aboutW: '152mm', coverTins: true,
         bcH3: '19.5pt', bcV: '8.8pt', restB: '9.2pt', restS: '7.6pt', aboutFs: '9.4pt',
         secGap: '8mm', calc: true, aboutParas: 2, ticks: 5, noteLen: 240 },
-  A5: { sheet: '297mm 210mm', w: '297mm', h: '210mm', panel: '148.5mm', k: 0.707,
+  A5: { sheet: '313mm 226mm', w: '297mm', h: '210mm', panel: '148.5mm', k: 0.707,
+        bw: '303mm', bh: '216mm',
         frame: '5.5mm', pad: '12mm',
         logo: '33mm', kebs: '14mm', h1: '31pt', kick: '8.8pt', strap: '10.6pt',
         sw: '5mm', lineH: '55mm', tinH: '26mm', tinGap: '2mm', rowIn: '7mm', rowUp: '22mm',
@@ -1082,6 +1084,10 @@ const rangePanelCss = z => `/* ---- The range, by category ---------------------
 `;
 
 const rangeCss = z => {
+/* The sheet string is the bleed page; split it for the two custom
+   properties .sheet needs. */
+const [sheetW, sheetH] = z.sheet.split(' ');
+z = { ...z, sheetW, sheetH };
 /* With no tin line-up the cover's text column and its standards mark both
    drop toward the foot; with one they stop above it. */
 const inBottom = z.coverTins
@@ -1092,18 +1098,40 @@ const markBottom = z.coverTins
   : `calc(${z.frame} + 11mm)`;
 return `
 @page { size: ${z.sheet}; margin: 0; }
-.sheet { --sheet-w:${z.w}; --sheet-h:${z.h}; --k:${z.k}; }
-.fold { display:flex; width:${z.w}; height:${z.h}; }
-/* Every panel now carries the price list's ground, so the two documents
-   look like one family: one opaque radial, red at the near corner and navy
-   at the far one. Opaque on purpose — the price list would not print until
-   its fades to transparent were taken out, and there is no reason to put
-   the same fault back into the flier. */
+/* ---- Print-ready geometry ---------------------------------------------
+   The artwork used to be exactly trim size with the ink running to all four
+   corners. That prints, but any trim variance — and there always is some —
+   leaves a white sliver along the edge of a dark sheet, which is the most
+   visible way this job could go wrong.
+
+   The sheet is now trim + 16mm: 3mm of bleed on every side for the ink to
+   run into, and 5mm beyond that for the crop marks to sit in. The fold is
+   centred in it at exact trim size, so nothing in the design moved.
+
+   The ground moved from the panels to .bleed, which is the trim plus its
+   3mm. One gradient across the whole sheet rather than one per panel — that
+   fills the bleed, and it also removes a seam: each panel used to run red to
+   navy on its own, so at the centre fold navy met red with a visible step. */
+.sheet { --sheet-w:${z.sheetW}; --sheet-h:${z.sheetH}; --k:${z.k};
+         background:#fff; }
+.bleed { position:absolute; left:5mm; top:5mm; width:${z.bw}; height:${z.bh};
+         background: radial-gradient(155% 110% at 6% -6%,
+           #b81c34 0%, #a01830 22%, #7a1432 42%, #4a1a4a 62%,
+           #242a60 82%, #0f1f5c 100%); }
+.fold { position:absolute; left:3mm; top:3mm;
+        display:flex; width:${z.w}; height:${z.h}; }
+
+/* Crop marks: hairlines at the four trim corners, sitting in the 5mm
+   outside the bleed so no mark ever prints on the piece itself. */
+.marks i { position:absolute; background:#111; }
+.marks .h { height:.2mm; width:4mm; }
+.marks .v { width:.2mm; height:4mm; }
+/* The ground is on .bleed now, one gradient for the whole sheet, so the
+   panels only carry their content. Opaque on purpose — the price list would
+   not print until its fades to transparent were taken out, and there is no
+   reason to put the same fault back into the flier. */
 .pnl  { position:relative; width:${z.panel}; height:${z.h}; overflow:hidden;
-        color:#fff;
-        background: radial-gradient(155% 110% at 6% -6%,
-          #b81c34 0%, #a01830 22%, #7a1432 42%, #4a1a4a 62%,
-          #242a60 82%, #0f1f5c 100%); }
+        color:#fff; }
 @media screen { .pnl + .pnl { border-left:.15mm dashed rgba(0,0,0,.25); } }
 
 /* A hairline frame on every panel, inset from the trim. It gives the piece a
@@ -1120,14 +1148,14 @@ return `
    hand a press, so the same composition is rebuilt as four stacked radial
    gradients with ordinary painting: same hues, same positions, same feel,
    and it rasterises cleanly. */
-.cover {
-  color:#fff; --fr:rgba(255,255,255,.32);
-  background:
-    radial-gradient(58% 46% at 14% 6%,  rgba(150,20,52,.85),  transparent 68%),
-    radial-gradient(56% 44% at 88% 4%,  rgba(30,40,132,.82),  transparent 68%),
-    radial-gradient(70% 40% at 56% 96%, rgba(150,100,18,.55), transparent 70%),
-    radial-gradient(140% 110% at 62% 46%, #241030, #0b0610 72%);
-}
+/* No ground of its own any more. The sheet's gradient runs under every
+   panel including this one, which is what lets the ink reach the bleed —
+   a panel painting its own box stops at the trim and leaves the 3mm
+   unprinted. It also read as a dark rectangle sitting on the sheet rather
+   than as part of it. The four alpha-blended pools this used to stack are
+   gone with it, which is the same transparency the price list had to shed
+   before it would print. */
+.cover { color:#fff; --fr:rgba(255,255,255,.32); }
 
 /* Shapes, in the brand palette, sized off one multiplier so the small fold
    keeps the same composition rather than a different one. */
@@ -1464,6 +1492,23 @@ function rangeFlier(size) {
         ${esc(CO.email)} &nbsp;·&nbsp; ${esc(CO.web)}</div>
     </div>`;
 
+  /* Eight hairlines, two at each trim corner, drawn in the 5mm margin
+     outside the bleed. Trim is at 8mm from the sheet edge on every side. */
+  const MARKS = (() => {
+    const T = 8, W = parseFloat(z.w), H = parseFloat(z.h);
+    const px = [T, T + W], py = [T, T + H];
+    const out = [];
+    for (const x of px) {
+      out.push(`<i class="v" style="left:${x}mm;top:0"></i>`);
+      out.push(`<i class="v" style="left:${x}mm;top:${T + H + 4}mm"></i>`);
+    }
+    for (const y of py) {
+      out.push(`<i class="h" style="top:${y}mm;left:0"></i>`);
+      out.push(`<i class="h" style="top:${y}mm;left:${T + W + 4}mm"></i>`);
+    }
+    return `<div class="marks">${out.join('')}</div>`;
+  })();
+
   const frontCover = `
     <div class="pnl cover">
       <i class="sh-ring"></i>
@@ -1519,16 +1564,16 @@ function rangeFlier(size) {
 
   return head(`Cloud Paints — the complete range (folds to ${size})`, d, rangeCss(z)) + `
 <!-- PAGE 1 · OUTSIDE — left to right: back panel | front cover -->
-<div class="sheet"><div class="fold">
+<div class="sheet">${MARKS}<div class="bleed"><div class="fold">
   ${productPanel(packed[2], '#7a5c33', true)}
   ${frontCover}
-</div></div>
+</div></div></div>
 
 <!-- PAGE 2 · INSIDE — left to right: inner left | inner right -->
-<div class="sheet"><div class="fold">
+<div class="sheet">${MARKS}<div class="bleed"><div class="fold">
   ${productPanel(packed[0], '#1e3a8a', false)}
   ${productPanel(packed[1], '#8b1e2c', false)}
-</div></div>` + tail;
+</div></div></div>` + tail;
 }
 
 /* ============================================================
