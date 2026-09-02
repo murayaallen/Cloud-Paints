@@ -25,6 +25,22 @@ DirectoryIndex index.html
   RewriteCond %{HTTP_HOST} ^(?:www\.)?(.+)$ [NC]
   RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
 
+  # ---- 1b. The homepage has exactly one address ------------
+  # /index.html redirected to /index, and /index served the homepage
+  # byte-for-byte. Three addresses for one page, and Google is free to
+  # pick whichever it likes as the canonical — which is one way a
+  # homepage stops appearing under its own name. DirectoryIndex already
+  # serves it at /, so both spellings go there.
+  RewriteCond %{ENV:REDIRECT_STATUS} ^$
+  RewriteRule ^index(\.html)?$ / [R=301,L]
+
+  # ---- 1c. No trailing slash on a page ---------------------
+  # /products/ and /products both answered 200. A real directory keeps
+  # its slash (the -d test), so this only catches page URLs.
+  RewriteCond %{ENV:REDIRECT_STATUS} ^$
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^(.+)/$ /$1 [R=301,L]
+
   # ---- 2. Retire the old product URLs ----------------------
   # /product.html?p=silk-vinyl  ->  /paints/silk-vinyl
   # Both query keys were in use. The slug is checked against a
@@ -34,6 +50,10 @@ DirectoryIndex index.html
   RewriteRule ^product\.html$ /paints/%1? [R=301,L]
   # No slug, or one we do not recognise: send them to the catalogue.
   RewriteRule ^product\.html$ /products? [R=301,L]
+  # The clean spelling of the same retired page. It was answering 200 with
+  # the old single-product template — a thin duplicate of /products.
+  RewriteCond %{ENV:REDIRECT_STATUS} ^$
+  RewriteRule ^product$ /products? [R=301,L]
 
   # ---- 3. Retire the .html extension -----------------------
   # A request that still names the file is redirected once to the
@@ -63,6 +83,12 @@ DirectoryIndex index.html
   # ---- 4. Serve the clean URLs -----------------------------
   # /products -> products.html, /paints/silk-vinyl -> paints/silk-vinyl.html
   # Internal rewrite, no redirect: the clean URL is the real one.
+  # /404 is excluded. Without this it rewrote to 404.html and answered
+  # 200 — a page that says "not found" while telling the crawler it was
+  # found, which is the soft 404 Google penalises. Excluded, the file does
+  # not exist at that address, so the ErrorDocument below answers with a
+  # real 404 status.
+  RewriteCond %{REQUEST_URI} !^/404$
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteCond %{DOCUMENT_ROOT}/$1.html -f

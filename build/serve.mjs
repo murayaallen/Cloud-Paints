@@ -120,7 +120,31 @@ http.createServer((req, res) => {
     return send(res, 403, 'Forbidden', { 'Content-Type': 'text/plain' });
   }
 
+  /* .htaccess rule 1b — the homepage has one address. /index and
+     /index.html both served it, so the site had three URLs for one page. */
+  if (pathname === '/index' || pathname === '/index.html') {
+    return redirect(res, mounted('/'));
+  }
+
+  /* .htaccess rule 1c — no trailing slash on a page URL. A real directory
+     keeps its slash; /products/ is not one. */
+  if (pathname.length > 1 && pathname.endsWith('/')) {
+    const asDir = path.join(ROOT, pathname);
+    const isDir = fs.existsSync(asDir) && fs.statSync(asDir).isDirectory();
+    if (!isDir) return redirect(res, mounted(pathname.replace(/\/+$/, '')));
+  }
+
+  /* .htaccess rule 4 excludes /404, so it answers with a real 404 status
+     rather than serving the error page with 200 — the soft 404. */
+  if (pathname === '/404') {
+    const nf = path.join(ROOT, '404.html');
+    if (fs.existsSync(nf)) return serveFile(res, nf, 404, req);
+  }
+
   // .htaccess rule 2 — old product URLs
+  if (pathname === '/product') {
+    return redirect(res, mounted('/products'));
+  }
   if (pathname === '/product.html') {
     const m = query.match(/(?:^|&)(?:p|slug)=([a-z0-9-]+)(?:&|$)/);
     return redirect(res, mounted(m ? `/paints/${m[1]}` : '/products'));
