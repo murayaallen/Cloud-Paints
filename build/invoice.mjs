@@ -76,12 +76,9 @@ const SCOPE = [
    'Search Console set up and verified, sitemap submitted, structured data, indexing '
    + 'faults corrected.'],
 
-  ['Print package — 70 press-ready documents',
-   'Range flier in 3 formats. Price list. 21-page colour shade card. 5 brochures. '
-   + '28 product fliers, A4 and A5. Range poster, A2 and A3.'],
-
-  ['Price list — editable Word version',
-   'Built from the same source as the printed list, so the two stay in step.'],
+  ['Print package — Colour Chart Collection, fliers and price lists',
+   'Colour Chart Collection, 544 shades over 21 pages. Range flier in 3 formats and '
+   + '28 product fliers in A4 and A5. Price lists, print and editable. All press-ready.'],
 
   ['Product photography preparation',
    '28 tins cut out and prepared for press and web.'],
@@ -125,7 +122,6 @@ th { text-align:left; font:700 7.6pt/1 'Segoe UI', Arial, sans-serif; letter-spa
 td { padding:2.8mm 3.5mm; border-bottom:.3mm solid #d8dbe3; vertical-align:top; }
 td.d b { font-size:10.4pt; }
 td.d span { display:block; font-size:9pt; color:#565b6b; margin-top:1.2mm; }
-td.a { text-align:right; white-space:nowrap; font-weight:600; }
 
 .sums { margin-top:5mm; margin-left:auto; width:88mm; }
 .sums div { display:flex; justify-content:space-between; padding:2.4mm 0;
@@ -172,11 +168,13 @@ td.a { text-align:right; white-space:nowrap; font-weight:600; }
     </div>
   </div>
 
+  <!-- No amount column. The fee was agreed as one figure for the whole
+       project, so pricing each line would be inventing a breakdown that was
+       never quoted. The list says what was done; the total says what it costs. -->
   <table>
-    <tr><th style="width:74%">Description</th><th style="text-align:right">Amount</th></tr>
-    ${SCOPE.map((s, i) => `<tr>
+    <tr><th>Work completed</th></tr>
+    ${SCOPE.map(s => `<tr>
       <td class="d"><b>${esc(s[0])}</b><span>${esc(s[1])}</span></td>
-      <td class="a">${i === 0 ? money(INVOICE.total) : '—'}</td>
     </tr>`).join('')}
   </table>
 
@@ -187,8 +185,7 @@ td.a { text-align:right; white-space:nowrap; font-weight:600; }
     <div class="due"><span>Balance due</span><b>${money(due)}</b></div>
   </div>
 
-  <div class="note">Agreed as one project fee; the lines above set out what it covers.
-    ${money(paid)} received with thanks.</div>
+  <div class="note">${money(paid)} received with thanks.</div>
 
   ${payRows ? `<div class="pay">
     <div class="k">Payment</div>
