@@ -82,8 +82,8 @@ const SCOPE = [
    + 'and indexing faults diagnosed and resolved.'],
 
   ['Print package — Colour Chart Collection, fliers and price lists',
-   'Colour Chart Collection, 544 shades over 21 pages. Range flier in 3 formats and '
-   + '28 product fliers in A4 and A5. Price lists, print and editable. All press-ready.'],
+   'Colour Chart Collection, 544 shades over 21 pages. Range flier in 3 formats. '
+   + 'Price lists, print and editable. All press-ready.'],
 
   ['Product photography preparation',
    '28 tins cut out and prepared for press and web.'],
