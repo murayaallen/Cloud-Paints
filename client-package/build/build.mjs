@@ -1004,7 +1004,7 @@ const RANGE_SIZES = {
         rcols: 3, rowh: 29, chH: 12, catGap: 4, panelH: 275, contactH: 108,
         rgap: '2mm 5mm', rcImg: '22mm', rcNm: '11.5pt', rcTx: '8.2pt', rcSz: '8pt',
         chFs: '16pt', aboutW: '164mm', coverTins: true,
-        bcH3: '19.5pt', bcV: '8.8pt', restB: '9.2pt', restS: '7.6pt', aboutFs: '9.4pt',
+        bcH3: '19.5pt', bcV: '8.8pt', restB: '9.2pt', restS: '7.6pt', aboutFs: '10.6pt',
         secGap: '8mm', calc: true, aboutParas: 2, ticks: 5, noteLen: 240 },
   A5: { sheet: '303mm 216mm', w: '297mm', h: '210mm', panel: '148.5mm', k: 0.707,
         frame: '5.5mm', pad: '8mm',
@@ -1025,7 +1025,7 @@ const RANGE_SIZES = {
         rcols: 2, rowh: 19, chH: 9, catGap: 3, panelH: 194, contactH: 74,
         rgap: '1mm 3.5mm', rcImg: '16mm', rcNm: '9pt', rcTx: '7pt', rcSz: '6.8pt',
         chFs: '11.5pt', aboutW: '124mm', coverTins: false,
-        bcH3: '13.8pt', bcV: '7.2pt', restB: '7.6pt', restS: '6.5pt', aboutFs: '7.4pt',
+        bcH3: '13.8pt', bcV: '7.2pt', restB: '7.6pt', restS: '6.5pt', aboutFs: '9pt',
         secGap: '4mm', calc: false, aboutParas: 2, ticks: 5, noteLen: 135, cellImg2: '29mm' },
 };
 
@@ -1122,9 +1122,15 @@ return `
    the per-panel version had at the centre fold, where one panel's navy met
    the next one's red. */
 .sheet { --sheet-w:${z.sheetW}; --sheet-h:${z.sheetH}; --k:${z.k};
+         /* The same ramp as the price list, and for the same reason. The
+            stops between the two brand colours used to be dark maroons with
+            almost no blue in them; on press they printed brown. Lifting the
+            blue channel through the middle — magenta-violet, then violet —
+            makes red and blue meet as purple, and both hold their hue in
+            CMYK where a muddy maroon does not. */
          background: radial-gradient(155% 110% at 6% -6%,
-           #b81c34 0%, #a01830 22%, #7a1432 42%, #4a1a4a 62%,
-           #242a60 82%, #0f1f5c 100%); }
+           #c81f3c 0%, #ab1a44 17%, #8a1c66 36%, #6a2288 54%,
+           #472a86 70%, #26306e 86%, #0f1f5c 100%); }
 .fold { position:absolute; left:3mm; top:3mm;
         display:flex; width:${z.w}; height:${z.h}; }
 /* The ground is on .bleed now, one gradient for the whole sheet, so the
@@ -1245,6 +1251,11 @@ return `
               background:rgba(0,0,0,.34); padding:3.4mm 5mm; display:flex;
               justify-content:space-between; gap:5mm;
               font:500 ${z.footFs}/1.4 var(--sans); color:rgba(255,255,255,.92); z-index:5; }
+/* The web address and the phone number are each one thing and must not break
+   across a line — the number was wrapping after "405" and leaving "481" alone
+   on the last line of the cover. The separator between them is the only place
+   the line may break, so it carries an ordinary space and they do not. */
+.cover-foot .nb { white-space:nowrap; }
 .cover-foot b { color:var(--gold); font-weight:600; letter-spacing:.1em;
                 text-transform:uppercase; font-size:calc(${z.footFs} * .88); }
 
@@ -1307,7 +1318,11 @@ ${rangePanelCss(z)}
 
 /* ---- The company's account of itself, on the cover -------------------- */
 .cover-about { text-align:left; max-width:${z.aboutW}; }
-.cover-about p { font:400 ${z.aboutFs}/1.45 var(--sans); color:rgba(255,255,255,.88); }
+/* Was 88% white. On a dark violet ground that is a grey, and at this size
+   the difference between grey and white is the difference between text you
+   read and text you skip — so it is solid now. It also drops an alpha the
+   RIP would otherwise have to flatten. */
+.cover-about p { font:400 ${z.aboutFs}/1.5 var(--sans); color:#f4eff7; }
 .cover-about p + p { margin-top:1.5mm; }
 .cover-about b { color:#fff; font-weight:600; }
 
@@ -1559,7 +1574,8 @@ function rangeFlier(size) {
 
       <div class="cover-foot">
         <span><b>Manufactured by</b><br>${esc(CO.legal)} · ${esc(CO.area)}</span>
-        <span style="text-align:right"><b>Find us</b><br>${esc(CO.web)} · ${esc(CO.phones[0])}</span>
+        <span style="text-align:right"><b>Find us</b><br><span class="nb">${esc(CO.web)}</span>
+          · <span class="nb">${esc(CO.phones[0])}</span></span>
       </div>
     </div>`;
 
