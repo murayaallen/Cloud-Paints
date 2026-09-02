@@ -1821,7 +1821,13 @@ const PRICE_CSS = `
    and saying it twice cost the line that tells a customer what they are
    holding. "PRICE LIST — RECOMMENDED RETAIL PRICES" is that line, and it
    now has the room to be set at a size that reads across a counter. */
-.ph { flex:none; padding:6mm 8mm 5.5mm; color:#fff;
+/* The masthead cost page one 10mm more than it needed to, and 10mm is a
+   section: at 184 the sheet held three groups and finished a hand's depth
+   short, at 194 it holds four and finishes level. The logo is what set the
+   height — a 52mm mark is 39mm tall before its chip padding — so the mark
+   came down to 45 and the padding in with it. Nothing was resized that
+   anybody reads. */
+.ph { flex:none; padding:4.5mm 8mm 4mm; color:#fff;
       display:flex; justify-content:space-between; align-items:center; gap:7mm;
       border-bottom:.9mm solid var(--red-glow); }
 .ph .eyebrow { color:var(--gold); letter-spacing:.2em; }
@@ -1837,8 +1843,8 @@ const PRICE_CSS = `
 /* The logo needs a white chip on this ground — the mark is drawn in the
    brand blue and red and neither holds on navy. */
 .ph-mark { display:flex; align-items:center; flex:none;
-           background:#fff; border-radius:2mm; padding:3.4mm 4.6mm; }
-.ph-mark .lg { width:52mm; display:block; }
+           background:#fff; border-radius:2mm; padding:2.6mm 3.8mm; }
+.ph-mark .lg { width:45mm; display:block; }
 
 /* ---- Running head, every page after the first ------------------------- */
 .prh { height:17mm; flex:none; display:flex; justify-content:space-between;
@@ -1851,7 +1857,21 @@ const PRICE_CSS = `
    16mm and sits inside the band with room to spare. */
 .prh img { width:20mm; background:#fff; border-radius:1.2mm; padding:1.2mm 1.8mm; }
 
-.pbody { flex:1; min-height:0; overflow:hidden; padding:4.5mm 8mm 0; }
+/* space-between, and it is not decoration. The packer balances sections
+   across sheets by count, which cannot know that one page's sections happen
+   to be shorter than another's — page two finished a hand's depth above the
+   signature bar and page four rather more. Distributing the slack between
+   the sections instead of letting it collect at the foot means no sheet ends
+   in a band of empty ground, whatever the packer decides.
+
+   8mm of side padding went to 6.5: the two millimetres are worth more in the
+   picture column, where they are the difference between a tin you can see
+   and a tin you can identify. */
+.pbody { flex:1; min-height:0; overflow:hidden; padding:4.5mm 6.5mm 2.5mm;
+         display:flex; flex-direction:column; justify-content:space-between; }
+/* Page one now runs to the ceiling exactly, so the last 3px of it were
+   real: 2.5mm of floor and a 3mm section margin rather than 3.5 and 3.4.
+   Both are minimums — where a sheet has slack, space-between adds to them. */
 
 /* ---- Section heading --------------------------------------------------
    A box with colour in it, as asked, and the colour is the section's own:
@@ -1862,7 +1882,7 @@ const PRICE_CSS = `
 
    Built as a solid bar with a deeper spine down the left edge and a gold
    hairline under, so it reads as a plate rather than a filled rectangle. */
-.grp { margin-bottom:4mm; }
+.grp { margin-bottom:3mm; }
 .grp:last-child { margin-bottom:0; }
 .gh { display:flex; align-items:center; gap:3.4mm; margin:0 0 2.2mm;
       background:var(--cat); border-left:2.2mm solid var(--cat-deep);
@@ -1873,7 +1893,16 @@ const PRICE_CSS = `
          color:var(--cat-ink); }
 .gh .ln { flex:1; }
 
-.cards { display:grid; grid-template-columns:1fr 1fr; gap:2.5mm 4mm; }
+.cards { display:grid; grid-template-columns:1fr 1fr; gap:2mm 3.5mm; }
+/* A section with an odd number of lines left half a row of bare ground, and
+   five of the fourteen have exactly one line in them — Undercoats, Wood
+   Finish, Bituminous, Gloss and Floor Paint each printed one card beside an
+   empty column. The odd card takes the whole row instead. It costs the page
+   nothing in height, and it is the difference between a sheet that looks
+   set and one that looks half filled. */
+.cards > .pc:last-child:nth-child(odd) { grid-column:1 / -1; }
+/* Given the width, the tin may as well use some of it. */
+.cards > .pc:last-child:nth-child(odd) .pc-img { width:34mm; }
 
 /* ---- One product ------------------------------------------------------
    Three shades of one colour, top to bottom. The name box is the tin's own
@@ -1915,32 +1944,57 @@ const PRICE_CSS = `
    card; twenty-nine of them plus the terms block were most of the 336
    transparency groups in the file, and the card is ruled well enough now
    that the shadow was doing nothing the border was not already doing. */
-.pc { border-radius:1.6mm; overflow:hidden; display:flex; min-height:20mm;
+/* The tin was the point of this, and the tin turned out to be constrained
+   by the width of its column, not by the height of the card. At 21mm with
+   2mm of padding a bucket rendered about 17mm across, which on a counter is
+   a thumbnail. The column is 25mm now with the padding pulled in, so the
+   same photograph comes out about 22mm — a third bigger — and it costs the
+   card almost no height at all.
+
+   Which matters, because height is the one thing there is none of. Four
+   sheets carry 933mm and the row cannot exceed 28 without needing a fifth,
+   and a fifth sheet is more empty ground, not less. 25.5mm is the card and
+   28 the row it sits in, which is exactly the ceiling. */
+.pc { border-radius:1.6mm; overflow:hidden; display:flex; min-height:24mm;
       background:#fff; border:.5mm solid #616161; }
 .pc-b { flex:1; min-width:0; display:flex; flex-direction:column; }
-.pc-h { background:var(--label); color:var(--label-ink); padding:2.1mm 3.2mm 1.9mm;
-        border-bottom:.7mm solid #2b2b2b;
+/* A fixed floor of two lines, and the name centred in it. Names are one
+   line or two — ROOF PAINT beside ROOF PAINT WATER BASED, ROAD MARKING
+   YELLOW beside ROAD MARKING WHITE / BLACK — and while the grid made the two
+   cards the same height, the bands inside them started at different places.
+   The quantity strip of one sat level with the price row of the other, which
+   is the misalignment across the sheet. Every name box is the same height
+   now, so every strip and every figure lines up straight across. */
+.pc-h { background:var(--label); color:var(--label-ink); padding:1.4mm 3.2mm 1.2mm;
+        min-height:10.8mm; box-sizing:border-box;
+        border-bottom:.6mm solid var(--label-rule);
         font:700 10.6pt/1.12 var(--sans); letter-spacing:.03em; text-transform:uppercase;
-        display:flex; align-items:baseline; gap:2.6mm; }
+        display:flex; align-items:center; gap:2.6mm; }
 .pc-h .n { font:600 7.4pt/1 var(--sans); color:var(--label-ink); flex:none;
            letter-spacing:.06em; font-variant-numeric:tabular-nums; }
 .pc-h .nm { min-width:0; }
 .pc-sizes { display:flex; flex:1; }
-.pc-sz { flex:1; min-width:0; display:flex; flex-direction:column;
-         border-right:.45mm solid #737373; }
-.pc-sz:last-child { border-right:0; }
+/* The divider between one pack and the next is drawn twice, once in each
+   band, because no single colour reads on both. A grey that shows against a
+   near-white price cell disappears into a deep purple quantity strip, and
+   the strip is exactly where a customer needs to see which figure belongs to
+   which pack. So the strip rules itself in its own lighter sibling and the
+   price cell keeps a neutral grey. */
+.pc-sz { flex:1; min-width:0; display:flex; flex-direction:column; }
 .pc-sz .q { background:var(--qty); color:var(--qty-ink);
-            border-bottom:.7mm solid #2b2b2b;
-            padding:1.3mm 2.2mm; font:700 8pt/1 var(--sans); letter-spacing:.1em;
+            border-left:.5mm solid var(--qty-rule);
+            padding:1.2mm 2.2mm; font:700 8pt/1 var(--sans); letter-spacing:.1em;
             text-transform:uppercase; font-variant-numeric:tabular-nums; }
+.pc-sz:first-child .q, .pc-sz:first-child .p { border-left:0; }
 /* The figure is set as large as its cell allows, not one size for all.
    A two-pack card has 31mm a cell and carries 13pt comfortably; a
    three-pack card has 20mm, and 13pt turned Kshs.13,950 into Kshs.13,95 —
    nowrap in a clipped box loses the end of the number silently, which on a
    price list is the worst thing it could lose. So the size is a custom
    property the card sets from how many packs it has. */
-.pc-sz .p { flex:1; display:flex; align-items:center; padding:1.5mm 2mm;
+.pc-sz .p { flex:1; display:flex; align-items:center; padding:1.3mm 1.4mm;
             background:var(--pri); color:var(--pri-ink);
+            border-top:.6mm solid #5f5f5f; border-left:.5mm solid #8a8a8a;
             font:700 var(--pfs)/1 var(--sans); white-space:nowrap;
             font-variant-numeric:tabular-nums; }
 .pc-sz .p .cur { font:600 var(--cfs)/1 var(--sans); color:#5b5b5b;
@@ -1949,37 +2003,50 @@ const PRICE_CSS = `
 .pc-sz .p.tbc::after { content:''; display:block; width:100%;
                        border-bottom:.3mm solid #8a8a8a; }
 
-.pc-img { width:21mm; flex:none; background:#fff;
-          border-left:.45mm solid #737373;
-          display:flex; align-items:center; justify-content:center; padding:2mm; }
-.pc-img img { max-height:21mm; width:auto; max-width:100%; object-fit:contain; }
+.pc-img { width:25mm; flex:none; background:#fff;
+          border-left:.5mm solid #737373;
+          display:flex; align-items:center; justify-content:center; padding:1.4mm; }
+.pc-img img { max-height:26mm; width:auto; max-width:100%; object-fit:contain; }
 
 /* ---- Terms and conditions --------------------------------------------- */
-.pnote { margin-top:2mm; background:var(--paper);
+/* The terms block takes whatever the last sheet has left. It is the only
+   thing on that page that can grow without distorting — a card cannot,
+   because a card on page four must match a card on page one.
+
+   Filling it is not the same as stretching it. The first attempt pushed the
+   panel to full height and pinned its foot to the bottom, which replaced a
+   band of empty ground with a worse thing: a hole of white paper in the
+   middle of the panel. So the type went up instead — the terms were 8.6pt
+   and are 10, the contact block 8.4 and is 9.4 — which is most of the
+   difference, and what is left is spread between the clauses rather than
+   pooled in one place. A terms block set with air between its paragraphs
+   reads as composed. One with a void in it reads as unfinished. */
+.pnote { margin-top:2mm; background:var(--paper); flex:1; min-height:0;
+         display:flex; flex-direction:column; justify-content:space-between;
          border-radius:1.6mm; border-top:1.1mm solid var(--gold);
-         padding:3.4mm 4.6mm; border:.3mm solid #b3ab98; }
-.pnote .h { font:700 9pt/1 var(--sans); letter-spacing:.15em; text-transform:uppercase;
+         padding:4.6mm 5.6mm; border:.3mm solid #b3ab98; }
+.pnote .h { font:700 10.5pt/1 var(--sans); letter-spacing:.15em; text-transform:uppercase;
             color:var(--blue-deep); margin-bottom:3mm; }
-.pnote p { font:400 8.6pt/1.5 var(--sans); color:var(--ink-2); }
-.pnote p + p { margin-top:1.8mm; }
+.pnote p { font:400 10pt/1.5 var(--sans); color:var(--ink-2); }
+.pnote p + p { margin-top:2.4mm; }
 .pnote b { color:var(--ink); font-weight:600; }
 
 /* ---- The foot of the terms block -------------------------------------- */
 .pn-foot { display:flex; align-items:flex-start; gap:5mm; margin-top:3.4mm;
            padding-top:3.2mm; border-top:.3mm solid var(--rule); }
 .pn-mark { flex:none; display:flex; align-items:center; gap:2.6mm; }
-.pn-mark img { width:17mm; }
-.pn-mark span { font:500 7.4pt/1.35 var(--sans); color:var(--ink-2); }
-.pn-mark b { display:block; font:700 7.2pt/1.5 var(--sans); letter-spacing:.12em;
+.pn-mark img { width:19mm; }
+.pn-mark span { font:500 8.2pt/1.35 var(--sans); color:var(--ink-2); }
+.pn-mark b { display:block; font:700 8pt/1.5 var(--sans); letter-spacing:.12em;
              text-transform:uppercase; color:var(--blue-deep); }
 .pn-contact { flex:1; min-width:0; }
-.pn-contact p { font:400 8.4pt/1.5 var(--sans); color:var(--ink-2); }
+.pn-contact p { font:400 9.4pt/1.5 var(--sans); color:var(--ink-2); }
 .pn-contact p + p { margin-top:1mm; }
 .pn-contact b { color:var(--ink); font-weight:600; }
 .pn-social { display:flex; flex-wrap:wrap; gap:1.5mm 6mm; margin-top:2.4mm; }
 .pn-social span { display:inline-flex; align-items:center; gap:1.8mm;
-                  font:500 8.2pt/1 var(--sans); color:var(--ink-2); }
-.pn-social svg { width:4.4mm; height:4.4mm; flex:none; color:var(--blue-deep); }
+                  font:500 9pt/1 var(--sans); color:var(--ink-2); }
+.pn-social svg { width:4.8mm; height:4.8mm; flex:none; color:var(--blue-deep); }
 
 /* ---- Signature bar, every page ---------------------------------------- */
 /* nowrap is deliberate — a second line here is clipped by the frame rather
@@ -2015,6 +2082,93 @@ const labelColour = row =>
   row.colour
   || TIN_LABEL[row.art]
   || (bySlug[row.art] ? readable(bySlug[row.art].primary) : '#4a5568');
+
+/* ---- The tones of a card ----------------------------------------------
+   The bands under the name box used to be made by mixing the tin colour
+   toward white — 74% of the way for the quantity strip, 90% for the price
+   cell. Mixing toward white in RGB does not lighten a colour so much as
+   drain it, and a drained light red is pink. That is what came off the
+   press: Silk Vinyl's purple as a pale mauve-pink, Weatherguard's red as a
+   rose, and the browns and yellows as milky cream.
+
+   Hue is held now and only lightness moves, so a band is the card's own
+   colour at another weight rather than a wash of it.
+
+   The direction depends on where the label already sits. A dark label —
+   Silk Vinyl's purple, Gloss Enamel's navy — lifts; a light one — Road
+   Marking's yellow, Iris's amber — deepens. Both end up a step from the
+   name box and clearly related to it, which is not true of a rule that
+   only ever lightens: lifting a yellow gives cream, and cream is the
+   colour the client is objecting to.
+
+   The step is short on purpose. A long one is what produces pink, because
+   pink is nothing but a red hue carried up into high lightness. Kept low,
+   the red stays red and the blue gets brighter and deeper rather than
+   paler, which is what was asked for.
+
+   The price cell is the exception, and deliberately. It is the one surface
+   here a figure has to be read off across a counter, so it stays near
+   white — but a near-white carrying a trace of the card's hue, saturation
+   capped hard, rather than a tint of it. A trace cannot go pink; there is
+   not enough colour in it to. */
+function toHsl(hex) {
+  const [r, g, b] = [0, 2, 4].map(i => parseInt(hex.replace('#', '').slice(i, i + 2), 16) / 255);
+  const mx = Math.max(r, g, b), mn = Math.min(r, g, b), d = mx - mn;
+  const l = (mx + mn) / 2;
+  if (!d) return [0, 0, l];
+  const s = d / (1 - Math.abs(2 * l - 1));
+  const h = 60 * (mx === r ? ((g - b) / d + (g < b ? 6 : 0))
+                : mx === g ? (b - r) / d + 2
+                : (r - g) / d + 4);
+  return [h, s, l];
+}
+function fromHsl(h, s, l) {
+  h = ((h % 360) + 360) % 360;
+  s = Math.max(0, Math.min(1, s));
+  l = Math.max(0, Math.min(1, l));
+  const c = (1 - Math.abs(2 * l - 1)) * s;
+  const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
+  const m = l - c / 2;
+  const t = [[c, x, 0], [x, c, 0], [0, c, x], [0, x, c], [x, 0, c], [c, 0, x]][Math.floor(h / 60)];
+  return '#' + t.map(v => Math.round((v + m) * 255).toString(16).padStart(2, '0')).join('');
+}
+
+/** The quantity strip: the label colour, richer.
+ *
+ *  Lightness is what makes a colour go pink, so lightness barely moves —
+ *  7% of the headroom, which on Silk Vinyl's plum is three points. What
+ *  moves is saturation, up by a fifth. The strip is the same colour as the
+ *  name box with more of it in, which is the "very slight variation" asked
+ *  for, and on the navy it is a brighter, deeper blue rather than a paler
+ *  one — the same operation reads as both, because saturating a dark hue
+ *  intensifies it where lightening only drains it.
+ *
+ *  The direction is down for every colour, not up for the dark ones and
+ *  down for the light. Splitting it put Varnish Stain's strip a shade
+ *  brighter than its name box and Clear Varnish's a shade deeper, side by
+ *  side in the same section, and two cards treated oppositely read as a
+ *  mistake however each looks alone. Down also happens to be the direction
+ *  the words point: deeper red, brighter deeper blue, and a yellow that
+ *  goes to gold rather than to cream. */
+const qtyTone = hex => {
+  const [h, s, l] = toHsl(hex);
+  return fromHsl(h, Math.min(1, s * 1.18), l * 0.9);
+};
+
+/** The price cell: near white, with a trace of the hue and no more. */
+const priTone = hex => {
+  const [h, s] = toHsl(hex);
+  return fromHsl(h, Math.min(s, 0.34) * 0.44, 0.955);
+};
+
+/** A rule that reads on a given band — a lighter sibling on a dark one, a
+ *  darker sibling on a light one. A fixed grey cannot do this job: at .7mm
+ *  and near-black it was invisible on Silk Vinyl's purple and heavy-handed
+ *  on Road Marking's yellow, which is how the partitioning got lost. */
+const bandRule = hex => {
+  const [h, s, l] = toHsl(hex);
+  return fromHsl(h, s * 0.8, l > 0.5 ? l - 0.26 : Math.min(1, l + 0.26));
+};
 
 function priceCards(d) {
   /* Sections and rows exactly as prices.js states them. Rows are no longer
@@ -2077,12 +2231,13 @@ function priceCardHTML(entry, n) {
      to its price without a rule doing the work. Each band's ink is measured
      against that band rather than assumed. */
   const bg = labelColour(row);
-  const qty = tint(bg, 0.74);
-  const pri = tint(bg, 0.90);
+  const qty = qtyTone(bg);
+  const pri = priTone(bg);
   const tight = sizes.length > 2;
   return `
-  <div class="pc" style="--label:${bg};--label-ink:${inkOn(bg)}
-    ;--qty:${qty};--qty-ink:${inkOn(qty)};--pri:${pri};--pri-ink:${inkOn(pri)}
+  <div class="pc" style="--label:${bg};--label-ink:${inkOn(bg)};--label-rule:${bandRule(bg)}
+    ;--qty:${qty};--qty-ink:${inkOn(qty)};--qty-rule:${bandRule(qty)}
+    ;--pri:${pri};--pri-ink:${inkOn(pri)}
     ;--pfs:${tight ? '10.6pt' : '13pt'};--cfs:${tight ? '6.8pt' : '8pt'}">
     <div class="pc-b">
       <div class="pc-h"><span class="n">${String(n).padStart(2, '0')}</span><span class="nm">${esc(row.name)}</span></div>
@@ -2142,7 +2297,17 @@ function priceList() {
 /* After the compaction pass. Nothing shrank that a reader looks at — the
      plates, names, quantities and figures are all the size they were asked
      to be. The millimetres came out of padding, gutters and margins. */
-  const ROW = 25, HEAD = 12, GAP = 4, NOTE = 95;
+  /* ROW is 30 now, not 25: the card gained 8mm of minimum height so the
+     tins could grow, and the row is that plus its 2mm gutter. HEAD is 13.
+
+     The row is not an estimate. The packer was run at every value from 25
+     up: 28 needs five sheets and 27 needs the card to be shorter than it
+     measures, so the card was trimmed to 24mm — out of padding only, no
+     type moved — and the row it sits in is 26. A fifth sheet would be more
+     empty ground rather than less, which is the opposite of what was asked
+     for. What slack remains no longer collects at the foot of pages two and
+     four, because .pbody distributes it between the sections instead. */
+  const ROW = 26, HEAD = 13, GAP = 4, NOTE = 120;
   /* 204 for page one, probed rather than derived: the masthead has no fixed
      height any more and the logo chip sets it, so the arithmetic that used to
      give the number no longer has one to work from. 204 clears; 211 spills
@@ -2151,7 +2316,16 @@ function priceList() {
      243 for the same reason: 249 spilled 21px on the last sheet, constant
      under every NOTE, because the ceiling bound there too. When a spill does
      not move as the estimates move, it is the cap that is wrong. */
-  const cap = i => (i === 0 ? 204 : 243);
+  /* 194, and it was earned rather than assumed. The old 204 was 20mm
+     generous — the shorter card had simply never reached it, so nothing had
+     ever tested it; the taller one sat exactly on it by the arithmetic and
+     35px over it in fact. Measured, page one held 184.
+
+     184 puts three sections on the sheet and 194 puts four, and the
+     difference between them came out of the masthead, which was carrying a
+     52mm logo. The later pages are unchanged; nothing has tested 243 and
+     found it wanting. */
+  const cap = i => (i === 0 ? 194 : 243);
 
   const cost = g => HEAD + Math.ceil(g.rows.length / 2) * ROW;
 
