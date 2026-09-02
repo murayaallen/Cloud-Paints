@@ -37,3 +37,4 @@ client-package/pdf/
 # copy is dropped in here rather than beside it, and `git add -A` then tries
 # to commit it as an embedded repository.
 /Cloud Paints/
+invoices/
