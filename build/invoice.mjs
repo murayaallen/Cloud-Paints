@@ -27,17 +27,15 @@ const OUTDIR = path.join(ROOT, 'invoices');
 
 /* ---------- FROM — YOUR DETAILS. Fill these in. ------------------------ */
 const FROM = {
-  name:    'Allen Muraya',
+  name:    'Allen Muraya Maina',
   trading: '',                       // trading name, if you invoice under one
-  phone:   '',                       // <-- add
+  phone:   '0792 507 750',
   email:   'murayamakingedits@gmail.com',
-  address: '',                       // <-- add, if you want one shown
+  address: '',                       // add if you want one shown
   // How you want paying. Leave a line blank and it is not printed.
   pay: {
-    'M-Pesa':      '',               // <-- Paybill / Till / phone number
-    'Bank':        '',               // <-- bank name
-    'Account name': '',
-    'Account no.': '',
+    'M-Pesa (Send Money)': '0792 507 750',
+    'Registered name':     'Allen Muraya Maina',
   },
 };
 
@@ -104,7 +102,7 @@ const html = `<!doctype html>
 @page { size: 210mm 297mm; margin: 0; }
 * { margin:0; padding:0; box-sizing:border-box; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
 body { font:400 10pt/1.5 'Segoe UI', Arial, sans-serif; color:#14161f; }
-.sheet { width:210mm; height:297mm; padding:16mm 18mm 14mm; position:relative;
+.sheet { width:210mm; height:297mm; padding:16mm 18mm 16mm; position:relative;
         overflow:hidden; }
 
 .head { display:flex; justify-content:space-between; align-items:flex-start;
@@ -140,14 +138,11 @@ td.a { text-align:right; white-space:nowrap; font-weight:600; }
 .sums .due span, .sums .due b { color:#fff; }
 .sums .due b { font-weight:700; }
 
-.pay { margin-top:6mm; padding:5mm 5.5mm; background:#f4f5f8; border-radius:1.4mm;
+.pay { margin-top:5mm; padding:5mm 5.5mm; background:#f4f5f8; border-radius:1.4mm;
        border-left:1.4mm solid #14213d; }
 .pay .row div { display:flex; justify-content:space-between; font-size:9.6pt;
                 padding:1.4mm 0; }
 .pay .row div span { color:#565b6b; }
-.foot { position:absolute; left:18mm; right:18mm; bottom:14mm;
-        border-top:.3mm solid #d8dbe3; padding-top:4mm;
-        font-size:8.6pt; color:#7a7f8e; display:flex; justify-content:space-between; }
 .note { margin-top:6mm; font-size:9pt; color:#565b6b; }
 </style></head><body>
 <div class="sheet">
@@ -192,19 +187,15 @@ td.a { text-align:right; white-space:nowrap; font-weight:600; }
     <div class="due"><span>Balance due</span><b>${money(due)}</b></div>
   </div>
 
+  <div class="note">Agreed as one project fee; the lines above set out what it covers.
+    ${money(paid)} received with thanks.</div>
+
   ${payRows ? `<div class="pay">
     <div class="k">Payment</div>
     <div class="row">${payRows}</div>
   </div>` : `<div class="note"><b>Payment details are not set.</b>
     Open build/invoice.mjs, fill in the FROM.pay block and re-run before sending.</div>`}
 
-  <div class="note">Agreed as one project fee; the lines above set out what it covers.
-    ${money(paid)} received with thanks.</div>
-
-  <div class="foot">
-    <span>${esc(FROM.trading || FROM.name)} · ${esc(FROM.email)}</span>
-    <span>Invoice ${esc(INVOICE.number)}</span>
-  </div>
 </div></body></html>`;
 
 fs.mkdirSync(OUTDIR, { recursive: true });
