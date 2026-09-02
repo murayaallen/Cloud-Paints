@@ -52,7 +52,7 @@ const TO = {
 
 /* ---------- The invoice ------------------------------------------------- */
 const INVOICE = {
-  number: 'CP-2026-001',
+  number: '39',
   date:   new Date().toISOString().slice(0, 10),
   terms:  'Balance due on receipt',
   currency: 'Kshs',
@@ -67,14 +67,19 @@ const INVOICE = {
 /* What the fee covers. Priced as one project fee rather than broken into
    invented per-item figures — the total was agreed as a whole. */
 const SCOPE = [
-  ['Website — design, build and deployment',
-   'cloudpaints.co.ke. 28 product pages, 544-shade colour collection, colour '
-   + 'visualiser, services, projects and contact. Responsive. Clean URLs, security '
-   + 'headers and caching configured.'],
+  ['Website — front-end design, build and deployment',
+   'cloudpaints.co.ke. Static site architecture, 28 templated product pages generated '
+   + 'from a single JSON catalogue. Canvas-based colour visualiser, 544-shade colour '
+   + 'collection, WebGL/CSS animation layer. Responsive breakpoints for mobile, tablet '
+   + 'and desktop; reduced-motion and contrast accessibility handling. Apache/LiteSpeed '
+   + 'configuration: clean-URL rewrites, 301 canonicalisation, HSTS, Content-Security-'
+   + 'Policy, gzip compression and cache-control headers. WebP image pipeline.'],
 
-  ['Search presence',
-   'Search Console set up and verified, sitemap submitted, structured data, indexing '
-   + 'faults corrected.'],
+  ['Technical SEO and search indexing',
+   'JSON-LD structured data — Organization, LocalBusiness, WebSite, Product, '
+   + 'BreadcrumbList and SiteNavigationElement. XML sitemap, robots.txt, canonical tags '
+   + 'and Open Graph metadata. Google Search Console property verified by DNS; crawl '
+   + 'and indexing faults diagnosed and resolved.'],
 
   ['Print package — Colour Chart Collection, fliers and price lists',
    'Colour Chart Collection, 544 shades over 21 pages. Range flier in 3 formats and '
