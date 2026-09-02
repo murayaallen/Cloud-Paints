@@ -1783,9 +1783,18 @@ const PRICE_CSS = `
      print. A single radial with opaque stops gives the same red-led ground
      with navy in the far corner, and asks for one shading pattern and no
      transparency at all. */
+  /* The stops between the red and the blue used to be dark maroons —
+     #7a1432 and #4a1a4a — which have very little blue in them. On screen
+     they read as a dark red shading toward navy; on press, where a dark
+     saturated red is already carrying heavy magenta and yellow, they came
+     out brown.
+     The way through is violet, not a darker red: the blue channel is lifted
+     through the middle of the ramp so the two brand colours meet as purple.
+     #8a1c66 and #6a2288 are magenta-violet and violet — both hold up in
+     CMYK, where a muddy maroon does not. */
   background: radial-gradient(155% 110% at 6% -6%,
-    #b81c34 0%, #a01830 22%, #7a1432 42%, #4a1a4a 62%,
-    #242a60 82%, #0f1f5c 100%); }
+    #c81f3c 0%, #ab1a44 17%, #8a1c66 36%, #6a2288 54%,
+    #472a86 70%, #26306e 86%, #0f1f5c 100%); }
 
 .pinner { position:absolute; inset:7mm;
           border:.3mm solid #8f7f9c;
@@ -1802,7 +1811,9 @@ const PRICE_CSS = `
 .ph .eyebrow { color:var(--gold); letter-spacing:.2em; }
 .ph h1 { font:700 25pt/1.06 var(--sans); letter-spacing:.02em;
          text-transform:uppercase; color:#fff; margin-top:2.6mm; }
-.ph h1 .c-red { color:#ff8b95; }
+/* Both lines in white. The second was set in a light red, which on the new
+   violet ground read as a third colour rather than as part of the title. */
+.ph h1 .c-red { color:#fff; }
 .ph .cur { display:flex; align-items:center; gap:3mm; margin-top:3.2mm;
            font:600 8.2pt/1 var(--sans); letter-spacing:.14em;
            text-transform:uppercase; color:#e4dce8; }
