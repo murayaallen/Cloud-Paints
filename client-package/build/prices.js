@@ -195,7 +195,7 @@ export const PRICE_LIST = [
     title: 'Gloss Paints Finish',
     rows: [
       { name: 'Super Gloss Premium', art: 'super-gloss',
-        desc: 'Quick-drying High Gloss for Interior and Exterior Wood and Metal, tough and hard-wearing.',
+        desc: 'Quick-drying High Gloss for Interior and Exterior Wood and Metal. It levels to a hard, bright Finish that stands up to Knocks, Scuffs and repeated Cleaning \u2014 made for Doors, Window Frames, Railings and Joinery that are handled every day.',
         prices: { '4L': 3000, '1L': 950 } },
     ],
   },
@@ -203,7 +203,7 @@ export const PRICE_LIST = [
     title: 'Floor Paint Premium',
     rows: [
       { name: 'Floor Paint', art: 'floor-paint',
-        desc: 'Heavy-duty Coating for industrial and residential Concrete Floors and Walkways.',
+        desc: 'Heavy-duty Coating for Concrete Floors and Walkways, in the Factory and in the Home. It seals the Surface against Dust, Oil and Water, takes Foot and Trolley Traffic, and washes down without losing its Colour.',
         prices: { '4L': 2800, '1L': 780 } },
     ],
   },
@@ -211,7 +211,7 @@ export const PRICE_LIST = [
     title: 'Undercoats',
     rows: [
       { name: 'Universal Undercoat', art: 'universal-undercoat',
-        desc: 'All-purpose Undercoat giving Wood, Metal and primed Masonry a smooth Base for any Top Coat.',
+        desc: 'All-purpose Undercoat that gives Wood, Metal and primed Masonry an even, smooth Base for any Top Coat. It levels out Absorbency and fills fine Grain, so the Gloss or Enamel above it lays flat and covers in fewer Coats.',
         prices: { '20L': 10290, '4L': 2040, '1L': 550 } },
     ],
   },

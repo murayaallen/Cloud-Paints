@@ -1049,13 +1049,13 @@ const RANGE_SIZES = {
            contactH no longer does anything — the back panel is assigned
            rather than packed — and is left only because packRange still
            takes a budget list. */
-        rcols: 2, rowh: 20, chH: 9, catGap: 3, panelH: 194, contactH: 76,
+        rcols: 2, rowh: 21, chH: 9, catGap: 3, panelH: 194, contactH: 76,
         /* Up across the board. Gloss Paints Finish leaving for the back
            takes a category off the inside spread, and the spread was the
            thing that looked cramped — nine categories in the room that held
            twelve. The tin is 17.5mm rather than 16 and the three type sizes
            are each up a fraction. */
-        rgap: '0.4mm 3.5mm', rcImg: '17.5mm', rcNm: '9.3pt', rcTx: '7.2pt', rcSz: '7pt',
+        rgap: '1.2mm 3.5mm', rcImg: '17.5mm', rcNm: '9.3pt', rcTx: '7.2pt', rcSz: '7pt',
         chFs: '11.5pt', aboutW: '124mm', coverTins: false,
         bcH3: '13.8pt', bcV: '7.2pt', restB: '7.6pt', restS: '6.5pt', aboutFs: '9pt',
         secGap: '4mm', calc: false, aboutParas: 2, ticks: 5, noteLen: 135, cellImg2: '29mm' },
@@ -1143,7 +1143,13 @@ const rangePanelCss = z => `/* ---- The range, by category ---------------------
    shorter than the half-width one it replaces. */
 .rgrid > .rcell:last-child:nth-child(${z.rcols}n+1) {
   grid-column:1 / -1; padding-right:0; }
-.rcell { display:flex; gap:2mm; align-items:flex-start; break-inside:avoid; }
+/* The tin is centred against its text, not hung from the top of it. Top
+   alignment is right when the picture and the words are about the same
+   height; here the tin is 17.5mm and the words are anything from one line
+   to three, so a short line left the tin standing above a gap and a long
+   one left it stranded at the top. Centred, every row reads as one object
+   whatever length its description runs to. */
+.rcell { display:flex; gap:2mm; align-items:center; break-inside:avoid; }
 .rc-img { width:${z.rcImg}; flex:none; display:flex; align-items:flex-start;
           justify-content:center; }
 .rc-img img { max-width:100%; max-height:${z.rcImg}; width:auto; }
@@ -1268,7 +1274,13 @@ ${RANGE_RAMP_IN}
    short of the tin so it reads as a rule under the words rather than a line
    drawn through the picture. */
 .rgrid { position:relative; }
-.rcell { padding-bottom:0.5mm; border-bottom:.2mm solid #8b7d95; }
+/* The rule under a line sat half a millimetre below the pack sizes and
+   another half above the next name — a millimetre of air carrying a
+   division between two products. It reads as a line drawn through the list
+   rather than a line between its parts. 1.2mm under and 1.2mm over now,
+   which is still tight for a rule but is enough for it to divide rather
+   than crowd. */
+.rcell { padding-bottom:1.2mm; border-bottom:.2mm solid #8b7d95; }
 .cgrp .rgrid > .rcell:nth-last-child(-n+1):nth-child(odd) { }
 .rc-t { border-left:0; }
 
@@ -1458,37 +1470,43 @@ ${rangePanelCss(z)}
    category block grow and centring its row inside it spreads that evenly
    over the four, at both sizes, without a number in it that has to be
    maintained. */
-.pnl--back .rc-cert { margin-top:auto; }
+.pnl--back .rc-note { margin-top:auto; }
 .pnl--back .cgrp { flex:1 0 auto; display:flex; flex-direction:column; }
 .pnl--back .cgrp .rgrid { flex:1; align-content:center; }
 
-/* ---- Contact, at the foot of the back panel --------------------------- */
-.rc-contact { margin-top:1.6mm; padding-top:1.6mm; border-top:.5mm solid var(--gold); }
-.rc-contact h3 { font:400 calc(${z.bcH3} * .82)/1 var(--serif); color:#fff;
-                 margin-bottom:.8mm; }
-.rc-contact h3 em { font-style:italic; color:var(--gold); }
-.rc-contact .row { display:flex; align-items:center; gap:3mm; }
-.rc-contact .chip { background:#fff; border-radius:1.2mm; padding:1.1mm 1.6mm;
-                    flex:none; display:flex; }
-.rc-contact .chip img { width:calc(21mm * var(--k)); display:block; }
-.rc-contact .v { font:400 ${z.bcV}/1.5 var(--sans); color:#e6dfe9; min-width:0; }
-.rc-contact .v b { color:var(--gold); font-weight:700; letter-spacing:.06em;
-                   text-transform:uppercase; }
+/* ---- The paper panel at the foot of the back --------------------------
+   One object holding the certification, the trade terms and the address.
+   Cream rather than pure white, with a gold rule across the top and a hair
+   of warm grey around it, so it reads as a panel laid on the piece rather
+   than a hole cut in it. The type inside goes to the document's ordinary
+   inks, which is the point of the change: this is the part a customer reads
+   when they want a fact, and it was reversed out of a dark gradient at 6 to
+   7pt — the hardest thing to read on the whole piece. */
+.rc-note { margin-top:2.6mm; background:var(--cream); color:var(--ink-2);
+           border:.25mm solid #cfc7b4; border-top:1mm solid var(--gold);
+           border-radius:1.8mm; padding:3mm 3.6mm; }
 
-/* ---- The standards mark, and the terms, at the end -------------------- */
-/* The mark has come off the cover. It certifies the products, so it belongs
-   with them and with the sentence that says what it means — on the cover it
-   sat in the brand lockup and read as decoration. */
-.rc-cert { display:flex; align-items:center; gap:2.6mm; margin-top:1.8mm;
-           padding-top:1.6mm; border-top:.5mm solid var(--gold); }
-.rc-cert img { height:calc(${z.kebs} * .82); width:auto; background:#fff;
-               padding:1mm; border-radius:1mm; flex:none; }
-.rc-cert p { font:400 ${z.rcTx}/1.38 var(--sans); color:#e6dfe9; }
-.rc-cert b { color:var(--gold); font-weight:700; }
-.rc-terms { margin-top:1.2mm; }
-.rc-terms p { font:400 calc(${z.rcTx} * .96)/1.38 var(--sans); color:#ddd4e2; }
-.rc-terms p + p { margin-top:.9mm; }
-.rc-terms b { color:#fff; font-weight:600; }
+.rn-cert { display:flex; align-items:center; gap:2.8mm; }
+.rn-cert img { height:calc(${z.kebs} * .78); width:auto; flex:none; }
+.rn-cert p { font:400 ${z.rcTx}/1.36 var(--sans); }
+.rn-cert b { color:var(--red); font-weight:700; }
+
+.rn-terms { margin-top:2.2mm; padding-top:2mm; border-top:.25mm solid var(--rule); }
+.rn-terms p { font:400 calc(${z.rcTx} * .96)/1.36 var(--sans); }
+.rn-terms p + p { margin-top:1.1mm; }
+.rn-terms b { color:var(--ink); font-weight:700; }
+
+.rn-foot { display:flex; align-items:center; gap:3.4mm; margin-top:2.2mm;
+           padding-top:2mm; border-top:.25mm solid var(--rule); }
+.rn-logo { width:calc(26mm * var(--k)); flex:none; display:block; }
+.rn-v { min-width:0; }
+.rn-v h3 { font:400 calc(${z.bcH3} * .8)/1 var(--serif); color:var(--ink); }
+.rn-v h3 em { font-style:italic; color:var(--red); }
+.rn-v p { font:400 ${z.bcV}/1.45 var(--sans); margin-top:.9mm; }
+.rn-v p + p + p { margin-top:.2mm; }
+.rn-v b { color:var(--blue-deep); font-weight:700; letter-spacing:.06em;
+          text-transform:uppercase; }
+
 
 /* ---- The company's account of itself, on the cover -------------------- */
 .cover-about { text-align:left; max-width:${z.aboutW}; }
@@ -1744,18 +1762,28 @@ function rangeFlier(size) {
     </div>`;
 
   const contactBlock = `
-    <div class="rc-cert">
-      <img src="${a}/img/brand/kebs.png" alt="KEBS Standardisation Mark">
-      <p><b>Certified.</b> Every Product in this Range is manufactured at our
-         Industrial Area Factory to KEBS Standards, tested and awarded the
-         Standardisation Mark of Quality (S/Mark).</p>
-    </div>
-    <div class="rc-terms">
-      <p>${esc(TRADE_NOTE)}</p>
-      <p><b>Colour Tinting</b> is available at the Industrial Area Factory on all
-         Emulsions and Enamels. Tinted Shades may carry a Surcharge depending on
-         the Colourant used.</p>
-    </div>
+    <!-- The tail is a panel of paper now, not type laid straight on the
+         ground. Three blocks of small print — the certification, the trade
+         terms and the address — were reversed out of a dark gradient at 6 to
+         7pt, which is the hardest thing to read on the whole piece and the
+         part a customer goes to when they want a fact. On white it reads,
+         it groups, and it gives the foot of the panel something to sit on.
+
+         It is also the one white object on the outside of the piece apart
+         from the border, which ties the two together. -->
+    <div class="rc-note">
+      <div class="rn-cert">
+        <img src="${a}/img/brand/kebs.png" alt="KEBS Standardisation Mark">
+        <p><b>Certified.</b> Every Product in this Range is manufactured at our
+           Industrial Area Factory to KEBS Standards, tested and awarded the
+           Standardisation Mark of Quality (S/Mark).</p>
+      </div>
+      <div class="rn-terms">
+        <p>${esc(TRADE_NOTE)}</p>
+        <p><b>Colour Tinting</b> is available at the Industrial Area Factory on all
+           Emulsions and Enamels. Tinted Shades may carry a Surcharge depending on
+           the Colourant used.</p>
+      </div>
     <!-- One line, not a four-cell grid. The cover foot already carries
          "Manufactured by" and "Find us", and the panel foot carries the
          phone, the email and the web address on every panel — a third full
@@ -1769,21 +1797,21 @@ function rangeFlier(size) {
          was on the cover. The logo needs its white chip: the mark is drawn
          in the brand blue and the brand red and neither holds on this
          ground. -->
-    <!-- The logo belongs beside the line that says who made it, and beside
-         a three-line address it costs nothing: the chip is shorter than the
-         block it stands next to. Beside a one-line heading, which is where
-         it was first put, the same chip cost 9mm and the panel spilled by
-         exactly that. It needs the white chip either way — the mark is drawn
-         in the brand blue and the brand red and neither holds on this
-         ground. -->
-    <div class="rc-contact">
-      <h3>Come and See the <em>Colour.</em></h3>
-      <div class="row">
-        <span class="chip"><img src="${a}/img/brand/logo.png" alt="Cloud Paints"></span>
-        <div class="v"><b>Manufactured by</b> ${esc(CO.legal)} ·
-          ${esc(CO.street)}, ${esc(CO.area)}<br>
-          ${esc(CO.phones[0])} &nbsp;·&nbsp; ${esc(CO.phones[1])} &nbsp;·&nbsp;
-          ${esc(CO.email)} &nbsp;·&nbsp; ${esc(CO.web)}</div>
+      <!-- The logo needs no white chip in here: the panel is already paper,
+           and the mark is drawn to sit on white. It stands beside the line
+           that names the maker, which is where it belongs. -->
+      <div class="rn-foot">
+        <img class="rn-logo" src="${a}/img/brand/logo.png" alt="Cloud Paints">
+        <div class="rn-v">
+          <h3>Come and See the <em>Colour.</em></h3>
+          <p><b>Manufactured by</b> ${esc(CO.legal)} ·
+             ${esc(CO.street)}, ${esc(CO.area)}</p>
+          <!-- Two lines, not one that wraps. On one line the web address fell
+               off the end on its own, which is the least useful orphan the
+               panel could produce. -->
+          <p>${esc(CO.phones[0])} &nbsp;·&nbsp; ${esc(CO.phones[1])}</p>
+          <p>${esc(CO.email)} &nbsp;·&nbsp; ${esc(CO.web)}</p>
+        </div>
       </div>
     </div>`;
 
