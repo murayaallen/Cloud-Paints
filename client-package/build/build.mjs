@@ -1135,6 +1135,14 @@ const rangePanelCss = z => `/* ---- The range, by category ---------------------
 .rgrid > .rcell:not(:nth-child(${z.rcols}n+1)) {
   border-left:.2mm solid #8b7d95; padding-left:3.5mm; }
 .rgrid > .rcell:nth-child(${z.rcols}n+1) { padding-right:3.5mm; }
+/* A category with an odd number of lines left its last one alone in a row,
+   reaching halfway across and no further — SuperMatt under Interior
+   Application, Floor Paint Economy under Budget Paints. The odd line takes
+   the whole row instead. It costs nothing: across the full measure the
+   description that wrapped to three lines fits on one or two, so the row is
+   shorter than the half-width one it replaces. */
+.rgrid > .rcell:last-child:nth-child(${z.rcols}n+1) {
+  grid-column:1 / -1; padding-right:0; }
 .rcell { display:flex; gap:2mm; align-items:flex-start; break-inside:avoid; }
 .rc-img { width:${z.rcImg}; flex:none; display:flex; align-items:flex-start;
           justify-content:center; }
@@ -1437,6 +1445,10 @@ ${rangePanelCss(z)}
 .pnl--back .ch h3 { font-size:calc(${z.chFs} * .86); }
 .pnl--back .rcell { gap:3mm; align-items:center; padding-bottom:.9mm; }
 .pnl--back .cgrp + .cgrp { margin-top:1.6mm; }
+.pnl--back .cpair { display:flex; gap:4mm; align-items:flex-start;
+                    margin-top:1.6mm; flex:1 0 auto; }
+.pnl--back .cpair .cgrp { flex:1 1 0; min-width:0; margin-top:0; }
+.pnl--back .cpair .rgrid > .rcell { border-bottom:0; }
 .pnl--back .rc-t .tx { margin-top:.8mm; }
 .pnl--back .rc-t .sz { margin-top:1.6mm; }
 /* The tail sits on the floor of the panel, and the four categories share
@@ -1700,11 +1712,33 @@ function rangeFlier(size) {
   const inside = packRange(z, [z.panelH, z.panelH], rest);
   const packed = [inside[0] || [], inside[1] || [], back];
 
+  /* The categories at the foot of the back panel that we hold no
+     photograph of are set two across rather than one under the other. There
+     are two of them, one line each, and stacked they took two full-width
+     rows to say four short lines — which is the height the certification and
+     terms block underneath was missing. Side by side they take one, and the
+     block below has room to breathe.
+
+     They are found rather than named: the trailing run of categories with no
+     picture in them. Paired, they also drop the empty picture column, which
+     is there to line the full-width rows up with each other and would only
+     be waste in a half-width one. */
+  const hasArt = g => g.rows.some(r => r.art && thumbImage({ slug: r.art }, d));
+  const backBody = groups => {
+    let cut = groups.length;
+    while (cut > 0 && !hasArt(groups[cut - 1])) cut--;
+    const solo = groups.slice(0, cut), pair = groups.slice(cut);
+    return solo.map(g => catBlock(g, true)).join('')
+      + (pair.length > 1
+          ? `<div class="cpair">${pair.map(g => catBlock(g, false)).join('')}</div>`
+          : pair.map(g => catBlock(g, true)).join(''));
+  };
+
   const productPanel = (groups, accent, last) => `
     <div class="pnl${last ? ' pnl--back' : ''}" style="${accentVars(accent)}">
       <div class="frame"></div>
       <div class="ip">
-        ${groups.map(g => catBlock(g, last)).join('')}
+        ${last ? backBody(groups) : groups.map(g => catBlock(g, false)).join('')}
         ${last ? contactBlock : ''}
       </div>
     </div>`;
