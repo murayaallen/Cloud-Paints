@@ -42,12 +42,14 @@ EXPECT = {
     '0-colour-flier/weatherguard-a5': (148, 210),
     '1-range-poster/cloud-paints-range-A2': (420, 594),
     '1-range-poster/cloud-paints-range-A3': (297, 420),
-    # The two folds ship with bleed: trim + 3mm on every side, so the SHEET is
-    # 6mm larger than the trim in both directions and the ink covers all of
-    # it. No crop marks and no white margin — the piece is meant to have no
-    # border, and a printer imposing it adds its own marks.
-    '6-range-flier/cloud-paints-range-flier-folds-to-A4': (426, 303),
-    '6-range-flier/cloud-paints-range-flier-folds-to-A5': (303, 216),
+    # The two folds are sheet = trim, with no bleed. They are made on A4
+    # stock and folded, not trimmed, and the outside carries a white border
+    # so there is no ink at the sheet edge to protect. With bleed the two
+    # outer margins of that border were wider than the fold margin by the
+    # trim allowance, and the frame only looked even after a guillotine had
+    # been near it.
+    '6-range-flier/cloud-paints-range-flier-folds-to-A4': (420, 297),
+    '6-range-flier/cloud-paints-range-flier-folds-to-A5': (297, 210),
     '2-product-fliers-A4': (210, 297),
     '3-product-fliers-A5': (148, 210),
     '4-brochures': (297, 210),

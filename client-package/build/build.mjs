@@ -990,8 +990,8 @@ function flierLine(p, max) {
 }
 
 const RANGE_SIZES = {
-  A4: { sheet: '426mm 303mm', w: '420mm', h: '297mm', panel: '210mm', k: 1,
-        frame: '8mm', pad: '10mm', wf: '7mm', wfPad: '9.5mm', wfCover: '10mm',
+  A4: { sheet: '420mm 297mm', w: '420mm', h: '297mm', panel: '210mm', k: 1,
+        frame: '8mm', pad: '10mm', wf: '5mm',
         logo: '46mm', kebs: '20mm', h1: '48pt', kick: '12.2pt', strap: '15pt',
         sw: '7mm', lineH: '78mm', tinH: '46mm', tinGap: '3mm', rowIn: '4mm', rowUp: '26mm',
         lineup: ['silk-vinyl', 'weatherguard', 'vinyl-matt', 'supermatt', 'rocketex'],
@@ -1006,8 +1006,8 @@ const RANGE_SIZES = {
         chFs: '16pt', aboutW: '164mm', coverTins: true,
         bcH3: '19.5pt', bcV: '8.8pt', restB: '9.2pt', restS: '7.6pt', aboutFs: '10.2pt',
         secGap: '8mm', calc: true, aboutParas: 2, ticks: 5, noteLen: 240 },
-  A5: { sheet: '303mm 216mm', w: '297mm', h: '210mm', panel: '148.5mm', k: 0.707,
-        frame: '5.5mm', pad: '8mm', wf: '5mm', wfPad: '7mm', wfCover: '11mm',
+  A5: { sheet: '297mm 210mm', w: '297mm', h: '210mm', panel: '148.5mm', k: 0.707,
+        frame: '5.5mm', pad: '8mm', wf: '3.5mm',
         logo: '33mm', kebs: '14mm', h1: '31pt', kick: '8.8pt', strap: '10.6pt',
         sw: '5mm', lineH: '55mm', tinH: '26mm', tinGap: '2mm', rowIn: '7mm', rowUp: '22mm',
         lineup: ['silk-vinyl', 'weatherguard', 'vinyl-matt', 'iris-economy', 'supermatt', 'rocketex'],
@@ -1034,8 +1034,23 @@ const RANGE_SIZES = {
            makes it fuller, not emptier. Only the two inside panels taking
            more can make the back take less, and the three budgets together
            have to cover 501 units of categories. */
+        /* panelH 196, not 194, and it buys a category. Ten categories go on
+           the inside spread now rather than twelve, and two of them are the
+           big ones — Thinners at four lines, Budget Paints at five. At 194
+           the split fell five and five: six rows on the left panel and eight
+           on the right, and the right overran by 14mm. At 196 the left takes
+           a sixth category and the split is seven rows each, which fits and
+           reads evenly besides.
+
+           17 was tried first and was worse, not better: a shorter row let
+           the left panel take a category its real height could not carry.
+           The row is 18 because 18 is what a row measures.
+
+           contactH no longer does anything — the back panel is assigned
+           rather than packed — and is left only because packRange still
+           takes a budget list. */
         rcols: 2, rowh: 18, chH: 9, catGap: 3, panelH: 194, contactH: 76,
-        rgap: '0.6mm 3.5mm', rcImg: '16mm', rcNm: '9pt', rcTx: '7pt', rcSz: '6.8pt',
+        rgap: '0.4mm 3.5mm', rcImg: '16mm', rcNm: '9pt', rcTx: '7pt', rcSz: '6.8pt',
         chFs: '11.5pt', aboutW: '124mm', coverTins: false,
         bcH3: '13.8pt', bcV: '7.2pt', restB: '7.6pt', restS: '6.5pt', aboutFs: '9pt',
         secGap: '4mm', calc: false, aboutParas: 2, ticks: 5, noteLen: 135, cellImg2: '29mm' },
@@ -1087,12 +1102,18 @@ const rangePanelCss = z => `/* ---- The range, by category ---------------------
    row rather than a card: the picture is small and the words beside it are
    what a customer reads. The pack sizes take the tin's own colour, which
    ties the row to the photograph next to it without a second rule. */
-.cgrp + .cgrp { margin-top:${z.catGap}mm; }
+/* 2mm between categories, where the packer's model still charges 3. The
+   model may over-estimate; it must not under-estimate, because an
+   over-estimate only leaves a panel with room to spare and an
+   under-estimate clips it. Every millimetre below is real and the packer
+   does not know about any of them, which is exactly the margin the right
+   panel needed. */
+.cgrp + .cgrp { margin-top:2mm; }
 /* The price list's section plate, in the flier. A box with the category's
    own colour in it, a deeper spine down the left and a gold hairline under:
    the same object in both documents, so a customer who has seen one can
    read the other. */
-.ch { display:flex; align-items:center; gap:3mm; margin-bottom:2.4mm;
+.ch { display:flex; align-items:center; gap:3mm; margin-bottom:1.6mm;
       background:var(--cat); border-left:1.8mm solid var(--cat-deep);
       border-bottom:.4mm solid var(--gold); border-radius:1.2mm;
       padding:1.6mm 2.8mm 1.4mm; }
@@ -1187,15 +1208,22 @@ return `
    colours, same order, a third of the sheet each. */
 ${RANGE_RAMP_OUT}
 ${RANGE_RAMP_IN}
-.fold { position:absolute; left:3mm; top:3mm;
+.fold { position:absolute; left:0; top:0;
         display:flex; width:${z.w}; height:${z.h}; }
 
 /* ---- The white border, outside only ------------------------------------
-   Each of the two outside panels is a coloured block inside a white frame.
-   At the centre the two frames meet, so the crease has ${z.wf} of paper
-   either side of it; at the trim edge the frame is what the guillotine cuts
-   through, so a millimetre of drift moves a white margin rather than
-   opening a white line along dark ink. */
+   Each of the two outside panels is a coloured block inside a white frame,
+   ${z.wf} on all four sides of each. That is the whole reason the sheet is
+   the trim size now and carries no bleed: with 3mm of bleed the two outer
+   margins were the border plus the trim allowance and the fold margin was
+   the border alone, so the frame looked even only after a guillotine had
+   been near it. Folded from an A4 sheet — which is how this piece is made,
+   A4 stock, no trimming — what you see is what you hold, and the frame is
+   the same width on the cover as on the back and the same on every side of
+   both.
+
+   If it is ever run as a trimmed job instead, it needs 3mm of bleed adding
+   back and the border measuring from the trim rather than the sheet. */
 .sheet--out { background:#fff; }
 .sheet--out .fold .pnl + .pnl { border-left:0; }
 .sheet--out .pnl::before { content:''; position:absolute; inset:${z.wf};
@@ -1227,7 +1255,7 @@ ${RANGE_RAMP_IN}
    short of the tin so it reads as a rule under the words rather than a line
    drawn through the picture. */
 .rgrid { position:relative; }
-.rcell { padding-bottom:0.7mm; border-bottom:.2mm solid #8b7d95; }
+.rcell { padding-bottom:0.5mm; border-bottom:.2mm solid #8b7d95; }
 .cgrp .rgrid > .rcell:nth-last-child(-n+1):nth-child(odd) { }
 .rc-t { border-left:0; }
 
@@ -1271,7 +1299,6 @@ ${RANGE_RAMP_IN}
 /* Bounded at the bottom by the line-up it sits above. With a zero bottom inset the
    column ran the full height of the panel, so the tagline flowed down into
    the tins and the standards mark was drawn straight over it. */
-.sheet--out .cover-in { top:${z.wfCover}; left:${z.wfCover}; right:${z.wfCover}; }
 .cover-in { position:absolute; z-index:2;
             top:${z.pad}; left:${z.pad}; right:${z.pad};
             bottom:${inBottom};
@@ -1337,17 +1364,21 @@ ${RANGE_RAMP_IN}
    the overset check instead of quietly crossing the rule. */
 .ip { position:absolute; inset:${z.pad}; display:flex; flex-direction:column;
       padding-bottom:.5mm; z-index:1; }
-/* Inside the white border the content starts further in — but only just.
-   The listing panel has no height to give: three panels carry fourteen
-   categories and the two inside ones are full, so every millimetre the
-   border takes from the third comes out of the products on it. So the
-   border is drawn behind the content rather than around it — the ink stops
-   ${z.wf} from the trim, the content stops ${z.wfPad} — and the panel keeps
-   the height it had.
-
-   The cover can afford the room and takes it: ${z.wfCover}, so the narration
-   sits properly inside its block rather than up against the edge of it. */
-.sheet--out .ip { inset:${z.wfPad}; }
+/* The listing panels take 2mm off their inset — the cover does not, because
+   the cover has the room and the narration wants the margin. */
+.ip { inset:calc(${z.pad} - 2mm); }
+/* The inside panels spread their categories over whatever height they do
+   not use. The split is five and five and the two are not identical — the
+   left runs about 30mm short — and on a dark ground that reads as the panel
+   stopping early rather than as air. Spread, it reads as spacing. The back
+   panel is excluded: its tail is already pinned to the floor. */
+.pnl:not(.pnl--back) .ip { justify-content:space-between; }
+/* The content keeps the ${z.pad} it has on every other panel, framed or
+   not. The border is drawn behind it, not around it, so the ink stops
+   ${z.wf} from the sheet edge and the content stops ${z.pad} — which leaves
+   a margin of ink around the content and takes nothing away from it. The
+   cover and the back panel use the same figure, so the two halves of the
+   folded piece are set identically. */
 .ip-head { display:flex; align-items:baseline; gap:4mm; padding-bottom:3mm;
            border-bottom:.8mm solid var(--accent); margin-bottom:5mm; }
 .ip-head h2 { font:400 ${z.ipH2}/1 var(--serif); color:var(--ink); letter-spacing:-.01em; }
@@ -1375,6 +1406,40 @@ ${RANGE_RAMP_IN}
               font-variant-numeric:tabular-nums; }
 
 ${rangePanelCss(z)}
+
+/* ---- The back panel ----------------------------------------------------
+   One column, not two. Its four categories have one product each, so in a
+   two-column grid every one of them printed a line beside an empty half —
+   four half-rows of nothing down the panel. Across the full measure the
+   description fits on one line instead of three, which buys back most of
+   the height the wider row costs, and the tin can be half as big again. */
+.pnl--back .rgrid { grid-template-columns:1fr; }
+.pnl--back .rgrid > .rcell { border-left:0; padding-left:0; padding-right:0; }
+/* Twice the tin, because there is now room for twice the tin. Four short
+   categories replaced nine dense lines, which left about 50mm of bare
+   ground at the foot of the panel — and bare ground is not what the space
+   was freed for. Most of it goes into the photographs, which are the thing
+   a customer looks at, and what is left goes above the certification block
+   rather than below it. */
+.pnl--back .rc-img { width:calc(${z.rcImg} * 2.1); align-items:center; }
+.pnl--back .rc-img img { max-height:calc(${z.rcImg} * 2.1); }
+/* The four rows are set apart as well as enlarged. Two of them carry no
+   photograph and so cannot grow with the tins, and the room has to go
+   somewhere other than into a single gap above the certification block. */
+.pnl--back .rcell { gap:3.4mm; align-items:center; padding-bottom:1.6mm; }
+.pnl--back .cgrp + .cgrp { margin-top:3mm; }
+.pnl--back .rc-t .tx { margin-top:.8mm; }
+.pnl--back .rc-t .sz { margin-top:1.6mm; }
+/* The tail sits on the floor of the panel, and the four categories share
+   out everything above it. Pinning the tail alone was not enough: on the A5
+   fold it left 25mm in one gap and on the A4 fold, where the panel is 297mm
+   and the four categories are the same four, it left ninety. Letting each
+   category block grow and centring its row inside it spreads that evenly
+   over the four, at both sizes, without a number in it that has to be
+   maintained. */
+.pnl--back .rc-cert { margin-top:auto; }
+.pnl--back .cgrp { flex:1 0 auto; display:flex; flex-direction:column; }
+.pnl--back .cgrp .rgrid { flex:1; align-content:center; }
 
 /* ---- Contact, at the foot of the back panel --------------------------- */
 .rc-contact { margin-top:1.6mm; padding-top:1.6mm; border-top:.5mm solid var(--gold); }
@@ -1490,11 +1555,41 @@ const rangeRowColour = row =>
   || TIN_LABEL[row.art]
   || (bySlug[row.art] ? readable(bySlug[row.art].primary) : '#4a5568');
 
-function rangeRowCell(row, d) {
+/* Relative luminance, for deciding whether a colour can be read on the
+   dark ground rather than assuming it can. */
+function relLum(hex) {
+  const f = v => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; };
+  const [r, g, b] = [0, 2, 4].map(i => parseInt(hex.replace('#', '').slice(i, i + 2), 16));
+  return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b);
+}
+
+/** The pack sizes, in the tin's colour, lifted until they can actually be
+ *  read on this ground. A flat 55% tint was fine for the bright labels and
+ *  useless for the dark ones: Black Bituminous went to a mid grey, the
+ *  Thinners grey to a slightly paler grey, Transil's slate to something
+ *  barely separable from the panel behind it. Lifting to a fixed luminance
+ *  instead of a fixed proportion means every line clears the same floor,
+ *  and the ones that already cleared it are left alone — Road Marking's
+ *  yellow and Iris's amber come through untouched. */
+function packColour(hex) {
+  let c = hex, guard = 0;
+  while (relLum(c) < 0.5 && guard++ < 30) c = tint(c, 0.1);
+  return c;
+}
+
+function rangeRowCell(row, d, back) {
   const src = row.art ? thumbImage({ slug: row.art }, d) : null;
+  /* On the back panel a row without a photograph still keeps the picture
+     column, empty. Two of the four lines there are ones we hold no tin shot
+     of, and with the column collapsed their names started at the panel edge
+     while the other two started 30mm in — four rows in a list of four, and
+     half of them out of line. An empty column is invisible on this ground;
+     a ragged left edge is not. It stays collapsed on the inside panels,
+     where the width is worth more than the alignment. */
   return `
-    <div class="rcell" style="--pc-lift:${tint(rangeRowColour(row), 0.55)}">
-      ${src ? `<div class="rc-img"><img src="${src}" alt="${esc(row.name)}"></div>` : ''}
+    <div class="rcell" style="--pc-lift:${packColour(rangeRowColour(row))}">
+      ${src ? `<div class="rc-img"><img src="${src}" alt="${esc(row.name)}"></div>`
+            : back ? '<div class="rc-img"></div>' : ''}
       <div class="rc-t">
         <div class="nm">${esc(row.name)}</div>
         <div class="tx">${esc(row.desc)}</div>
@@ -1506,24 +1601,33 @@ function rangeRowCell(row, d) {
 /* The count that used to sit at the right of each heading is gone. On a price
    list "9 lines" earns its place; here it printed a bare 1 beside half the
    categories, which reads as a stray digit rather than a tally. */
-function rangeCatBlock(g, d) {
+function rangeCatBlock(g, d, back) {
   const c = rangeRowColour(g.rows[0]);
   return `
     <div class="cgrp" style="--cat:${c};--cat-deep:${readable(c)};--cat-ink:${inkOn(c)}">
       <div class="ch"><h3>${esc(g.title)}</h3><span class="ln"></span></div>
-      <div class="rgrid">${g.rows.map(r => rangeRowCell(r, d)).join('')}</div>
+      <div class="rgrid">${g.rows.map(r => rangeRowCell(r, d, back)).join('')}</div>
     </div>`;
 }
 
 /* Fill `slots` columns of the given budgets without ever dropping a category:
    greedy first for the fewest, then the tightest ceiling that still meets it,
    which spreads the categories instead of stacking them at the front. */
-function packRange(z, budgets) {
-  const cost = g => z.chH + Math.ceil(g.rows.length / z.rcols) * z.rowh;
+/* The four categories that go on the back panel, named rather than left to
+   whatever the packer has not placed. They are the four with a single
+   product in them, so the back reads as a short, open list under the
+   certification and the address instead of the densest panel in the piece —
+   which is what it was when it caught Thinners and Budget Paints, nine
+   lines between them. Budget Paints has gone inside, where there is room
+   for nine. */
+const BACK_PANEL = ['Floor Paint Premium', 'Undercoats', 'Bituminous Paints', 'Wood Finish'];
+
+function packRange(z, budgets, list = PRICE_LIST, cols = z.rcols) {
+  const cost = g => z.chH + Math.ceil(g.rows.length / cols) * z.rowh;
   const run = soft => {
     const out = [];
     let cur = [], used = 0;
-    for (const g of PRICE_LIST) {
+    for (const g of list) {
       const add = cost(g) + (cur.length ? z.catGap : 0);
       const limit = Math.min(soft, budgets[Math.min(out.length, budgets.length - 1)]);
       if (cur.length && used + add > limit) { out.push(cur); cur = [g]; used = cost(g); }
@@ -1566,7 +1670,7 @@ function rangeFlier(size) {
   const RANGE = PRICE_LIST;
 
   const rowCell = row => rangeRowCell(row, d);
-  const catBlock = g => rangeCatBlock(g, d);
+  const catBlock = (g, back) => rangeCatBlock(g, d, back);
 
   /* Fourteen categories over three panels — the inside spread and the back.
      Same approach as the price list: filling each panel before starting the
@@ -1576,13 +1680,20 @@ function rangeFlier(size) {
      contact block, which sits under the products there. */
   /* Three product panels in a four-panel fold — the cover takes the fourth.
      The last one is short by the contact block, which sits under its rows. */
-  const packed = packRange(z, [z.panelH, z.panelH, z.panelH - z.contactH]);
+  /* The back panel is assigned; the inside spread packs the rest. Two
+     separate jobs, because they are two different shapes: the inside is a
+     two-column listing that has to be spread evenly over two panels, the
+     back is a fixed four categories in one column under a fixed tail. */
+  const back = PRICE_LIST.filter(g => BACK_PANEL.includes(g.title));
+  const rest = PRICE_LIST.filter(g => !BACK_PANEL.includes(g.title));
+  const inside = packRange(z, [z.panelH, z.panelH], rest);
+  const packed = [inside[0] || [], inside[1] || [], back];
 
   const productPanel = (groups, accent, last) => `
-    <div class="pnl" style="${accentVars(accent)}">
+    <div class="pnl${last ? ' pnl--back' : ''}" style="${accentVars(accent)}">
       <div class="frame"></div>
       <div class="ip">
-        ${groups.map(catBlock).join('')}
+        ${groups.map(g => catBlock(g, last)).join('')}
         ${last ? contactBlock : ''}
       </div>
     </div>`;
