@@ -1049,8 +1049,13 @@ const RANGE_SIZES = {
            contactH no longer does anything — the back panel is assigned
            rather than packed — and is left only because packRange still
            takes a budget list. */
-        rcols: 2, rowh: 18, chH: 9, catGap: 3, panelH: 194, contactH: 76,
-        rgap: '0.4mm 3.5mm', rcImg: '16mm', rcNm: '9pt', rcTx: '7pt', rcSz: '6.8pt',
+        rcols: 2, rowh: 20, chH: 9, catGap: 3, panelH: 194, contactH: 76,
+        /* Up across the board. Gloss Paints Finish leaving for the back
+           takes a category off the inside spread, and the spread was the
+           thing that looked cramped — nine categories in the room that held
+           twelve. The tin is 17.5mm rather than 16 and the three type sizes
+           are each up a fraction. */
+        rgap: '0.4mm 3.5mm', rcImg: '17.5mm', rcNm: '9.3pt', rcTx: '7.2pt', rcSz: '7pt',
         chFs: '11.5pt', aboutW: '124mm', coverTins: false,
         bcH3: '13.8pt', bcV: '7.2pt', restB: '7.6pt', restS: '6.5pt', aboutFs: '9pt',
         secGap: '4mm', calc: false, aboutParas: 2, ticks: 5, noteLen: 135, cellImg2: '29mm' },
@@ -1415,19 +1420,23 @@ ${rangePanelCss(z)}
    the height the wider row costs, and the tin can be half as big again. */
 .pnl--back .rgrid { grid-template-columns:1fr; }
 .pnl--back .rgrid > .rcell { border-left:0; padding-left:0; padding-right:0; }
-/* Twice the tin, because there is now room for twice the tin. Four short
-   categories replaced nine dense lines, which left about 50mm of bare
-   ground at the foot of the panel — and bare ground is not what the space
-   was freed for. Most of it goes into the photographs, which are the thing
-   a customer looks at, and what is left goes above the certification block
-   rather than below it. */
-.pnl--back .rc-img { width:calc(${z.rcImg} * 2.1); align-items:center; }
-.pnl--back .rc-img img { max-height:calc(${z.rcImg} * 2.1); }
-/* The four rows are set apart as well as enlarged. Two of them carry no
-   photograph and so cannot grow with the tins, and the room has to go
-   somewhere other than into a single gap above the certification block. */
-.pnl--back .rcell { gap:3.4mm; align-items:center; padding-bottom:1.6mm; }
-.pnl--back .cgrp + .cgrp { margin-top:3mm; }
+.pnl--back .rc-img { width:calc(${z.rcImg} * 1.25); align-items:center; }
+.pnl--back .rc-img img { max-height:calc(${z.rcImg} * 1.25); }
+/* Compacted, now that there are five categories rather than four. The
+   plate was the worst of it: a full-width bar at the panel's heading size,
+   five of them, spending height on five short words. It is smaller and
+   tighter here than on the inside panels, where a plate has a dozen lines
+   under it and has to carry them.
+
+   The tin came down from 2.1x to 1.4x for the same reason. 2.1 was sized
+   for four categories in a panel with room to spare; at five it is the
+   difference between a page that fits and one that does not, and 1.25x —
+   22mm against the 17.5 on the inside — is still the largest tin in the
+   piece. */
+.pnl--back .ch { padding:1mm 2.4mm .8mm; margin-bottom:1.2mm; }
+.pnl--back .ch h3 { font-size:calc(${z.chFs} * .86); }
+.pnl--back .rcell { gap:3mm; align-items:center; padding-bottom:.9mm; }
+.pnl--back .cgrp + .cgrp { margin-top:1.6mm; }
 .pnl--back .rc-t .tx { margin-top:.8mm; }
 .pnl--back .rc-t .sz { margin-top:1.6mm; }
 /* The tail sits on the floor of the panel, and the four categories share
@@ -1446,9 +1455,10 @@ ${rangePanelCss(z)}
 .rc-contact h3 { font:400 calc(${z.bcH3} * .82)/1 var(--serif); color:#fff;
                  margin-bottom:.8mm; }
 .rc-contact h3 em { font-style:italic; color:var(--gold); }
-.rc-cert .chip { background:#fff; border-radius:1.2mm; padding:1.2mm 1.8mm;
-                 flex:none; display:flex; margin-left:auto; }
-.rc-cert .chip img { width:calc(19mm * var(--k)); display:block; }
+.rc-contact .row { display:flex; align-items:center; gap:3mm; }
+.rc-contact .chip { background:#fff; border-radius:1.2mm; padding:1.1mm 1.6mm;
+                    flex:none; display:flex; }
+.rc-contact .chip img { width:calc(21mm * var(--k)); display:block; }
 .rc-contact .v { font:400 ${z.bcV}/1.5 var(--sans); color:#e6dfe9; min-width:0; }
 .rc-contact .v b { color:var(--gold); font-weight:700; letter-spacing:.06em;
                    text-transform:uppercase; }
@@ -1620,7 +1630,8 @@ function rangeCatBlock(g, d, back) {
    which is what it was when it caught Thinners and Budget Paints, nine
    lines between them. Budget Paints has gone inside, where there is room
    for nine. */
-const BACK_PANEL = ['Floor Paint Premium', 'Undercoats', 'Bituminous Paints', 'Wood Finish'];
+const BACK_PANEL = ['Gloss Paints Finish', 'Floor Paint Premium', 'Undercoats',
+                    'Wood Finish', 'Bituminous Paints'];
 
 function packRange(z, budgets, list = PRICE_LIST, cols = z.rcols) {
   const cost = g => z.chH + Math.ceil(g.rows.length / cols) * z.rowh;
@@ -1699,18 +1710,11 @@ function rangeFlier(size) {
     </div>`;
 
   const contactBlock = `
-    <!-- Both marks in one row. The certification row is already as tall as
-         the KEBS mark, about 14mm, so the Cloud Paints logo sitting at the
-         other end of it costs the panel nothing — where in the contact block
-         it cost 9mm, being a 14mm chip standing in for a 5mm heading, and
-         the panel spilled by almost exactly that. They belong together in
-         any case: one says who made it, the other says to what standard. -->
     <div class="rc-cert">
       <img src="${a}/img/brand/kebs.png" alt="KEBS Standardisation Mark">
       <p><b>Certified.</b> Every Product in this Range is manufactured at our
          Industrial Area Factory to KEBS Standards, tested and awarded the
          Standardisation Mark of Quality (S/Mark).</p>
-      <span class="chip"><img src="${a}/img/brand/logo.png" alt="Cloud Paints"></span>
     </div>
     <div class="rc-terms">
       <p>${esc(TRADE_NOTE)}</p>
@@ -1731,12 +1735,22 @@ function rangeFlier(size) {
          was on the cover. The logo needs its white chip: the mark is drawn
          in the brand blue and the brand red and neither holds on this
          ground. -->
+    <!-- The logo belongs beside the line that says who made it, and beside
+         a three-line address it costs nothing: the chip is shorter than the
+         block it stands next to. Beside a one-line heading, which is where
+         it was first put, the same chip cost 9mm and the panel spilled by
+         exactly that. It needs the white chip either way — the mark is drawn
+         in the brand blue and the brand red and neither holds on this
+         ground. -->
     <div class="rc-contact">
       <h3>Come and See the <em>Colour.</em></h3>
-      <div class="v"><b>Manufactured by</b> ${esc(CO.legal)} ·
-        ${esc(CO.street)}, ${esc(CO.area)}<br>
-        ${esc(CO.phones[0])} &nbsp;·&nbsp; ${esc(CO.phones[1])} &nbsp;·&nbsp;
-        ${esc(CO.email)} &nbsp;·&nbsp; ${esc(CO.web)}</div>
+      <div class="row">
+        <span class="chip"><img src="${a}/img/brand/logo.png" alt="Cloud Paints"></span>
+        <div class="v"><b>Manufactured by</b> ${esc(CO.legal)} ·
+          ${esc(CO.street)}, ${esc(CO.area)}<br>
+          ${esc(CO.phones[0])} &nbsp;·&nbsp; ${esc(CO.phones[1])} &nbsp;·&nbsp;
+          ${esc(CO.email)} &nbsp;·&nbsp; ${esc(CO.web)}</div>
+      </div>
     </div>`;
 
   const frontCover = `
@@ -2061,7 +2075,7 @@ const PRICE_CSS = `
       border-bottom:.9mm solid var(--red-glow); }
 .ph .eyebrow { color:var(--gold); letter-spacing:.2em; }
 .ph h1 { font:700 25pt/1.06 var(--sans); letter-spacing:.02em;
-         text-transform:uppercase; color:#fff; margin-top:2.6mm; }
+         text-transform:uppercase; color:#fff; }
 /* Both lines in white. The second was set in a light red, which on the new
    violet ground read as a third colour rather than as part of the title. */
 .ph h1 .c-red { color:#fff; }
@@ -2254,8 +2268,11 @@ const PRICE_CSS = `
          display:flex; flex-direction:column; justify-content:space-between;
          border-radius:1.6mm; border-top:1.1mm solid var(--gold);
          padding:4.6mm 5.6mm; border:.3mm solid #b3ab98; }
+.pnote .h-row { display:flex; align-items:center; justify-content:space-between;
+                gap:8mm; margin-bottom:3mm; }
 .pnote .h { font:700 10.5pt/1 var(--sans); letter-spacing:.15em; text-transform:uppercase;
-            color:var(--blue-deep); margin-bottom:3mm; }
+            color:var(--blue-deep); }
+.pn-brand { width:36mm; flex:none; display:block; }
 .pnote p { font:400 10pt/1.5 var(--sans); color:var(--ink-2); }
 .pnote p + p { margin-top:2.4mm; }
 .pnote b { color:var(--ink); font-weight:600; }
@@ -2276,6 +2293,7 @@ const PRICE_CSS = `
 .pn-social span { display:inline-flex; align-items:center; gap:1.8mm;
                   font:500 9pt/1 var(--sans); color:var(--ink-2); }
 .pn-social svg { width:4.8mm; height:4.8mm; flex:none; color:var(--blue-deep); }
+
 
 /* ---- Signature bar, every page ---------------------------------------- */
 /* nowrap is deliberate — a second line here is clipped by the frame rather
@@ -2608,7 +2626,9 @@ function priceList() {
     const header = isFirst ? `
       <div class="ph">
         <div>
-          <span class="eyebrow">Cloudsent Decor Ltd · Nairobi</span>
+          <!-- The company line has come off the masthead. The logo beside it
+               says the same thing in the same eyeline, and the terms page
+               now carries the registered name, the address and the mark. -->
           <h1>Price List<br><span class="c-red">Recommended Retail Prices</span></h1>
           <div class="cur">All prices in Kenya Shillings${
             EFFECTIVE_FROM ? ' · Effective ' + esc(EFFECTIVE_FROM) : ''}</div>
@@ -2630,8 +2650,18 @@ function priceList() {
       </div>`).join('');
 
     const note = isLast ? `
+      <!-- The company mark heads the terms page. It was first put at the
+           right-hand end of the contact block, which is where it belongs by
+           sense but not by measurement: 38mm of a 130mm block, and the
+           address broke after "10", the call line after the second number
+           and the web address onto its own line. At the head it takes width
+           nothing else wants. It needs no white chip — the terms panel is
+           already paper. -->
       <div class="pnote">
-        <div class="h">Terms and Conditions</div>
+        <div class="h-row">
+          <div class="h">Terms and Conditions</div>
+          <img class="pn-brand" src="${a}/img/brand/logo.png" alt="Cloud Paints">
+        </div>
         <p>${esc(TRADE_NOTE)}</p>
         <p><b>Colour Tinting</b> is available at the Industrial Area Factory on all
            Emulsions and Enamels. Tinted Shades may carry a Surcharge depending on the
