@@ -156,7 +156,7 @@ try {
            Measure every sheet and every column inside it against its box. */
         const over = [];
         document.querySelectorAll('.sheet').forEach((s, i) => {
-          const boxes = [s, ...s.querySelectorAll('.pad, .pnl, .pbody, .gcols, .rs-body, .hero-copy, .col-1, .col-2, .col-3, .c-body, .c-copy')];
+          const boxes = [s, ...s.querySelectorAll('.pad, .pnl, .ip, .cover-in, .pbody, .gcols, .rs-body, .hero-copy, .col-1, .col-2, .col-3, .c-body, .c-copy')];
           boxes.forEach(b => {
             const spill = b.scrollHeight - b.clientHeight;
             if (spill > 2) over.push({ page: i + 1, el: b.className.split(' ')[0] || b.tagName, spill });

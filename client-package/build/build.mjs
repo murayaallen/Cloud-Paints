@@ -991,7 +991,7 @@ function flierLine(p, max) {
 
 const RANGE_SIZES = {
   A4: { sheet: '426mm 303mm', w: '420mm', h: '297mm', panel: '210mm', k: 1,
-        frame: '8mm', pad: '11mm',
+        frame: '8mm', pad: '10mm', wf: '7mm', wfPad: '9.5mm', wfCover: '10mm',
         logo: '46mm', kebs: '20mm', h1: '48pt', kick: '12.2pt', strap: '15pt',
         sw: '7mm', lineH: '78mm', tinH: '46mm', tinGap: '3mm', rowIn: '4mm', rowUp: '26mm',
         lineup: ['silk-vinyl', 'weatherguard', 'vinyl-matt', 'supermatt', 'rocketex'],
@@ -1001,13 +1001,13 @@ const RANGE_SIZES = {
         // The range panels: three across, and room for the tins on the cover.
         /* rowh 31, measured: a one-row category occupies 42.8mm plate to plate on
            the big fold, so with a 12mm plate the row is 31. */
-        rcols: 3, rowh: 29, chH: 12, catGap: 4, panelH: 275, contactH: 108,
+        rcols: 3, rowh: 29, chH: 12, catGap: 4, panelH: 270, contactH: 108,
         rgap: '2mm 5mm', rcImg: '22mm', rcNm: '11.5pt', rcTx: '8.2pt', rcSz: '8pt',
         chFs: '16pt', aboutW: '164mm', coverTins: true,
-        bcH3: '19.5pt', bcV: '8.8pt', restB: '9.2pt', restS: '7.6pt', aboutFs: '10.6pt',
+        bcH3: '19.5pt', bcV: '8.8pt', restB: '9.2pt', restS: '7.6pt', aboutFs: '10.2pt',
         secGap: '8mm', calc: true, aboutParas: 2, ticks: 5, noteLen: 240 },
   A5: { sheet: '303mm 216mm', w: '297mm', h: '210mm', panel: '148.5mm', k: 0.707,
-        frame: '5.5mm', pad: '8mm',
+        frame: '5.5mm', pad: '8mm', wf: '5mm', wfPad: '7mm', wfCover: '11mm',
         logo: '33mm', kebs: '14mm', h1: '31pt', kick: '8.8pt', strap: '10.6pt',
         sw: '5mm', lineH: '55mm', tinH: '26mm', tinGap: '2mm', rowIn: '7mm', rowUp: '22mm',
         lineup: ['silk-vinyl', 'weatherguard', 'vinyl-matt', 'iris-economy', 'supermatt', 'rocketex'],
@@ -1022,12 +1022,42 @@ const RANGE_SIZES = {
            which gives every panel 8mm more height and 8mm more width. The
            wider column is worth as much as the height — a 47mm line instead
            of 43mm wraps fewer descriptions to a third line. */
-        rcols: 2, rowh: 19, chH: 9, catGap: 3, panelH: 194, contactH: 74,
-        rgap: '1mm 3.5mm', rcImg: '16mm', rcNm: '9pt', rcTx: '7pt', rcSz: '6.8pt',
+        /* contactH is what the back panel spends on something other than
+           products. It is 76, barely up from the 74 it was: the white border
+           costs the panel half a millimetre a side, because the ink is inset
+           behind the content rather than the content behind the ink. It did
+           not have to pay for the maker's mark either — that went into the
+           address lockup rather than under it.
+
+           Note the direction of this lever. packRange pours whatever will not
+           fit into the LAST panel, which is this one, so cutting its budget
+           makes it fuller, not emptier. Only the two inside panels taking
+           more can make the back take less, and the three budgets together
+           have to cover 501 units of categories. */
+        rcols: 2, rowh: 18, chH: 9, catGap: 3, panelH: 194, contactH: 76,
+        rgap: '0.6mm 3.5mm', rcImg: '16mm', rcNm: '9pt', rcTx: '7pt', rcSz: '6.8pt',
         chFs: '11.5pt', aboutW: '124mm', coverTins: false,
         bcH3: '13.8pt', bcV: '7.2pt', restB: '7.6pt', restS: '6.5pt', aboutFs: '9pt',
         secGap: '4mm', calc: false, aboutParas: 2, ticks: 5, noteLen: 135, cellImg2: '29mm' },
 };
+
+/* The outside panels: the price list's ramp at the price list's aim. An A5
+   panel and an A4 page are the same proportion, so the same numbers give the
+   same balance — a third red, a third violet, a third blue. */
+const RANGE_RAMP_OUT = `.sheet--out .pnl::before {
+  background: radial-gradient(155% 110% at 6% -6%,
+    #c81f3c 0%, #ab1a44 17%, #8a1c66 36%, #6a2288 54%,
+    #472a86 70%, #26306e 86%, #0f1f5c 100%); }`;
+
+/* The inside spread: the same seven colours, redistributed for a field
+   twice as wide as it is tall. Red is held out to 32% and blue brought
+   forward to 63%, which leaves violet the middle third rather than the
+   middle two-thirds it had taken. */
+const RANGE_RAMP_IN = `.sheet--in {
+  background: radial-gradient(128% 150% at 4% -8%,
+    #c81f3c 0%, #be1c3e 16%, #ac1846 32%,
+    #8a1c66 44%, #6a2288 54%, #472a86 63%,
+    #2f3178 76%, #1a265f 90%, #0f1f5c 100%); }`;
 
 /* The eight paint colours the website mixes its decorative fields from.
    On the cover they become a swatch strip — the most direct way for a paint
@@ -1110,29 +1140,66 @@ const markBottom = z.coverTins
 return `
 @page { size: ${z.sheet}; margin: 0; }
 /* ---- Sheet geometry ----------------------------------------------------
-   Trim plus 3mm of bleed on every side, and nothing else: the ink covers
-   the whole sheet corner to corner with no white anywhere on it. The crop
-   marks and the 5mm margin they sat in are gone — a printer imposing this
-   adds its own marks, and the white band they needed was the one thing on
-   the sheet that was not the piece.
+   Trim plus 3mm of bleed on every side. The sheet size has not changed: a
+   printer still trims to 297 x 210 and creases down the middle, and the
+   bleed is still there to be trimmed into.
 
-   The ground is on .sheet, not on the panels. A panel painting its own box
-   stops at the trim by definition, which is what leaves the bleed unprinted;
-   one gradient across the whole sheet fills it, and it also removes the seam
-   the per-panel version had at the centre fold, where one panel's navy met
-   the next one's red. */
-.sheet { --sheet-w:${z.sheetW}; --sheet-h:${z.sheetH}; --k:${z.k};
-         /* The same ramp as the price list, and for the same reason. The
-            stops between the two brand colours used to be dark maroons with
-            almost no blue in them; on press they printed brown. Lifting the
-            blue channel through the middle — magenta-violet, then violet —
-            makes red and blue meet as purple, and both hold their hue in
-            CMYK where a muddy maroon does not. */
-         background: radial-gradient(155% 110% at 6% -6%,
-           #c81f3c 0%, #ab1a44 17%, #8a1c66 36%, #6a2288 54%,
-           #472a86 70%, #26306e 86%, #0f1f5c 100%); }
+   What changed is what meets the crease. This is one sheet, printed both
+   sides and folded down its centre, and a crease through heavy ink cracks —
+   the fibre opens and a white line shows along the fold, which on a dark
+   ground is the most visible way this job could go wrong. The outside of
+   the piece, the half anyone sees while it is closed, now carries a white
+   border: the crease falls on bare paper, and so does the trim.
+
+   The inside stays full bleed. It creases too, but the reader has the piece
+   open when they see it and the fold is under their thumb.
+
+   TO PRINT: A4 landscape, duplex, flipping on the SHORT edge. A landscape
+   sheet's short edge is the 210mm one, so that is the flip that turns the
+   sheet about its vertical axis and backs the inside up against the outside
+   the right way round. Long edge gives a piece whose inside is upside
+   down. */
+.sheet { --sheet-w:${z.sheetW}; --sheet-h:${z.sheetH}; --k:${z.k}; }
+
+/* ---- The two grounds ---------------------------------------------------
+   The ramp is the price list's, stop for stop: red at the near corner,
+   magenta-violet and violet across the middle, navy at the far one. The
+   violet is what carries the two brand colours into each other without the
+   brown a dark maroon prints as.
+
+   It is aimed twice, because it is asked to fill two different shapes.
+
+   An A5 panel is 148.5 x 210, which is the same 1:1.414 as the A4 page the
+   price list is set on. So on the outside, where each panel carries its own
+   ground inside a white border, the price list's aim is used unaltered and
+   the balance is the balance of that sheet: red, violet and blue a third
+   each.
+
+   The inside is one 297 x 210 landscape spread with no border to break it,
+   so a single ground runs across both panels. Aimed the same way it came
+   out nearly all violet, and that is a property of the shape, not of the
+   colours: on a field twice as wide as it is tall, position in a radial is
+   governed by horizontal distance, so the middle stops — a transition on a
+   portrait page — spread into a band down the centre with red pressed into
+   the left edge and blue into the right. The stops are redistributed for
+   that shape rather than the aim being changed. Red holds to a third,
+   violet crosses in the middle third, blue takes the last. Same seven
+   colours, same order, a third of the sheet each. */
+${RANGE_RAMP_OUT}
+${RANGE_RAMP_IN}
 .fold { position:absolute; left:3mm; top:3mm;
         display:flex; width:${z.w}; height:${z.h}; }
+
+/* ---- The white border, outside only ------------------------------------
+   Each of the two outside panels is a coloured block inside a white frame.
+   At the centre the two frames meet, so the crease has ${z.wf} of paper
+   either side of it; at the trim edge the frame is what the guillotine cuts
+   through, so a millimetre of drift moves a white margin rather than
+   opening a white line along dark ink. */
+.sheet--out { background:#fff; }
+.sheet--out .fold .pnl + .pnl { border-left:0; }
+.sheet--out .pnl::before { content:''; position:absolute; inset:${z.wf};
+                           border-radius:1.6mm; z-index:0; }
 /* The ground is on .bleed now, one gradient for the whole sheet, so the
    panels only carry their content. Opaque on purpose — the price list would
    not print until its fades to transparent were taken out, and there is no
@@ -1160,7 +1227,7 @@ return `
    short of the tin so it reads as a rule under the words rather than a line
    drawn through the picture. */
 .rgrid { position:relative; }
-.rcell { padding-bottom:1.2mm; border-bottom:.2mm solid #8b7d95; }
+.rcell { padding-bottom:0.7mm; border-bottom:.2mm solid #8b7d95; }
 .cgrp .rgrid > .rcell:nth-last-child(-n+1):nth-child(odd) { }
 .rc-t { border-left:0; }
 
@@ -1183,6 +1250,8 @@ return `
 
 /* Shapes, in the brand palette, sized off one multiplier so the small fold
    keeps the same composition rather than a different one. */
+.shapes { position:absolute; inset:0; overflow:hidden; z-index:1; }
+.sheet--out .shapes { inset:${z.wf}; border-radius:1.6mm; }
 .cover i { position:absolute; display:block; }
 /* Held right back now the ground carries the colour. At their old weight
    the band and the blob cut straight across the gradient's pools and the
@@ -1202,6 +1271,7 @@ return `
 /* Bounded at the bottom by the line-up it sits above. With a zero bottom inset the
    column ran the full height of the panel, so the tagline flowed down into
    the tins and the standards mark was drawn straight over it. */
+.sheet--out .cover-in { top:${z.wfCover}; left:${z.wfCover}; right:${z.wfCover}; }
 .cover-in { position:absolute; z-index:2;
             top:${z.pad}; left:${z.pad}; right:${z.pad};
             bottom:${inBottom};
@@ -1256,6 +1326,7 @@ return `
    on the last line of the cover. The separator between them is the only place
    the line may break, so it carries an ordinary space and they do not. */
 .cover-foot .nb { white-space:nowrap; }
+.cover-foot--one { justify-content:center; text-align:center; }
 .cover-foot b { color:var(--gold); font-weight:600; letter-spacing:.1em;
                 text-transform:uppercase; font-size:calc(${z.footFs} * .88); }
 
@@ -1265,7 +1336,18 @@ return `
    below it. A floor inside the panel keeps anything that overruns visible to
    the overset check instead of quietly crossing the rule. */
 .ip { position:absolute; inset:${z.pad}; display:flex; flex-direction:column;
-      padding-bottom:2mm; }
+      padding-bottom:.5mm; z-index:1; }
+/* Inside the white border the content starts further in — but only just.
+   The listing panel has no height to give: three panels carry fourteen
+   categories and the two inside ones are full, so every millimetre the
+   border takes from the third comes out of the products on it. So the
+   border is drawn behind the content rather than around it — the ink stops
+   ${z.wf} from the trim, the content stops ${z.wfPad} — and the panel keeps
+   the height it had.
+
+   The cover can afford the room and takes it: ${z.wfCover}, so the narration
+   sits properly inside its block rather than up against the edge of it. */
+.sheet--out .ip { inset:${z.wfPad}; }
 .ip-head { display:flex; align-items:baseline; gap:4mm; padding-bottom:3mm;
            border-bottom:.8mm solid var(--accent); margin-bottom:5mm; }
 .ip-head h2 { font:400 ${z.ipH2}/1 var(--serif); color:var(--ink); letter-spacing:-.01em; }
@@ -1295,25 +1377,30 @@ return `
 ${rangePanelCss(z)}
 
 /* ---- Contact, at the foot of the back panel --------------------------- */
-.rc-contact { margin-top:3mm; padding-top:2.4mm; border-top:.5mm solid var(--gold); }
+.rc-contact { margin-top:1.6mm; padding-top:1.6mm; border-top:.5mm solid var(--gold); }
 .rc-contact h3 { font:400 calc(${z.bcH3} * .82)/1 var(--serif); color:#fff;
-                 margin-bottom:1.4mm; }
+                 margin-bottom:.8mm; }
 .rc-contact h3 em { font-style:italic; color:var(--gold); }
-.rc-contact .v { font:400 ${z.bcV}/1.5 var(--sans); color:#e6dfe9; }
+.rc-cert .chip { background:#fff; border-radius:1.2mm; padding:1.2mm 1.8mm;
+                 flex:none; display:flex; margin-left:auto; }
+.rc-cert .chip img { width:calc(19mm * var(--k)); display:block; }
+.rc-contact .v { font:400 ${z.bcV}/1.5 var(--sans); color:#e6dfe9; min-width:0; }
+.rc-contact .v b { color:var(--gold); font-weight:700; letter-spacing:.06em;
+                   text-transform:uppercase; }
 
 /* ---- The standards mark, and the terms, at the end -------------------- */
 /* The mark has come off the cover. It certifies the products, so it belongs
    with them and with the sentence that says what it means — on the cover it
    sat in the brand lockup and read as decoration. */
-.rc-cert { display:flex; align-items:center; gap:2.6mm; margin-top:3mm;
-           padding-top:2.4mm; border-top:.5mm solid var(--gold); }
-.rc-cert img { height:${z.kebs}; width:auto; background:#fff;
+.rc-cert { display:flex; align-items:center; gap:2.6mm; margin-top:1.8mm;
+           padding-top:1.6mm; border-top:.5mm solid var(--gold); }
+.rc-cert img { height:calc(${z.kebs} * .82); width:auto; background:#fff;
                padding:1mm; border-radius:1mm; flex:none; }
 .rc-cert p { font:400 ${z.rcTx}/1.38 var(--sans); color:#e6dfe9; }
 .rc-cert b { color:var(--gold); font-weight:700; }
-.rc-terms { margin-top:2.4mm; }
+.rc-terms { margin-top:1.2mm; }
 .rc-terms p { font:400 calc(${z.rcTx} * .96)/1.38 var(--sans); color:#ddd4e2; }
-.rc-terms p + p { margin-top:1.1mm; }
+.rc-terms p + p { margin-top:.9mm; }
 .rc-terms b { color:#fff; font-weight:600; }
 
 /* ---- The company's account of itself, on the cover -------------------- */
@@ -1501,11 +1588,18 @@ function rangeFlier(size) {
     </div>`;
 
   const contactBlock = `
+    <!-- Both marks in one row. The certification row is already as tall as
+         the KEBS mark, about 14mm, so the Cloud Paints logo sitting at the
+         other end of it costs the panel nothing — where in the contact block
+         it cost 9mm, being a 14mm chip standing in for a 5mm heading, and
+         the panel spilled by almost exactly that. They belong together in
+         any case: one says who made it, the other says to what standard. -->
     <div class="rc-cert">
       <img src="${a}/img/brand/kebs.png" alt="KEBS Standardisation Mark">
       <p><b>Certified.</b> Every Product in this Range is manufactured at our
          Industrial Area Factory to KEBS Standards, tested and awarded the
          Standardisation Mark of Quality (S/Mark).</p>
+      <span class="chip"><img src="${a}/img/brand/logo.png" alt="Cloud Paints"></span>
     </div>
     <div class="rc-terms">
       <p>${esc(TRADE_NOTE)}</p>
@@ -1518,19 +1612,35 @@ function rangeFlier(size) {
          phone, the email and the web address on every panel — a third full
          contact block was 40mm of the panel spent saying it a third time,
          and 40mm is what the certification and the terms needed. -->
+    <!-- The maker's mark and the address are one lockup, not two blocks.
+         Set as two blocks it read as the same information twice — the
+         company name above an address that already names the company — and
+         it cost the panel 15mm it does not have to spare. The logo takes the
+         left, the address the right, and "Manufactured by" is the line that
+         was on the cover. The logo needs its white chip: the mark is drawn
+         in the brand blue and the brand red and neither holds on this
+         ground. -->
     <div class="rc-contact">
       <h3>Come and See the <em>Colour.</em></h3>
-      <div class="v">${esc(CO.street)}, ${esc(CO.area)}<br>
+      <div class="v"><b>Manufactured by</b> ${esc(CO.legal)} ·
+        ${esc(CO.street)}, ${esc(CO.area)}<br>
         ${esc(CO.phones[0])} &nbsp;·&nbsp; ${esc(CO.phones[1])} &nbsp;·&nbsp;
         ${esc(CO.email)} &nbsp;·&nbsp; ${esc(CO.web)}</div>
     </div>`;
 
   const frontCover = `
     <div class="pnl cover">
-      <i class="sh-ring"></i>
-      <i class="sh-blob"></i>
-      <i class="sh-band"></i>
-      <i class="sh-bar"></i>
+<!-- The shapes are in a box of their own now. They are positioned off
+           their containing block, so as direct children of the panel they ran
+           to the panel's edge — which used to be the edge of the ink and is
+           now 6.5mm out into the white border. Three pale rectangles and a
+           ring were printing on the margin. -->
+      <div class="shapes">
+        <i class="sh-ring"></i>
+        <i class="sh-blob"></i>
+        <i class="sh-band"></i>
+        <i class="sh-bar"></i>
+      </div>
       <div class="frame"></div>
 
       <div class="cover-in">
@@ -1572,22 +1682,30 @@ function rangeFlier(size) {
         </div>
       </div>` : ''}
 
-      <div class="cover-foot">
-        <span><b>Manufactured by</b><br>${esc(CO.legal)} · ${esc(CO.area)}</span>
-        <span style="text-align:right"><b>Find us</b><br><span class="nb">${esc(CO.web)}</span>
-          · <span class="nb">${esc(CO.phones[0])}</span></span>
+<!-- "Manufactured by" has gone to the back panel, where it sits with the
+           logo. It is a maker's mark, and a maker's mark belongs on the back of
+           the piece with the certification and the address, not in the same bar
+           as the number a customer is meant to ring. What is left here is that
+           number, centred, because half a bar reads as a bar with something
+           missing from it. -->
+      <div class="cover-foot cover-foot--one">
+        <span><b>Find us</b><br><span class="nb">${esc(CO.web)}</span>
+          &nbsp;·&nbsp; <span class="nb">${esc(CO.phones[0])}</span></span>
       </div>
     </div>`;
 
   return head(`Cloud Paints — the complete range (folds to ${size})`, d, rangeCss(z)) + `
-<!-- PAGE 1 · OUTSIDE — left to right: back panel | front cover -->
-<div class="sheet"><div class="fold">
+<!-- PAGE 1 · OUTSIDE — left to right: back panel | front cover.
+     Bordered in white: this is the half that is seen folded, so the crease
+     and the trim both fall on bare paper. -->
+<div class="sheet sheet--out"><div class="fold">
   ${productPanel(packed[2], '#7a5c33', true)}
   ${frontCover}
 </div></div>
 
-<!-- PAGE 2 · INSIDE — left to right: inner left | inner right -->
-<div class="sheet"><div class="fold">
+<!-- PAGE 2 · INSIDE — left to right: inner left | inner right. Full
+     bleed and one ground across both, because it is read open. -->
+<div class="sheet sheet--in"><div class="fold">
   ${productPanel(packed[0], '#1e3a8a', false)}
   ${productPanel(packed[1], '#8b1e2c', false)}
 </div></div>` + tail;
