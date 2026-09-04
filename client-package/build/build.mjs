@@ -1110,7 +1110,14 @@ const RANGE_RAMP_OUT = `.sheet--out .pnl::before {
    own; the same purple pulled back reads as two colours meeting. The dip
    is what stops brown, too — it is a loss of chroma, not a slide toward
    red, and the blue channel stays up throughout. */
-const RANGE_RAMP_IN = `.sheet--in {
+/* The inside is bordered like the outside now, so its ground is painted
+   panel by panel — but it is still ONE field, not two. The gradient is
+   given the size of the whole fold and each panel is offset to show its own
+   part of it, so the sweep continues across the gutter exactly as it would
+   have done across an unbroken sheet. Painting each panel its own copy
+   would have restarted the ramp at the fold and put red back in the middle
+   of the spread. */
+const RANGE_RAMP_IN = `.sheet--in .pnl::before {
   background: radial-gradient(128% 150% at 4% -8%, ${rampStops()}); }`;
 
 /* The eight paint colours the website mixes its decorative fields from.
@@ -1277,10 +1284,22 @@ ${RANGE_RAMP_IN}
 
    If it is ever run as a trimmed job instead, it needs 3mm of bleed adding
    back and the border measuring from the trim rather than the sheet. */
-.sheet--out { background:#fff; }
-.sheet--out .fold .pnl + .pnl { border-left:0; }
-.sheet--out .pnl::before { content:''; position:absolute; inset:${z.wf};
-                           border-radius:1.6mm; z-index:0; }
+.sheet { background:#fff; }
+.fold .pnl + .pnl { border-left:0; }
+.pnl::before { content:''; position:absolute; inset:${z.wf};
+               border-radius:1.6mm; z-index:0; }
+/* The inside panels each show their own part of one fold-wide gradient:
+   the paint box is the size of the whole fold, and the second panel is
+   offset by its own width so the sweep carries across the gutter exactly as
+   it would have across an unbroken sheet. The outside panels are not
+   offset — each of those is a page in its own right and takes the ramp from
+   the beginning. */
+.sheet--in .pnl::before { background-size:${z.w} ${z.h};
+                          background-repeat:no-repeat; }
+.sheet--in .fold .pnl:nth-child(1)::before {
+  background-position:-${z.wf} -${z.wf}; }
+.sheet--in .fold .pnl:nth-child(2)::before {
+  background-position:calc(-1 * (${z.panel} + ${z.wf})) -${z.wf}; }
 /* The ground is on .bleed now, one gradient for the whole sheet, so the
    panels only carry their content. Opaque on purpose — the price list would
    not print until its fades to transparent were taken out, and there is no
@@ -1300,21 +1319,10 @@ ${RANGE_RAMP_IN}
    group. */
 .frame { display:none; }
 
-/* The crease, on the inside spread. The outside has a white border and so
-   already folds on bare paper; the inside is full bleed and did not, and a
-   crease through heavy ink cracks — the fibre opens and a white line shows
-   along the fold, which on a dark ground is the one place it is guaranteed
-   to be seen. So the inside gets a strip of the same white, ${z.crease}
-   wide, centred on the fold.
-
-   It costs no content. The panels hold their text 6mm in from their edges
-   and the strip reaches 1.5mm into each, so it lands on ground and on
-   nothing else. It also replaces the hairline that used to mark the crease:
-   a strip of paper says where to fold more plainly than a rule does. */
-.sheet--in .fold::after { content:''; position:absolute; top:0; bottom:0;
-  left:50%; width:${z.crease}; transform:translateX(-50%);
-  background:#fff; z-index:6; }
-.fold .pnl + .pnl { border-left:0; }
+/* The crease needs no strip of its own any more. Both panels are inset
+   ${z.wf} from their edges, so where they meet there is twice that in bare
+   paper and the fold lands in the middle of it — the same white, and the
+   same width, as the gutter on the outside. */
 
 /* Between the two columns of rows, and under each row. The under-rule stops
    short of the tin so it reads as a rule under the words rather than a line
@@ -1437,7 +1445,12 @@ ${RANGE_RAMP_IN}
       padding-bottom:.5mm; z-index:1; }
 /* The listing panels take 2mm off their inset — the cover does not, because
    the cover has the room and the narration wants the margin. */
-.ip { inset:calc(${z.pad} - 2mm); }
+/* Two millimetres off the top and bottom, none off the sides. The height
+   is what the panel has none of; the width it can spare, and the width is
+   what decides how far the content sits inside the ink now that the inside
+   is bordered too. At the full 8mm there is 4.5mm of ground around the
+   content, which is what the outside panels have. */
+.ip { inset:calc(${z.pad} - 2mm) ${z.pad}; }
 /* The inside panels spread their categories over whatever height they do
    not use. The split is five and five and the two are not identical — the
    left runs about 30mm short — and on a dark ground that reads as the panel
