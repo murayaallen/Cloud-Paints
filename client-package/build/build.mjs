@@ -1061,23 +1061,57 @@ const RANGE_SIZES = {
         secGap: '4mm', calc: false, aboutParas: 2, ticks: 5, noteLen: 135, cellImg2: '29mm' },
 };
 
-/* The outside panels: the price list's ramp at the price list's aim. An A5
-   panel and an A4 page are the same proportion, so the same numbers give the
-   same balance — a third red, a third violet, a third blue. */
-const RANGE_RAMP_OUT = `.sheet--out .pnl::before {
-  background: radial-gradient(155% 110% at 6% -6%,
-    #c81f3c 0%, #ab1a44 17%, #8a1c66 36%, #6a2288 54%,
-    #472a86 70%, #26306e 86%, #0f1f5c 100%); }`;
+const rampStops = (n = 12) => {   // used by both sides of the flier
+  const H0 = 350.8, H1 = 227.4;   // the brand red and the brand navy, in hue
+  const L0 = 0.451, L1 = 0.213;
+  const S0 = 0.735, S1 = 0.719;
+  const smoother = t => t * t * t * (t * (t * 6 - 15) + 10);
+  const out = [];
+  for (let i = 0; i <= n; i++) {
+    const t = i / n;
+    const h = H0 + (H1 - H0) * smoother(t);
+    const l = L0 + (L1 - L0) * t;
+    const s = S0 + (S1 - S0) * t - 0.11 * Math.sin(Math.PI * t);
+    out.push(`${fromHsl(h, s, l)} ${Math.round(t * 100)}%`);
+  }
+  return out.join(', ');
+};
 
-/* The inside spread: the same seven colours, redistributed for a field
-   twice as wide as it is tall. Red is held out to 32% and blue brought
-   forward to 63%, which leaves violet the middle third rather than the
-   middle two-thirds it had taken. */
+/* The outside panels take the same computed ramp as the inside, at the
+   price list's aim — an A5 panel and an A4 page are the same 1:1.414, so
+   the aim carries over unchanged. Only the aim differs between the two
+   sides of this piece now; the colour does not, which is the point. Left on
+   the hand-placed stops the outside kept a magenta plateau the inside no
+   longer had, and the two halves of one sheet looked like two decisions. */
+const RANGE_RAMP_OUT = `.sheet--out .pnl::before {
+  background: radial-gradient(155% 110% at 6% -6%, ${rampStops()}); }`;
+
+/* The inside spread. Hand-placed stops gave it a shape: seven colours at
+   uneven intervals, so the eye found the intervals — a magenta field with
+   an edge, then a violet field with another. On a landscape sheet that is
+   worse than on a portrait one, because position in a radial is governed by
+   horizontal distance and every interval lands as a near-vertical band.
+
+   So the stops are computed rather than chosen. The ramp sweeps hue from
+   the brand red to the brand navy and nothing else is placed in it: no
+   waypoint, so nothing to see the edges of. Thirteen stops at equal
+   intervals means each step is small enough to disappear.
+
+   Two curves do the work the waypoints used to.
+
+   Hue runs on smootherstep, which is flat at both ends and steep in the
+   middle: the ramp lingers on red and lingers on blue, and crosses the
+   purples between them at nearly twice the rate. That is what "less
+   purple" means here — not a different colour, a shorter passage through
+   the same one.
+
+   Saturation dips in the middle, deepest exactly where the hue is moving
+   fastest. A purple at full chroma announces itself as a colour of its
+   own; the same purple pulled back reads as two colours meeting. The dip
+   is what stops brown, too — it is a loss of chroma, not a slide toward
+   red, and the blue channel stays up throughout. */
 const RANGE_RAMP_IN = `.sheet--in {
-  background: radial-gradient(128% 150% at 4% -8%,
-    #c81f3c 0%, #be1c3e 16%, #ac1846 32%,
-    #8a1c66 44%, #6a2288 54%, #472a86 63%,
-    #2f3178 76%, #1a265f 90%, #0f1f5c 100%); }`;
+  background: radial-gradient(128% 150% at 4% -8%, ${rampStops()}); }`;
 
 /* The eight paint colours the website mixes its decorative fields from.
    On the cover they become a swatch strip — the most direct way for a paint
