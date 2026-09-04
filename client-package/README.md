@@ -149,6 +149,49 @@ Page 2 (inside)    [ panel 1 100.5 ]   [ panel 2 100.5 ]    [ panel 3 96 ]
 
 Fold positions measured from the left edge of page 1: **96 mm** and **196.5 mm**.
 
+### Duplex and folding — the range flier
+
+Each range-flier PDF is **two pages: page 1 is the outside, page 2 is the
+inside.** One sheet, printed both sides, folded once down the centre.
+
+| Setting | Value |
+|---|---|
+| Paper | A4 **landscape** for the A5 fold · A3 **landscape** for the A4 fold |
+| Scale | **100% / Actual size.** Not "fit to page", not "shrink oversized" |
+| Duplex | Double-sided, flipping on the **SHORT edge** |
+| Colour | Colour, highest quality. Do not let the driver convert to greyscale |
+| Borderless | **Not needed** — see below |
+| Finishing | One centre fold. No trimming |
+
+Fold position, measured from the left edge: **148.5 mm** on the A4 sheet,
+**210 mm** on the A3 sheet. Half the sheet, in both cases.
+
+Panel order as printed, left to right:
+
+```
+Page 1 (outside)   [ back panel ] [ FRONT COVER ]
+Page 2 (inside)    [ inner left ] [ inner right ]
+```
+
+**Short edge, not long.** These are landscape sheets folded like a book, and a
+landscape sheet bound on its left wants a short-edge flip. A long-edge flip
+turns the inside upside down.
+
+**Do not scale to fit.** The sheet is exactly the trim size, and the white
+border around each panel is measured from the sheet edge. Fit-to-page shrinks
+the artwork by two or three percent and leaves an uneven margin the fold then
+puts on show.
+
+**Borderless printing is not required, and neither is trimming.** The white
+border means there is no ink at the sheet edge at all, so an office printer's
+unprintable margin lands on white and nothing is lost. That is also why this
+piece needs no bleed: it is made on pre-cut A4 or A3 and folded, not trimmed.
+
+**Lamination is optional here.** It was suggested to keep the crease from
+cracking, which is what happens when a fold goes through heavy ink. The fold
+now lands on bare paper on both sides of the sheet, so matt lamination is a
+finish decision rather than a repair.
+
 ### Bleed
 
 The artwork is supplied at **trim size with no bleed**, because nothing in it
