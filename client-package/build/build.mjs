@@ -991,7 +991,7 @@ function flierLine(p, max) {
 
 const RANGE_SIZES = {
   A4: { sheet: '420mm 297mm', w: '420mm', h: '297mm', panel: '210mm', k: 1,
-        frame: '8mm', pad: '10mm', wf: '5mm',
+        frame: '8mm', pad: '10mm', wf: '5mm', crease: '4mm',
         logo: '46mm', kebs: '20mm', h1: '48pt', kick: '12.2pt', strap: '15pt',
         sw: '7mm', lineH: '78mm', tinH: '46mm', tinGap: '3mm', rowIn: '4mm', rowUp: '26mm',
         lineup: ['silk-vinyl', 'weatherguard', 'vinyl-matt', 'supermatt', 'rocketex'],
@@ -1007,7 +1007,7 @@ const RANGE_SIZES = {
         bcH3: '19.5pt', bcV: '8.8pt', restB: '9.2pt', restS: '7.6pt', aboutFs: '10.2pt',
         secGap: '8mm', calc: true, aboutParas: 2, ticks: 5, noteLen: 240 },
   A5: { sheet: '297mm 210mm', w: '297mm', h: '210mm', panel: '148.5mm', k: 0.707,
-        frame: '5.5mm', pad: '8mm', wf: '3.5mm',
+        frame: '5.5mm', pad: '8mm', wf: '3.5mm', crease: '3mm',
         logo: '33mm', kebs: '14mm', h1: '31pt', kick: '8.8pt', strap: '10.6pt',
         sw: '5mm', lineH: '55mm', tinH: '26mm', tinGap: '2mm', rowIn: '7mm', rowUp: '22mm',
         lineup: ['silk-vinyl', 'weatherguard', 'vinyl-matt', 'iris-economy', 'supermatt', 'rocketex'],
@@ -1266,9 +1266,21 @@ ${RANGE_RAMP_IN}
    group. */
 .frame { display:none; }
 
-/* The fold. .pnl is a flex item, so a right border on all but the last one
-   lands exactly on each crease. */
-.fold .pnl + .pnl { border-left:.25mm solid #a08fa8; }
+/* The crease, on the inside spread. The outside has a white border and so
+   already folds on bare paper; the inside is full bleed and did not, and a
+   crease through heavy ink cracks — the fibre opens and a white line shows
+   along the fold, which on a dark ground is the one place it is guaranteed
+   to be seen. So the inside gets a strip of the same white, ${z.crease}
+   wide, centred on the fold.
+
+   It costs no content. The panels hold their text 6mm in from their edges
+   and the strip reaches 1.5mm into each, so it lands on ground and on
+   nothing else. It also replaces the hairline that used to mark the crease:
+   a strip of paper says where to fold more plainly than a rule does. */
+.sheet--in .fold::after { content:''; position:absolute; top:0; bottom:0;
+  left:50%; width:${z.crease}; transform:translateX(-50%);
+  background:#fff; z-index:6; }
+.fold .pnl + .pnl { border-left:0; }
 
 /* Between the two columns of rows, and under each row. The under-rule stops
    short of the tin so it reads as a rule under the words rather than a line
