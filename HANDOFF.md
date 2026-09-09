@@ -1,4 +1,156 @@
-# Where things stand — 26 August 2026, end of day
+# Handoff — picking this up on another machine
+
+Written 2026-09-09, branch `v2`.
+
+```bash
+gh repo clone murayaallen/Cloud-Paints
+cd Cloud-Paints
+git checkout v2
+```
+
+Everything needed to continue is in the repository. There is no state on the
+machine this was built on — with one exception noted under **Not in here**.
+
+---
+
+## 1. What you need installed
+
+| | |
+|---|---|
+| Node | 22.x. No `npm install` — the build has no dependencies |
+| Headless browser | Microsoft Edge, or Chrome. `render.mjs` finds either |
+| Python | 3.11+ with `pymupdf`, `pillow`, `pypdf`, `pypdfium2`, `numpy`, `fonttools` |
+
+`pip install pymupdf pillow pypdf pypdfium2 numpy fonttools`
+
+You do **not** need `brotli`. It was needed once, to decompress the Inter
+variable web font into `client-package/assets/fonts/inter-bold-subset.ttf`.
+That file is committed, so the step never has to run again.
+
+## 2. Building
+
+From `client-package/`:
+
+```bash
+node build/build.mjs        # prices.js + site data -> html/ masters
+node build/render.mjs       # html/ -> pdf/, and reports overset text
+python build/verify.py      # every page: size, embedded fonts, text integrity
+```
+
+`render.mjs` takes an optional target — `node build/render.mjs price-list`,
+`range-flier`, and so on — which is much faster than rendering all 72.
+
+The editable price list is a second pass over the rendered one:
+
+```bash
+python build/price-list-form.py            # lays 68 form fields over the PDF
+python build/price-list-form.py --flatten  # + a copy with them baked in
+```
+
+It must be re-run whenever the price list moves. The fields are positioned
+from the rendered page, so a change to the artwork leaves them sitting off
+their figures.
+
+## 3. How it is put together
+
+`client-package/build/prices.js` is the single definition of the range —
+categories, pack sizes, prices, and the descriptions the flier prints. The
+price list and the flier both read it, which is the only way the sheet on the
+counter and the flier a customer takes home can agree about what is sold.
+
+`build/build.mjs` writes every HTML master. It is one file and a long one; the
+comments in it carry the reasoning, including the measurements behind numbers
+that look arbitrary. When a layout constant seems wrong, read the comment above
+it before changing it — most of them were arrived at by probing rather than by
+arithmetic.
+
+## 4. Two invariants
+
+**Zero transparency groups.** The price list would not print until 336 of them
+were removed. Every alpha fade, box-shadow and blend mode is a soft mask a RIP
+must flatten first. After any visual change:
+
+```bash
+python -c "print(open('pdf/5-price-list/cloud-paints-price-list.pdf','rb').read().count(b'/Group'))"
+```
+
+Everything in the package is at zero **except the colour collection, which is
+at 1122 and is an open print risk** — see below.
+
+**Keep the overset check honest.** `render.mjs` measures named boxes for
+clipping. It measured only `.pnl` for a long time, so content that cleared the
+panel but overran the ink was invisible to it. `.ip` and `.cover-in` are
+measured now. If you add a new content box, add it to that list.
+
+## 5. Where the work stands
+
+The website is live at cloudpaints.co.ke, indexed, with the crawl faults fixed.
+The print package is 72 documents; `verify.py` passes on all of them.
+
+Recently finished, and the reasoning is in the commit messages:
+
+- **Range flier** — white border on all four panels, trim-size sheets with no
+  bleed, a ground computed from a curve rather than hand-placed stops, the
+  back panel rebuilt around five short categories, pack sizes lifted to a
+  legibility floor.
+- **Price list** — card tones computed in HSL, rules drawn per band, tins a
+  third larger, four pages, and an editable copy whose figures are set in
+  embedded Inter Bold.
+- **Invoice 39** — `build/invoice.mjs`.
+
+## 6. Open items
+
+| | |
+|---|---|
+| **Product schema** | Blocked on the client. Do not publish their prices as structured data without an answer. `docs/claude-memory/product-schema-pending-client.md` |
+| **Colour collection** | 1122 transparency groups. The fault that stopped the price list printing, at three times the count. Not fixed, client not told |
+| **Seven descriptions** | Four never sourced, three expanded on 2026-09-09. None signed off by the client |
+| **Search Console** | Indexing was requested on `/`, `/products`, `/colours`, `/about`, `/contact`; worth re-checking |
+| **Price list bleed** | Still supplied at trim size. Offered, not taken up |
+
+## 7. Memory
+
+`docs/claude-memory/` holds the working memory for this project — six notes and
+an index. On a fresh machine, copy it to where Claude Code looks for it:
+
+```
+~/.claude/projects/<project-slug>/memory/
+```
+
+It lives under `docs/` rather than `.claude/` because `.claude/` is gitignored,
+and the point of it is to travel.
+
+## 8. Not in here
+
+**The chat transcript is not committed, and cannot be.** It is 127 MB — over
+GitHub's 100 MB limit for a single file — because it carries every rendered
+page image inline. It also contains personal details, and **this repository is
+public**, so it should not go in even if it fit. `HANDOFF.md` and
+`docs/claude-memory/` exist to carry what it was worth.
+
+**Working images in the project root are untracked** — supplied product photos,
+a `.pub` file, and screenshots. The versions the build actually uses are in
+`client-package/assets/img/`, which is tracked.
+
+---
+
+### One thing to fix
+
+`build/invoice.mjs` is committed to this public repository and contains a
+personal M-Pesa number, a registered name and an email address. It has been
+public since the invoice was written. Moving those values out of the tracked
+file would only stop it getting worse — the history keeps them — so it wants
+either a history rewrite or the repository going private.
+
+---
+---
+
+*Everything below is the previous handoff, written 26 August 2026. It is the
+record of the website review-and-repair pass and of the package as it stood
+then, and none of it has been superseded except the counts — the package was 56
+documents and is now 72. Kept in full.*
+
+# Earlier — 26 August 2026, end of day
 
 Everything is committed **and pushed** on branch `v2`.
 Last commit: the handoff below; the work before it ends at `8fc1642` —
